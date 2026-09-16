@@ -32,6 +32,15 @@ Build so each of these can be connected in Phase 2 without redesign.
 - React Hook Form + Zod for forms and validation
 - PWA-ready shell (manifest, icons); no offline sync
 
+## Tooling notes
+
+- Scripts: `npm run dev`, `typecheck`, `lint`, `build` (static export to `out/`), `format`.
+- shadcn/ui: Radix base, `radix-nova` style, `iconLibrary: "phosphor"`. Add primitives with `npx shadcn@latest add <name>`. Generated files import `cn` from the `cn` package (shadcn's own). Never save `components.json` from PowerShell `Set-Content` (it writes a BOM, which breaks the CLI).
+- ESLint enforces the boundaries: no `lucide-react`, no `next-themes`, and nothing outside `src/lib/api/` and `src/lib/mock/` may import from `@/lib/mock`.
+- Theme: `src/stores/theme-store.ts` (Zustand, persisted) + `ThemeSync` and a pre-paint boot script in the root layout. Dark mode is the `.dark` class. Tokens (brand, surfaces, status `neutral/info/success/warning/danger` with `-subtle` variants, charts) live only in `src/app/globals.css`.
+- Typography: Inter for UI (sits beside the serif wordmark), JetBrains Mono for SKUs and references.
+- Logo served from `public/brand/brewfitt-logo.jpg` (2230×560); app icon `src/app/icon.svg`.
+
 ## Folder structure
 
 ```
@@ -92,7 +101,7 @@ The persona switcher stands in for authentication. Personas: customer contact (p
 
 - Follow BLUEPRINT.md's suggested build order.
 - Do not build anything under the Phase 1 boundary. Do not add features BLUEPRINT.md does not ask for without checking with the user.
-- After each milestone: `npm run typecheck`, `npm run lint`, `npm run build` (plus `npm run check:data` once mock data exists); fix failures; commit with a clear message; give the user a one-paragraph summary plus anything needed from them.
+- After each milestone: `npm run typecheck`, `npm run lint`, `npm run build` (plus `npm run check:data` once mock data exists); fix failures; commit with a clear message; give the user a one-paragraph summary plus anything needed from them, then continue straight into the next milestone without waiting for a reply. Stop only when a decision genuinely needs the user.
 - Do not push unless asked.
 
 ## Milestones
