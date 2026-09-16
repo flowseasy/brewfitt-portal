@@ -73,6 +73,19 @@ public/products/  product images (saved locally, never hot-linked)
 - Mock data must satisfy every consistency rule in BLUEPRINT.md (see "Mock data requirements"). `npm run check:data` runs a script that verifies every consistency rule and the volume minimums against the seeded data; it must pass before any milestone that touches mock data is committed.
 - AI insights are computed from the mock data by the deterministic rules in `src/lib/ai/`, implemented exactly as written in BLUEPRINT.md, never hand-written. Every insight is labelled "Simulated insight" in the UI.
 - Page components compose; data fetching stays out of presentational components; business logic stays out of UI.
+- Schemas are written by hand in `src/schemas/`; `src/types/index.ts` is generated from them (`npm run gen:types`). Never hand-edit it.
+
+## Data model interpretations (M1)
+
+Where BLUEPRINT.md names a field without specifying it, these are the choices made:
+
+- Enum values are kebab-case (`brand-owner`, `credit-note`, `part-received`, `under-review`).
+- Money is `{ amount: pence, currency }`. Order and invoice `total` include VAT; order line `price` is the ex-VAT unit price. Quotes carry explicit `subtotal`, `vat` and `total`.
+- Supplier agreed cost prices are a `PriceList` with `kind: "cost"` assigned via the supplier's `priceListId`; customer lists have `kind: "sell"`.
+- Ageing bands are aged by invoice date as on a UK aged-debt statement: current < 30 days, `30` = 30–59, `60` = 60–89, `90+` ≥ 90. `ageingBand` and `overdue` status are computed at read time from the clock. The AI invoice-ageing rule uses days past `dueAt`.
+- Fields added because a blueprint requirement needs them: `Account.pendingChanges` and `approvalStatus` on Contact/Address (edits pending Brewfitt approval); `Quote.lastViewedAt`, `salesOrderId`, `declineReason`; `Rfq.threadId/notes/createdAt`; `PurchaseOrder.createdAt` (purchase history by month); `Delivery.noteDocumentId`; `Case.number/subject/engineerNotes/updatedAt`; `KnowledgeItem.body/submittedByAccountId/reviewNote`; `SupplierProduct.productId/threadId/submittedAt/updatedAt`; `Thread.accountId`; `Message.id`; `Notification.dismissed`; `Payment.reference/remittanceDocumentId`; `PaymentRun.status`; ids on `SupplierQuote` and `PendingChange`; `AIInsight.simulated: true`.
+- Agreements are Documents with category `agreement`, not a separate entity. Document categories extend the blueprint list with `proof-of-delivery`, `credit-note`, `remittance`, `compliance`, `company`.
+- Payment runs are Brewfitt-wide; the API returns each run filtered to the supplier's own invoices and total.
 
 ## Coding standards
 
