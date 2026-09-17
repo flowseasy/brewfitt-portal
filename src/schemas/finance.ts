@@ -76,12 +76,15 @@ export const Statement = z.object({
   openingBalance: Money,
   closingBalance: Money,
   lines: z.array(StatementLine),
+  /** Outstanding invoices by age. Ageing minus unallocated credit equals the closing balance. */
   ageing: z.object({
     current: Money,
     "30": Money,
     "60": Money,
     "90+": Money,
   }),
+  /** Credit notes not yet allocated to an invoice. */
+  unallocatedCredit: Money,
   overdue: Money,
 });
 

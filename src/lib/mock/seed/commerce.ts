@@ -217,8 +217,12 @@ export function seedCommerce(ctx: SeedContext, people: { addresses: Address[] })
 
   const priced = (accountId: string, lines: LineDraft[]) =>
     lines
-      .map((l) => ({ ...l, price: ctx.priceFor(accountId, l.productId) }))
-      .filter((l): l is LineDraft & { price: NonNullable<typeof l.price> } => !!l.price && l.qty > 0);
+      .filter((l) => l.qty > 0)
+      .map((l) => {
+        const price = ctx.priceFor(accountId, l.productId);
+        if (!price) throw new Error(`Seed line ${l.productId} is not on the price list for ${accountId}`);
+        return { ...l, price };
+      });
 
   const makeQuote = (accountId: string, createdAt: Date, lineDrafts: LineDraft[], status: Quote["status"], configurationId: string | null): Quote => {
     const rate = vat(accountId);
@@ -311,6 +315,16 @@ export function seedCommerce(ctx: SeedContext, people: { addresses: Address[] })
       origins.set(order.id, { kind: "cycle" });
       if (!account.onAccount) cardPaidOrderIds.add(order.id);
     }
+  }
+
+  // Recent orders not yet dispatched, so open-order stages and change requests always have something to show.
+  for (const [accountId, ageDays, slugs] of [
+    ["acc_harbourside", 1, ["extended-chrome-round-badge-holder", "standard-drip-tray-support-brackets"]],
+    ["acc_saltember", 2, ["celtic-tap-chrome-lager-1-2-x14x3-16jg", "black-plastic-handle-for-celtic-tap"]],
+  ] as const) {
+    const order = makeOrder(accountId, addDays(today, -ageDays), slugs.map((slug) => ({ productId: slugId(slug), qty: rng.int(2, 6) })), { leadDays: 8, po: `PO${rng.int(20000, 89999)}` });
+    salesOrders.push(order);
+    origins.set(order.id, { kind: "cycle" });
   }
 
   // ---- Configurations ------------------------------------------------------

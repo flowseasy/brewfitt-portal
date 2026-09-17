@@ -73,6 +73,7 @@ const responses = {
     update: s.SupplierProduct,
     offers: z.array(s.Offer),
     createOffer: s.Offer,
+    performance: s.SupplierPerformance,
   },
   documents: { list: z.array(s.Document), get: s.Document },
   messages: { threads: z.array(s.Thread), thread: s.ThreadDetail, send: s.Message, createThread: s.ThreadDetail },

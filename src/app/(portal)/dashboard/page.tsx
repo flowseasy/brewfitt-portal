@@ -1,10 +1,9 @@
 "use client";
 
-import { PageHeader } from "@/components/shared/page-header";
-import { useMe } from "@/features/session/use-session";
+import { CustomerDashboard } from "@/components/dashboard/customer-dashboard";
+import { SupplierDashboard } from "@/components/dashboard/supplier-dashboard";
+import { useIsSupplier } from "@/features/session/use-session";
 
 export default function DashboardPage() {
-  const me = useMe();
-  const firstName = me.data?.contact.name.split(" ")[0];
-  return <PageHeader eyebrow={me.data?.account.name} title={firstName ? `Good to see you, ${firstName}` : "Dashboard"} description="Where you stand with Brewfitt and what needs your attention." />;
+  return useIsSupplier() ? <SupplierDashboard /> : <CustomerDashboard />;
 }

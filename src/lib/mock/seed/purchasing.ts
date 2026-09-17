@@ -87,6 +87,15 @@ export function seedPurchasing(ctx: SeedContext, commerce: { salesOrders: SalesO
     { productId: slugId("cobra-4-out-chrome-led"), qty: 6 },
     { productId: slugId("cobra-3-out-chrome-led"), qty: 4 },
   ]).expectedDate = isoDate(workingDay(addDays(today, 9)));
+  // Recently received font and tap orders, so Vireo has invoices awaiting a payment run.
+  makePo("sup_vireo", addDays(today, -31), [
+    { productId: slugId("classic-cobra-2-out-led"), qty: 8 },
+    { productId: slugId("fc4-tap-chrome-lager-1-2-x35x3-16jg"), qty: 60 },
+  ]);
+  makePo("sup_vireo", addDays(today, -46), [
+    { productId: slugId("cobra-2-out-chrome-led"), qty: 10 },
+    { productId: slugId("celtic-tap-chrome-lager-1-2-x14x3-16jg"), qty: 40 },
+  ]);
   // Cleaning powder is running low and a PO is on the way.
   makePo("sup_clearflow", addDays(today, -3), [
     { productId: slugId("pipeline-purple-beer-line-cleaning-powder"), qty: 60 },

@@ -80,6 +80,20 @@ export const StockForecast = z.object({
   months: z.array(StockForecastMonth),
 });
 
+/**
+ * GET /api/supplier-performance (defined by the mock; not yet in TOTA360v5).
+ * Purchases by month and product, and an anonymised rank by Brewfitt spend
+ * among suppliers of the same kind (manufacturers or distributors).
+ */
+export const SupplierPerformance = z.object({
+  monthly: z.array(z.object({ month: z.string().regex(/^\d{4}-\d{2}$/), total: Money, orders: z.int().nonnegative() })),
+  topProducts: z.array(z.object({ productId: Id, quantity: z.int().nonnegative(), total: Money })),
+  last12Months: Money,
+  sector: z.enum(["manufacturer", "distributor"]),
+  rank: z.int().positive(),
+  supplierCount: z.int().positive(),
+});
+
 export const ProductListQuery = z.object({
   search: z.string().optional(),
   category: Id.optional(),

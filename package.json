@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "gen:types": "node scripts/gen-types.mjs",
     "check:data": "tsx scripts/check-data.ts",
-    "check:api": "tsx scripts/check-api.ts"
+    "check:api": "tsx scripts/check-api.ts",
+    "build:check": "NEXT_DIST_DIR=.next-build next build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

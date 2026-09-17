@@ -40,7 +40,23 @@ export const session: PortalApi["session"] = {
       const roles = scope.isSupplier ? ["credit-control"] : ["sales-office", "credit-control", "service-engineer"];
       const brewfittTeam = [...db.team.filter((t) => teamIds.includes(t.id)), ...db.team.filter((t) => roles.includes(t.role))];
       const groupAccount = scope.account.isGroup ? scope.account : scope.account.parentAccountId ? account(db, scope.account.parentAccountId) : null;
+      // Credit is held on the commercial account and shared by every site beneath it.
+      let credit = null;
+      if (!scope.isSupplier) {
+        const sharing = new Set([c.id, ...db.accounts.filter((a) => a.parentAccountId === c.id).map((a) => a.id)]);
+        const balance = db.invoices
+          .filter((i) => sharing.has(i.accountId))
+          .reduce((sum, i) => sum + (i.kind === "credit-note" ? -1 : 1) * i.outstanding.amount, 0);
+        credit = {
+          heldByAccountId: c.id,
+          onAccount: c.onAccount,
+          limit: c.creditLimit,
+          balance: { amount: balance, currency: "GBP" as const },
+          available: c.creditLimit ? { amount: c.creditLimit.amount - balance, currency: "GBP" as const } : null,
+        };
+      }
       return {
+        credit,
         contact,
         account: scope.viewAccount,
         persona: scope.persona,

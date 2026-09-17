@@ -43,6 +43,7 @@ export type StockStatus = z.infer<typeof s.StockStatus>;
 export type StockPosition = z.infer<typeof s.StockPosition>;
 export type StockForecastMonth = z.infer<typeof s.StockForecastMonth>;
 export type StockForecast = z.infer<typeof s.StockForecast>;
+export type SupplierPerformance = z.infer<typeof s.SupplierPerformance>;
 export type ProductListQuery = z.infer<typeof s.ProductListQuery>;
 export type PriceListResponse = z.infer<typeof s.PriceListResponse>;
 export type PriceListExport = z.infer<typeof s.PriceListExport>;
@@ -161,5 +162,6 @@ export type AskResponse = z.infer<typeof s.AskResponse>;
 // session
 export type PersonaKind = z.infer<typeof s.PersonaKind>;
 export type Persona = z.infer<typeof s.Persona>;
+export type CreditPosition = z.infer<typeof s.CreditPosition>;
 export type Me = z.infer<typeof s.Me>;
 export type PersonaOption = z.infer<typeof s.PersonaOption>;

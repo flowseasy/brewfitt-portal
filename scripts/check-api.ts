@@ -75,7 +75,8 @@ async function main() {
       const outstanding = invoices.reduce((s, i) => s + i.outstanding.amount, 0) - credits.reduce((s, i) => s + i.outstanding.amount, 0);
       expect(statement.closingBalance.amount === outstanding, `closing ${statement.closingBalance.amount} ≠ outstanding ${outstanding}`);
       const bands = Object.values(statement.ageing).reduce((s, m) => s + m.amount, 0);
-      expect(bands === outstanding, `ageing ${bands} ≠ outstanding ${outstanding}`);
+      expect(bands - statement.unallocatedCredit.amount === outstanding, `ageing ${bands} − credit ${statement.unallocatedCredit.amount} ≠ outstanding ${outstanding}`);
+      expect(Object.values(statement.ageing).every((m) => m.amount >= 0), "negative ageing band");
     });
     await step(`${who} knowledge`, async () => expect((await api.knowledge.list()).length >= 30, "too few knowledge items"));
     await step(`${who} documents`, async () => expect((await api.documents.list()).length > 0, "no documents"));

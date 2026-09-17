@@ -51,7 +51,7 @@ type CaseSpec = {
 };
 
 const CASE_SPECS: CaseSpec[] = [
-  { accountId: "acc_harbourside", kind: "fault", urgency: "high", status: "in-progress", subject: "Fobbing on new Cobra fonts after install", description: "Two of the new Cobra fonts installed in the first wave are fobbing on the first pint of every pour. The other fonts on the same cooler are pouring normally.", productSlug: "cobra-4-out-chrome-led", link: "job", ageDays: 4, script: "case-fobbing-after-install", notes: ["Checked secondary regulator settings on site; within range.", "Suspect a kinked product line behind the bar; follow-up visit booked."] },
+  { accountId: "acc_harbourside", kind: "fault", urgency: "high", status: "resolved", subject: "Fobbing on new Cobra fonts after install", description: "Two of the new Cobra fonts installed in the first wave are fobbing on the first pint of every pour. The other fonts on the same cooler are pouring normally.", productSlug: "cobra-4-out-chrome-led", link: "job", ageDays: 4, script: "case-fobbing-after-install", resolution: "Kinked product line behind the bar replaced and secondary pressure re-set. Both fonts pouring normally on test.", notes: ["Checked secondary regulator settings on site; within range.", "Found a kinked product line behind the bar; replaced on the follow-up visit."] },
   { accountId: "acc_millrace_weavers", kind: "fault", urgency: "critical", status: "open", subject: "Warm beer from the remote cooler", description: "Lager on the back bar is pouring warm since this morning. The remote cooler is running but the python feels warm at the bar end.", productSlug: "v21-integral-cooler", link: "product", ageDays: 1, script: "case-warm-beer-remote-cooler" },
   { accountId: "acc_pennine", kind: "warranty", urgency: "normal", status: "awaiting-parts", subject: "Dripping FC4 tap on tap room bar", description: "One FC4 chrome tap keeps dripping after it is closed. We have tried tightening the tap but it still drips overnight.", productSlug: "fc4-tap-chrome-lager-1-2-x35x3-16jg", link: "order", ageDays: 6, script: "case-leaking-tap", notes: ["O-ring repair kit ordered for the next van run."] },
   { accountId: "acc_saltember", kind: "return", urgency: "normal", status: "resolved", subject: "Drip tray damaged on delivery", description: "The stainless drip tray arrived with a dent along the front edge. The packaging was also damaged.", productSlug: "st-st-recessed-drip-tray-30x18x3-c-w-drain", link: "order", ageDays: 18, script: "case-damaged-drip-tray-delivery", resolution: "Replacement tray delivered and the damaged tray collected by the carrier. Credit not required." },
@@ -317,10 +317,11 @@ export function seedComms(
   applyScript("premium-lager-font-rollout", threadFor.get(rollout.id)!, new Date(rollout.createdAt), { ...orderVars(rollout), siteName: "the Birmingham flagship venue", productName: productName(rollout.lines[0]!.productId) });
 
   const ordersBy = (filter: (o: SalesOrder) => boolean) => r.salesOrders.filter((o) => !used.has(o.id) && filter(o)).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  const pendingChangeOrderIds = new Set(r.changeRequests.filter((c) => c.status === "pending").map((c) => c.orderId));
+  // The date-change conversation ends with Brewfitt confirming, so it belongs on an approved request.
+  const approvedDateChangeOrderIds = new Set(r.changeRequests.filter((c) => c.status === "approved" && c.kind === "date").map((c) => c.orderId));
   const orderScripts: [string, SalesOrder | undefined][] = [
     ["order-delivery-slot-cellar-access", ordersBy((o) => o.accountId === "acc_pennine" && o.status === "delivered" && daysBetween(o.createdAt, today) > 3)[0]],
-    ["order-delivery-date-change", ordersBy((o) => pendingChangeOrderIds.has(o.id))[0]],
+    ["order-delivery-date-change", ordersBy((o) => approvedDateChangeOrderIds.has(o.id))[0]],
     ["order-part-delivery-back-order", ordersBy((o) => o.status === "part-delivered")[0]],
     ["order-carrier-tracking-query", ordersBy((o) => o.status === "dispatched")[0] ?? ordersBy((o) => o.status === "delivered" && daysBetween(o.createdAt, today) < 20)[0]],
     ["order-proof-of-delivery", ordersBy((o) => o.accountId === "acc_saltember" && o.status === "delivered")[0] ?? ordersBy((o) => o.status === "delivered" && daysBetween(o.createdAt, today) > 10)[0]],

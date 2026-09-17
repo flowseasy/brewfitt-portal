@@ -181,6 +181,11 @@ export function seedFinance(
     if (allocate) {
       const applied = Math.min(total.amount, original.outstanding.amount);
       if (applied > 0) {
+        // Any credit left after clearing the invoice stays on account.
+        if (applied < total.amount) {
+          credit.status = "open";
+          credit.outstanding = money(total.amount - applied);
+        }
         original.outstanding = money(original.outstanding.amount - applied);
         original.status = original.outstanding.amount === 0 ? "paid" : "part-paid";
         addPayment({
@@ -225,7 +230,8 @@ export function seedFinance(
   const runDates: Date[] = [];
   let friday = addDays(today, (5 - today.getUTCDay() + 7) % 7 || 7);
   if (rng.chance(0.5)) friday = addDays(friday, 7);
-  for (let d = addDays(friday, 14 * 2); d.getTime() > addDays(today, -420).getTime(); d = addDays(d, -14)) runDates.push(d);
+  // Brewfitt's payment calendar runs about nine weeks ahead.
+  for (let d = addDays(friday, 14 * 4); d.getTime() > addDays(today, -420).getTime(); d = addDays(d, -14)) runDates.push(d);
   runDates.sort((a, b) => a.getTime() - b.getTime());
 
   const runInvoices = new Map<number, Invoice[]>();

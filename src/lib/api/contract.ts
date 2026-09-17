@@ -35,6 +35,7 @@ import type {
   Statement,
   StockForecast,
   StockPosition,
+  SupplierPerformance,
   SupplierProduct,
   SupplierQuote,
   Thread,
@@ -221,6 +222,8 @@ export interface PortalApi {
     offers(): Promise<Offer[]>;
     /** POST /api/offers */
     createOffer(input: In<typeof s.OfferInput>): Promise<Offer>;
+    /** GET /api/supplier-performance (contract defined by the mock) */
+    performance(): Promise<SupplierPerformance>;
   };
 
   documents: {

@@ -24,7 +24,7 @@ export function PersonaList({ current, onChoose }: { current?: Persona | null; o
   if (personas.isError) return <ErrorState error={personas.error} onRetry={() => personas.refetch()} />;
 
   return (
-    <ul className="grid gap-2 sm:grid-cols-2" aria-label="Personas">
+    <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2" aria-label="Personas">
       {personas.data.map((option) => {
         const Icon = KIND_ICON[option.persona.kind];
         const selected = current?.contactId === option.persona.contactId && current?.accountId === option.persona.accountId;

@@ -112,6 +112,7 @@ Where BLUEPRINT.md names a field without specifying it, these are the choices ma
 - Zod at every boundary (API responses, forms, mock JSON such as configurator rules).
 - Semantic HTML, accessible labels, keyboard-operable everything (configurator fully by keyboard), visible focus, accessible dialogs and sheets, screen-reader status messages, charts with text summaries.
 - Every data-driven screen has loading, empty, error and success states. No blank screens.
+- Every CSS grid sets a base template (`grid grid-cols-1 sm:grid-cols-…`). A grid with only responsive columns sizes its implicit track to content, and `truncate` text then blows out the phone layout.
 - Mobile-first; mobile, tablet, desktop, large desktop. Desktop sidebar, mobile bottom nav and bottom sheets.
 - Light and dark mode via theme tokens only. Primary brand token derived from `#1A75BC`; no hard-coded colours in components (TOTA360v5 will re-theme per client).
 - Systematic status colours: neutral, success, warning, danger; consistent stage colours for quotes, orders, cases.

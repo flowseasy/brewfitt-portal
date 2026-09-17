@@ -228,11 +228,21 @@ export const invoices: PortalApi["invoices"] = {
           balance += signed;
           return { ...e, balance: gbp(balance) };
         });
-      const ageing = Object.fromEntries(
-        BANDS.map((b) => [b, gbp(docs.filter((i) => i.ageingBand === b).reduce((sum, i) => sum + (i.kind === "credit-note" ? -1 : 1) * i.outstanding.amount, 0))]),
-      ) as Statement["ageing"];
+      const owed = docs.filter((i) => i.kind !== "credit-note");
+      const ageing = Object.fromEntries(BANDS.map((b) => [b, gbp(owed.filter((i) => i.ageingBand === b).reduce((sum, i) => sum + i.outstanding.amount, 0))])) as Statement["ageing"];
+      const unallocatedCredit = docs.filter((i) => i.kind === "credit-note").reduce((sum, i) => sum + i.outstanding.amount, 0);
       const overdue = docs.filter((i) => i.status === "overdue").reduce((sum, i) => sum + i.outstanding.amount, 0);
-      return { accountId: scope.viewAccount.id, from: isoDate(from), to: isoDate(now), openingBalance: gbp(opening), closingBalance: gbp(balance), lines, ageing, overdue: gbp(overdue) };
+      return {
+        accountId: scope.viewAccount.id,
+        from: isoDate(from),
+        to: isoDate(now),
+        openingBalance: gbp(opening),
+        closingBalance: gbp(balance),
+        lines,
+        ageing,
+        unallocatedCredit: gbp(unallocatedCredit),
+        overdue: gbp(overdue),
+      };
     }),
 
   pay: (id, input) =>

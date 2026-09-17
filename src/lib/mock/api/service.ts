@@ -186,6 +186,46 @@ export const supplierProducts: PortalApi["supplierProducts"] = {
       commit("supplierProducts.createOffer", [insert("offers", offer)]);
       return offer;
     }),
+  performance: () =>
+    respond((db, scope) => {
+      requireSupplier(scope);
+      const now = new Date();
+      const months = Array.from({ length: 12 }, (_, i) => new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 11 + i, 1)).toISOString().slice(0, 7));
+      const since = `${months[0]}-01`;
+      const net = (po: (typeof db.purchaseOrders)[number]) => po.lines.reduce((sum, l) => sum + l.qty * l.price.amount, 0);
+      const recent = db.purchaseOrders.filter((po) => po.createdAt >= since);
+      const mine = recent.filter((po) => po.supplierId === scope.account.id);
+
+      const monthly = months.map((month) => {
+        const list = mine.filter((po) => po.createdAt.startsWith(month));
+        return { month, total: { amount: list.reduce((sum, po) => sum + net(po), 0), currency: "GBP" as const }, orders: list.length };
+      });
+      const byProduct = new Map<string, { quantity: number; total: number }>();
+      for (const l of mine.flatMap((po) => po.lines)) {
+        const e = byProduct.get(l.productId) ?? { quantity: 0, total: 0 };
+        e.quantity += l.qty;
+        e.total += l.qty * l.price.amount;
+        byProduct.set(l.productId, e);
+      }
+      const topProducts = [...byProduct.entries()]
+        .sort((a, b) => b[1].total - a[1].total)
+        .slice(0, 5)
+        .map(([productId, e]) => ({ productId, quantity: e.quantity, total: { amount: e.total, currency: "GBP" as const } }));
+
+      // Rank by 12-month spend among suppliers of the same kind; other suppliers stay anonymous.
+      const sector = scope.account.sector === "distributor" ? "distributor" : "manufacturer";
+      const totals = new Map<string, number>(db.accounts.filter((a) => a.kind === "supplier" && a.sector === sector).map((a) => [a.id, 0]));
+      for (const po of recent) if (totals.has(po.supplierId)) totals.set(po.supplierId, totals.get(po.supplierId)! + net(po));
+      const ranked = [...totals.entries()].sort((a, b) => b[1] - a[1]);
+      return {
+        monthly,
+        topProducts,
+        last12Months: { amount: mine.reduce((sum, po) => sum + net(po), 0), currency: "GBP" as const },
+        sector,
+        rank: ranked.findIndex(([id]) => id === scope.account.id) + 1,
+        supplierCount: ranked.length,
+      };
+    }),
 };
 
 /** Brewfitt's own documents and published spec sheets and manuals are visible to everyone. */

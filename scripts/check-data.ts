@@ -398,7 +398,7 @@ function check(db: MockDb, today: Date): { failures: Failure[]; stats: Record<st
 }
 
 // ---- Run ------------------------------------------------------------------------
-const offsets = [0, 45, 120, 250];
+const offsets = [0, 15, 45, 90, 120, 180, 250, 330];
 let total = 0;
 for (const offset of offsets) {
   const day = addDays(clockToday(), offset);

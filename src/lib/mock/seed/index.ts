@@ -17,6 +17,26 @@ import { seedPurchasing } from "./purchasing";
 /** Fixed seed: the same structure every day, dated relative to `today` (decision 3). */
 const SEED = 1966;
 
+/**
+ * Moves timestamps that are later than `cap` back to just before it, keeping
+ * their relative order (latest stays latest, a few minutes apart).
+ */
+function clampToNow(cap: number, targets: [object[], string[]][]) {
+  const late: { record: Record<string, unknown>; field: string; ms: number }[] = [];
+  for (const [records, fields] of targets) {
+    for (const record of records as Record<string, unknown>[]) {
+      for (const field of fields) {
+        const value = record[field];
+        if (typeof value === "string" && value.length > 10 && Date.parse(value) > cap) late.push({ record, field, ms: Date.parse(value) });
+      }
+    }
+  }
+  late.sort((a, b) => b.ms - a.ms);
+  late.forEach((item, i) => {
+    item.record[item.field] = new Date(cap - i * 3 * 60_000).toISOString();
+  });
+}
+
 export function generateDb(today: Date): MockDb {
   const rng = createRng(SEED);
   const people = seedPeople(rng, today);
@@ -100,6 +120,34 @@ export function generateDb(today: Date): MockDb {
     rolloutOrderId: commerce.rolloutOrderId,
     insights,
   });
+
+  // Seeded times of day are fixed, so on the real today some would still be ahead of the clock.
+  if (isoDate(today) === isoDate(new Date())) {
+    clampToNow(Date.now() - 2 * 60_000, [
+      [comms.messages, ["sentAt"]],
+      [comms.notifications, ["createdAt"]],
+      [comms.cases, ["createdAt", "updatedAt"]],
+      [commerce.quotes, ["createdAt", "updatedAt", "lastViewedAt"]],
+      [commerce.salesOrders, ["createdAt"]],
+      [commerce.changeRequests, ["createdAt"]],
+      [commerce.configurations, ["createdAt", "updatedAt"]],
+      [commerce.jobs, ["signedOffAt"]],
+      [deliveries, ["dispatchedAt", "deliveredAt"]],
+      [purchasing.purchaseOrders, ["createdAt"]],
+      [purchasing.rfqs, ["createdAt"]],
+      [purchasing.supplierQuotes, ["submittedAt"]],
+      [purchasing.supplierProducts, ["submittedAt", "updatedAt"]],
+      [purchasing.offers, ["createdAt"]],
+      [finance.invoices, ["issuedAt"]],
+      [finance.payments, ["paidAt"]],
+      [content.documents, ["modifiedAt"]],
+      [content.knowledge, ["updatedAt"]],
+    ]);
+    for (const t of comms.threads) {
+      const list = comms.messages.filter((m) => m.threadId === t.id);
+      t.lastMessageAt = list.map((m) => m.sentAt).sort().at(-1) ?? t.lastMessageAt;
+    }
+  }
 
   // Last contact reflects the latest message on the account.
   for (const account of people.accounts) {

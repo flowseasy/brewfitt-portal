@@ -43,6 +43,7 @@ export const queryKeys = {
   knowledgeItem: (persona: PersonaKey, id: string) => [persona, "knowledge", id] as const,
   supplierProducts: (persona: PersonaKey) => [persona, "supplier-products"] as const,
   offers: (persona: PersonaKey) => [persona, "offers"] as const,
+  supplierPerformance: (persona: PersonaKey) => [persona, "supplier-performance"] as const,
   documents: (persona: PersonaKey) => [persona, "documents"] as const,
   document: (persona: PersonaKey, id: string) => [persona, "documents", id] as const,
   threads: (persona: PersonaKey) => [persona, "threads"] as const,

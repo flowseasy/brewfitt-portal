@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Account, BrewfittTeamMember, Contact } from "./account";
-import { Id } from "./common";
+import { Id, Money } from "./common";
 
 /** Stands in for authentication in Phase 1. */
 export const PersonaKind = z.enum(["customer", "site", "group", "supplier"]);
@@ -14,8 +14,19 @@ export const Persona = z.object({
   activeSiteId: Id.nullable(),
 });
 
+/** Credit position, held at group level for pub-group sites (decision 10). */
+export const CreditPosition = z.object({
+  heldByAccountId: Id,
+  onAccount: z.boolean(),
+  limit: Money.nullable(),
+  /** Outstanding balance across every account sharing the credit. */
+  balance: Money,
+  available: Money.nullable(),
+});
+
 /** GET /api/me */
 export const Me = z.object({
+  credit: CreditPosition.nullable(),
   contact: Contact,
   account: Account,
   persona: Persona,

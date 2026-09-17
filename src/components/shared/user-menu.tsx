@@ -25,19 +25,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useMe, usePersona } from "@/features/session/use-session";
 import { api } from "@/lib/api";
+import { initials } from "@/lib/format";
 import { usePersonaStore } from "@/stores/persona-store";
 import { useThemeStore, type ThemePreference } from "@/stores/theme-store";
 import { ConfirmDialog } from "./confirm-dialog";
 import { PersonaList } from "./persona-list";
-
-export function initials(name: string): string {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]!.toUpperCase())
-    .join("");
-}
 
 export function UserMenu() {
   const router = useRouter();
