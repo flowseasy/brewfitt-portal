@@ -92,6 +92,13 @@ export const OnTimeDelivery = z.object({
   total: z.int().nonnegative(),
 });
 
+export const MonthlyOrders = z.object({
+  month: z.string().regex(/^\d{4}-\d{2}$/),
+  total: Money,
+  orders: z.int().nonnegative(),
+  average: Money.nullable(),
+});
+
 /** GET /api/account/stats (customers; contract defined by the mock). Values ex VAT, last 12 months. */
 export const CustomerStats = z.object({
   onTimeDelivery: OnTimeDelivery,
@@ -104,14 +111,20 @@ export const CustomerStats = z.object({
     decided: z.int().nonnegative(),
   }),
   /** Order value and average order value by calendar month, oldest first. */
-  monthly: z.array(
-    z.object({
-      month: z.string().regex(/^\d{4}-\d{2}$/),
-      total: Money,
-      orders: z.int().nonnegative(),
-      average: Money.nullable(),
-    }),
-  ),
+  monthly: z.array(MonthlyOrders),
+  /** Group contacts viewing all sites: the same order figures per site, for comparison. Null otherwise. */
+  sites: z
+    .array(
+      z.object({
+        accountId: Id,
+        name: z.string().min(1),
+        orderValue: Money,
+        orderCount: z.int().nonnegative(),
+        averageOrderValue: Money.nullable(),
+        monthly: z.array(MonthlyOrders),
+      }),
+    )
+    .nullable(),
   /** Spend in the last 6 months against the 6 months before (the demo holds 12 months of history). */
   spendTrend: z.object({
     recent: Money,

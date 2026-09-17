@@ -190,6 +190,11 @@ async function main() {
           "conversion over 100%",
         );
         expect(stats.fillRate.inFull <= stats.fillRate.total, "fill rate over 100%");
+        if (option.persona.kind === "group") {
+          expect(stats.sites && stats.sites.length > 1, "group roll-up has no site comparison");
+          const siteTotal = stats.sites!.reduce((sum, x) => sum + x.orderValue.amount, 0);
+          expect(siteTotal <= stats.orderValue.amount, "sites add up to more than the group");
+        } else expect(stats.sites === null, "site comparison shown outside a group roll-up");
         expect(
           stats.averageLeadDays === null || stats.averageLeadDays > 0,
           "non-positive lead time",

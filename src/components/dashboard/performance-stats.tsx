@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { ChartLineUpIcon } from "@phosphor-icons/react";
@@ -10,7 +10,7 @@ import { usePersonaKey } from "@/features/session/use-session";
 import { api, queryKeys } from "@/lib/api";
 import { formatMoney, plural } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import type { Money } from "@/types";
+import type { CustomerStats, Money } from "@/types";
 
 type Tone = "success" | "warning" | "danger";
 
@@ -90,10 +90,12 @@ function Group({ title, children }: { title: string; children: ReactNode }) {
 function Panel({
   title,
   subtitle,
+  actions,
   children,
 }: {
   title: string;
   subtitle: string;
+  actions?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -106,6 +108,7 @@ function Panel({
           {title}
         </h2>
         <span className="text-sm text-muted-foreground">{subtitle}</span>
+        {actions ? <div className="w-full sm:ml-auto sm:w-auto">{actions}</div> : null}
       </div>
       {children}
     </section>
@@ -165,6 +168,219 @@ function MonthlyCharts({
   );
 }
 
+type GroupView = "total" | "sites";
+
+/** Group contacts switch between the group total and a site-by-site comparison. */
+function GroupViewToggle({
+  value,
+  onChange,
+}: {
+  value: GroupView;
+  onChange: (v: GroupView) => void;
+}) {
+  const options: { value: GroupView; label: string }[] = [
+    { value: "total", label: "Group total" },
+    { value: "sites", label: "Compare sites" },
+  ];
+  return (
+    <div
+      role="group"
+      aria-label="Statistics view"
+      className="inline-flex w-full rounded-full border bg-muted/50 p-0.5 sm:w-auto"
+    >
+      {options.map((o) => (
+        <button
+          key={o.value}
+          type="button"
+          aria-pressed={value === o.value}
+          onClick={() => onChange(o.value)}
+          className={cn(
+            "flex-1 rounded-full px-3 py-1 text-sm transition focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none sm:flex-none",
+            value === o.value
+              ? "bg-background font-medium text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          {o.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/** Orders placed, order count, average order value and share of group spend per site, with a site picker for the charts. */
+function SiteComparison({ stats }: { stats: CustomerStats }) {
+  const sites = stats.sites ?? [];
+  const [selected, setSelected] = useState<string>("all");
+  const max = Math.max(1, ...sites.map((x) => x.orderValue.amount));
+  const chosen = sites.find((x) => x.accountId === selected);
+
+  return (
+    <div>
+      <h3 className="mb-2.5 text-sm font-medium">Orders by site</h3>
+      <ul className="space-y-2 sm:hidden">
+        {sites.map((site) => {
+          const share = stats.orderValue.amount
+            ? Math.round((site.orderValue.amount / stats.orderValue.amount) * 100)
+            : 0;
+          const active = selected === site.accountId;
+          return (
+            <li key={site.accountId}>
+              <button
+                type="button"
+                onClick={() => setSelected(active ? "all" : site.accountId)}
+                aria-pressed={active}
+                className={cn(
+                  "w-full rounded-xl border p-3 text-left transition focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none",
+                  active ? "border-primary bg-brand-subtle/40" : "bg-background",
+                )}
+              >
+                <span className="flex items-baseline justify-between gap-2">
+                  <span className="font-medium">{site.name}</span>
+                  <span className="font-semibold tabular-nums">{whole(site.orderValue)}</span>
+                </span>
+                <span className="mt-2 block h-2 overflow-hidden rounded-full bg-muted" aria-hidden>
+                  <span
+                    className="block h-full rounded-full bg-chart-1"
+                    style={{ width: `${(site.orderValue.amount / max) * 100}%` }}
+                  />
+                </span>
+                <span className="mt-1.5 block text-xs text-muted-foreground">
+                  {plural(site.orderCount, "order")} · average {whole(site.averageOrderValue)} ·{" "}
+                  {share}% of group
+                </span>
+              </button>
+            </li>
+          );
+        })}
+        <li className="flex items-baseline justify-between rounded-xl bg-muted/40 px-3 py-2 text-sm">
+          <span className="font-medium">All sites</span>
+          <span className="tabular-nums">
+            <span className="font-semibold">{whole(stats.orderValue)}</span>
+            <span className="text-muted-foreground"> · {plural(stats.orderCount, "order")}</span>
+          </span>
+        </li>
+      </ul>
+      <div className="hidden overflow-x-auto rounded-xl border sm:block">
+        <table className="w-full min-w-[34rem] text-sm">
+          <caption className="sr-only">
+            Orders placed, number of orders, average order value and share of group spend for each
+            site, last 12 months
+          </caption>
+          <thead className="bg-muted/50 text-left text-xs text-muted-foreground">
+            <tr>
+              <th scope="col" className="px-3 py-2 font-medium">
+                Site
+              </th>
+              <th scope="col" className="px-3 py-2 font-medium">
+                Orders placed
+              </th>
+              <th scope="col" className="px-3 py-2 text-right font-medium">
+                Orders
+              </th>
+              <th scope="col" className="px-3 py-2 text-right font-medium">
+                Average order
+              </th>
+              <th scope="col" className="px-3 py-2 text-right font-medium">
+                Share
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y">
+            {sites.map((site) => {
+              const share = stats.orderValue.amount
+                ? Math.round((site.orderValue.amount / stats.orderValue.amount) * 100)
+                : 0;
+              const active = selected === site.accountId;
+              return (
+                <tr key={site.accountId} className={cn(active && "bg-brand-subtle/40")}>
+                  <th scope="row" className="px-3 py-2.5 text-left font-medium">
+                    <button
+                      type="button"
+                      onClick={() => setSelected(active ? "all" : site.accountId)}
+                      aria-pressed={active}
+                      className="rounded text-left hover:text-primary hover:underline focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none"
+                    >
+                      {site.name}
+                    </button>
+                  </th>
+                  <td className="px-3 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="w-20 shrink-0 font-medium tabular-nums">
+                        {whole(site.orderValue)}
+                      </span>
+                      <span
+                        className="h-2 flex-1 overflow-hidden rounded-full bg-muted"
+                        aria-hidden
+                      >
+                        <span
+                          className="block h-full rounded-full bg-chart-1"
+                          style={{ width: `${(site.orderValue.amount / max) * 100}%` }}
+                        />
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-3 py-2.5 text-right tabular-nums">{site.orderCount}</td>
+                  <td className="px-3 py-2.5 text-right tabular-nums">
+                    {whole(site.averageOrderValue)}
+                  </td>
+                  <td className="px-3 py-2.5 text-right text-muted-foreground tabular-nums">
+                    {share}%
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+          <tfoot className="border-t bg-muted/30 text-sm">
+            <tr>
+              <th scope="row" className="px-3 py-2 text-left font-medium">
+                All sites
+              </th>
+              <td className="px-3 py-2 font-medium tabular-nums">{whole(stats.orderValue)}</td>
+              <td className="px-3 py-2 text-right tabular-nums">{stats.orderCount}</td>
+              <td className="px-3 py-2 text-right tabular-nums">
+                {whole(stats.averageOrderValue)}
+              </td>
+              <td className="px-3 py-2 text-right text-muted-foreground tabular-nums">100%</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div
+        className="mt-5 flex flex-wrap items-center gap-1.5"
+        role="group"
+        aria-label="Show charts for"
+      >
+        <span className="mr-1 text-sm font-medium">Charts for</span>
+        {[{ accountId: "all", name: "All sites" }, ...sites].map((x) => (
+          <button
+            key={x.accountId}
+            type="button"
+            aria-pressed={selected === x.accountId}
+            onClick={() => setSelected(x.accountId)}
+            className={cn(
+              "rounded-full border px-2.5 py-1 text-xs transition focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none",
+              selected === x.accountId
+                ? "border-primary bg-primary text-primary-foreground"
+                : "bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
+            )}
+          >
+            {x.name}
+          </button>
+        ))}
+      </div>
+      <MonthlyCharts
+        monthly={chosen ? chosen.monthly : stats.monthly}
+        total={chosen ? chosen.orderValue : stats.orderValue}
+        average={chosen ? chosen.averageOrderValue : stats.averageOrderValue}
+        noun="order"
+        who={chosen ? `${chosen.name} ordered` : "Your sites ordered"}
+      />
+    </div>
+  );
+}
+
 const onTimeTone = (p: number | null): Tone | undefined =>
   p === null ? undefined : p >= 95 ? "success" : p >= 85 ? undefined : "warning";
 
@@ -175,9 +391,16 @@ export function CustomerStatsPanel() {
     queryKey: queryKeys.accountStats(key),
     queryFn: () => api.account.stats(),
   });
+  const [view, setView] = useState<GroupView>("total");
+  const canCompare = !!stats.data?.sites?.length;
+  const comparing = canCompare && view === "sites";
 
   return (
-    <Panel title="Your year with Brewfitt" subtitle="Last 12 months, values ex VAT">
+    <Panel
+      title="Your year with Brewfitt"
+      subtitle="Last 12 months, values ex VAT"
+      actions={canCompare ? <GroupViewToggle value={view} onChange={setView} /> : undefined}
+    >
       {stats.isPending ? (
         <LoadingState rows={2} label="Loading your statistics" />
       ) : stats.isError ? (
@@ -188,61 +411,69 @@ export function CustomerStatsPanel() {
           const change = s.spendTrend.changePercent;
           return (
             <>
-              <Group title="Orders and quotes">
-                <Stat
-                  label="Orders placed"
-                  value={whole(s.orderValue)}
-                  detail={plural(s.orderCount, "order")}
-                  href="/orders"
-                />
-                <Stat
-                  label="Average order value"
-                  value={whole(s.averageOrderValue)}
-                  detail={
-                    s.orderCount ? `Across ${plural(s.orderCount, "order")}` : "No orders yet"
-                  }
-                  href="/orders"
-                />
-                <Stat
-                  label="Spend, last 6 months"
-                  value={whole(s.spendTrend.recent)}
-                  detail={
-                    change === null
-                      ? "No spend in the 6 months before"
-                      : `${change >= 0 ? "Up" : "Down"} ${Math.abs(change)}% on the 6 months before (${whole(s.spendTrend.previous)})`
-                  }
-                  tone={change !== null && change >= 0 ? "success" : undefined}
-                />
-                <Stat
-                  label="Quote conversion"
-                  value={percent(s.quoteConversion.percent)}
-                  detail={
-                    s.quoteConversion.decided
-                      ? `${s.quoteConversion.accepted} of ${plural(s.quoteConversion.decided, "quote")} accepted`
-                      : "No quotes decided yet"
-                  }
-                  href="/quotes"
-                />
-                <Stat
-                  label="Open back orders"
-                  value={String(s.backOrders.units)}
-                  detail={
-                    s.backOrders.lines
-                      ? `${plural(s.backOrders.units, "unit")} on ${plural(s.backOrders.lines, "order line")}`
-                      : "Nothing on back order"
-                  }
-                  tone={s.backOrders.units ? "warning" : undefined}
-                  href="/orders?status=part-delivered"
-                />
-              </Group>
-              <MonthlyCharts
-                monthly={s.monthly}
-                total={s.orderValue}
-                average={s.averageOrderValue}
-                noun="order"
-                who="You ordered"
-              />
-              <Group title="Brewfitt's service to you">
+              {comparing ? (
+                <SiteComparison stats={s} />
+              ) : (
+                <>
+                  <Group title="Orders and quotes">
+                    <Stat
+                      label="Orders placed"
+                      value={whole(s.orderValue)}
+                      detail={plural(s.orderCount, "order")}
+                      href="/orders"
+                    />
+                    <Stat
+                      label="Average order value"
+                      value={whole(s.averageOrderValue)}
+                      detail={
+                        s.orderCount ? `Across ${plural(s.orderCount, "order")}` : "No orders yet"
+                      }
+                      href="/orders"
+                    />
+                    <Stat
+                      label="Spend, last 6 months"
+                      value={whole(s.spendTrend.recent)}
+                      detail={
+                        change === null
+                          ? "No spend in the 6 months before"
+                          : `${change >= 0 ? "Up" : "Down"} ${Math.abs(change)}% on the 6 months before (${whole(s.spendTrend.previous)})`
+                      }
+                      tone={change !== null && change >= 0 ? "success" : undefined}
+                    />
+                    <Stat
+                      label="Quote conversion"
+                      value={percent(s.quoteConversion.percent)}
+                      detail={
+                        s.quoteConversion.decided
+                          ? `${s.quoteConversion.accepted} of ${plural(s.quoteConversion.decided, "quote")} accepted`
+                          : "No quotes decided yet"
+                      }
+                      href="/quotes"
+                    />
+                    <Stat
+                      label="Open back orders"
+                      value={String(s.backOrders.units)}
+                      detail={
+                        s.backOrders.lines
+                          ? `${plural(s.backOrders.units, "unit")} on ${plural(s.backOrders.lines, "order line")}`
+                          : "Nothing on back order"
+                      }
+                      tone={s.backOrders.units ? "warning" : undefined}
+                      href="/orders?status=part-delivered"
+                    />
+                  </Group>
+                  <MonthlyCharts
+                    monthly={s.monthly}
+                    total={s.orderValue}
+                    average={s.averageOrderValue}
+                    noun="order"
+                    who="You ordered"
+                  />
+                </>
+              )}
+              <Group
+                title={comparing ? "Brewfitt's service to your group" : "Brewfitt's service to you"}
+              >
                 <Stat
                   label="On-time delivery"
                   value={percent(s.onTimeDelivery.percent)}

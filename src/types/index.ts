@@ -44,6 +44,7 @@ export type StockPosition = z.infer<typeof s.StockPosition>;
 export type StockForecastMonth = z.infer<typeof s.StockForecastMonth>;
 export type StockForecast = z.infer<typeof s.StockForecast>;
 export type OnTimeDelivery = z.infer<typeof s.OnTimeDelivery>;
+export type MonthlyOrders = z.infer<typeof s.MonthlyOrders>;
 export type CustomerStats = z.infer<typeof s.CustomerStats>;
 export type SupplierPerformance = z.infer<typeof s.SupplierPerformance>;
 export type ProductListQuery = z.infer<typeof s.ProductListQuery>;

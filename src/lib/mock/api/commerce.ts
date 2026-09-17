@@ -260,7 +260,9 @@ export const accountApi: PortalApi["account"] = {
         (o) => inScope(scope, o.accountId) && o.status !== "cancelled",
       );
       const byId = new Map(orders.map((o) => [o.id, o]));
-      const yearOrders = orders.filter((o) => now - Date.parse(o.createdAt) <= YEAR_MS);
+      // The same 12 calendar months as the monthly charts, so totals and charts agree.
+      const windowStart = monthlyOrders([], now)[0]!.month;
+      const yearOrders = orders.filter((o) => o.createdAt.slice(0, 7) >= windowStart);
       const value = yearOrders.reduce((sum, o) => sum + netValue(o.lines), 0);
       const decided = db.quotes
         .filter((q) => inScope(scope, q.accountId) && now - Date.parse(q.createdAt) <= YEAR_MS)
@@ -288,26 +290,55 @@ export const accountApi: PortalApi["account"] = {
           accepted,
           decided: decided.length,
         },
-        monthly: Array.from({ length: 12 }, (_, i) => {
-          const d = new Date(now);
-          const month = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() - 11 + i, 1))
-            .toISOString()
-            .slice(0, 7);
-          const list = orders.filter((o) => o.createdAt.startsWith(month));
-          const total = list.reduce((sum, o) => sum + netValue(o.lines), 0);
-          return {
-            month,
-            total: { amount: total, currency: "GBP" as const },
-            orders: list.length,
-            average: list.length
-              ? { amount: Math.round(total / list.length), currency: "GBP" as const }
-              : null,
-          };
-        }),
+        monthly: monthlyOrders(orders, now),
+        // A group contact viewing all sites can compare order figures site by site.
+        sites:
+          scope.persona.kind === "group" && !scope.persona.activeSiteId
+            ? db.accounts
+                .filter((a) => a.parentAccountId === scope.account.id)
+                .map((site) => {
+                  const siteOrders = yearOrders.filter((o) => o.accountId === site.id);
+                  const siteValue = siteOrders.reduce((sum, o) => sum + netValue(o.lines), 0);
+                  return {
+                    accountId: site.id,
+                    name: site.name,
+                    orderValue: { amount: siteValue, currency: "GBP" as const },
+                    orderCount: siteOrders.length,
+                    averageOrderValue: siteOrders.length
+                      ? {
+                          amount: Math.round(siteValue / siteOrders.length),
+                          currency: "GBP" as const,
+                        }
+                      : null,
+                    monthly: monthlyOrders(siteOrders, now),
+                  };
+                })
+                .sort((a, b) => b.orderValue.amount - a.orderValue.amount)
+            : null,
         ...serviceStats(db, scope, orders, now),
       };
     }),
 };
+
+/** Order value, count and average for each of the last 12 calendar months, oldest first. */
+function monthlyOrders(orders: SalesOrder[], now: number) {
+  const d = new Date(now);
+  return Array.from({ length: 12 }, (_, i) => {
+    const month = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() - 11 + i, 1))
+      .toISOString()
+      .slice(0, 7);
+    const list = orders.filter((o) => o.createdAt.startsWith(month));
+    const total = list.reduce((sum, o) => sum + netValue(o.lines), 0);
+    return {
+      month,
+      total: { amount: total, currency: "GBP" as const },
+      orders: list.length,
+      average: list.length
+        ? { amount: Math.round(total / list.length), currency: "GBP" as const }
+        : null,
+    };
+  });
+}
 
 /** Spend trend, fulfilment and service levels for the customer statistics. */
 function serviceStats(db: MockDb, scope: Scope, orders: SalesOrder[], now: number) {
@@ -322,7 +353,8 @@ function serviceStats(db: MockDb, scope: Scope, orders: SalesOrder[], now: numbe
   const recent = spend(-1, HALF);
   const previous = spend(HALF, YEAR_MS);
 
-  const yearOrders = orders.filter((o) => now - Date.parse(o.createdAt) <= YEAR_MS);
+  const windowStart = monthlyOrders([], now)[0]!.month;
+  const yearOrders = orders.filter((o) => o.createdAt.slice(0, 7) >= windowStart);
   const deliveriesOf = (orderId: string) =>
     db.deliveries
       .filter((d) => d.orderType === "sales" && d.orderId === orderId && d.deliveredAt)
