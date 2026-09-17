@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { ChartLineUpIcon } from "@phosphor-icons/react";
-import { BarChart, monthBarLabels } from "@/components/shared/bar-chart";
+import { BarChart, monthBarLabels, penceAxis } from "@/components/shared/bar-chart";
 import { ErrorState, LoadingState } from "@/components/shared/states";
 import { usePersonaKey } from "@/features/session/use-session";
 import { api, queryKeys } from "@/lib/api";
@@ -112,6 +112,59 @@ function Panel({
   );
 }
 
+type Month = { month: string; total: Money; orders: number; average: Money | null };
+
+/** Order value and average order value by month, side by side, with value axes. */
+function MonthlyCharts({
+  monthly,
+  total,
+  average,
+  noun,
+  who,
+}: {
+  monthly: Month[];
+  total: Money;
+  average: Money | null;
+  noun: string;
+  who: string;
+}) {
+  const orders = monthly.reduce((s, m) => s + m.orders, 0);
+  const peak = [...monthly].sort((a, b) => b.total.amount - a.total.amount)[0];
+  const highestAverage = monthly
+    .filter((m) => m.average)
+    .sort((a, b) => (b.average?.amount ?? 0) - (a.average?.amount ?? 0))[0];
+  return (
+    <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div>
+        <h3 className="mb-3 text-sm font-medium">Order value by month</h3>
+        <BarChart
+          axis={penceAxis}
+          bars={monthly.map((m) => ({
+            key: m.month,
+            ...monthBarLabels(m.month),
+            value: m.total.amount,
+            display: formatMoney(m.total, { whole: true }),
+          }))}
+          summary={`${who} ${whole(total)} across ${plural(orders, noun)}.${peak && peak.total.amount ? ` The busiest month was ${monthBarLabels(peak.month).label} at ${whole(peak.total)}.` : ""}`}
+        />
+      </div>
+      <div>
+        <h3 className="mb-3 text-sm font-medium">Average order value by month</h3>
+        <BarChart
+          axis={penceAxis}
+          bars={monthly.map((m) => ({
+            key: m.month,
+            ...monthBarLabels(m.month),
+            value: m.average?.amount ?? 0,
+            display: m.average ? formatMoney(m.average, { whole: true }) : "No orders",
+          }))}
+          summary={`Average ${whole(average)} per ${noun}.${highestAverage ? ` Highest in ${monthBarLabels(highestAverage.month).label} at ${whole(highestAverage.average)}.` : ""}`}
+        />
+      </div>
+    </div>
+  );
+}
+
 const onTimeTone = (p: number | null): Tone | undefined =>
   p === null ? undefined : p >= 95 ? "success" : p >= 85 ? undefined : "warning";
 
@@ -182,6 +235,13 @@ export function CustomerStatsPanel() {
                   href="/orders?status=part-delivered"
                 />
               </Group>
+              <MonthlyCharts
+                monthly={s.monthly}
+                total={s.orderValue}
+                average={s.averageOrderValue}
+                noun="order"
+                who="You ordered"
+              />
               <Group title="Brewfitt's service to you">
                 <Stat
                   label="On-time delivery"
@@ -256,11 +316,6 @@ export function SupplierStatsPanel() {
         (() => {
           const p = perf.data;
           const orders = p.monthly.reduce((s, m) => s + m.orders, 0);
-          const withOrders = p.monthly.filter((m) => m.average);
-          const peak = [...p.monthly].sort((a, b) => b.total.amount - a.total.amount)[0];
-          const highestAverage = [...withOrders].sort(
-            (a, b) => (b.average?.amount ?? 0) - (a.average?.amount ?? 0),
-          )[0];
           const certificates = p.certificates.expired + p.certificates.expiringSoon;
           return (
             <>
@@ -358,32 +413,13 @@ export function SupplierStatsPanel() {
                   href="/documents?category=compliance"
                 />
               </Group>
-              <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <div>
-                  <h3 className="mb-3 text-sm font-medium">Order value by month</h3>
-                  <BarChart
-                    bars={p.monthly.map((m) => ({
-                      key: m.month,
-                      ...monthBarLabels(m.month),
-                      value: m.total.amount,
-                      display: formatMoney(m.total, { whole: true }),
-                    }))}
-                    summary={`Brewfitt ordered ${whole(p.last12Months)} from you across ${plural(orders, "purchase order")}.${peak && peak.total.amount ? ` The busiest month was ${monthBarLabels(peak.month).label} at ${whole(peak.total)}.` : ""}`}
-                  />
-                </div>
-                <div>
-                  <h3 className="mb-3 text-sm font-medium">Average order value by month</h3>
-                  <BarChart
-                    bars={p.monthly.map((m) => ({
-                      key: m.month,
-                      ...monthBarLabels(m.month),
-                      value: m.average?.amount ?? 0,
-                      display: m.average ? formatMoney(m.average, { whole: true }) : "No orders",
-                    }))}
-                    summary={`Average ${whole(p.averageOrderValue)} per purchase order.${highestAverage ? ` Highest in ${monthBarLabels(highestAverage.month).label} at ${whole(highestAverage.average)}.` : ""}`}
-                  />
-                </div>
-              </div>
+              <MonthlyCharts
+                monthly={p.monthly}
+                total={p.last12Months}
+                average={p.averageOrderValue}
+                noun="purchase order"
+                who="Brewfitt ordered"
+              />
             </>
           );
         })()

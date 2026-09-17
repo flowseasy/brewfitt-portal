@@ -103,6 +103,15 @@ export const CustomerStats = z.object({
     accepted: z.int().nonnegative(),
     decided: z.int().nonnegative(),
   }),
+  /** Order value and average order value by calendar month, oldest first. */
+  monthly: z.array(
+    z.object({
+      month: z.string().regex(/^\d{4}-\d{2}$/),
+      total: Money,
+      orders: z.int().nonnegative(),
+      average: Money.nullable(),
+    }),
+  ),
   /** Spend in the last 6 months against the 6 months before (the demo holds 12 months of history). */
   spendTrend: z.object({
     recent: Money,

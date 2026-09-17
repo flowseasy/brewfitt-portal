@@ -754,6 +754,39 @@ export function seedCommerce(ctx: SeedContext, people: { addresses: Address[] })
     }
   }
 
+  // Harbourside (the demo brand owner) supplies its outlets with branded dispense kit every
+  // month, so its 12-month order history and average order value charts have no gaps.
+  {
+    const range = [
+      ["extended-chrome-round-badge-holder", 12, 36],
+      ["s-type-keg-coupler-c-w-jg-fittings-nrv-sankey", 6, 18],
+      ["pipeline-purple-beer-line-cleaning-powder", 4, 12],
+      ["s-type-cleaning-socket-c-w-jg-fittings-3-8", 6, 18],
+      ["standard-chrome-badge-holder", 10, 30],
+      ["2flow-specialist-coolant-25-litres", 2, 6],
+    ] as const;
+    for (let monthsAgo = 1; monthsAgo <= 11; monthsAgo++) {
+      const first = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() - monthsAgo, 1));
+      const month = first.toISOString().slice(0, 7);
+      if (
+        salesOrders.some((o) => o.accountId === "acc_harbourside" && o.createdAt.startsWith(month))
+      )
+        continue;
+      const picks = [0, 1, 2].map((k) => range[(monthsAgo + k * 2) % range.length]!);
+      const order = makeOrder(
+        "acc_harbourside",
+        addDays(first, 4 + ((monthsAgo * 5) % 18)),
+        picks.map(([slug, min, max]) => ({
+          productId: slugId(slug),
+          qty: min + ((monthsAgo * 7) % (max - min + 1)),
+        })),
+        { po: `HD-OUT-${2600 + monthsAgo}` },
+      );
+      salesOrders.push(order);
+      origins.set(order.id, { kind: "cycle" });
+    }
+  }
+
   // Recent orders not yet dispatched, so open-order stages and change requests always have something to show.
   for (const [accountId, ageDays, slugs] of [
     [

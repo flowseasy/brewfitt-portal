@@ -288,18 +288,29 @@ export const accountApi: PortalApi["account"] = {
           accepted,
           decided: decided.length,
         },
+        monthly: Array.from({ length: 12 }, (_, i) => {
+          const d = new Date(now);
+          const month = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() - 11 + i, 1))
+            .toISOString()
+            .slice(0, 7);
+          const list = orders.filter((o) => o.createdAt.startsWith(month));
+          const total = list.reduce((sum, o) => sum + netValue(o.lines), 0);
+          return {
+            month,
+            total: { amount: total, currency: "GBP" as const },
+            orders: list.length,
+            average: list.length
+              ? { amount: Math.round(total / list.length), currency: "GBP" as const }
+              : null,
+          };
+        }),
         ...serviceStats(db, scope, orders, now),
       };
     }),
 };
 
 /** Spend trend, fulfilment and service levels for the customer statistics. */
-function serviceStats(
-  db: MockDb,
-  scope: Scope,
-  orders: SalesOrder[],
-  now: number,
-) {
+function serviceStats(db: MockDb, scope: Scope, orders: SalesOrder[], now: number) {
   const HALF = YEAR_MS / 2;
   const spend = (from: number, to: number) =>
     orders
@@ -325,7 +336,8 @@ function serviceStats(
   }).length;
   const completed = yearOrders.filter((o) => o.status === "delivered");
   const leadDays = completed.map(
-    (o) => (Date.parse(deliveriesOf(o.id).at(-1)!.deliveredAt!) - Date.parse(o.createdAt)) / 86_400_000,
+    (o) =>
+      (Date.parse(deliveriesOf(o.id).at(-1)!.deliveredAt!) - Date.parse(o.createdAt)) / 86_400_000,
   );
   const openBack = orders
     .filter((o) => ["confirmed", "picking", "dispatched", "part-delivered"].includes(o.status))
@@ -352,7 +364,9 @@ function serviceStats(
     });
   }
   const average = (xs: number[], dp = 1) =>
-    xs.length ? Math.round((xs.reduce((a, b) => a + b, 0) / xs.length) * 10 ** dp) / 10 ** dp : null;
+    xs.length
+      ? Math.round((xs.reduce((a, b) => a + b, 0) / xs.length) * 10 ** dp) / 10 ** dp
+      : null;
 
   return {
     spendTrend: {

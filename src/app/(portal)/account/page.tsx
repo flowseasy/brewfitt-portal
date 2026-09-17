@@ -22,7 +22,7 @@ import {
 } from "@/components/account/account-panels";
 import { AddressesPanel } from "@/components/account/addresses";
 import { ContactsPanel } from "@/components/account/contacts";
-import { BarChart, monthBarLabels } from "@/components/shared/bar-chart";
+import { BarChart, monthBarLabels, penceAxis } from "@/components/shared/bar-chart";
 import { PageHeader } from "@/components/shared/page-header";
 import { ErrorState, LoadingState } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
@@ -258,7 +258,7 @@ export default function AccountPage() {
                 <LoadingState rows={2} />
               ) : (
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-                  <BarChart bars={chart.bars} summary={chart.summary} />
+                  <BarChart bars={chart.bars} summary={chart.summary} axis={penceAxis} />
                   <div>
                     <p className="mb-2 text-xs font-medium text-muted-foreground">Top products</p>
                     <ol className="space-y-2 text-sm">
