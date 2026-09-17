@@ -1,0 +1,1622 @@
+[
+ {
+  "outcode": "HD1",
+  "postcode": "HD1 4JE",
+  "town": "Huddersfield",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.645252,
+  "longitude": -1.810953
+ },
+ {
+  "outcode": "HD1",
+  "postcode": "HD1 6JT",
+  "town": "Huddersfield",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.656768,
+  "longitude": -1.780458
+ },
+ {
+  "outcode": "HD1",
+  "postcode": "HD1 4BQ",
+  "town": "Huddersfield",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.64558,
+  "longitude": -1.791846
+ },
+ {
+  "outcode": "HD8",
+  "postcode": "HD8 0LG",
+  "town": "Huddersfield",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.631996,
+  "longitude": -1.700985
+ },
+ {
+  "outcode": "HD8",
+  "postcode": "HD8 8AW",
+  "town": "Huddersfield",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.586039,
+  "longitude": -1.715689
+ },
+ {
+  "outcode": "HD8",
+  "postcode": "HD8 8NT",
+  "town": "Huddersfield",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.574783,
+  "longitude": -1.685924
+ },
+ {
+  "outcode": "LS1",
+  "postcode": "LS1 5HD",
+  "town": "Leeds",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.797928,
+  "longitude": -1.54673
+ },
+ {
+  "outcode": "LS1",
+  "postcode": "LS1 9XR",
+  "town": "Leeds",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.796312,
+  "longitude": -1.5641
+ },
+ {
+  "outcode": "LS1",
+  "postcode": "LS1 4AU",
+  "town": "Leeds",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.796312,
+  "longitude": -1.5641
+ },
+ {
+  "outcode": "LS2",
+  "postcode": "LS2 9JG",
+  "town": "Leeds",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.80645,
+  "longitude": -1.549569
+ },
+ {
+  "outcode": "LS2",
+  "postcode": "LS2 7HN",
+  "town": "Leeds",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.797,
+  "longitude": -1.53918
+ },
+ {
+  "outcode": "LS2",
+  "postcode": "LS2 7FF",
+  "town": "Leeds",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.80317,
+  "longitude": -1.533251
+ },
+ {
+  "outcode": "LS6",
+  "postcode": "LS6 4DX",
+  "town": "Leeds",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.825807,
+  "longitude": -1.573274
+ },
+ {
+  "outcode": "LS6",
+  "postcode": "LS6 3JN",
+  "town": "Leeds",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.821406,
+  "longitude": -1.58187
+ },
+ {
+  "outcode": "LS6",
+  "postcode": "LS6 3LR",
+  "town": "Leeds",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.823422,
+  "longitude": -1.60096
+ },
+ {
+  "outcode": "S1",
+  "postcode": "S1 2EX",
+  "town": "Sheffield",
+  "county": "South Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.383068,
+  "longitude": -1.471205
+ },
+ {
+  "outcode": "S1",
+  "postcode": "S1 4PP",
+  "town": "Sheffield",
+  "county": "South Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.374154,
+  "longitude": -1.473946
+ },
+ {
+  "outcode": "S1",
+  "postcode": "S1 9ZU",
+  "town": "Sheffield",
+  "county": "South Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.380392,
+  "longitude": -1.46981
+ },
+ {
+  "outcode": "S11",
+  "postcode": "S11 7BH",
+  "town": "Sheffield",
+  "county": "South Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.366023,
+  "longitude": -1.513073
+ },
+ {
+  "outcode": "S11",
+  "postcode": "S11 9AE",
+  "town": "Sheffield",
+  "county": "South Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.365385,
+  "longitude": -1.491501
+ },
+ {
+  "outcode": "S11",
+  "postcode": "S11 7RJ",
+  "town": "Sheffield",
+  "county": "South Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.35588,
+  "longitude": -1.530136
+ },
+ {
+  "outcode": "YO1",
+  "postcode": "YO1 9WT",
+  "town": "York",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.957408,
+  "longitude": -1.08031
+ },
+ {
+  "outcode": "YO1",
+  "postcode": "YO1 0LN",
+  "town": "York",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.960448,
+  "longitude": -1.092345
+ },
+ {
+  "outcode": "YO1",
+  "postcode": "YO1 9NQ",
+  "town": "York",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.958698,
+  "longitude": -1.083223
+ },
+ {
+  "outcode": "HG1",
+  "postcode": "HG1 3JS",
+  "town": "Harrogate",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 54.013626,
+  "longitude": -1.525469
+ },
+ {
+  "outcode": "HG1",
+  "postcode": "HG1 5SA",
+  "town": "Harrogate",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.996692,
+  "longitude": -1.539039
+ },
+ {
+  "outcode": "HG1",
+  "postcode": "HG1 3DG",
+  "town": "Harrogate",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 54.010137,
+  "longitude": -1.52969
+ },
+ {
+  "outcode": "HX1",
+  "postcode": "HX1 3BD",
+  "town": "Halifax",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.714442,
+  "longitude": -1.879584
+ },
+ {
+  "outcode": "HX1",
+  "postcode": "HX1 9SX",
+  "town": "Halifax",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.724443,
+  "longitude": -1.860733
+ },
+ {
+  "outcode": "HX1",
+  "postcode": "HX1 5LD",
+  "town": "Halifax",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.722801,
+  "longitude": -1.871741
+ },
+ {
+  "outcode": "WF1",
+  "postcode": "WF1 5SZ",
+  "town": "Wakefield",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.683996,
+  "longitude": -1.45435
+ },
+ {
+  "outcode": "WF1",
+  "postcode": "WF1 2ZE",
+  "town": "Wakefield",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.69613,
+  "longitude": -1.505915
+ },
+ {
+  "outcode": "WF1",
+  "postcode": "WF1 1YB",
+  "town": "Wakefield",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.681937,
+  "longitude": -1.497148
+ },
+ {
+  "outcode": "BD1",
+  "postcode": "BD1 4DJ",
+  "town": "Bradford",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.797889,
+  "longitude": -1.748208
+ },
+ {
+  "outcode": "BD1",
+  "postcode": "BD1 5JA",
+  "town": "Bradford",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.795698,
+  "longitude": -1.740646
+ },
+ {
+  "outcode": "BD1",
+  "postcode": "BD1 3SH",
+  "town": "Bradford",
+  "county": "West Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.796641,
+  "longitude": -1.757385
+ },
+ {
+  "outcode": "HU1",
+  "postcode": "HU1 3HG",
+  "town": "Hull",
+  "county": "East Riding of Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.74694,
+  "longitude": -0.336084
+ },
+ {
+  "outcode": "HU1",
+  "postcode": "HU1 1UJ",
+  "town": "Hull",
+  "county": "East Riding of Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.738544,
+  "longitude": -0.333474
+ },
+ {
+  "outcode": "HU1",
+  "postcode": "HU1 2ST",
+  "town": "Hull",
+  "county": "East Riding of Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.740572,
+  "longitude": -0.346207
+ },
+ {
+  "outcode": "BD23",
+  "postcode": "BD23 5AN",
+  "town": "Skipton",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 54.071595,
+  "longitude": -1.997585
+ },
+ {
+  "outcode": "BD23",
+  "postcode": "BD23 1BQ",
+  "town": "Skipton",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.965748,
+  "longitude": -2.008291
+ },
+ {
+  "outcode": "BD23",
+  "postcode": "BD23 2PY",
+  "town": "Skipton",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.953057,
+  "longitude": -2.016867
+ },
+ {
+  "outcode": "YO11",
+  "postcode": "YO11 3LP",
+  "town": "Scarborough",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 54.238549,
+  "longitude": -0.396047
+ },
+ {
+  "outcode": "YO11",
+  "postcode": "YO11 3DH",
+  "town": "Scarborough",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 54.242819,
+  "longitude": -0.412378
+ },
+ {
+  "outcode": "YO11",
+  "postcode": "YO11 2XN",
+  "town": "Scarborough",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 54.266075,
+  "longitude": -0.395639
+ },
+ {
+  "outcode": "M1",
+  "postcode": "M1 4HT",
+  "town": "Manchester",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.477977,
+  "longitude": -2.240599
+ },
+ {
+  "outcode": "M1",
+  "postcode": "M1 5ND",
+  "town": "Manchester",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.474139,
+  "longitude": -2.245158
+ },
+ {
+  "outcode": "M1",
+  "postcode": "M1 2BS",
+  "town": "Manchester",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.480767,
+  "longitude": -2.234106
+ },
+ {
+  "outcode": "M4",
+  "postcode": "M4 6BN",
+  "town": "Manchester",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.487193,
+  "longitude": -2.225325
+ },
+ {
+  "outcode": "M4",
+  "postcode": "M4 5BD",
+  "town": "Manchester",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.483539,
+  "longitude": -2.22746
+ },
+ {
+  "outcode": "M4",
+  "postcode": "M4 6DT",
+  "town": "Manchester",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.4805,
+  "longitude": -2.223406
+ },
+ {
+  "outcode": "M20",
+  "postcode": "M20 1LY",
+  "town": "Manchester",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.4287,
+  "longitude": -2.24574
+ },
+ {
+  "outcode": "M20",
+  "postcode": "M20 2XF",
+  "town": "Manchester",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.422943,
+  "longitude": -2.252268
+ },
+ {
+  "outcode": "M20",
+  "postcode": "M20 1PL",
+  "town": "Manchester",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.436961,
+  "longitude": -2.241423
+ },
+ {
+  "outcode": "L1",
+  "postcode": "L1 8LJ",
+  "town": "Liverpool",
+  "county": "Merseyside",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.401854,
+  "longitude": -2.987061
+ },
+ {
+  "outcode": "L1",
+  "postcode": "L1 6BG",
+  "town": "Liverpool",
+  "county": "Merseyside",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.40733,
+  "longitude": -2.986797
+ },
+ {
+  "outcode": "L1",
+  "postcode": "L1 4BP",
+  "town": "Liverpool",
+  "county": "Merseyside",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.403464,
+  "longitude": -2.981413
+ },
+ {
+  "outcode": "L3",
+  "postcode": "L3 5RA",
+  "town": "Liverpool",
+  "county": "Merseyside",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.405705,
+  "longitude": -2.972304
+ },
+ {
+  "outcode": "L3",
+  "postcode": "L3 8AB",
+  "town": "Liverpool",
+  "county": "Merseyside",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.411903,
+  "longitude": -2.974973
+ },
+ {
+  "outcode": "L3",
+  "postcode": "L3 4AA",
+  "town": "Liverpool",
+  "county": "Merseyside",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.400018,
+  "longitude": -2.993847
+ },
+ {
+  "outcode": "CH1",
+  "postcode": "CH1 5RW",
+  "town": "Chester",
+  "county": "Cheshire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.199161,
+  "longitude": -2.935393
+ },
+ {
+  "outcode": "CH1",
+  "postcode": "CH1 1PP",
+  "town": "Chester",
+  "county": "Cheshire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.189155,
+  "longitude": -2.89095
+ },
+ {
+  "outcode": "CH1",
+  "postcode": "CH1 9XN",
+  "town": "Chester",
+  "county": "Cheshire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.197786,
+  "longitude": -2.884632
+ },
+ {
+  "outcode": "PR1",
+  "postcode": "PR1 4DL",
+  "town": "Preston",
+  "county": "Lancashire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.757955,
+  "longitude": -2.682844
+ },
+ {
+  "outcode": "PR1",
+  "postcode": "PR1 4HS",
+  "town": "Preston",
+  "county": "Lancashire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.75741,
+  "longitude": -2.69007
+ },
+ {
+  "outcode": "PR1",
+  "postcode": "PR1 6LX",
+  "town": "Preston",
+  "county": "Lancashire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.770425,
+  "longitude": -2.693242
+ },
+ {
+  "outcode": "LA1",
+  "postcode": "LA1 4QZ",
+  "town": "Lancaster",
+  "county": "Lancashire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 54.02842,
+  "longitude": -2.788115
+ },
+ {
+  "outcode": "LA1",
+  "postcode": "LA1 4NZ",
+  "town": "Lancaster",
+  "county": "Lancashire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 54.024285,
+  "longitude": -2.793669
+ },
+ {
+  "outcode": "LA1",
+  "postcode": "LA1 9LU",
+  "town": "Lancaster",
+  "county": "Lancashire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 54.048161,
+  "longitude": -2.803823
+ },
+ {
+  "outcode": "WA1",
+  "postcode": "WA1 9GN",
+  "town": "Warrington",
+  "county": "Cheshire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.389647,
+  "longitude": -2.607241
+ },
+ {
+  "outcode": "WA1",
+  "postcode": "WA1 9TJ",
+  "town": "Warrington",
+  "county": "Cheshire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.38974,
+  "longitude": -2.599634
+ },
+ {
+  "outcode": "WA1",
+  "postcode": "WA1 2NG",
+  "town": "Warrington",
+  "county": "Cheshire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.38982,
+  "longitude": -2.592659
+ },
+ {
+  "outcode": "SK1",
+  "postcode": "SK1 3UB",
+  "town": "Stockport",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.401461,
+  "longitude": -2.158138
+ },
+ {
+  "outcode": "SK1",
+  "postcode": "SK1 3UE",
+  "town": "Stockport",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.401705,
+  "longitude": -2.157598
+ },
+ {
+  "outcode": "SK1",
+  "postcode": "SK1 4DX",
+  "town": "Stockport",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.406868,
+  "longitude": -2.147403
+ },
+ {
+  "outcode": "NE1",
+  "postcode": "NE1 1YE",
+  "town": "Newcastle upon Tyne",
+  "county": "Tyne and Wear",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.97125,
+  "longitude": -1.609877
+ },
+ {
+  "outcode": "NE1",
+  "postcode": "NE1 5JE",
+  "town": "Newcastle upon Tyne",
+  "county": "Tyne and Wear",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.970856,
+  "longitude": -1.615895
+ },
+ {
+  "outcode": "NE1",
+  "postcode": "NE1 4LG",
+  "town": "Newcastle upon Tyne",
+  "county": "Tyne and Wear",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.977133,
+  "longitude": -1.61746
+ },
+ {
+  "outcode": "DH1",
+  "postcode": "DH1 2FT",
+  "town": "Durham",
+  "county": "County Durham",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.773919,
+  "longitude": -1.544946
+ },
+ {
+  "outcode": "DH1",
+  "postcode": "DH1 2NQ",
+  "town": "Durham",
+  "county": "County Durham",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.75962,
+  "longitude": -1.551819
+ },
+ {
+  "outcode": "DH1",
+  "postcode": "DH1 5BN",
+  "town": "Durham",
+  "county": "County Durham",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.787417,
+  "longitude": -1.590497
+ },
+ {
+  "outcode": "SR1",
+  "postcode": "SR1 2LB",
+  "town": "Sunderland",
+  "county": "Tyne and Wear",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.908491,
+  "longitude": -1.371648
+ },
+ {
+  "outcode": "SR1",
+  "postcode": "SR1 2QH",
+  "town": "Sunderland",
+  "county": "Tyne and Wear",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.904678,
+  "longitude": -1.376355
+ },
+ {
+  "outcode": "SR1",
+  "postcode": "SR1 2NF",
+  "town": "Sunderland",
+  "county": "Tyne and Wear",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.904154,
+  "longitude": -1.365462
+ },
+ {
+  "outcode": "TS1",
+  "postcode": "TS1 3AN",
+  "town": "Middlesbrough",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.572327,
+  "longitude": -1.231177
+ },
+ {
+  "outcode": "TS1",
+  "postcode": "TS1 3HX",
+  "town": "Middlesbrough",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.569088,
+  "longitude": -1.230496
+ },
+ {
+  "outcode": "TS1",
+  "postcode": "TS1 3QU",
+  "town": "Middlesbrough",
+  "county": "North Yorkshire",
+  "country": "GB",
+  "region": "North East",
+  "latitude": 54.567733,
+  "longitude": -1.239399
+ },
+ {
+  "outcode": "B1",
+  "postcode": "B1 3JH",
+  "town": "Birmingham",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.483602,
+  "longitude": -1.910834
+ },
+ {
+  "outcode": "B1",
+  "postcode": "B1 3PB",
+  "town": "Birmingham",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.486147,
+  "longitude": -1.911241
+ },
+ {
+  "outcode": "B1",
+  "postcode": "B1 1FJ",
+  "town": "Birmingham",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.478141,
+  "longitude": -1.9055
+ },
+ {
+  "outcode": "B5",
+  "postcode": "B5 4TN",
+  "town": "Birmingham",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.473702,
+  "longitude": -1.897354
+ },
+ {
+  "outcode": "B5",
+  "postcode": "B5 5BL",
+  "town": "Birmingham",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.477964,
+  "longitude": -1.887641
+ },
+ {
+  "outcode": "B5",
+  "postcode": "B5 7UY",
+  "town": "Birmingham",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.461169,
+  "longitude": -1.906434
+ },
+ {
+  "outcode": "NG1",
+  "postcode": "NG1 4HJ",
+  "town": "Nottingham",
+  "county": "Nottinghamshire",
+  "country": "GB",
+  "region": "East Midlands",
+  "latitude": 52.964439,
+  "longitude": -1.153408
+ },
+ {
+  "outcode": "NG1",
+  "postcode": "NG1 3GL",
+  "town": "Nottingham",
+  "county": "Nottinghamshire",
+  "country": "GB",
+  "region": "East Midlands",
+  "latitude": 52.956293,
+  "longitude": -1.148163
+ },
+ {
+  "outcode": "NG1",
+  "postcode": "NG1 1BF",
+  "town": "Nottingham",
+  "county": "Nottinghamshire",
+  "country": "GB",
+  "region": "East Midlands",
+  "latitude": 52.956166,
+  "longitude": -1.14306
+ },
+ {
+  "outcode": "LE1",
+  "postcode": "LE1 3AQ",
+  "town": "Leicester",
+  "county": "Leicestershire",
+  "country": "GB",
+  "region": "East Midlands",
+  "latitude": 52.639693,
+  "longitude": -1.133557
+ },
+ {
+  "outcode": "LE1",
+  "postcode": "LE1 1LE",
+  "town": "Leicester",
+  "county": "Leicestershire",
+  "country": "GB",
+  "region": "East Midlands",
+  "latitude": 52.633781,
+  "longitude": -1.127955
+ },
+ {
+  "outcode": "LE1",
+  "postcode": "LE1 6BU",
+  "town": "Leicester",
+  "county": "Leicestershire",
+  "country": "GB",
+  "region": "East Midlands",
+  "latitude": 52.632476,
+  "longitude": -1.133935
+ },
+ {
+  "outcode": "DE1",
+  "postcode": "DE1 3PH",
+  "town": "Derby",
+  "county": "Derbyshire",
+  "country": "GB",
+  "region": "East Midlands",
+  "latitude": 52.926887,
+  "longitude": -1.486444
+ },
+ {
+  "outcode": "DE1",
+  "postcode": "DE1 1EH",
+  "town": "Derby",
+  "county": "Derbyshire",
+  "country": "GB",
+  "region": "East Midlands",
+  "latitude": 52.923772,
+  "longitude": -1.483223
+ },
+ {
+  "outcode": "DE1",
+  "postcode": "DE1 1JF",
+  "town": "Derby",
+  "county": "Derbyshire",
+  "country": "GB",
+  "region": "East Midlands",
+  "latitude": 52.922148,
+  "longitude": -1.483867
+ },
+ {
+  "outcode": "DE14",
+  "postcode": "DE14 3QA",
+  "town": "Burton upon Trent",
+  "county": "Staffordshire",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.797333,
+  "longitude": -1.647389
+ },
+ {
+  "outcode": "DE14",
+  "postcode": "DE14 9QW",
+  "town": "Burton upon Trent",
+  "county": "Staffordshire",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.815751,
+  "longitude": -1.629184
+ },
+ {
+  "outcode": "DE14",
+  "postcode": "DE14 3PY",
+  "town": "Burton upon Trent",
+  "county": "Staffordshire",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.79733,
+  "longitude": -1.646395
+ },
+ {
+  "outcode": "CV1",
+  "postcode": "CV1 5SZ",
+  "town": "Coventry",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.409898,
+  "longitude": -1.504398
+ },
+ {
+  "outcode": "CV1",
+  "postcode": "CV1 5DX",
+  "town": "Coventry",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.408455,
+  "longitude": -1.499078
+ },
+ {
+  "outcode": "CV1",
+  "postcode": "CV1 2DP",
+  "town": "Coventry",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.405116,
+  "longitude": -1.511037
+ },
+ {
+  "outcode": "EC1V",
+  "postcode": "EC1V 4JB",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.522817,
+  "longitude": -0.102748
+ },
+ {
+  "outcode": "EC1V",
+  "postcode": "EC1V 3RQ",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.527059,
+  "longitude": -0.095969
+ },
+ {
+  "outcode": "EC1V",
+  "postcode": "EC1V 4UD",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.523729,
+  "longitude": -0.102422
+ },
+ {
+  "outcode": "SE1",
+  "postcode": "SE1 4XU",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.499469,
+  "longitude": -0.091486
+ },
+ {
+  "outcode": "SE1",
+  "postcode": "SE1 1HA",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.502377,
+  "longitude": -0.09501
+ },
+ {
+  "outcode": "SE1",
+  "postcode": "SE1 0TP",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.50548,
+  "longitude": -0.096754
+ },
+ {
+  "outcode": "N1",
+  "postcode": "N1 6JE",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.530921,
+  "longitude": -0.085138
+ },
+ {
+  "outcode": "N1",
+  "postcode": "N1 7BP",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.529474,
+  "longitude": -0.092364
+ },
+ {
+  "outcode": "N1",
+  "postcode": "N1 1PF",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.543335,
+  "longitude": -0.112033
+ },
+ {
+  "outcode": "E1",
+  "postcode": "E1 4HL",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.523278,
+  "longitude": -0.053543
+ },
+ {
+  "outcode": "E1",
+  "postcode": "E1 3EN",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.515171,
+  "longitude": -0.054379
+ },
+ {
+  "outcode": "E1",
+  "postcode": "E1 2PQ",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.514485,
+  "longitude": -0.054754
+ },
+ {
+  "outcode": "W1F",
+  "postcode": "W1F 9LB",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.512085,
+  "longitude": -0.13735
+ },
+ {
+  "outcode": "W1F",
+  "postcode": "W1F 8GR",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.514964,
+  "longitude": -0.136267
+ },
+ {
+  "outcode": "W1F",
+  "postcode": "W1F 7RX",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.51352,
+  "longitude": -0.138776
+ },
+ {
+  "outcode": "SW4",
+  "postcode": "SW4 9RA",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.457433,
+  "longitude": -0.1371
+ },
+ {
+  "outcode": "SW4",
+  "postcode": "SW4 6AD",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.469061,
+  "longitude": -0.138829
+ },
+ {
+  "outcode": "SW4",
+  "postcode": "SW4 7RJ",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.46291,
+  "longitude": -0.127548
+ },
+ {
+  "outcode": "E8",
+  "postcode": "E8 2LN",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.550524,
+  "longitude": -0.069213
+ },
+ {
+  "outcode": "E8",
+  "postcode": "E8 2PH",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.548594,
+  "longitude": -0.069439
+ },
+ {
+  "outcode": "E8",
+  "postcode": "E8 3RE",
+  "town": "London",
+  "county": "Greater London",
+  "country": "GB",
+  "region": "London",
+  "latitude": 51.541123,
+  "longitude": -0.054872
+ },
+ {
+  "outcode": "EH1",
+  "postcode": "EH1 2PH",
+  "town": "Edinburgh",
+  "county": "City of Edinburgh",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.949107,
+  "longitude": -3.193781
+ },
+ {
+  "outcode": "EH1",
+  "postcode": "EH1 1SY",
+  "town": "Edinburgh",
+  "county": "City of Edinburgh",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.949954,
+  "longitude": -3.183334
+ },
+ {
+  "outcode": "EH1",
+  "postcode": "EH1 1JZ",
+  "town": "Edinburgh",
+  "county": "City of Edinburgh",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.947905,
+  "longitude": -3.188973
+ },
+ {
+  "outcode": "EH6",
+  "postcode": "EH6 4RZ",
+  "town": "Edinburgh",
+  "county": "City of Edinburgh",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.976731,
+  "longitude": -3.199023
+ },
+ {
+  "outcode": "EH6",
+  "postcode": "EH6 4PZ",
+  "town": "Edinburgh",
+  "county": "City of Edinburgh",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.975775,
+  "longitude": -3.190981
+ },
+ {
+  "outcode": "EH6",
+  "postcode": "EH6 5EZ",
+  "town": "Edinburgh",
+  "county": "City of Edinburgh",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.970654,
+  "longitude": -3.174129
+ },
+ {
+  "outcode": "G1",
+  "postcode": "G1 1GA",
+  "town": "Glasgow",
+  "county": "Glasgow City",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.860415,
+  "longitude": -4.250253
+ },
+ {
+  "outcode": "G1",
+  "postcode": "G1 1YU",
+  "town": "Glasgow",
+  "county": "Glasgow City",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.860776,
+  "longitude": -4.24524
+ },
+ {
+  "outcode": "G1",
+  "postcode": "G1 1PZ",
+  "town": "Glasgow",
+  "county": "Glasgow City",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.859085,
+  "longitude": -4.240924
+ },
+ {
+  "outcode": "G12",
+  "postcode": "G12 9HT",
+  "town": "Glasgow",
+  "county": "Glasgow City",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.875982,
+  "longitude": -4.305541
+ },
+ {
+  "outcode": "G12",
+  "postcode": "G12 0XS",
+  "town": "Glasgow",
+  "county": "Glasgow City",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.884816,
+  "longitude": -4.315115
+ },
+ {
+  "outcode": "G12",
+  "postcode": "G12 8EL",
+  "town": "Glasgow",
+  "county": "Glasgow City",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 55.875903,
+  "longitude": -4.282771
+ },
+ {
+  "outcode": "AB10",
+  "postcode": "AB10 6RS",
+  "town": "Aberdeen",
+  "county": "Aberdeen City",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 57.136702,
+  "longitude": -2.125472
+ },
+ {
+  "outcode": "AB10",
+  "postcode": "AB10 7HH",
+  "town": "Aberdeen",
+  "county": "Aberdeen City",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 57.121819,
+  "longitude": -2.148179
+ },
+ {
+  "outcode": "AB10",
+  "postcode": "AB10 1RE",
+  "town": "Aberdeen",
+  "county": "Aberdeen City",
+  "country": "GB",
+  "region": "Scotland",
+  "latitude": 57.145586,
+  "longitude": -2.105523
+ },
+ {
+  "outcode": "BB1",
+  "postcode": "BB1 9NR",
+  "town": "Blackburn",
+  "county": "Lancashire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.779533,
+  "longitude": -2.467675
+ },
+ {
+  "outcode": "BB1",
+  "postcode": "BB1 7BQ",
+  "town": "Blackburn",
+  "county": "Lancashire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.750758,
+  "longitude": -2.484825
+ },
+ {
+  "outcode": "BB1",
+  "postcode": "BB1 4EJ",
+  "town": "Blackburn",
+  "county": "Lancashire",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.766987,
+  "longitude": -2.426545
+ },
+ {
+  "outcode": "OL1",
+  "postcode": "OL1 2DD",
+  "town": "Oldham",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.549018,
+  "longitude": -2.116187
+ },
+ {
+  "outcode": "OL1",
+  "postcode": "OL1 4PN",
+  "town": "Oldham",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.562631,
+  "longitude": -2.079145
+ },
+ {
+  "outcode": "OL1",
+  "postcode": "OL1 4PX",
+  "town": "Oldham",
+  "county": "Greater Manchester",
+  "country": "GB",
+  "region": "North West",
+  "latitude": 53.564335,
+  "longitude": -2.084372
+ },
+ {
+  "outcode": "DN1",
+  "postcode": "DN1 3DH",
+  "town": "Doncaster",
+  "county": "South Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.521533,
+  "longitude": -1.136542
+ },
+ {
+  "outcode": "DN1",
+  "postcode": "DN1 2BB",
+  "town": "Doncaster",
+  "county": "South Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.516647,
+  "longitude": -1.125919
+ },
+ {
+  "outcode": "DN1",
+  "postcode": "DN1 1SR",
+  "town": "Doncaster",
+  "county": "South Yorkshire",
+  "country": "GB",
+  "region": "Yorkshire and The Humber",
+  "latitude": 53.523622,
+  "longitude": -1.137073
+ },
+ {
+  "outcode": "TF1",
+  "postcode": "TF1 1LX",
+  "town": "Telford",
+  "county": "Shropshire",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.699783,
+  "longitude": -2.518832
+ },
+ {
+  "outcode": "TF1",
+  "postcode": "TF1 5NR",
+  "town": "Telford",
+  "county": "Shropshire",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.702693,
+  "longitude": -2.481247
+ },
+ {
+  "outcode": "TF1",
+  "postcode": "TF1 1SR",
+  "town": "Telford",
+  "county": "Shropshire",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.69886,
+  "longitude": -2.522239
+ },
+ {
+  "outcode": "WV1",
+  "postcode": "WV1 3BF",
+  "town": "Wolverhampton",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.583352,
+  "longitude": -2.130107
+ },
+ {
+  "outcode": "WV1",
+  "postcode": "WV1 1LE",
+  "town": "Wolverhampton",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.587696,
+  "longitude": -2.120157
+ },
+ {
+  "outcode": "WV1",
+  "postcode": "WV1 9SN",
+  "town": "Wolverhampton",
+  "county": "West Midlands",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 52.587156,
+  "longitude": -2.129632
+ },
+ {
+  "outcode": "ST1",
+  "postcode": "ST1 6LD",
+  "town": "Stoke-on-Trent",
+  "county": "Staffordshire",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 53.045579,
+  "longitude": -2.156011
+ },
+ {
+  "outcode": "ST1",
+  "postcode": "ST1 5HF",
+  "town": "Stoke-on-Trent",
+  "county": "Staffordshire",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 53.026571,
+  "longitude": -2.178366
+ },
+ {
+  "outcode": "ST1",
+  "postcode": "ST1 6DL",
+  "town": "Stoke-on-Trent",
+  "county": "Staffordshire",
+  "country": "GB",
+  "region": "West Midlands",
+  "latitude": 53.041704,
+  "longitude": -2.16951
+ }
+]

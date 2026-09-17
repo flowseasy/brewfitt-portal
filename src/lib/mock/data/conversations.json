@@ -1,0 +1,1734 @@
+{
+  "scripts": [
+    {
+      "key": "quote-font-lead-time",
+      "relatedType": "quote",
+      "audience": "customer",
+      "subject": "Lead time on {{productName}} for {{quoteNumber}}",
+      "brewfittRole": "account-manager",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 10,
+          "body": "Hi {{brewfittFirstName}}, thanks for {{quoteNumber}}. Before we sign it off, what sort of lead time are we looking at on the {{productName}}? We're hoping to have it in before the bar refit at {{siteName}}."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "Hi {{accountFirstName}}, good question. The {{productName}} is made to order, so it depends on the finish and how busy the workshop is when the order lands. I'll check with the team this afternoon and come back to you with a proper date rather than a guess."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Morning {{accountFirstName}}, I've spoken to production. If the quote is accepted this week we're looking at around three weeks until it's ready to dispatch. If your refit date moves earlier, let me know and I'll see what we can do.\n\nThanks, {{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 11,
+          "body": "Three weeks works. The refit starts the week after that, so it's tight but fine. Can the font be delivered straight to {{siteName}} rather than our head office?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 12,
+          "body": "Yes, no problem. When you accept the quote just select {{siteName}} as the delivery address and add any access notes. Is there a goods-in door or is it through the front?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 9,
+          "body": "Side door off the car park. Deliveries before 11 please, the kitchen team take over that entrance after that."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 10,
+          "body": "Noted. I'll add a before-11 note to the order once it's in. Thanks {{accountFirstName}}."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 15,
+          "body": "Quote accepted on the portal just now. Cheers for sorting it."
+        }
+      ]
+    },
+    {
+      "key": "quote-tap-finish-swap",
+      "relatedType": "quote",
+      "audience": "customer",
+      "subject": "Change of tap finish on {{quoteNumber}}",
+      "brewfittRole": "account-manager",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 9,
+          "body": "Hi, quick one on {{quoteNumber}}. Could we swap the tap finish on the {{productName}}? Chrome won't really go with the new bar top. Brushed brass or black would suit better."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 11,
+          "body": "Hi {{accountFirstName}}, we can look at that. Alternative finishes are offered on some lines but not all, so let me check what's available for the {{productName}} specifically. Any preference between the two?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 13,
+          "body": "Brass if we can. Black as a fallback."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "Brass is available on this one. It does cost a little more than chrome, so I'll reissue the quote with the change rather than just editing the line. Should be with you tomorrow."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 14,
+          "body": "Great. Does the brass push the lead time out at all?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 16,
+          "body": "Slightly, as we don't hold as much stock in that finish. I'll put the expected lead time on the revised quote so it's all in one place."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 2,
+          "hour": 10,
+          "body": "Hi {{accountFirstName}}, the revised quote is now on your account with the brushed brass finish and updated lead time. Have a look when you get a moment and shout if anything doesn't look right.\n\nThanks, {{brewfittFirstName}}"
+        }
+      ]
+    },
+    {
+      "key": "quote-add-drip-trays",
+      "relatedType": "quote",
+      "audience": "customer",
+      "subject": "Adding drip trays to {{quoteNumber}}",
+      "brewfittRole": "sales-office",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "whatsapp",
+          "dayOffset": 0,
+          "hour": 17,
+          "body": "Hi {{brewfittFirstName}}, just been through the quote. Forgot to ask for drip trays for both bars at {{siteName}}. Can you add them on?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Morning {{accountFirstName}}, saw your WhatsApp. Happy to add them. Are both bars set up the same, or do you need different sizes? If you can let me know the tap layout on each I'll match the {{secondProductName}} to suit."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 12,
+          "body": "Main bar has the long run of taps, back bar is just a two-tap setup. I'll get the manager to measure up tonight to be sure."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 10,
+          "body": "Measurements added as a note on the quote."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 14,
+          "body": "Thanks, that's helpful. I've added two {{secondProductName}} lines to {{quoteNumber}}, one sized for each bar. The total now comes to {{amount}}."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 15,
+          "body": "Do the trays come with fixings or is that separate?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 9,
+          "body": "I'll confirm with our technical team exactly what's in the box so there are no surprises on install day. Give me until lunchtime."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 12,
+          "body": "All confirmed, and I've added a note to the quote listing what's supplied with each tray. Anything else before you sign it off?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 10,
+          "body": "No, that's everything. Will accept it today."
+        }
+      ]
+    },
+    {
+      "key": "quote-revised-price",
+      "relatedType": "quote",
+      "audience": "customer",
+      "subject": "Revised pricing on {{quoteNumber}}",
+      "brewfittRole": "account-manager",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 11,
+          "body": "Hi {{brewfittFirstName}}, we've had {{quoteNumber}} through at {{amount}}. It's a bit over what we'd budgeted for this quarter. Is there any room on the price, or ways to bring it down?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 15,
+          "body": "Hi {{accountFirstName}}, thanks for being upfront. A couple of options: we could phase the {{secondProductName}} into a later order, or look at an alternative to the {{productName}} that does the same job. Let me put something together."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Phasing would work for us. The {{productName}} is the priority."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 10,
+          "body": "Understood. I've had a word with the sales office as well. I'll send a revised quote with the {{secondProductName}} taken out and the best price we can do on what's left."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 11,
+          "body": "Appreciated. Our finance meeting is Thursday, so if it's with me before then that would be ideal."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 3,
+          "hour": 14,
+          "body": "Hi {{accountFirstName}}, the revised quote is on the portal ahead of Thursday. I've kept the {{secondProductName}} as a separate optional line so you can see the cost if you decide to add it back in later.\n\nKind regards,\n{{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 16,
+          "body": "Got it, thank you. I'll take it into the meeting."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 7,
+          "hour": 10,
+          "body": "Hi {{accountFirstName}}, just checking in on how Thursday went. Happy to have a quick call if finance had any questions."
+        }
+      ]
+    },
+    {
+      "key": "quote-font-branding-artwork",
+      "relatedType": "quote",
+      "audience": "customer",
+      "subject": "Branding artwork for {{productName}}",
+      "brewfittRole": "account-manager",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 10,
+          "body": "Hi {{accountFirstName}}, before we can release the {{productName}} on {{quoteNumber}} to production we'll need your final branding artwork. Vector files work best. Could you upload them to the quote when they're ready?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 13,
+          "body": "Hi {{brewfittFirstName}}, I'll chase our design agency. Is a PDF okay or does it need to be a particular format?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "A vector PDF is usually fine as long as the text is outlined. If they have the original AI or EPS files, even better."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 11,
+          "body": "Artwork uploaded. Two files, one for the badge and one for the lens. Colours should match the brand guidelines."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 9,
+          "body": "Thanks. Our studio has had a look and the badge file is spot on. The lens version has a very thin outline that may not reproduce cleanly at that size. Could the agency thicken it slightly or drop it?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 15,
+          "body": "Makes sense. They'll send an updated one tomorrow."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 12,
+          "body": "New lens artwork is on the quote now."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 16,
+          "body": "That's much better. I'll get a proof drawn up for you to sign off before anything is made."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 6,
+          "hour": 10,
+          "body": "Hi {{accountFirstName}}, the artwork proof for the {{productName}} is now attached to {{quoteNumber}}. Please check colours, spelling and positioning, then approve it on the portal.\n\nThanks, {{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 6,
+          "hour": 14,
+          "body": "All looks good. Approved."
+        }
+      ]
+    },
+    {
+      "key": "order-delivery-slot-cellar-access",
+      "relatedType": "sales-order",
+      "audience": "customer",
+      "subject": "Delivery and cellar access for {{orderNumber}}",
+      "brewfittRole": "sales-office",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 0,
+          "hour": 9,
+          "body": "Hi {{accountFirstName}}, thanks for order {{orderNumber}}. It's booked for delivery on {{deliveryDate}} with {{carrier}}. Could you let us know about access at {{siteName}}, particularly if anything needs to go down to the cellar?\n\nMany thanks,\n{{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 12,
+          "body": "Hi, thanks. Cellar is via the drop hatch at the back, but one of our team will need to open it. We don't open until 12, so before that the driver will need to use the bell at the side door."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "Perfect. I'll add a note for the driver to use the side door bell and that the cellar hatch needs opening by staff. Is there a time window that suits best?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "Between 9 and 11 would be ideal. After that we're setting up for lunch."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 11,
+          "body": "I've asked {{carrier}} for a morning slot. They can't always hit an exact window, but the request and access notes are on the booking."
+        },
+        {
+          "side": "account",
+          "channel": "whatsapp",
+          "dayOffset": 2,
+          "hour": 8,
+          "body": "Morning. Our cellar man is off on {{deliveryDate}}. Can the driver leave everything at the top of the hatch and we'll take it down?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 9,
+          "body": "Morning {{accountFirstName}}, yes that's fine. I've updated the notes to leave it at the top of the cellar hatch and get a signature from whoever is on shift."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 10,
+          "body": "Brilliant, thanks."
+        }
+      ]
+    },
+    {
+      "key": "order-delivery-date-change",
+      "relatedType": "sales-order",
+      "audience": "customer",
+      "subject": "Moving delivery date for {{orderNumber}}",
+      "brewfittRole": "sales-office",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 15,
+          "body": "Hi {{brewfittFirstName}}, is it possible to push {{orderNumber}} back a week? The builders at {{siteName}} are running behind and we've nowhere to store the kit."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Hi {{accountFirstName}}, sorry to hear about the delay. It hasn't left the warehouse yet so we should be able to move it. What date would suit?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "Any day the following week apart from Monday."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 13,
+          "body": "I've asked {{carrier}} for the Wednesday. I'll confirm once they've accepted the rebooking."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 2,
+          "hour": 11,
+          "body": "Hi {{accountFirstName}}, just to confirm {{orderNumber}} is now due on {{deliveryDate}}. The delivery notes from the original booking have been carried over.\n\nRegards,\n{{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 12,
+          "body": "Thanks. If the builders slip again I'll let you know as early as I can."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 6,
+          "hour": 16,
+          "body": "Quick update: builders are back on track, so {{deliveryDate}} is still good."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 7,
+          "hour": 9,
+          "body": "Good news, thanks for letting us know. We're all set for {{deliveryDate}}."
+        }
+      ]
+    },
+    {
+      "key": "premium-lager-font-rollout",
+      "relatedType": "sales-order",
+      "audience": "customer",
+      "subject": "Premium Lager font rollout - {{orderNumber}}",
+      "brewfittRole": "account-manager",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 9,
+          "body": "Hi {{brewfittFirstName}}, font order {{orderNumber}} is now approved on our side. As discussed, this covers the first wave of the Premium Lager rollout across our partner venues. We'd like installs done before the autumn trade push if at all possible."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 11,
+          "body": "Hi {{accountFirstName}}, thanks for confirming. I've got the venue list from the order. To plan engineers properly, could you flag any venues with restricted installation windows? Most pubs prefer mornings before opening."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "Mornings before opening for all of them. {{siteName}} is the exception, they can only do a Monday or Tuesday because of their events calendar."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 14,
+          "body": "Noted. I'll build the engineer schedule around that and share a draft plan venue by venue."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 4,
+          "hour": 10,
+          "body": "Hi {{accountFirstName}}, an update on the Premium Lager font order. Part of the {{productName}} quantity is in stock and ready to go out on {{deliveryDate}} with {{carrier}}. The remainder is on back order with the manufacturer. My suggestion is that we install at the venues we can supply now and pick up the rest as a second wave.\n\nKind regards,\n{{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 13,
+          "body": "A bit disappointing but understandable. Do you have a date for the back-ordered fonts? Our sales team have told venues the new Premium Lager font is coming this month."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 15,
+          "body": "I've asked the manufacturer for a confirmed date and will update you as soon as I have it rather than guess. In the meantime, if you let me know which venues matter most to your sales team, we'll make sure they're in the first delivery."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 5,
+          "hour": 9,
+          "body": "Priority list added as a note on the order. {{siteName}} should be top as it's the flagship."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 5,
+          "hour": 12,
+          "body": "Got it, {{siteName}} is in the first wave. Engineers are pencilled in for the Monday after delivery, with the other first-wave venues following that week. The {{secondProductName}} for each venue ships with the fonts so the engineers have everything with them. Tracking for the first delivery is {{trackingRef}}."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 12,
+          "hour": 10,
+          "body": "Hi {{accountFirstName}}, the manufacturer has now given us a date for the back-ordered fonts. I'll book the second wave of installs once the stock lands and send the updated engineer schedule over for your sign-off."
+        }
+      ]
+    },
+    {
+      "key": "order-part-delivery-back-order",
+      "relatedType": "sales-order",
+      "audience": "customer",
+      "subject": "Part delivery on {{orderNumber}}",
+      "brewfittRole": "sales-office",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 0,
+          "hour": 10,
+          "body": "Hi {{accountFirstName}}, a heads up on {{orderNumber}}. The {{productName}} is in stock and will go out for {{deliveryDate}}, but the {{secondProductName}} is currently on back order. We'll send it on separately as soon as it arrives.\n\nThanks,\n{{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 13,
+          "body": "Hi {{brewfittFirstName}}, thanks for the warning. Any idea roughly when the {{secondProductName}} will be back in?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 15,
+          "body": "Our buyer is expecting stock in the next couple of weeks, but I'm waiting on the supplier to confirm. I'll update the order as soon as I hear."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Okay. Is there anything similar you've got in stock now? We could take that instead if it's close."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 11,
+          "body": "There is an alternative, but it wouldn't match what you've already got at {{siteName}}, so I wouldn't recommend it. Better to wait a little and have everything consistent."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 12,
+          "body": "Fair enough, we'll wait."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 9,
+          "hour": 10,
+          "body": "Good news, the {{secondProductName}} arrived in today. It'll go out with {{carrier}} tomorrow and the tracking reference is {{trackingRef}}."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 10,
+          "hour": 16,
+          "body": "Arrived this afternoon, all present. Thanks for keeping us posted."
+        }
+      ]
+    },
+    {
+      "key": "order-carrier-tracking-query",
+      "relatedType": "sales-order",
+      "audience": "customer",
+      "subject": "Where is {{orderNumber}}?",
+      "brewfittRole": "sales-office",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "whatsapp",
+          "dayOffset": 3,
+          "hour": 13,
+          "body": "Hi, delivery for {{orderNumber}} was meant to be today and nothing's turned up. Can you check?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 14,
+          "body": "Hi {{accountFirstName}}, sorry about that. I'm checking with {{carrier}} now. The tracking reference is {{trackingRef}} if you want to keep an eye on it too."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 15,
+          "body": "{{carrier}} have come back to say the vehicle broke down on route. Your parcels have been moved to another van and should be with you tomorrow."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 15,
+          "body": "Tomorrow's okay but we close at 3 on a Friday. Can they get there before then?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 16,
+          "body": "I've asked for it to be prioritised and flagged the closing time on the booking. I'll chase first thing if it isn't showing as out for delivery."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 8,
+          "body": "Morning {{accountFirstName}}, tracking shows it's out for delivery on an early route, so you should be well ahead of 3."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 11,
+          "body": "It's here. Thanks {{brewfittFirstName}}."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 11,
+          "body": "Glad it's arrived. Apologies again for the hold-up yesterday."
+        }
+      ]
+    },
+    {
+      "key": "order-proof-of-delivery",
+      "relatedType": "sales-order",
+      "audience": "customer",
+      "subject": "Proof of delivery for {{orderNumber}}",
+      "brewfittRole": "sales-office",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 5,
+          "hour": 10,
+          "body": "Hi, our accounts team can't match {{orderNumber}} to a signed delivery note. Could you send over proof of delivery for {{siteName}}?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 5,
+          "hour": 12,
+          "body": "Hi {{accountFirstName}}, I'll request the POD from {{carrier}}. It normally takes them a day or two to release the signed copy."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 5,
+          "hour": 13,
+          "body": "Thanks. Accounts want it before they approve the invoice."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 6,
+          "hour": 15,
+          "body": "Hi {{accountFirstName}}, the proof of delivery for {{orderNumber}} is now attached to the order. It was signed for at {{siteName}} on {{deliveryDate}}, tracking reference {{trackingRef}} for your records.\n\nBest regards,\n{{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 7,
+          "hour": 9,
+          "body": "Got it. The signature is one of our weekend staff, which explains why nobody could find the paperwork."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 7,
+          "hour": 10,
+          "body": "That'll be it. If it helps, I can add a note to future orders asking drivers to take a printed name as well as a signature."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 7,
+          "hour": 11,
+          "body": "Yes please, that would save a lot of back and forth."
+        }
+      ]
+    },
+    {
+      "key": "case-fobbing-after-install",
+      "relatedType": "case",
+      "audience": "customer",
+      "subject": "Fobbing on new {{productName}}",
+      "brewfittRole": "technical-manager",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "whatsapp",
+          "dayOffset": 0,
+          "hour": 17,
+          "body": "Hi, the new {{productName}} at {{siteName}} has been fobbing badly since it went in yesterday. Getting mostly foam on every pour."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 18,
+          "body": "Hi {{accountFirstName}}, I've logged this as {{caseNumber}}. A couple of quick checks while we arrange someone: has the keg been changed since the install, and is the cellar temperature where it normally sits?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Keg was changed this morning, same problem. Cellar feels normal. Nothing else has changed apart from the new font."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "Thanks. After a new install the usual suspects are gas pressure needing adjusting for the line, or the python not being fully down to temperature. I'd rather an engineer checks it than have you adjusting anything yourselves."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 14,
+          "body": "Our service engineer can be with you tomorrow morning before opening. Will someone be on site from 9?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 15,
+          "body": "Yes, I'll be in from half 8."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 13,
+          "body": "The engineer's report is on {{caseNumber}}. Gas pressure has been adjusted to suit the line and it's pouring properly now. Could you keep an eye on it over the weekend and let us know if it comes back?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 11,
+          "body": "Poured perfectly all weekend. Thanks for the quick turnaround."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 12,
+          "body": "Great to hear. I'll close {{caseNumber}} for now. If it starts again, just reply here and we'll pick it straight back up."
+        }
+      ]
+    },
+    {
+      "key": "case-warm-beer-remote-cooler",
+      "relatedType": "case",
+      "audience": "customer",
+      "subject": "Warm beer on back bar",
+      "brewfittRole": "service-engineer",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 12,
+          "body": "Hi, lager is coming through warm on the back bar at {{siteName}}. The {{productName}} is running but the lines don't feel cold. Raised as {{caseNumber}}."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 13,
+          "body": "Hi {{accountFirstName}}, thanks for raising it. Can you check the fan on the cooler is running and that the vents are clear? Remote coolers struggle if boxes get stacked around them."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "Fan is running. There were a few empty cases against the side so we've moved those."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 15,
+          "body": "Good. Give it a couple of hours to recover and try a pour. If it's still warm I'll book a visit."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 18,
+          "body": "Better, but still not as cold as the front bar."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Understood. I've booked an engineer for tomorrow afternoon to check the water bath and the circulation out to the back bar."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 17,
+          "body": "Visit done. The water bath level was low and the circulation pump was partly blocked. Both sorted, and the back bar is now pouring at the same temperature as the front. Full details are on {{caseNumber}}."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 10,
+          "body": "Checked this morning and it's pouring cold. Thanks {{brewfittFirstName}}."
+        }
+      ]
+    },
+    {
+      "key": "case-leaking-tap",
+      "relatedType": "case",
+      "audience": "customer",
+      "subject": "Dripping tap on {{productName}}",
+      "brewfittRole": "technical-manager",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "whatsapp",
+          "dayOffset": 0,
+          "hour": 11,
+          "body": "{{brewfittFirstName}}, one of the taps on the {{productName}} is dripping constantly even when it's closed. Got a glass under it for now."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 12,
+          "body": "Thanks {{accountFirstName}}, I've opened {{caseNumber}} for this. Is it dripping from the spout, or from around the body where it meets the font?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 13,
+          "body": "From the spout."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "That usually points to a worn seal inside the tap, which is a quick job. We can send a service kit for your cellar team to fit, or book an engineer if you'd rather not do it yourselves."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 15,
+          "body": "Engineer please. Nobody here has done one before."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "No problem. Engineer booked for {{siteName}} on Thursday morning and they'll bring the parts with them."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 15,
+          "body": "Seal replaced and the tap tested, no more drips. Let us know if you notice anything else."
+        }
+      ]
+    },
+    {
+      "key": "case-damaged-drip-tray-delivery",
+      "relatedType": "case",
+      "audience": "customer",
+      "subject": "{{productName}} damaged on delivery",
+      "brewfittRole": "sales-office",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 10,
+          "body": "Hi, the {{productName}} arrived at {{siteName}} this morning with a big dent in one corner. The box was damaged as well. Photos attached to {{caseNumber}}."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 11,
+          "body": "Hi {{accountFirstName}}, sorry about that, and thanks for the photos. Did you or the driver note the damage on the delivery paperwork?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 12,
+          "body": "I signed for it as damaged, yes."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "That makes the carrier claim much simpler. I'm sending a replacement out today so you're not waiting on the claim. Please hang on to the damaged tray and packaging for now in case the carrier wants to inspect it."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Will do. Should the replacement be here today?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "It went out last night, so it should be with you today. I'll arrange collection of the damaged one once the carrier confirms they don't need to see it."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 15,
+          "body": "Replacement arrived in one piece. Thanks for sorting it so quickly."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 8,
+          "hour": 11,
+          "body": "Hi {{accountFirstName}}, the carrier has confirmed they don't need to inspect the damaged tray. We'll book a collection and let you know the day."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 8,
+          "hour": 13,
+          "body": "Great, it's in the cellar ready to go."
+        }
+      ]
+    },
+    {
+      "key": "invoice-credit-note-return",
+      "relatedType": "invoice",
+      "audience": "customer",
+      "subject": "Credit for returned item on {{invoiceNumber}}",
+      "brewfittRole": "credit-control",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 10,
+          "body": "Hi, we've had invoice {{invoiceNumber}} through but it still includes the {{productName}} we sent back. Can we have a credit note for that line?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "Hi {{accountFirstName}}, thanks for flagging it. I can see the return was booked in by our warehouse last week. I just need the sales office to confirm it came back in good condition, then I'll raise the credit."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Okay. Can the invoice be put on hold until then so it doesn't show as overdue?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "Yes, I've added a note to {{invoiceNumber}} so it won't be chased while the credit is being processed."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 3,
+          "hour": 11,
+          "body": "Hi {{accountFirstName}}, a credit note for {{amount}} has been raised against {{invoiceNumber}} for the returned {{productName}}. It should show on your account shortly.\n\nKind regards,\n{{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 15,
+          "body": "Thanks. Is it okay to pay the balance less the credit, or would you rather we paid in full and used the credit next time?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 9,
+          "body": "Paying the balance less the credit is fine. If you use the invoice number as the payment reference we'll match it straight away."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 10,
+          "body": "Perfect, will get that paid this week."
+        }
+      ]
+    },
+    {
+      "key": "general-new-site-opening",
+      "relatedType": null,
+      "audience": "customer",
+      "subject": "New venue opening: {{siteName}}",
+      "brewfittRole": "account-manager",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 11,
+          "body": "Hi {{brewfittFirstName}}, we're opening a new venue next month, {{siteName}}. Can we get it set up as a delivery address on the account before we start ordering?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 13,
+          "body": "Congratulations {{accountFirstName}}, that's great news. If you add the full address and any delivery restrictions on the Sites page, I'll approve it on our side."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "Added. There's a height restriction on the service yard so larger vehicles can't get in."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 12,
+          "body": "Thanks, that's useful to know. I've approved the site and added a note so the sales office book a smaller vehicle for anything going there."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 14,
+          "body": "Great. We'll need a full dispense setup there too. Would it help if you came to see the bar before we order anything?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 9,
+          "body": "Definitely. A site survey before the fit-out is finished saves a lot of headaches later. I could come over next week. Which days suit?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 11,
+          "body": "Tuesday or Wednesday afternoon."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 14,
+          "body": "Wednesday afternoon it is. I'll bring our technical manager along so we can look at cellar routing at the same time."
+        }
+      ]
+    },
+    {
+      "key": "general-add-new-contact",
+      "relatedType": null,
+      "audience": "customer",
+      "subject": "Portal access for a new team member",
+      "brewfittRole": "account-manager",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 9,
+          "body": "Morning. We've got a new operations manager starting at {{accountName}} next week. Can she have portal access to place orders and raise cases?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 10,
+          "body": "Morning {{accountFirstName}}, of course. As an account admin you can invite her yourself from the Team page and choose which permissions she needs."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 11,
+          "body": "Found it. Should she see invoices too, or is that usually just for accounts?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 12,
+          "body": "Entirely up to you. Most customers keep invoices to their finance team and give operations orders, quotes and cases. You can change it later if needed."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "Makes sense. Invite sent without invoices."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 5,
+          "hour": 10,
+          "body": "She's accepted the invite but says she can't see {{siteName}}. Have I missed something?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 5,
+          "hour": 11,
+          "body": "Probably just site access. On her profile on the Team page, tick {{siteName}} under sites and it'll show next time she logs in."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 5,
+          "hour": 13,
+          "body": "That's done it. Thanks for your help."
+        }
+      ]
+    },
+    {
+      "key": "rfq-quantities-clarification",
+      "relatedType": "rfq",
+      "audience": "supplier",
+      "subject": "Quantities on {{rfqNumber}}",
+      "brewfittRole": "buyer",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 10,
+          "body": "Hi {{brewfittFirstName}}, thanks for sending {{rfqNumber}}. Before we price it, are the quantities for the {{productName}} a one-off order or expected call-offs over the year?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 13,
+          "body": "Hi {{accountFirstName}}, the first order would be the quantity on the RFQ, but we expect to repeat it through the year as customer rollouts come in. Pricing for both would be really helpful."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Understood. Is the {{secondProductName}} needed in the same quantity, or is that a separate line?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 11,
+          "body": "Separate line. The {{secondProductName}} quantity is lower as not every install needs one. The figures on the RFQ are correct."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 15,
+          "body": "Thanks. Do you want them delivered in one go or split?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 9,
+          "body": "One delivery for the first order is fine. If you could also include your minimum order quantity for repeat orders, that would help us plan."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 14,
+          "body": "Our response is uploaded to {{rfqNumber}}, with pricing for the first order and for repeat call-offs."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 5,
+          "hour": 10,
+          "body": "Received, thank you. We're reviewing all responses this week and I'll update you by Friday either way."
+        }
+      ]
+    },
+    {
+      "key": "rfq-lead-time-price-breaks",
+      "relatedType": "rfq",
+      "audience": "supplier",
+      "subject": "Price breaks and lead time for {{rfqNumber}}",
+      "brewfittRole": "buyer",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 9,
+          "body": "Hi {{accountFirstName}}, we've sent over {{rfqNumber}} for the {{productName}}. Could you include price breaks at a few quantity levels? We're still finalising volumes with our customer."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 11,
+          "body": "Hi {{brewfittFirstName}}, yes we can do that. Do you want breaks at specific quantities or shall we use our standard ones?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "Your standard breaks are fine, as long as the top one covers the full RFQ quantity."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 10,
+          "body": "Pricing uploaded. On lead time, the top break takes longer as we'd need to schedule a production run. Smaller quantities we can supply from stock."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 13,
+          "body": "Thanks. Roughly how much longer for a production run? Our customer's install programme starts in about two months."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 15,
+          "body": "Around six weeks from order for the full quantity. We could part ship from stock to cover the first installs if that helps."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 10,
+          "body": "That would help a lot. Could you add the part shipment as an option on your response so we have it all in one place?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 14,
+          "body": "Done. The response on {{rfqNumber}} now shows the part shipment option with the quantities we can send from stock."
+        }
+      ]
+    },
+    {
+      "key": "po-acknowledgement-delivery-date",
+      "relatedType": "purchase-order",
+      "audience": "supplier",
+      "subject": "Acknowledgement of {{poNumber}}",
+      "brewfittRole": "buyer",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 0,
+          "hour": 9,
+          "body": "Hi {{accountFirstName}}, please find attached purchase order {{poNumber}} for the {{productName}}. Could you acknowledge it and confirm your expected delivery date?\n\nThanks,\n{{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "Hi {{brewfittFirstName}}, PO received, thank you. We'll confirm a delivery date once production have checked stock."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 11,
+          "body": "Acknowledged on the portal. Delivery date confirmed as {{deliveryDate}}."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 13,
+          "body": "Thanks {{accountFirstName}}. Please book it into our Huddersfield warehouse for a morning delivery, goods-in closes early on a Friday."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 15,
+          "body": "No problem, it's booked with {{carrier}} for the morning."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 10,
+          "body": "Perfect. Could you make sure {{poNumber}} is clearly shown on the delivery note? Our goods-in team book stock in against it."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 11,
+          "body": "Will do."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 14,
+          "hour": 10,
+          "body": "Hi {{accountFirstName}}, just checking everything is still on track for {{deliveryDate}}?"
+        }
+      ]
+    },
+    {
+      "key": "po-split-delivery",
+      "relatedType": "purchase-order",
+      "audience": "supplier",
+      "subject": "Split delivery on {{poNumber}}",
+      "brewfittRole": "buyer",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 15,
+          "body": "Hi {{brewfittFirstName}}, acknowledging {{poNumber}}. Unfortunately we can't make the requested date for the full quantity of {{productName}}. We can send most of it on {{deliveryDate}} and the balance the week after. Would that work?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 9,
+          "body": "Hi {{accountFirstName}}, thanks for letting us know early. I need to check against our customer orders before agreeing. Can you confirm exactly how many would be on the first delivery?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "I've updated the acknowledgement on the portal with the split quantities."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 14,
+          "body": "Thanks. The first delivery covers our committed orders, so a split is fine. Please send two separate delivery notes, both referencing {{poNumber}}."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 15,
+          "body": "Understood, two deliveries, both referencing the PO."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 10,
+          "hour": 11,
+          "body": "First delivery left us today with {{carrier}}, due with you on {{deliveryDate}}."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 11,
+          "hour": 14,
+          "body": "Received and booked in, thanks. Let us know when the balance is ready to ship."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 17,
+          "hour": 10,
+          "body": "The balance of {{poNumber}} is ready and will be with you by the end of the week."
+        }
+      ]
+    },
+    {
+      "key": "submission-spec-sheet-request",
+      "relatedType": "supplier-product",
+      "audience": "supplier",
+      "subject": "Spec sheet for {{submissionName}}",
+      "brewfittRole": "buyer",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 10,
+          "body": "Hi {{accountFirstName}}, thanks for submitting {{submissionName}}. Before we can review it we'll need a technical spec sheet. Could you upload one to the submission?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 13,
+          "body": "Hi {{brewfittFirstName}}, sorry, I thought that was attached. I'll get the latest version from our technical team."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "No worries. If there's a separate installation guide, that would be useful for our engineers too."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 10,
+          "body": "Spec sheet and installation guide are both uploaded now."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 15,
+          "body": "Thanks. Our technical manager has a question on the materials section. It lists two options but doesn't say which applies to this product. Could you clarify?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 9,
+          "body": "That sheet covers two variants and the one we've submitted is the first. We'll send a sheet specific to this product to avoid any confusion."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 11,
+          "body": "Updated spec sheet uploaded and the old one removed."
+        }
+      ]
+    },
+    {
+      "key": "submission-image-quality",
+      "relatedType": "supplier-product",
+      "audience": "supplier",
+      "subject": "Product images for {{submissionName}}",
+      "brewfittRole": "buyer",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 11,
+          "body": "Hi {{accountFirstName}}, we've started reviewing {{submissionName}}. The product images are a bit low resolution for our catalogue and a couple have a busy background. Do you have higher quality shots on plain white?"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 15,
+          "body": "Hi {{brewfittFirstName}}, we have studio images for most of the range. I'll check whether this one has been shot yet."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 10,
+          "body": "We've got a front and side view on white, but no close-up of the tap handle. Is that essential?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 2,
+          "hour": 11,
+          "body": "Not essential, though it does help customers choose. Front and side are the priority, and a close-up can follow later."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 14,
+          "body": "New images uploaded: front, side and an angled shot."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 16,
+          "body": "These are much better, thank you. The angled one has a slight shadow at the bottom but our studio team can tidy that up."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 4,
+          "hour": 10,
+          "body": "Images are approved. The rest of the submission is now with our technical manager for review."
+        }
+      ]
+    },
+    {
+      "key": "submission-review-approval",
+      "relatedType": "supplier-product",
+      "audience": "supplier",
+      "subject": "Review status of {{submissionName}}",
+      "brewfittRole": "buyer",
+      "endsWith": "brewfitt",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 9,
+          "body": "Morning {{brewfittFirstName}}, just checking on {{submissionName}}. It's been with you a couple of weeks and our sales team keep asking."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 11,
+          "body": "Morning {{accountFirstName}}, apologies for the wait. It's been through technical review and there's one query left on pack sizes before we can approve it."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 12,
+          "body": "What's the query?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 0,
+          "hour": 14,
+          "body": "The submission lists a pack size but the price is shown per unit. We need to confirm which our customers would be ordering so the catalogue shows the right thing."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 10,
+          "body": "Priced per unit, sold in packs. I've updated the submission to make that clear."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 1,
+          "hour": 15,
+          "body": "Perfect, that clears it up. I'll put it forward for final approval."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "email",
+          "dayOffset": 3,
+          "hour": 11,
+          "body": "Hi {{accountFirstName}}, good news: {{submissionName}} has been approved. It will appear in our catalogue once our team has finished the product setup. Thanks for your patience.\n\nKind regards,\n{{brewfittFirstName}}"
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 13,
+          "body": "Brilliant, thanks {{brewfittFirstName}}. I'll let the sales team know."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 3,
+          "hour": 14,
+          "body": "You're welcome. If any customer questions come up once it's live, just send them through here."
+        }
+      ]
+    },
+    {
+      "key": "supplier-remittance-query",
+      "relatedType": "invoice",
+      "audience": "supplier",
+      "subject": "Payment of {{invoiceNumber}}",
+      "brewfittRole": "credit-control",
+      "endsWith": "account",
+      "messages": [
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 30,
+          "hour": 10,
+          "body": "Hi, we don't seem to have received payment for invoice {{invoiceNumber}} against {{poNumber}}, which was due last week. Could you check the status?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 30,
+          "hour": 13,
+          "body": "Hi {{accountFirstName}}, thanks for getting in touch. {{invoiceNumber}} was included in last Friday's payment run for {{amount}}. Remittance advice should have gone to your accounts team, but I'll attach a copy here."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 30,
+          "hour": 15,
+          "body": "Thanks. Our bank shows a payment from Brewfitt but for a different total, so we couldn't match it."
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 31,
+          "hour": 10,
+          "body": "That'll be because it was paid together with another of your invoices in the same run. The remittance breaks it down by invoice, and I've attached it to this thread."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 31,
+          "hour": 11,
+          "body": "Got it, that all matches now. Could future remittances go to our accounts team as well as me?"
+        },
+        {
+          "side": "brewfitt",
+          "channel": "portal",
+          "dayOffset": 31,
+          "hour": 14,
+          "body": "Yes, if they're added as a contact on your supplier account with finance access, they'll receive remittance advice directly."
+        },
+        {
+          "side": "account",
+          "channel": "portal",
+          "dayOffset": 32,
+          "hour": 9,
+          "body": "I'll get them added. Thanks for clearing that up."
+        }
+      ]
+    }
+  ]
+}

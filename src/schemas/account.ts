@@ -83,7 +83,8 @@ export const Address = z.object({
   line2: z.string().nullable(),
   town: z.string().min(1),
   county: z.string().nullable(),
-  postcode: z.string().min(1),
+  /** Null only where the country has no postcode system (UAE). Ireland uses the Eircode. */
+  postcode: z.string().min(1).nullable(),
   country: Country,
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),

@@ -1,0 +1,3841 @@
+{
+  "source": "https://www.brewfitt.com/",
+  "capturedAt": "2026-09-16T23:51:22.345Z",
+  "categories": [
+    {
+      "name": "Beer Coolers",
+      "section": "cellar",
+      "parent": null,
+      "description": "Remote and ice bank beer coolers, keg coolers, water dispense units and cooler accessories.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/coolers-below-the-bar/"
+    },
+    {
+      "name": "Accessories",
+      "section": "cellar",
+      "parent": "Beer Coolers",
+      "description": "Accessories and consumables for beer coolers.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/coolers-below-the-bar/energy-saver-plug/"
+    },
+    {
+      "name": "Keg Coolers",
+      "section": "cellar",
+      "parent": "Beer Coolers",
+      "description": "Refrigerated keg coolers for chilling and storing kegs.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/coolers-below-the-bar/keg-coolers-coolers-below-the-bar/"
+    },
+    {
+      "name": "Lindr Ice Bank Coolers",
+      "section": "cellar",
+      "parent": "Beer Coolers",
+      "description": "Lindr ice bank coolers for commercial draught dispense.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/coolers-below-the-bar/lindr-coolers/"
+    },
+    {
+      "name": "Water Dispense",
+      "section": "cellar",
+      "parent": "Beer Coolers",
+      "description": "Soda water and hydrogen water dispense units.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/coolers-below-the-bar/water-dispense-coolers-below-the-bar/"
+    },
+    {
+      "name": "Welbilt Coolers",
+      "section": "cellar",
+      "parent": "Beer Coolers",
+      "description": "Welbilt Coolers available in V21 Integral and Water Cooled configuration.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/coolers-below-the-bar/welbilt-coolers/"
+    },
+    {
+      "name": "Coolants",
+      "section": "cellar",
+      "parent": null,
+      "description": "Coolant concentrates and pre-mixes for ice bank and python cooling systems.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/coolant/"
+    },
+    {
+      "name": "CoolTube",
+      "section": "cellar",
+      "parent": null,
+      "description": "CoolTube compact heat exchangers for cooling beer lines, including single, 4-way and Pancake models.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/cooltube/"
+    },
+    {
+      "name": "Foam Stop",
+      "section": "cellar",
+      "parent": null,
+      "description": "Foam stop (FOB) devices that connect to a keg coupler to reduce air and fob in the beer line.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/foam-stop-ancillaries-below-the-bar/"
+    },
+    {
+      "name": "Gas Chain",
+      "section": "cellar",
+      "parent": null,
+      "description": "Gas chains and bottle holders for securing gas cylinders.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/gas-chain/"
+    },
+    {
+      "name": "Keg Couplers",
+      "section": "cellar",
+      "parent": null,
+      "description": "Keg couplers for S, A, G, U, D-type and KeyKeg containers.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/keg-couplers-ancillaries-below-the-bar/"
+    },
+    {
+      "name": "Line Cleaning Equipment",
+      "section": "cellar",
+      "parent": null,
+      "description": "Cleaning bottles, cleaning sockets and cleaning powder for beer line cleaning.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/line-cleaning-equipment-below-the-bar/"
+    },
+    {
+      "name": "Cleaning Bottles",
+      "section": "cellar",
+      "parent": "Line Cleaning Equipment",
+      "description": "Cleaning bottles for flushing beer lines with cleaning solution.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/line-cleaning-equipment-below-the-bar/cleaning-bottles-line-cleaners-below-the-bar/"
+    },
+    {
+      "name": "Cleaning Powder",
+      "section": "cellar",
+      "parent": "Line Cleaning Equipment",
+      "description": "Beer line cleaning powder.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/line-cleaning-equipment-below-the-bar/cleaning-powder/"
+    },
+    {
+      "name": "Cleaning Sockets",
+      "section": "cellar",
+      "parent": "Line Cleaning Equipment",
+      "description": "Cleaning sockets for connecting beer lines to a cleaning supply.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/line-cleaning-equipment-below-the-bar/cleaning-sockets-line-cleaners-below-the-bar/"
+    },
+    {
+      "name": "Nitro Dispense",
+      "section": "cellar",
+      "parent": null,
+      "description": "Nitrogen infusion systems and nitrogen gas supplies for nitro drinks dispense.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/nitro-dispense-below-the-bar/"
+    },
+    {
+      "name": "Regulators",
+      "section": "cellar",
+      "parent": null,
+      "description": "Primary and secondary gas regulators for CO2 and mixed gas, in wall-mounted and bottle-mounted versions.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/below-the-bar/regulators-ancillaries-below-the-bar/"
+    },
+    {
+      "name": "Badge Holders",
+      "section": "bar",
+      "parent": null,
+      "description": "Badge holders, adapters and fixings in a variety of sizes, colours and styles.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/badge-holders-ancillaries-above-the-bar/"
+    },
+    {
+      "name": "Bar Lighting",
+      "section": "bar",
+      "parent": null,
+      "description": "LED boards and transformers for illuminated fonts and badges.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/bar-lighting/"
+    },
+    {
+      "name": "Bar Lighting Transformer",
+      "section": "bar",
+      "parent": "Bar Lighting",
+      "description": "Transformers for powering bar lighting.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/bar-lighting/lighting-transformer/"
+    },
+    {
+      "name": "LED Board",
+      "section": "bar",
+      "parent": "Bar Lighting",
+      "description": "LED boards and LED badge holders.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/bar-lighting/led-board/"
+    },
+    {
+      "name": "Beer Coolers",
+      "section": "bar",
+      "parent": null,
+      "description": "Under-counter bottle coolers for storing and chilling bottled drinks behind the bar.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/coolers/"
+    },
+    {
+      "name": "Bottle Coolers",
+      "section": "bar",
+      "parent": "Beer Coolers",
+      "description": "Under-counter bottle coolers with solid, hinged glass and sliding doors.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/coolers/bottle-coolers/"
+    },
+    {
+      "name": "Clamp Assemblies",
+      "section": "bar",
+      "parent": null,
+      "description": "Clamp assemblies on towers are used instead of drilling holes in the counter top.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/clamp-assemblies-1/"
+    },
+    {
+      "name": "Drip Trays",
+      "section": "bar",
+      "parent": null,
+      "description": "Stainless steel drip trays, glass fresheners and drip tray accessories.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/drip-trays-above-the-bar/"
+    },
+    {
+      "name": "Drip Tray Accessories",
+      "section": "bar",
+      "parent": "Drip Trays",
+      "description": "Brackets, carriers, drain kits and glass freshener parts for drip trays.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/drip-trays-above-the-bar/drip-tray-accessories/"
+    },
+    {
+      "name": "Recessed Drip Trays",
+      "section": "bar",
+      "parent": "Drip Trays",
+      "description": "Recessed stainless steel drip trays with drain.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/drip-trays-above-the-bar/recessed-drip-trays/"
+    },
+    {
+      "name": "Recessed Glass Freshener",
+      "section": "bar",
+      "parent": "Drip Trays",
+      "description": "Recessed drip trays with integrated glass freshener.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/drip-trays-above-the-bar/recessed-glass-freshener/"
+    },
+    {
+      "name": "Standard Drip Trays",
+      "section": "bar",
+      "parent": "Drip Trays",
+      "description": "Surface-mounted stainless steel drip trays and carriers.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/drip-trays-above-the-bar/standard-drip-trays/"
+    },
+    {
+      "name": "Standard Glass Freshener",
+      "section": "bar",
+      "parent": "Drip Trays",
+      "description": "Surface-mounted drip trays with integrated glass freshener.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/drip-trays-above-the-bar/standard-glass-freshener/"
+    },
+    {
+      "name": "Fonts",
+      "section": "bar",
+      "parent": null,
+      "description": "Beer fonts, towers and post mix towers, including the Celli range.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/fonts-above-the-bar/"
+    },
+    {
+      "name": "Beer Fonts",
+      "section": "bar",
+      "parent": "Fonts",
+      "description": "Beer fonts and towers in a range of styles and outlet counts.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/fonts-above-the-bar/beer-fonts/"
+    },
+    {
+      "name": "Post Mix",
+      "section": "bar",
+      "parent": "Fonts",
+      "description": "Post mix towers for soft drink dispense.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/fonts-above-the-bar/post-mix/"
+    },
+    {
+      "name": "Nitro Dispense",
+      "section": "bar",
+      "parent": null,
+      "description": "Nitro infusion systems for dispensing nitro-infused drinks at the bar.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/nitro-dispense/"
+    },
+    {
+      "name": "Special Offers",
+      "section": "bar",
+      "parent": null,
+      "description": "Discounted fonts, towers and taps.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/special-offers-above-the-bar/"
+    },
+    {
+      "name": "Taps",
+      "section": "bar",
+      "parent": null,
+      "description": "Complete beer taps, tap handles, spouts and tap spares.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/taps-above-the-bar/"
+    },
+    {
+      "name": "Complete Taps",
+      "section": "bar",
+      "parent": "Taps",
+      "description": "Complete lager, nitro and compensator taps.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/taps-above-the-bar/complete-taps/"
+    },
+    {
+      "name": "Tap Handles",
+      "section": "bar",
+      "parent": "Taps",
+      "description": "Brewfitt create branded tap handles to make sure you stand out at the bar.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/taps-above-the-bar/tap-handles/"
+    },
+    {
+      "name": "Tap Spares",
+      "section": "bar",
+      "parent": "Taps",
+      "description": "Spare parts and repair kits for beer taps.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/taps-above-the-bar/tap-spares/"
+    },
+    {
+      "name": "Tap Spouts",
+      "section": "bar",
+      "parent": "Taps",
+      "description": "Lager and nitro spouts for beer taps.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/taps-above-the-bar/tap-spouts/"
+    },
+    {
+      "name": "Wine Cooler",
+      "section": "bar",
+      "parent": null,
+      "description": "Kaelo integrated wine coolers for keeping opened wine chilled at the bar.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/above-the-bar/wine-cooler/"
+    },
+    {
+      "name": "Lindr Dispenser",
+      "section": "mobile-dispense",
+      "parent": null,
+      "description": "Lindr dry-cooled dispense units, CWP water-bath coolers and accessories for mobile and event dispense.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/event-solutions/lindr-dispense-event/"
+    },
+    {
+      "name": "Lindr Accessories",
+      "section": "mobile-dispense",
+      "parent": "Lindr Dispenser",
+      "description": "Taps, fittings, couplers and connection kits for Lindr units.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/event-solutions/lindr-dispense-event/lindr-accessories-lindr-dispense-mobile-dispense/"
+    },
+    {
+      "name": "Lindr CWP",
+      "section": "mobile-dispense",
+      "parent": "Lindr Dispenser",
+      "description": "Lindr CWP coolers for cooling and serving draught beer.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/event-solutions/lindr-dispense-event/lindr-cwp-mobile/"
+    },
+    {
+      "name": "Lindr Units",
+      "section": "mobile-dispense",
+      "parent": "Lindr Dispenser",
+      "description": "Lindr dry-cooled beer dispense units.",
+      "sourceUrl": "https://www.brewfitt.com/product-category/event-solutions/lindr-dispense-event/lindr-units-lindr-dispense-event/"
+    },
+    {
+      "name": "Hot Drinks",
+      "section": "bar",
+      "parent": null,
+      "description": "Hot drinks dispensers for serving hot chocolate, milk, mulled wine and tea.",
+      "sourceUrl": "https://www.brewfitt.com/product/ciocab/"
+    }
+  ],
+  "products": [
+    {
+      "slug": "energy-saviour-plug",
+      "name": "Energy Saviour Plug",
+      "siteSku": "ENERGSAV1",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Accessories",
+      "description": "Reduce your cooler energy bill by 30% and up to £546 annually! An intelligent App driven, power-saving plug-in device for all beer and soft-drink coolers running from a 13A UK mains supply.",
+      "images": [
+        "/products/energy-saviour-plug.png",
+        "/products/energy-saviour-plug-2.png"
+      ],
+      "sitePriceGbp": 131.25,
+      "sourceUrl": "https://www.brewfitt.com/product/energy-saviour-plug/"
+    },
+    {
+      "slug": "maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler-3",
+      "name": "Gamko Keg cooler 1 x solid door right hinged 130 litre FK2-25/4R",
+      "siteSku": "FK2-25/4R",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 1 x solid door right hinged 130 litre. Anthracite skin plate; Dimensions: 880 x 567 x 860-880 mm; Keg Capacity: 1x50L (ø423mm) or 4x20L (ø240mm); Refrigerant type: R600a.",
+      "images": [
+        "/products/maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler-3.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler-3/"
+    },
+    {
+      "slug": "keg-cooler-2-x-solid-door-1200-litre",
+      "name": "Gamko Keg cooler 2 x solid door 1200 litre FK/6",
+      "siteSku": "FK/6",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 2 x solid door 850 litre. Anthracite skin plate; Dimensions: 1465 x 978 x 1080-1100 mm; Keg Capacity: 6 x 50L or 12 x 30L; Door Type: 2 doors.",
+      "images": [
+        "/products/keg-cooler-2-x-solid-door-1200-litre.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-2-x-solid-door-1200-litre/"
+    },
+    {
+      "slug": "keg-cooler-2-x-solid-door-1550-litre",
+      "name": "Gamko Keg cooler 2 x solid door 1550 litre FK/8",
+      "siteSku": "FK/8",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 2 x solid door 1550 litre. Anthracite skin plate; Dimensions: 1870 x 978 x 1080-1100 mm; Keg Capacity: 8 x 50L or 16 x 30L; Door Type: 2 doors.",
+      "images": [
+        "/products/keg-cooler-2-x-solid-door-1550-litre.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-2-x-solid-door-1550-litre/"
+    },
+    {
+      "slug": "keg-cooler-2-x-solid-door-1840-litre",
+      "name": "Gamko Keg cooler 2 x solid door 1840 litre FK/10",
+      "siteSku": "FK/10",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 2 x solid door 1840 litre. Anthracite skin plate; Dimensions: 2200 x 978 x 1080-1100 mm; Keg Capacity: 10 x 50L or 20 x 30L; Door Type: 2 doors.",
+      "images": [
+        "/products/keg-cooler-2-x-solid-door-1840-litre.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-2-x-solid-door-1840-litre/"
+    },
+    {
+      "slug": "keg-cooler-2-x-solid-door-590-litre",
+      "name": "Gamko Keg cooler 2 x solid door 590 litre FK/2",
+      "siteSku": "FK/2",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 2 x solid door 590 litre. Anthracite skin plate; Dimensions: 1060 x 715 x 1080-1100 mm; Keg Capacity: 2 x 50L or 4 x 30L; Door Type: 2 doors.",
+      "images": [
+        "/products/keg-cooler-2-x-solid-door-590-litre.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-2-x-solid-door-590-litre/"
+    },
+    {
+      "slug": "keg-cooler-2-x-solid-door-850-litre",
+      "name": "Gamko Keg cooler 2 x solid door 850 litre FK/4",
+      "siteSku": "FK/4",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 2 x solid door 850 litre. Anthracite skin plate; Dimensions: 1060 x 978 x 1080-1100 mm; Keg Capacity: 4 x 50L or 8 x 30L; Door Type: 2 doors.",
+      "images": [
+        "/products/keg-cooler-2-x-solid-door-850-litre.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-2-x-solid-door-850-litre/"
+    },
+    {
+      "slug": "keg-cooler-1-x-solid-door-left-hinged-130-litre",
+      "name": "Gamko Keg cooler 2 x solid door left hinged 130 litre FK2-25/4L",
+      "siteSku": "FK2-25/4L",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 2 x solid door left hinged 130 litre. Anthracite skin plate; Dimensions: 880 x 567 x 860-880 mm; Keg Capacity: 1x50L (ø423mm) or 4x20L (ø240mm); Refrigerant type: R600a.",
+      "images": [
+        "/products/keg-cooler-1-x-solid-door-left-hinged-130-litre.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-1-x-solid-door-left-hinged-130-litre/"
+    },
+    {
+      "slug": "keg-cooler-1-x-solid-door-left-hinged-210-litre",
+      "name": "Gamko Keg cooler 2 x solid door left hinged 210 litre FK2-25/6L",
+      "siteSku": "FK2-25/6L",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 2 x solid door left hinged 210 litre. Anthracite skin plate; Dimensions: 1110 x 570 x 860/880 mm; Keg Capacity: 6x20L (ø240mm) or 1x50L (ø410mm) + 2x20L (ø240mm); Refrigerant type: incl. Hydrocarbon R600a.",
+      "images": [
+        "/products/keg-cooler-1-x-solid-door-left-hinged-210-litre.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-1-x-solid-door-left-hinged-210-litre/"
+    },
+    {
+      "slug": "keg-cooler-1-x-solid-door-left-hinged-290-litre",
+      "name": "Gamko Keg cooler 2 x solid door left hinged 290 litre FK2-25/8L",
+      "siteSku": "FK2-25/8L",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 2 x solid door left hinged 290 litre. Anthracite skin plate; Dimensions: 1350 x 567 x 860-880 mm; Keg Capacity: 2 x 50L (ø423mm) or 8 x 20L (ø240mm); Refrigerant type: incl. Hydrocarbon R600a.",
+      "images": [
+        "/products/keg-cooler-1-x-solid-door-left-hinged-290-litre.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-1-x-solid-door-left-hinged-290-litre/"
+    },
+    {
+      "slug": "keg-cooler-1-x-solid-door-right-hinged-210-litre",
+      "name": "Gamko Keg cooler 2 x solid door right hinged 210 litre FK2-25/6R",
+      "siteSku": "FK2-25/6R",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 2 x solid door right hinged 210 litre. Anthracite skin plate; Dimensions: 1110 x 570 x 860/880 mm; Keg Capacity: 6x20L (ø240mm) or 1x50L (ø410mm) + 2x20L (ø240mm); Refrigerant type: incl. Hydrocarbon R600a.",
+      "images": [
+        "/products/keg-cooler-1-x-solid-door-right-hinged-210-litre.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-1-x-solid-door-right-hinged-210-litre/"
+    },
+    {
+      "slug": "keg-cooler-1-x-solid-door-right-hinged-290-litre",
+      "name": "Gamko Keg cooler 2 x solid door right hinged 290 litre FK2-25/8R",
+      "siteSku": "FK2-25/8R",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler 2 x solid door right hinged 290 litre. Anthracite skin plate; Dimensions: 1350 x 567 x 860-880 mm; Keg Capacity: 2 x 50L (ø423mm) or 8 x 20L (ø240mm); Refrigerant type: incl. Hydrocarbon R600a.",
+      "images": [
+        "/products/keg-cooler-1-x-solid-door-right-hinged-290-litre.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-1-x-solid-door-right-hinged-290-litre/"
+    },
+    {
+      "slug": "keg-cooler-plug-ready-machine-unit",
+      "name": "Gamko Keg cooler Plug Ready Machine Unit FK/MU",
+      "siteSku": "FK/MU",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Keg Coolers",
+      "description": "Keg cooler Plug Ready Machine Unit. Anthracite skin plate; Dimensions: 612 x 553 x 310 mm; Machine unit for use with FK/2, 4, 6, 8, 10; Refrigerant type: incl. R600a.",
+      "images": [
+        "/products/keg-cooler-plug-ready-machine-unit.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/keg-cooler-plug-ready-machine-unit/"
+    },
+    {
+      "slug": "event-cooler-4kw",
+      "name": "4kW Twin Circuit Water Cooled Event Cooler",
+      "siteSku": "EVTCLR03",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "The 4kW R290 Event Cooler is a high performance, water cooled glycol chiller designed for temporary and event-based dispense applications where reliability, efficiency, and environmental performance are critical.",
+      "images": [
+        "/products/event-cooler-4kw.png"
+      ],
+      "sitePriceGbp": 4725,
+      "sourceUrl": "https://www.brewfitt.com/product/event-cooler-4kw/"
+    },
+    {
+      "slug": "lindr-as-110-2x-coils",
+      "name": "Lindr AS-110 2x coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-80 are designed for professional dispensing of beverages in restaurants and bars. Models from the AS-80 series are fitted with a pump with 6m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-110-2x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-110-2x-coils/"
+    },
+    {
+      "slug": "lindr-as-110-4x-coils",
+      "name": "Lindr AS-110 4x coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-110 are designed for professional dispensing of beverages in restaurants and bars. Models from the AS-110 series are fitted with a pump with 6m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-110-4x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-110-4x-coils-copy/"
+    },
+    {
+      "slug": "lindr-as-110-6x-coils",
+      "name": "Lindr AS-110 6x coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-110 are designed for professional dispensing of beverages in restaurants and bars. Models from the AS-110 series are fitted with a pump with 6m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-110-6x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-110-6x-coils/"
+    },
+    {
+      "slug": "lindr-as-110-inox-tropical-3x-tap",
+      "name": "Lindr AS-110 INOX Tropical 3x Tap",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These table top, water based coolers are designed for professional dispensing of beverages in restaurants and bars. The coolers are fitted with taps with compensator to regulate the flow rate of the beverage, drip tray. Cooling coils are submersed in a water bath.",
+      "images": [
+        "/products/lindr-as-110-inox-tropical-3x-tap.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-110-inox-tropical-3x-tap/"
+    },
+    {
+      "slug": "lindr-as-110-inox-tropical-4x-coils",
+      "name": "Lindr AS-110 INOX Tropical 4x Coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "AS INOX TROPICAL features a thickened 45 mm insulation, even on the top cover, and is designed for extreme tropical conditions. This device can fully function even at ambient temperatures of up to 45°C.",
+      "images": [
+        "/products/lindr-as-110-inox-tropical-4x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-110-inox-tropical-4x-coils/"
+    },
+    {
+      "slug": "lindr-as-110-inox-tropical-6x-coils",
+      "name": "Lindr AS-110 INOX Tropical 6x Coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "AS INOX TROPICAL features a thickened 45 mm insulation, even on the top cover, and is designed for extreme tropical conditions. This device can fully function even at ambient temperatures of up to 45°C.",
+      "images": [
+        "/products/lindr-as-110-inox-tropical-6x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-110-inox-tropical-6x-coils/"
+    },
+    {
+      "slug": "lindr-as-110-us",
+      "name": "Lindr AS-110-us",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-110 are designed for professional dispensing of beverages in restaurants and bars. Models from the AS-110 series are fitted with a pump with 6m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-110-us.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-110-us/"
+    },
+    {
+      "slug": "lindr-as-160-inox-tropical-4x-coils",
+      "name": "Lindr AS-160 INOX Tropical 4x Coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "AS-160 INOX Tropical coolers are designed for professional dispensing of beverages in restaurants and bars. These coolers have highest output in their class. Models from the AS-160/200 series are fitted with a pump with 8 m displacement, which allows the cooler to be placed in a cellar still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-160-inox-tropical-4x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-160-inox-tropical-4x-coils/"
+    },
+    {
+      "slug": "lindr-as-160-inox-tropical-4x-tap",
+      "name": "Lindr AS-160 INOX Tropical 4x Tap",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These table top, water based coolers are designed for professional dispensing of beverages in restaurants and bars. The coolers are fitted with taps with compensator to regulate the flow rate of the beverage, drip tray. Cooling coils are submersed in a water bath.",
+      "images": [
+        "/products/lindr-as-160-inox-tropical-4x-tap.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-160-inox-tropical-4x-tap/"
+    },
+    {
+      "slug": "as-160-inox-tropical-6x-coils",
+      "name": "Lindr AS-160 INOX Tropical 6x Coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-160 INOX Tropical are designed for professional dispensing of beverages in restaurants and bars. Models from the AS-160 INOX Tropical series are fitted with a pump with 8 m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/as-160-inox-tropical-6x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/as-160-inox-tropical-6x-coils/"
+    },
+    {
+      "slug": "lindr-as-160-inox-tropical-8x-coils",
+      "name": "Lindr AS-160 INOX Tropical 8x Coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-160 INOX Tropical are designed for professional dispensing of beverages in restaurants and bars. Models from the AS-160 INOX Tropical series are fitted with a pump with 8 m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-160-inox-tropical-8x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-160-inox-tropical-8x-coils/"
+    },
+    {
+      "slug": "lindr-as-200-2x-coils",
+      "name": "Lindr AS-200 2x Coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "AS-200 cooler is designed for professional dispensing of beverages in restaurants and bars. These coolers have highest output in their class. Models from the AS-160/200 series are fitted with a pump with 8 m displacement, which allows the cooler to be placed in a cellar still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-200-2x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-200-2x-coils/"
+    },
+    {
+      "slug": "lindr-as-200-4x-coils",
+      "name": "Lindr AS-200 4x Coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-200 are designed for professional dispensing of beverages in restaurants and bars. Models from the AS-200 series are fitted with a pump with 8 m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-200-4x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-200-4x-coils/"
+    },
+    {
+      "slug": "lindr-as-200-6x-coils",
+      "name": "Lindr AS-200 6x Coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-200 are designed for professional dispensing of beverages in restaurants and bars. Models from the AS-200 series are fitted with a pump with 8 m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-200-6x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-200-6x-coils/"
+    },
+    {
+      "slug": "lindr-as-200-8x-coils",
+      "name": "Lindr AS-200 8x Coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-200 are designed for professional dispensing of beverages in restaurants and bars. Models from the AS-200 series are fitted with a pump with 8 m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-200-8x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-200-8x-coils/"
+    },
+    {
+      "slug": "lindr-as-200-us-2x-pump",
+      "name": "Lindr AS-200-us 2x Pump",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "AS-200-us 2x pump green line. The AS-200-us models have the highest performance in their class. The AS-200-us 2x Pump green line is designed for professional cooling of tanks.",
+      "images": [
+        "/products/lindr-as-200-us-2x-pump.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-200-us-2x-pump/"
+    },
+    {
+      "slug": "lindr-cooler-as-40",
+      "name": "Lindr AS-40 2x coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These under-counter coolers AS-40 Green line are designed for professional dispensing of beverages in restaurants and bars with lower volume of beverages served. It is fitted with a built-in stirrer which ensures even temperature across the entire water bath. 2 m displacement.",
+      "images": [
+        "/products/lindr-cooler-as-40.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-cooler-as-40/"
+    },
+    {
+      "slug": "lindr-as-40-glycol",
+      "name": "Lindr AS-40 Glycol",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "AS-40 Glycol is a suitable cooler for cooling down of special towers and beer tanks using glycol. The cooling unit reaches a maximum output of up to 40 litres per hour and provides a cooling capacity of 25 litres per hour at continuous output.",
+      "images": [
+        "/products/lindr-as-40-glycol.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-40-glycol/"
+    },
+    {
+      "slug": "lindr-as-450-unlimited-cooler",
+      "name": "Lindr AS-450 Unlimited Cooler",
+      "siteSku": "VCH02367",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "The Lindr AS-450 Unlimited Cooler delivers up to 4000 W cooling capacity and processes 450 l/h with precision and efficiency. A modern dual-circuit compressor cooling system powers the unit, supported by a large 144-litre water tank. This setup allows the cooler to accumulate up to 90 kg of ice for consistent performance.",
+      "images": [
+        "/products/lindr-as-450-unlimited-cooler.jpg",
+        "/products/lindr-as-450-unlimited-cooler-2.jpg"
+      ],
+      "sitePriceGbp": 2625,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-450-unlimited-cooler/"
+    },
+    {
+      "slug": "lindr-as-80-2x-coils",
+      "name": "Lindr AS-80 2x coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-80 are designed for professional dispensing of beverages in restaurants and bars with lower volume of beverages served. The cooling device is fitted with a pump with 6 m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-80-2x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-80-2x-coils/"
+    },
+    {
+      "slug": "lindr-as-80-4x-coils",
+      "name": "Lindr AS-80 4x coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "These undercounter coolers AS-80 are designed for professional dispensing of beverages in restaurants and bars. Models from the AS-80 series are fitted with a pump with 6m displacement, which allows the cooler to be placed in a cellar and still cool the beverage all the way to the tap.",
+      "images": [
+        "/products/lindr-as-80-4x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-80-4x-coils/"
+    },
+    {
+      "slug": "lindr-drywet-cooler",
+      "name": "Lindr DryWet Cooler",
+      "siteSku": "LIND-DW-MAIN",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "The Lindr DryWet cooler range marks a significant innovation in dry block cooling, combining compact power with a sealed recirculating system - a first for this type of cooling technology. This breakthrough feature opens up new opportunities for improved serving, hygiene and temperature control from keg to tap.",
+      "images": [
+        "/products/lindr-drywet-cooler.jpg",
+        "/products/lindr-drywet-cooler-2.jpg"
+      ],
+      "sitePriceGbp": 991.94,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-drywet-cooler/"
+    },
+    {
+      "slug": "lindr-as-110-inox-tropical-2x-coils",
+      "name": "Lindr-AS-110 INOX Tropical 2x Coils",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Lindr Ice Bank Coolers",
+      "description": "AS INOX TROPICAL features a thickened 45 mm insulation, even on the top cover, and is designed for extreme tropical conditions. This device can fully function even at ambient temperatures of up to 45°C.",
+      "images": [
+        "/products/lindr-as-110-inox-tropical-2x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-as-110-inox-tropical-2x-coils/"
+    },
+    {
+      "slug": "portable-hydrogen-pot",
+      "name": "Portable Hydrogen Water Pot",
+      "siteSku": "EOS7150-HG",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Water Dispense",
+      "description": "High Concentration of dissolved Hydrogen 1,000 – 1,200 ppb; Ultra High Purity Hydrogen Gas; Highly Portable no installation needed; Smart Heating Control.",
+      "images": [
+        "/products/portable-hydrogen-pot.jpg",
+        "/products/portable-hydrogen-pot-2.jpg"
+      ],
+      "sitePriceGbp": 671.32,
+      "sourceUrl": "https://www.brewfitt.com/product/portable-hydrogen-pot/"
+    },
+    {
+      "slug": "soda-water-machine-soda-pygmy-2-tap",
+      "name": "Soda Water Machine Soda Pygmy 2 Tap",
+      "siteSku": "SOD02076",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Water Dispense",
+      "description": "Soda water machine designed for production of chilled soda water by mixing drinking water with carbon dioxide. THE SODA SYSTEM REQUIRES A SPECIFIC REGULATOR, PLEASE ASK FOR THE CORRECT ONE WHEN CALLING TO PLACE AN ORDER.",
+      "images": [
+        "/products/soda-water-machine-soda-pygmy-2-tap.jpg",
+        "/products/soda-water-machine-soda-pygmy-2-tap-2.jpg"
+      ],
+      "sitePriceGbp": 675.65,
+      "sourceUrl": "https://www.brewfitt.com/product/soda-water-machine-soda-pygmy-2-tap/"
+    },
+    {
+      "slug": "heat-dump-advanced",
+      "name": "Heat Dump Advanced",
+      "siteSku": "09-0204-04",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Welbilt Coolers",
+      "description": "Engineered for simpler installation, safer handling and easier servicing. Available from Brewfitt, the Welbilt Heat Dump Advanced offers a compact and efficient way to remove excess heat from coolers. Its improved three-pass radiator design is 32% lighter, with a reduced overall footprint that makes installation and handling easier where space is limited.",
+      "images": [
+        "/products/heat-dump-advanced.jpg",
+        "/products/heat-dump-advanced-2.jpg"
+      ],
+      "sitePriceGbp": 211.57,
+      "sourceUrl": "https://www.brewfitt.com/product/heat-dump-advanced/"
+    },
+    {
+      "slug": "v21-integral-cooler",
+      "name": "V21 Integral Cooler (Base only)",
+      "siteSku": "01-8600-14",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Welbilt Coolers",
+      "description": "Vision V21 Remote Cooler. Engineered to give improved unit performance. The Vision V21 Remote Cooler is engineered for the cellar environment and designed with emphasis on \"Whole-life cost reduction\".",
+      "images": [
+        "/products/v21-integral-cooler.jpg",
+        "/products/v21-integral-cooler-2.jpg"
+      ],
+      "sitePriceGbp": 694.77,
+      "sourceUrl": "https://www.brewfitt.com/product/v21-integral-cooler/"
+    },
+    {
+      "slug": "v21-water-cooled-cooler",
+      "name": "V21 Water Cooled Cooler (Base only)",
+      "siteSku": "01-8700-14",
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Welbilt Coolers",
+      "description": "Vision V21 Remote Cooler. Engineered to give improved unit performance. The Vision V21 Remote Cooler is engineered for the cellar environment and designed with emphasis on \"Whole-life cost reduction\".",
+      "images": [
+        "/products/v21-water-cooled-cooler.jpg",
+        "/products/v21-water-cooled-cooler-2.jpg"
+      ],
+      "sitePriceGbp": 877.63,
+      "sourceUrl": "https://www.brewfitt.com/product/v21-water-cooled-cooler/"
+    },
+    {
+      "slug": "vision-v15-mini-remote-cooler",
+      "name": "Vision V15 Mini Remote Cooler",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Beer Coolers",
+      "subcategory": "Welbilt Coolers",
+      "description": "Reliable, energy-efficient remote cooling for modern cellar installations. The Multiplex Vision V15 Mini Remote Cooler is a compact, high-performance cooling solution designed specifically for cellar environments.",
+      "images": [
+        "/products/vision-v15-mini-remote-cooler.jpg"
+      ],
+      "sitePriceGbp": 676.59,
+      "sourceUrl": "https://www.brewfitt.com/product/vision-v15-mini-remote-cooler/"
+    },
+    {
+      "slug": "2flow-specialist-coolant-25-litres",
+      "name": "2FLOW+ Specialist Coolant (25 Litres)",
+      "siteSku": "2F+25PM",
+      "section": "cellar",
+      "category": "Coolants",
+      "subcategory": null,
+      "description": "More and more of the largest breweries and soft drink manufacturers around the world are switching over to the 2Flow solution, as the trend towards extra cold drinks becomes a paramount requirement for their customers.",
+      "images": [
+        "/products/2flow-specialist-coolant-25-litres.png"
+      ],
+      "sitePriceGbp": 68.25,
+      "sourceUrl": "https://www.brewfitt.com/product/2flow-specialist-coolant-25-litres/"
+    },
+    {
+      "slug": "4flow-specialist-coolant-25-litres",
+      "name": "4FLOW+ Specialist Coolant (25 Litres)",
+      "siteSku": "4F+25PM",
+      "section": "cellar",
+      "category": "Coolants",
+      "subcategory": null,
+      "description": "More and more of the largest breweries and soft drink manufacturers around the world are switching over to the 4Flow solution, as the trend towards extra cold drinks becomes a paramount requirement for their customers.",
+      "images": [
+        "/products/4flow-specialist-coolant-25-litres.png"
+      ],
+      "sitePriceGbp": 71.4,
+      "sourceUrl": "https://www.brewfitt.com/product/4flow-specialist-coolant-25-litres/"
+    },
+    {
+      "slug": "coolflow-dtx-28-pre-mix-25-litres",
+      "name": "Coolflow DTX 28% Pre-Mix (25 Litres)",
+      "siteSku": "DTX28LB",
+      "section": "cellar",
+      "category": "Coolants",
+      "subcategory": null,
+      "description": "DTX Coolant for Beer Dispense Systems. Coolflow DTX Pre-Mix (28%) offers frost protection for up to 5°F and is a high efficiency non toxic antifreeze/coolant & secondary refrigerant. Specialist antifreeze/coolant used with 2Flow.",
+      "images": [
+        "/products/coolflow-dtx-28-pre-mix-25-litres.jpg"
+      ],
+      "sitePriceGbp": 65.55,
+      "sourceUrl": "https://www.brewfitt.com/product/coolflow-dtx-28-pre-mix-25-litres/"
+    },
+    {
+      "slug": "coolflow-dtx-25-litres",
+      "name": "Coolflow DTX Concentrate (25 Litres)",
+      "siteSku": "DTX25L",
+      "section": "cellar",
+      "category": "Coolants",
+      "subcategory": null,
+      "description": "A high-efficiency, non-toxic antifreeze/coolant and secondary refrigerant, supplied as a 25-litre concentrate. Coolflow DTX is a detoxified ethylene glycol solution specially formulated to provide superior performance as an advanced replacement for monopropylene glycol.",
+      "images": [
+        "/products/coolflow-dtx-25-litres.jpg",
+        "/products/coolflow-dtx-25-litres-2.png"
+      ],
+      "sitePriceGbp": 123.9,
+      "sourceUrl": "https://www.brewfitt.com/product/coolflow-dtx-25-litres/"
+    },
+    {
+      "slug": "coolflow-dtx-5-litres",
+      "name": "Coolflow DTX Concentrate (5 Litres)",
+      "siteSku": "DTX5L",
+      "section": "cellar",
+      "category": "Coolants",
+      "subcategory": null,
+      "description": "A high-efficiency, non-toxic antifreeze/coolant and secondary refrigerant, supplied as a 5-litre concentrate. Coolflow DTX is a detoxified ethylene glycol solution specially formulated to provide superior performance as an advanced replacement for monopropylene glycol.",
+      "images": [
+        "/products/coolflow-dtx-5-litres.jpg"
+      ],
+      "sitePriceGbp": 34.75,
+      "sourceUrl": "https://www.brewfitt.com/product/coolflow-dtx-5-litres/"
+    },
+    {
+      "slug": "cooltube-4-way-10-line-c-w-pu-insulation",
+      "name": "Cooltube 4 Way 10 Line C/W PU Insulation",
+      "siteSku": "0702564",
+      "section": "cellar",
+      "category": "CoolTube",
+      "subcategory": null,
+      "description": "The 4 way CoolTube is an amazingly efficient compact heat exchanger that provides superior heat exchange capabilities to 4 different lines and allows variable dispense temperatures at the point of dispense with an additional valve. CoolTube is compatible with any coolant medium, enabling installation and compatibility to all current dispense systems.",
+      "images": [
+        "/products/cooltube-4-way-10-line-c-w-pu-insulation.jpg",
+        "/products/cooltube-4-way-10-line-c-w-pu-insulation-2.jpg"
+      ],
+      "sitePriceGbp": 502.22,
+      "sourceUrl": "https://www.brewfitt.com/product/cooltube-4-way-10-line-c-w-pu-insulation/"
+    },
+    {
+      "slug": "cooltube-4-way-10-line-c-w-pu-insulation-fittings",
+      "name": "Cooltube 4 Way 10 Line C/W PU Insulation & Fittings",
+      "siteSku": "0702565",
+      "section": "cellar",
+      "category": "CoolTube",
+      "subcategory": null,
+      "description": "The 4 way CoolTube is an amazingly efficient compact heat exchanger that provides superior heat exchange capabilities to 4 different lines and allows variable dispense temperatures at the point of dispense with an additional valve. CoolTube is compatible with any coolant medium, enabling installation and compatibility to all current dispense systems.",
+      "images": [
+        "/products/cooltube-4-way-10-line-c-w-pu-insulation-fittings.jpg",
+        "/products/cooltube-4-way-10-line-c-w-pu-insulation-fittings-2.jpg"
+      ],
+      "sitePriceGbp": 517.18,
+      "sourceUrl": "https://www.brewfitt.com/product/cooltube-4-way-10-line-c-w-pu-insulation-fittings/"
+    },
+    {
+      "slug": "cooltube-4-way-15-line-c-w-pu-insulation",
+      "name": "Cooltube 4 Way 15 Line C/W PU Insulation",
+      "siteSku": "0702600",
+      "section": "cellar",
+      "category": "CoolTube",
+      "subcategory": null,
+      "description": "The 4 way CoolTube is an amazingly efficient compact heat exchanger that provides superior heat exchange capabilities to 4 different lines and allows variable dispense temperatures at the point of dispense with an additional valve. CoolTube is compatible with any coolant medium, enabling installation and compatibility to all current dispense systems.",
+      "images": [
+        "/products/cooltube-4-way-15-line-c-w-pu-insulation.jpg",
+        "/products/cooltube-4-way-15-line-c-w-pu-insulation-2.jpg"
+      ],
+      "sitePriceGbp": 574.72,
+      "sourceUrl": "https://www.brewfitt.com/product/cooltube-4-way-15-line-c-w-pu-insulation/"
+    },
+    {
+      "slug": "cooltube-4-way-15-line-c-w-pu-insulation-fittings",
+      "name": "Cooltube 4 Way 15 Line C/W PU Insulation & Fittings",
+      "siteSku": "0702601",
+      "section": "cellar",
+      "category": "CoolTube",
+      "subcategory": null,
+      "description": "The 4 way CoolTube is an amazingly efficient compact heat exchanger that provides superior heat exchange capabilities to 4 different lines and also allows variable dispense temperatures at the point of dispense with an additional valve. CoolTube is compatible with any coolant medium, enabling installation and compatibility to all current dispense systems.",
+      "images": [
+        "/products/cooltube-4-way-15-line-c-w-pu-insulation-fittings.jpg",
+        "/products/cooltube-4-way-15-line-c-w-pu-insulation-fittings-2.jpg"
+      ],
+      "sitePriceGbp": 589.69,
+      "sourceUrl": "https://www.brewfitt.com/product/cooltube-4-way-15-line-c-w-pu-insulation-fittings/"
+    },
+    {
+      "slug": "cooltube-4-way-15-line-pancake",
+      "name": "CoolTube Pancake 4 Way 15 Line with fittings",
+      "siteSku": "0702172",
+      "section": "cellar",
+      "category": "CoolTube",
+      "subcategory": null,
+      "description": "The Pancake CoolTube is a new patented cooling technology that is the future of both primary & secondary cooling. The device is coolant dependant and runs off the python recirculation lines utilising all cooling mediums. It is fraction of the size and more efficient than any other standard heat exchanger available.",
+      "images": [
+        "/products/cooltube-4-way-15-line-pancake.jpg",
+        "/products/cooltube-4-way-15-line-pancake-2.jpg"
+      ],
+      "sitePriceGbp": 585.71,
+      "sourceUrl": "https://www.brewfitt.com/product/cooltube-4-way-15-line-pancake/"
+    },
+    {
+      "slug": "cooltube-pancake-single-with-fittings",
+      "name": "CoolTube Pancake Single with fittings",
+      "siteSku": "0702159",
+      "section": "cellar",
+      "category": "CoolTube",
+      "subcategory": null,
+      "description": "The Pancake CoolTube is a new patented cooling technology that is the future of both primary & secondary cooling. The device is coolant dependant and runs off the python recirculation lines utilising all cooling mediums. It is fraction of the size and more efficient than any other standard heat exchanger available.",
+      "images": [
+        "/products/cooltube-pancake-single-with-fittings.jpg",
+        "/products/cooltube-pancake-single-with-fittings-2.jpg"
+      ],
+      "sitePriceGbp": 161.38,
+      "sourceUrl": "https://www.brewfitt.com/product/cooltube-pancake-single-with-fittings-copy/"
+    },
+    {
+      "slug": "cooltube-single-10-line-c-w-pu-insulation-fittings",
+      "name": "CoolTube Single 10 Line C/W PU Insulation & Fittings",
+      "siteSku": "0702437",
+      "section": "cellar",
+      "category": "CoolTube",
+      "subcategory": null,
+      "description": "CoolTube is an amazingly efficient compact heat exchanger that provides superior heat exchange capabilities and also allows variable dispense temperatures at the point of dispense. CoolTube is compatible with any coolant medium, enabling installation and compatibility to all current dispense systems.",
+      "images": [
+        "/products/cooltube-single-10-line-c-w-pu-insulation-fittings.jpg"
+      ],
+      "sitePriceGbp": 161.33,
+      "sourceUrl": "https://www.brewfitt.com/product/cooltube-single-10-line-c-w-pu-insulation-fittings/"
+    },
+    {
+      "slug": "beer-foam-fob-stop-1-2g-x-1-2bsp",
+      "name": "Beer Foam Fob Stop  1/2\"G x 1/2\"BSP",
+      "siteSku": "0000656",
+      "section": "cellar",
+      "category": "Foam Stop",
+      "subcategory": null,
+      "description": "This is a device currently used throughout Europe to massively reduce fob in installations where Co2/N2 systems are in place. This compact, patented device connects directly to any standard keg coupler and massively reduces the amount of air which escapes from a keg as it empties.",
+      "images": [
+        "/products/beer-foam-fob-stop-1-2g-x-1-2bsp.png"
+      ],
+      "sitePriceGbp": 58.72,
+      "sourceUrl": "https://www.brewfitt.com/product/beer-foam-fob-stop-1-2g-x-1-2bsp/"
+    },
+    {
+      "slug": "twin-gas-bottle-holder-with-gas-chain",
+      "name": "Twin Gas Bottle Holder with Gas Chain",
+      "siteSku": "0000357",
+      "section": "cellar",
+      "category": "Gas Chain",
+      "subcategory": null,
+      "description": "Gas Bottle Chain fixing where the gas source will be used in conjunction with compatible dispense equipment. Please seek professional advice for installation and operation.",
+      "images": [
+        "/products/twin-gas-bottle-holder-with-gas-chain.jpg"
+      ],
+      "sitePriceGbp": 39.69,
+      "sourceUrl": "https://www.brewfitt.com/product/twin-gas-bottle-holder-with-gas-chain/"
+    },
+    {
+      "slug": "a-type-keg-coupler-c-w-jg-fittings-nrv-73865",
+      "name": "A Type Keg Coupler C/W JG Fittings & NRV (73865)",
+      "siteSku": "0502932",
+      "section": "cellar",
+      "category": "Keg Couplers",
+      "subcategory": null,
+      "description": "Compatible with A Type Kegs Only.",
+      "images": [
+        "/products/a-type-keg-coupler-c-w-jg-fittings-nrv-73865.jpg"
+      ],
+      "sitePriceGbp": 56.29,
+      "sourceUrl": "https://www.brewfitt.com/product/a-type-keg-coupler-c-w-jg-fittings-nrv-73865/"
+    },
+    {
+      "slug": "d-type-keg-coupler-c-w-jg-fittings-nrv",
+      "name": "D Type Keg Coupler C/W JG Fittings & NRV",
+      "siteSku": "0000766",
+      "section": "cellar",
+      "category": "Keg Couplers",
+      "subcategory": null,
+      "description": "Compatible with D Type kegs only.",
+      "images": [
+        "/products/d-type-keg-coupler-c-w-jg-fittings-nrv.png"
+      ],
+      "sitePriceGbp": 55.45,
+      "sourceUrl": "https://www.brewfitt.com/product/d-type-keg-coupler-c-w-jg-fittings-nrv/"
+    },
+    {
+      "slug": "g-type-keg-coupler-c-w-jg-fittings-nrv-grundy",
+      "name": "G Type Keg Coupler C/W JG Fittings & NRV (Grundy)",
+      "siteSku": "0502931",
+      "section": "cellar",
+      "category": "Keg Couplers",
+      "subcategory": null,
+      "description": "Compatible with Grundy Type Kegs Only.",
+      "images": [
+        "/products/g-type-keg-coupler-c-w-jg-fittings-nrv-grundy.jpg"
+      ],
+      "sitePriceGbp": 56.29,
+      "sourceUrl": "https://www.brewfitt.com/product/g-type-keg-coupler-c-w-jg-fittings-nrv-grundy/"
+    },
+    {
+      "slug": "keykeg-coupler-c-w-jg-fittings",
+      "name": "KeyKeg Coupler C/W JG Fittings",
+      "siteSku": "0502649",
+      "section": "cellar",
+      "category": "Keg Couplers",
+      "subcategory": null,
+      "description": "KeyKeg Coupler, compatible with KeyKegs Only.",
+      "images": [
+        "/products/keykeg-coupler-c-w-jg-fittings.jpg"
+      ],
+      "sitePriceGbp": 69.88,
+      "sourceUrl": "https://www.brewfitt.com/product/keykeg-coupler-c-w-jg-fittings/"
+    },
+    {
+      "slug": "s-type-keg-coupler-c-w-jg-fittings-nrv-sankey",
+      "name": "S Type Keg Coupler C/W JG Fittings & NRV (Sankey)",
+      "siteSku": "0502930",
+      "section": "cellar",
+      "category": "Keg Couplers",
+      "subcategory": null,
+      "description": "Compatible with Sankey Kegs Only/Used with Amstel, Carlsberg, Tetleys, Strongbow, Heineken, Fosters, Belhaven, Marston's.",
+      "images": [
+        "/products/s-type-keg-coupler-c-w-jg-fittings-nrv-sankey.jpg"
+      ],
+      "sitePriceGbp": 51.04,
+      "sourceUrl": "https://www.brewfitt.com/product/s-type-keg-coupler-c-w-jg-fittings-nrv-sankey/"
+    },
+    {
+      "slug": "u-type-keg-coupler-c-w-jg-fittings-nrv",
+      "name": "U Type Keg Coupler C/W JG Fittings & NRV",
+      "siteSku": "0502933",
+      "section": "cellar",
+      "category": "Keg Couplers",
+      "subcategory": null,
+      "description": "Compatible with U Type Kegs Only.",
+      "images": [
+        "/products/u-type-keg-coupler-c-w-jg-fittings-nrv.jpg"
+      ],
+      "sitePriceGbp": 55.45,
+      "sourceUrl": "https://www.brewfitt.com/product/u-type-keg-coupler-c-w-jg-fittings-nrv/"
+    },
+    {
+      "slug": "a-type-cleaning-bottle",
+      "name": "A Type  5L Cleaning Bottle",
+      "siteSku": "0502713",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Bottles",
+      "description": "Heavy Duty Cellar Cleaning Bottle, designed to withstand the gas pressure required to drive the cleaning solution around the dispense system. Also Ideal for cleaning Lindr Mobile Dispense units, Comes complete with A Type lid & Dip tube. We recommend purchasing a cleaning bottle when buying a Lindr unit.",
+      "images": [
+        "/products/a-type-cleaning-bottle.png"
+      ],
+      "sitePriceGbp": 83.58,
+      "sourceUrl": "https://www.brewfitt.com/product/a-type-cleaning-bottle/"
+    },
+    {
+      "slug": "g-type-cleaning-bottle",
+      "name": "G Type 5L Cleaning Bottle",
+      "siteSku": "0702823",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Bottles",
+      "description": "Heavy Duty Cellar Cleaning Bottle designed to withstand the gas pressure required to drive the cleaning solution around the dispense system. Ideal for cleaning Lindr Mobile Dispense units, Comes complete with Grundy Lid & Dip Tube. we recommend purchasing a cleaning bottle when buying a Lindr unit.",
+      "images": [
+        "/products/g-type-cleaning-bottle.png"
+      ],
+      "sitePriceGbp": 79.73,
+      "sourceUrl": "https://www.brewfitt.com/product/g-type-cleaning-bottle/"
+    },
+    {
+      "slug": "key-keg-cleaning-bottle",
+      "name": "KeyKeg 5 Litre Cleaning Bottle",
+      "siteSku": "0502957",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Bottles",
+      "description": "Heavy Duty Cellar Cleaning Bottle, designed to withstand the gas pressure required to drive the cleaning solution around the dispense system. This unit is also ideal for cleaning the Lindr Mobile Dispense range. Supplied parts will include an 'S' type cleaning bottle with the correlating 'S' type coupler.",
+      "images": [
+        "/products/key-keg-cleaning-bottle.png"
+      ],
+      "sitePriceGbp": 124.17,
+      "sourceUrl": "https://www.brewfitt.com/product/key-keg-cleaning-bottle/"
+    },
+    {
+      "slug": "s-type-cleaning-bottle",
+      "name": "S Type 5L Cleaning Bottle",
+      "siteSku": "0502828",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Bottles",
+      "description": "Heavy Duty Cellar Cleaning Bottle designed to withstand the gas pressure required to drive the cleaning solution around the dispense system. Ideal for cleaning Lindr Mobile Dispense units, Comes complete with Sankey Lid & Dip Tube. we recommend purchasing a cleaning bottle when buying a Lindr unit.",
+      "images": [
+        "/products/s-type-cleaning-bottle.png"
+      ],
+      "sitePriceGbp": 78.81,
+      "sourceUrl": "https://www.brewfitt.com/product/s-type-cleaning-bottle/"
+    },
+    {
+      "slug": "u-type-cleaning-bottle",
+      "name": "U Type 5L Cleaning Bottle",
+      "siteSku": "0502712",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Bottles",
+      "description": "Heavy Duty Cellar Cleaning Bottle, designed to withstand the gas pressure required to drive the cleaning solution around the dispense system. Also Ideal for cleaning Lindr Mobile Dispense units, Comes complete with U Type Coupler Lid & Dip tube. We recommend purchasing a cleaning bottle when buying a Lindr unit.",
+      "images": [
+        "/products/u-type-cleaning-bottle.png"
+      ],
+      "sitePriceGbp": 83.58,
+      "sourceUrl": "https://www.brewfitt.com/product/u-type-cleaning-bottle/"
+    },
+    {
+      "slug": "pipeline-purple-beer-line-cleaning-powder",
+      "name": "Pipeline Purple Professional Beer Line Cleaning Powder (10 Sachets)",
+      "siteSku": "CLEAN-PIPEPURP-PRO",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Powder",
+      "description": "Pipeline Purple Professional Beer Line Cleaning Powder. Please note: Product listing is for x10 Sachets. Pipeline Purple Professional Beer Line Cleaning Powder is a powerful alkaline beer line cleaner designed to remove yeast, protein build-up, bacteria and beer stone from draught beer dispense systems.",
+      "images": [
+        "/products/pipeline-purple-beer-line-cleaning-powder.png"
+      ],
+      "sitePriceGbp": 44,
+      "sourceUrl": "https://www.brewfitt.com/product/pipeline-purple-beer-line-cleaning-powder/"
+    },
+    {
+      "slug": "a-type-cleaning-socket-c-w-jg-fittings-3-8",
+      "name": "A Type Cleaning Socket C/W JG Fittings (3/8\")",
+      "siteSku": "0000454",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Sockets",
+      "description": "Compatible with A Type Kegs Only.",
+      "images": [
+        "/products/a-type-cleaning-socket-c-w-jg-fittings-3-8.jpg"
+      ],
+      "sitePriceGbp": 15.85,
+      "sourceUrl": "https://www.brewfitt.com/product/a-type-cleaning-socket-c-w-jg-fittings-3-8/"
+    },
+    {
+      "slug": "g-type-cleaning-socket-c-w-jg-fittings-3-8",
+      "name": "G Type Cleaning Socket C/W JG Fittings (3/8\")",
+      "siteSku": "0000563",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Sockets",
+      "description": "Compatible with Grundy Type Kegs Only.",
+      "images": [
+        "/products/g-type-cleaning-socket-c-w-jg-fittings-3-8.jpg"
+      ],
+      "sitePriceGbp": 15.85,
+      "sourceUrl": "https://www.brewfitt.com/product/g-type-cleaning-socket-c-w-jg-fittings-3-8/"
+    },
+    {
+      "slug": "key-keg-cap-tube-for-cleaning-bottle",
+      "name": "Key Keg Cap & Tube For Cleaning Bottle",
+      "siteSku": "774-250",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Sockets",
+      "description": "Cap and tube for 5 Litre Cleaning Bottle (Bottle not included).",
+      "images": [
+        "/products/key-keg-cap-tube-for-cleaning-bottle.jpg"
+      ],
+      "sitePriceGbp": 88.83,
+      "sourceUrl": "https://www.brewfitt.com/product/key-keg-cap-tube-for-cleaning-bottle/"
+    },
+    {
+      "slug": "keykeg-cleaning-socket-c-w-jg-fittings-3-8",
+      "name": "KeyKeg Cleaning Socket C/W JG Fittings (3/8\")",
+      "siteSku": "0000612",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Sockets",
+      "description": "Compatible with Key Kegs Only.",
+      "images": [
+        "/products/keykeg-cleaning-socket-c-w-jg-fittings-3-8.jpg"
+      ],
+      "sitePriceGbp": 24.63,
+      "sourceUrl": "https://www.brewfitt.com/product/keykeg-cleaning-socket-c-w-jg-fittings-3-8/"
+    },
+    {
+      "slug": "s-type-cleaning-socket-c-w-jg-fittings-3-8",
+      "name": "S Type Cleaning Socket C/W JG Fittings (3/8\")",
+      "siteSku": "0000562",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Sockets",
+      "description": "Compatible with Sankey Kegs Only.",
+      "images": [
+        "/products/s-type-cleaning-socket-c-w-jg-fittings-3-8.jpg"
+      ],
+      "sitePriceGbp": 25.68,
+      "sourceUrl": "https://www.brewfitt.com/product/s-type-cleaning-socket-c-w-jg-fittings-3-8/"
+    },
+    {
+      "slug": "u-type-cleaning-socket-c-w-jg-fittings-3-8",
+      "name": "U Type Cleaning Socket C/W JG Fittings (3/8\")",
+      "siteSku": "0000003",
+      "section": "cellar",
+      "category": "Line Cleaning Equipment",
+      "subcategory": "Cleaning Sockets",
+      "description": "Compatible with U Type Kegs Only.",
+      "images": [
+        "/products/u-type-cleaning-socket-c-w-jg-fittings-3-8.jpg"
+      ],
+      "sitePriceGbp": 16.75,
+      "sourceUrl": "https://www.brewfitt.com/product/u-type-cleaning-socket-c-w-jg-fittings-3-8/"
+    },
+    {
+      "slug": "mini-n2-nitrogen-bottle-pack-2-cylinders",
+      "name": "Mini N2 Nitrogen Bottle Pack (2 Cylinders)",
+      "siteSku": "1002434",
+      "section": "cellar",
+      "category": "Nitro Dispense",
+      "subcategory": null,
+      "description": "Mini cylinder of food grade Nitrogen. For use with Grey Goose nitro machines, Infuzer nitro panel and ColdFusion unit. Each cylinder infuses up to 200 litres of liquid.",
+      "images": [
+        "/products/mini-n2-nitrogen-bottle-pack-2-cylinders.png"
+      ],
+      "sitePriceGbp": 83.58,
+      "sourceUrl": "https://www.brewfitt.com/product/mini-n2-nitrogen-bottle-pack-2-cylinders/"
+    },
+    {
+      "slug": "infuser-draught-cocktail",
+      "name": "Nitro Infuzer",
+      "siteSku": null,
+      "section": "cellar",
+      "category": "Nitro Dispense",
+      "subcategory": null,
+      "description": "One of the world’s most advanced in-line gas infusion systems, for enhanced drinks dispense, the Brewfitt Nitro Infuzer transforms beverages through the introduction of N2 or CO2 during dispense.",
+      "images": [
+        "/products/infuser-draught-cocktail.png"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/infuser-draught-cocktail/"
+    },
+    {
+      "slug": "primary-co2-regulator-bottle-mounted-3-8-45psi-c-w-shut-off-valve-jg-fittings-twin-gauge",
+      "name": "Primary CO2 Regulator (Bottle Mounted) 3/8\" 45PSI C/W Shut Off Valve, JG Fittings & Twin Gauge",
+      "siteSku": "28/1510PB30",
+      "section": "cellar",
+      "category": "Regulators",
+      "subcategory": null,
+      "description": "Approved by many major brewers. Primary pressure reducing regulators or primary reduction valves (PRV) as they are commonly known are used to connect CO2 & mixed gas cylinders to a beverage dispense system. These gases will then provide `top pressure` to the product kegs and also to any fitted gas pumps from the dedicated gas type ring-mains.",
+      "images": [
+        "/products/primary-co2-regulator-bottle-mounted-3-8-45psi-c-w-shut-off-valve-jg-fittings-twin-gauge.jpg"
+      ],
+      "sitePriceGbp": 71.77,
+      "sourceUrl": "https://www.brewfitt.com/product/primary-co2-regulator-bottle-mounted-3-8-45psi-c-w-shut-off-valve-jg-fittings-twin-gauge/"
+    },
+    {
+      "slug": "primary-co2-regulator-wall-mounted-3-8-45-psi-c-w-twin-gauge-jg-fittings-grey-hose",
+      "name": "Primary CO2 Regulator (Wall Mounted) 3/8\" 45 PSI C/W Twin Gauge, JG Fittings & Grey Hose",
+      "siteSku": "28/1540PB30FC",
+      "section": "cellar",
+      "category": "Regulators",
+      "subcategory": null,
+      "description": "Primary pressure reducing regulators or primary reduction valves (PRV) as they are commonly known are used to connect CO2 & mixed gas cylinders to a beverage dispense system. These gases will then provide `top pressure` to the product kegs and also to any fitted gas pumps from the dedicated gas type ring-mains.",
+      "images": [
+        "/products/primary-co2-regulator-wall-mounted-3-8-45-psi-c-w-twin-gauge-jg-fittings-grey-hose.jpg"
+      ],
+      "sitePriceGbp": 76.81,
+      "sourceUrl": "https://www.brewfitt.com/product/primary-co2-regulator-wall-mounted-3-8-45-psi-c-w-twin-gauge-jg-fittings-grey-hose/"
+    },
+    {
+      "slug": "primary-mixed-gas-regulator-bottle-mounted-3-8-55psi-c-w-twin-gauge-double-saftey-valve",
+      "name": "Primary Mixed Gas Regulator (Bottle Mounted) 3/8\" 55PSI C/W Twin Gauge &  Double Safety Valve",
+      "siteSku": "28/1570PB38F",
+      "section": "cellar",
+      "category": "Regulators",
+      "subcategory": null,
+      "description": "Approved by many major brewers. Primary pressure reducing regulators or primary reduction valves (PRV) as they are commonly known are used to connect CO2 & mixed gas cylinders to a beverage dispense system. These gases will then provide `top pressure` to the product kegs and also to any fitted gas pumps from the dedicated gas type ring-mains.",
+      "images": [
+        "/products/primary-mixed-gas-regulator-bottle-mounted-3-8-55psi-c-w-twin-gauge-double-saftey-valve.jpg"
+      ],
+      "sitePriceGbp": 75.79,
+      "sourceUrl": "https://www.brewfitt.com/product/primary-mixed-gas-regulator-bottle-mounted-3-8-55psi-c-w-twin-gauge-double-saftey-valve/"
+    },
+    {
+      "slug": "primary-mixed-gas-regulator-wall-mounted-3-8-55psi-c-w-twin-gauge-jg-fittings-twin-gauge",
+      "name": "Primary Mixed Gas Regulator (Wall Mounted) 3/8\" 55PSI C/W Twin Gauge, JG Fittings & Twin Gauge",
+      "siteSku": "28/1553PB38F",
+      "section": "cellar",
+      "category": "Regulators",
+      "subcategory": null,
+      "description": "Approved by many major brewers. Primary pressure reducing regulators or primary reduction valves (PRV) as they are commonly known are used to connect CO2 & mixed gas cylinders to a beverage dispense system. These gases will then provide `top pressure` to the product kegs and also to any fitted gas pumps from the dedicated gas type ring-mains.",
+      "images": [
+        "/products/primary-mixed-gas-regulator-wall-mounted-3-8-55psi-c-w-twin-gauge-jg-fittings-twin-gauge.jpg"
+      ],
+      "sitePriceGbp": 79.69,
+      "sourceUrl": "https://www.brewfitt.com/product/primary-mixed-gas-regulator-wall-mounted-3-8-55psi-c-w-twin-gauge-jg-fittings-twin-gauge/"
+    },
+    {
+      "slug": "secondary-regulator-c-w-shut-off-valve-wall-bracket-jg-fittings-gauge",
+      "name": "Secondary Regulator C/W Shut Off Valve, Wall Bracket, JG Fittings & Gauge",
+      "siteSku": "24/360PU30F",
+      "section": "cellar",
+      "category": "Regulators",
+      "subcategory": null,
+      "description": "Approved by many major brewers. Secondary reduction valves (SRV) or sec valves as they are commonly known are used in a beverage dispense system to regulate the dispense pressure to individual brands, they may be also installed to provide specific pressure to a gas pump. Sec valves can be used on all gas types and also in-conjunction with air-compressors.",
+      "images": [
+        "/products/secondary-regulator-c-w-shut-off-valve-wall-bracket-jg-fittings-gauge.png"
+      ],
+      "sitePriceGbp": 36.46,
+      "sourceUrl": "https://www.brewfitt.com/product/secondary-regulator-c-w-shut-off-valve-wall-bracket-jg-fittings-gauge/"
+    },
+    {
+      "slug": "1-2-male-1-2-female-tap-adapter",
+      "name": "1/2\" Male - 1/2\" Female Tap Adapter",
+      "siteSku": "0021854",
+      "section": "bar",
+      "category": "Badge Holders",
+      "subcategory": null,
+      "description": "Required when a badge holder is used on a tower - provides an extension for the badge holder to fit over the adapter. Also used on Keg walls to provide additional length, if a thick wall.",
+      "images": [
+        "/products/1-2-male-1-2-female-tap-adapter.jpg"
+      ],
+      "sitePriceGbp": 2.78,
+      "sourceUrl": "https://www.brewfitt.com/product/1-2-male-1-2-female-tap-adapter/"
+    },
+    {
+      "slug": "extended-chrome-round-badge-holder",
+      "name": "Extended Chrome Round Badge Holder",
+      "siteSku": "0015979",
+      "section": "bar",
+      "category": "Badge Holders",
+      "subcategory": null,
+      "description": "Can be used on most of the towers in our range and also T bars with a Tap adaptor.",
+      "images": [
+        "/products/extended-chrome-round-badge-holder.jpg"
+      ],
+      "sitePriceGbp": 25.57,
+      "sourceUrl": "https://www.brewfitt.com/product/extended-chrome-round-badge-holder/"
+    },
+    {
+      "slug": "extended-gold-round-badge-holder",
+      "name": "Extended Gold Round Badge Holder",
+      "siteSku": "0015980",
+      "section": "bar",
+      "category": "Badge Holders",
+      "subcategory": null,
+      "description": "Can be used on most of the towers in our range and also T bars with a Tap adaptor.",
+      "images": [
+        "/products/extended-gold-round-badge-holder.jpg"
+      ],
+      "sitePriceGbp": 35.4,
+      "sourceUrl": "https://www.brewfitt.com/product/extended-gold-round-badge-holder/"
+    },
+    {
+      "slug": "ring-spacer-chrome",
+      "name": "Ring Spacer - Chrome",
+      "siteSku": "0064111",
+      "section": "bar",
+      "category": "Badge Holders",
+      "subcategory": null,
+      "description": "Required when an FC4 Tap is used on a tower without any badge holders. The ring spacer is used to cover any of the backshaft showing.",
+      "images": [
+        "/products/ring-spacer-chrome.jpg"
+      ],
+      "sitePriceGbp": 7.35,
+      "sourceUrl": "https://www.brewfitt.com/product/ring-spacer-chrome/"
+    },
+    {
+      "slug": "round-double-sided-sticky-pads-that-stick-badges-to-solid-or-led-badge-holders-on-the-tower-pack-of-10",
+      "name": "Round Sticky Pads for Badges (Bag of 10)",
+      "siteSku": "0000512",
+      "section": "bar",
+      "category": "Badge Holders",
+      "subcategory": null,
+      "description": "Round double-sided adhesive foam gasket/pad to enable branded font badges to be attached to a tower. Can be used in conjunction with either a solid or an LED badge holder. The price includes a bag of 10.",
+      "images": [
+        "/products/round-double-sided-sticky-pads-that-stick-badges-to-solid-or-led-badge-holders-on-the-tower-pack-of-10.jpg"
+      ],
+      "sitePriceGbp": 5.25,
+      "sourceUrl": "https://www.brewfitt.com/product/round-double-sided-sticky-pads-that-stick-badges-to-solid-or-led-badge-holders-on-the-tower-pack-of-10/"
+    },
+    {
+      "slug": "side-arm-chrome-round-badge-holder",
+      "name": "Side Arm Chrome Round Badge Holder",
+      "siteSku": "0026559",
+      "section": "bar",
+      "category": "Badge Holders",
+      "subcategory": null,
+      "description": "Can be used on most of the towers in our range and also T bars with a Tap adaptor.",
+      "images": [
+        "/products/side-arm-chrome-round-badge-holder.jpg"
+      ],
+      "sitePriceGbp": 14.09,
+      "sourceUrl": "https://www.brewfitt.com/product/side-arm-chrome-round-badge-holder/"
+    },
+    {
+      "slug": "side-arm-gold-round-badge-holder",
+      "name": "Side Arm Gold Round Badge Holder",
+      "siteSku": "0026558",
+      "section": "bar",
+      "category": "Badge Holders",
+      "subcategory": null,
+      "description": "Can be used on most of the towers in our range and also T bars with a Tap adaptor.",
+      "images": [
+        "/products/side-arm-gold-round-badge-holder.jpg"
+      ],
+      "sitePriceGbp": 17.11,
+      "sourceUrl": "https://www.brewfitt.com/product/side-arm-gold-round-badge-holder/"
+    },
+    {
+      "slug": "standard-chrome-badge-holder",
+      "name": "Standard Chrome Badge Holder",
+      "siteSku": "0000847",
+      "section": "bar",
+      "category": "Badge Holders",
+      "subcategory": null,
+      "description": "Can be used on most of the towers in our range and also T bars with a Tap adaptor.",
+      "images": [
+        "/products/standard-chrome-badge-holder.jpg"
+      ],
+      "sitePriceGbp": 12.11,
+      "sourceUrl": "https://www.brewfitt.com/product/standard-chrome-badge-holder/"
+    },
+    {
+      "slug": "standard-gold-round-badge-holder",
+      "name": "Standard Gold Round Badge Holder",
+      "siteSku": "0000853",
+      "section": "bar",
+      "category": "Badge Holders",
+      "subcategory": null,
+      "description": "Can be used on most of the towers in our range and also T bars with a Tap adaptor.",
+      "images": [
+        "/products/standard-gold-round-badge-holder.jpg"
+      ],
+      "sitePriceGbp": 16.73,
+      "sourceUrl": "https://www.brewfitt.com/product/standard-gold-round-badge-holder/"
+    },
+    {
+      "slug": "bar-lighting-transformer",
+      "name": "Bar Lighting Transformer 6 out 240/24V",
+      "siteSku": "0000619",
+      "section": "bar",
+      "category": "Bar Lighting",
+      "subcategory": "Bar Lighting Transformer",
+      "description": "Bar Lighting Transformer 6 out 240/24V.",
+      "images": [
+        "/products/bar-lighting-transformer.jpg"
+      ],
+      "sitePriceGbp": 69.22,
+      "sourceUrl": "https://www.brewfitt.com/product/bar-lighting-transformer/"
+    },
+    {
+      "slug": "wall-mounted-led-badge-holder",
+      "name": "24v Wall Mounted LED Badge Holder",
+      "siteSku": "KIT0016",
+      "section": "bar",
+      "category": "Bar Lighting",
+      "subcategory": "LED Board",
+      "description": "Brighten up your tap wall with illuminated badge holders; Brass Chrome Plated LED Round badger Holder; Wall mounted.",
+      "images": [
+        "/products/wall-mounted-led-badge-holder.jpg"
+      ],
+      "sitePriceGbp": 69.43,
+      "sourceUrl": "https://www.brewfitt.com/product/wall-mounted-led-badge-holder/"
+    },
+    {
+      "slug": "led-board",
+      "name": "LED Board",
+      "siteSku": "0058606",
+      "section": "bar",
+      "category": "Bar Lighting",
+      "subcategory": "LED Board",
+      "description": "Used for all of the dispense towers with domed illuminated badge holders.",
+      "images": [
+        "/products/led-board.jpg"
+      ],
+      "sitePriceGbp": 14.23,
+      "sourceUrl": "https://www.brewfitt.com/product/led-board/"
+    },
+    {
+      "slug": "maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-4",
+      "name": "Gamko MG3/150L Maxiglass left hand hinged 150 litre under counter bottle cooler",
+      "siteSku": "MG3/150L",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Maxiglass left hand hinged 150 litre under counter bottle cooler. Vertical LED lights with dimmer switch; Anthracite solid door frame; Storage Capacity: 181 x 250ml bottles, 143 x 330ml bottles; Refrigerant type: R600a.",
+      "images": [
+        "/products/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-4.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-4/"
+    },
+    {
+      "slug": "maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-3-2",
+      "name": "Gamko MG3/150LCS Maxiglass left hand hinged 150 litre under counter bottle cooler",
+      "siteSku": "MG3/150LCS",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/150LCS Maxiglass left hand hinged 150 litre under counter bottle cooler.",
+      "images": [
+        "/products/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-3-2.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-3-2/"
+    },
+    {
+      "slug": "maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler",
+      "name": "Gamko MG3/150LG Maxiglass left hand hinged 150 litre under counter bottle cooler",
+      "siteSku": "MG3/150LG",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/150LG Maxiglass left hand hinged 150 litre under counter bottle cooler.",
+      "images": [
+        "/products/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler/"
+    },
+    {
+      "slug": "maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-2",
+      "name": "Gamko MG3/150LGCS Maxiglass left hand hinged 150 litre under counter bottle cooler",
+      "siteSku": "MG3/150LGCS",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/150LGCS Maxiglass left hand hinged 150 litre under counter bottle cooler.",
+      "images": [
+        "/products/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-2.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-2/"
+    },
+    {
+      "slug": "maxiglass-right-hand-hinged-150-litre-under-counter-bottle-cooler-2",
+      "name": "Gamko MG3/150R Maxiglass right hand hinged 150 litre under counter bottle cooler",
+      "siteSku": "MG3/150R",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/150R Maxiglass right hand hinged 150 litre under counter bottle cooler.",
+      "images": [
+        "/products/maxiglass-right-hand-hinged-150-litre-under-counter-bottle-cooler-2.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-right-hand-hinged-150-litre-under-counter-bottle-cooler-2/"
+    },
+    {
+      "slug": "maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-3",
+      "name": "Gamko MG3/150RCS Maxiglass right hand hinged 150 litre under counter bottle cooler",
+      "siteSku": "MG3/150RCS",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/150RCS Maxiglass right hand hinged 150 litre under counter bottle cooler.",
+      "images": [
+        "/products/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-3.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-3/"
+    },
+    {
+      "slug": "maxiglass-right-hand-hinged-150-litre-under-counter-bottle-cooler",
+      "name": "Gamko MG3/150RG Maxiglass right hand hinged 150 litre under counter bottle cooler",
+      "siteSku": "MG3/150RG",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/150RG Maxiglass right hand hinged 150 litre under counter bottle cooler.",
+      "images": [
+        "/products/maxiglass-right-hand-hinged-150-litre-under-counter-bottle-cooler.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-right-hand-hinged-150-litre-under-counter-bottle-cooler/"
+    },
+    {
+      "slug": "maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler",
+      "name": "Gamko MG3/150RGCS Maxiglass right hand hinged 150 litre under counter bottle cooler",
+      "siteSku": "MG3/150RGCS",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/150RGCS Maxiglass right hand hinged 150 litre under counter bottle cooler.",
+      "images": [
+        "/products/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-left-hand-hinged-150-litre-under-counter-bottle-cooler-copy/"
+    },
+    {
+      "slug": "maxiglass-2-x-hinged-250-litre-under-counter-bottle-cooler-4",
+      "name": "Gamko MG3/250CS Maxiglass 2 x hinged 250 litre under counter bottle cooler",
+      "siteSku": "MG3/250CS",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/250CS Maxiglass 2 x hinged 250 litre under counter bottle cooler. Vertical LED lights with dimmer switch; Stainless steel glass door frame; Storage Capacity: 260 x 250ml bottles, 225 x 330ml bottles; Refrigerant type: R600a.",
+      "images": [
+        "/products/maxiglass-2-x-hinged-250-litre-under-counter-bottle-cooler-4.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-2-x-hinged-250-litre-under-counter-bottle-cooler-4/"
+    },
+    {
+      "slug": "maxiglass-2-x-hinged-250-litre-under-counter-bottle-cooler",
+      "name": "Gamko MG3/250G Maxiglass 2 x hinged 250 litre under counter bottle cooler",
+      "siteSku": "MG3/250G",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/250G Maxiglass 2 x hinged 250 litre under counter bottle cooler. Vertical LED lights with dimmer switch; Anthracite glass door frame; Storage Capacity: 260 x 250ml bottles, 225 x 330ml bottles; Refrigerant type: R600a.",
+      "images": [
+        "/products/maxiglass-2-x-hinged-250-litre-under-counter-bottle-cooler.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-2-x-hinged-250-litre-under-counter-bottle-cooler/"
+    },
+    {
+      "slug": "maxiglass-2-x-hinged-250-litre-under-counter-bottle-cooler-2",
+      "name": "Gamko MG3/250GCS Maxiglass 2 x hinged 250 litre under counter bottle cooler",
+      "siteSku": "MG3/250GCS",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/250GCS Maxiglass 2 x hinged 250 litre under counter bottle cooler. Vertical LED lights with dimmer switch; Stainless steel glass door frame; Storage Capacity: 260 x 250ml bottles, 225 x 330ml bottles; Refrigerant type: R600a.",
+      "images": [
+        "/products/maxiglass-2-x-hinged-250-litre-under-counter-bottle-cooler-2.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-2-x-hinged-250-litre-under-counter-bottle-cooler-2/"
+    },
+    {
+      "slug": "maxiglass-2-x-sliding-door-250-litre-under-counter-bottle-cooler",
+      "name": "Gamko MG3/250SD Maxiglass 2 x sliding door 250 litre under counter bottle cooler",
+      "siteSku": "MG3/250SD",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/250SD Maxiglass 2 x sliding door 250 litre under counter bottle cooler.",
+      "images": [
+        "/products/maxiglass-2-x-sliding-door-250-litre-under-counter-bottle-cooler.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-2-x-sliding-door-250-litre-under-counter-bottle-cooler/"
+    },
+    {
+      "slug": "maxiglass-2-x-hinged-275-litre-under-counter-bottle-cooler",
+      "name": "Gamko MG3/275G Maxiglass 2 x hinged 275 litre under counter bottle cooler",
+      "siteSku": "MG3/275G",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/275G Maxiglass 2 x hinged 275 litre under counter bottle cooler. Vertical LED lights with dimmer switch; Anthracite glass door frame; Dimensions: 1200 x 576 x 900/910 mm; Storage Capacity: 370 x 250ml bottles, 322 x 330ml bottles.",
+      "images": [
+        "/products/maxiglass-2-x-hinged-275-litre-under-counter-bottle-cooler.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-2-x-hinged-275-litre-under-counter-bottle-cooler/"
+    },
+    {
+      "slug": "maxiglass-2-x-hinged-275-litre-under-counter-bottle-cooler-2",
+      "name": "Gamko MG3/275GCS Maxiglass 2 x hinged 275 litre under counter bottle cooler",
+      "siteSku": "MG3/275GCS",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/275GCS Maxiglass 2 x hinged 275 litre under counter bottle cooler. Vertical LED lights with dimmer switch; Stainless steel glass door frame; Dimensions: 1200 x 576 x 900/910 mm; Storage Capacity: 370 x 250ml bottles, 322 x 330ml bottles.",
+      "images": [
+        "/products/maxiglass-2-x-hinged-275-litre-under-counter-bottle-cooler-2.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-2-x-hinged-275-litre-under-counter-bottle-cooler-2/"
+    },
+    {
+      "slug": "maxiglass-2-x-sliding-door-275-litre-under-counter-bottle-cooler-2",
+      "name": "Gamko MG3/275SD Maxiglass 2 x sliding door 275 litre under counter bottle cooler",
+      "siteSku": "MG3/275SD",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/275SD Maxiglass 2 x sliding door 275 litre under counter bottle cooler.",
+      "images": [
+        "/products/maxiglass-2-x-sliding-door-275-litre-under-counter-bottle-cooler-2.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-2-x-sliding-door-275-litre-under-counter-bottle-cooler-2/"
+    },
+    {
+      "slug": "maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler-2",
+      "name": "Gamko MG3/315 Maxiglass 3 x hinged 315 litre under counter bottle cooler",
+      "siteSku": "MG3/315",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Maxiglass 3 x hinged 315 litre under counter bottle cooler. Vertical LED lights with dimmer switch; Anthracite glass door frame; Dimensions: 1350 x 576 x 900/910 mm; Storage Capacity: 415 x 250ml bottles, 366 x 330ml bottles.",
+      "images": [
+        "/products/maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler-2.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler-2/"
+    },
+    {
+      "slug": "maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler-4",
+      "name": "Gamko MG3/315CS Maxiglass 3 x hinged 315 litre under counter bottle cooler",
+      "siteSku": "MG3/315CS",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/315CS Maxiglass 3 x hinged 315 litre under counter bottle cooler. Vertical LED lights with dimmer switch; Stainless steel glass door frame; Dimensions: 1350 x 576 x 900/910 mm; Storage Capacity: 415 x 250ml bottles, 366 x 330ml bottles.",
+      "images": [
+        "/products/maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler-4.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler-4/"
+    },
+    {
+      "slug": "maxiglass-2-x-sliding-door-275-litre-under-counter-bottle-cooler",
+      "name": "Gamko MG3/315G Maxiglass 3 x hinged 315 litre under counter bottle cooler",
+      "siteSku": "MG3/315G",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/315G Maxiglass 3 x hinged 315 litre under counter bottle cooler. Vertical LED lights with dimmer switch; Anthracite glass door frame; Dimensions: 1350 x 576 x 900/910 mm; Storage Capacity: 370 x 250ml bottles, 322 x 330ml bottles.",
+      "images": [
+        "/products/maxiglass-2-x-sliding-door-275-litre-under-counter-bottle-cooler.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-2-x-sliding-door-275-litre-under-counter-bottle-cooler/"
+    },
+    {
+      "slug": "maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler",
+      "name": "Gamko MG3/315GCS Maxiglass 3 x hinged 315 litre under counter bottle cooler",
+      "siteSku": "MG3/315GCS",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/315GCS Maxiglass 3 x hinged 315 litre under counter bottle cooler. Vertical LED lights with dimmer switch; Stainless steel glass door frame; Dimensions: 1350 x 576 x 900/910 mm; Storage Capacity: 370 x 250ml bottles, 322 x 330ml bottles.",
+      "images": [
+        "/products/maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-3-x-hinged-315-litre-under-counter-bottle-cooler/"
+    },
+    {
+      "slug": "maxiglass-3-x-sliding-door-315-litre-under-counter-bottle-cooler",
+      "name": "Gamko MG3/315SD Maxiglass 3 x sliding door 315 litre under counter bottle cooler",
+      "siteSku": "MG3/315SD",
+      "section": "bar",
+      "category": "Beer Coolers",
+      "subcategory": "Bottle Coolers",
+      "description": "Gamko MG3/315SD Maxiglass 3 x sliding door 315 litre under counter bottle cooler.",
+      "images": [
+        "/products/maxiglass-3-x-sliding-door-315-litre-under-counter-bottle-cooler.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/maxiglass-3-x-sliding-door-315-litre-under-counter-bottle-cooler/"
+    },
+    {
+      "slug": "clamp-assembly-black-for-towers-with-3-dispense-points-75mm-opening",
+      "name": "Clamp Assembly (Black) for Towers with 3+ Dispense Points (75mm Opening)",
+      "siteSku": "0000406",
+      "section": "bar",
+      "category": "Clamp Assemblies",
+      "subcategory": null,
+      "description": "Clamp assemblies on towers are used instead of drilling holes in the counter top. This enables the towers to be repositioned or removed without leaving a hole in the bar top.",
+      "images": [
+        "/products/clamp-assembly-black-for-towers-with-3-dispense-points-75mm-opening.jpg"
+      ],
+      "sitePriceGbp": 83.47,
+      "sourceUrl": "https://www.brewfitt.com/product/clamp-assembly-black-for-towers-with-3-dispense-points-75mm-opening/"
+    },
+    {
+      "slug": "clamp-assembly-black-for-towers-with-recirculation-75mm-opening",
+      "name": "Clamp Assembly (Black) for Towers with Recirculation (75mm Opening)",
+      "siteSku": "0000280",
+      "section": "bar",
+      "category": "Clamp Assemblies",
+      "subcategory": null,
+      "description": "Clamp assemblies on towers are used instead of drilling holes in the counter top. This enables the towers to be repositioned or removed without leaving a hole in the bar top.",
+      "images": [
+        "/products/clamp-assembly-black-for-towers-with-recirculation-75mm-opening.jpg"
+      ],
+      "sitePriceGbp": 35.91,
+      "sourceUrl": "https://www.brewfitt.com/product/clamp-assembly-black-for-towers-with-recirculation-75mm-opening/"
+    },
+    {
+      "slug": "cobra-clamp-assembly",
+      "name": "Cobra Clamp Assembly",
+      "siteSku": "0000036",
+      "section": "bar",
+      "category": "Clamp Assemblies",
+      "subcategory": null,
+      "description": "Clamp assemblies on towers are used instead of drilling holes in the counter top. This enables the towers to be repositioned or removed without leaving a hole in the bar top.",
+      "images": [
+        "/products/cobra-clamp-assembly.jpg"
+      ],
+      "sitePriceGbp": 35.59,
+      "sourceUrl": "https://www.brewfitt.com/product/cobra-clamp-assembly/"
+    },
+    {
+      "slug": "hexagonal-clamp-black-for-ceramic-towers-75mm-opening",
+      "name": "Hexagonal Clamp (Black) for Ceramic Towers (75mm Opening)",
+      "siteSku": "0000403",
+      "section": "bar",
+      "category": "Clamp Assemblies",
+      "subcategory": null,
+      "description": "Clamp assemblies on towers are used instead of drilling holes in the counter top. This enables the towers to be repositioned or removed without leaving a hole in the bar top.",
+      "images": [
+        "/products/hexagonal-clamp-black-for-ceramic-towers-75mm-opening.jpg"
+      ],
+      "sitePriceGbp": 117.07,
+      "sourceUrl": "https://www.brewfitt.com/product/hexagonal-clamp-black-for-ceramic-towers-75mm-opening/"
+    },
+    {
+      "slug": "complete-glass-freshener",
+      "name": "Complete Glass Freshener",
+      "siteSku": "0031402",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "Purchase as a spare/replacement only for existing drip trays.",
+      "images": [
+        "/products/complete-glass-freshener.jpg"
+      ],
+      "sitePriceGbp": 34.88,
+      "sourceUrl": "https://www.brewfitt.com/product/complete-glass-freshener/"
+    },
+    {
+      "slug": "drain-kit-for-drip-tray",
+      "name": "Drain Kit for Drip Tray",
+      "siteSku": "0031004",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "Purchase as a spare/replacement only for existing drip trays.",
+      "images": [
+        "/products/drain-kit-for-drip-tray.jpg"
+      ],
+      "sitePriceGbp": 45.74,
+      "sourceUrl": "https://www.brewfitt.com/product/drain-kit-for-drip-tray/"
+    },
+    {
+      "slug": "extended-drip-tray-support-brackets",
+      "name": "Extended Drip Tray Support Brackets",
+      "siteSku": "0000415",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "To be used with all standard stainless steel drip trays.",
+      "images": [
+        "/products/extended-drip-tray-support-brackets.jpg"
+      ],
+      "sitePriceGbp": 19.02,
+      "sourceUrl": "https://www.brewfitt.com/product/extended-drip-tray-support-brackets/"
+    },
+    {
+      "slug": "glass-freshener-connection-kit-water",
+      "name": "Glass Freshener Connection Kit (Mains Water)",
+      "siteSku": "0502175",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "Glass Freshener Connection Kit for Mains Water. 1x 3/8” stem elbow; 1x polymignion water pressure reducer (Rated up to maximum of 3 Bar of pressure); 1x ¾” bsp to 3/8” tube fitting; 4 Metres 3/8\" blue pipework (2x 2 metre).",
+      "images": [
+        "/products/glass-freshener-connection-kit-water.jpg"
+      ],
+      "sitePriceGbp": 29.44,
+      "sourceUrl": "https://www.brewfitt.com/product/glass-freshener-connection-kit-water/"
+    },
+    {
+      "slug": "glass-freshener-repair-kit",
+      "name": "Glass Freshener Repair Kit",
+      "siteSku": "0503098",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "Repair kit for Celli Glass Freshener includes: Spring; Pin; Pin Washer; Chrome Top.",
+      "images": [
+        "/products/glass-freshener-repair-kit.jpg"
+      ],
+      "sitePriceGbp": 19.81,
+      "sourceUrl": "https://www.brewfitt.com/product/glass-freshener-repair-kit/"
+    },
+    {
+      "slug": "rod-type-support-bracket-for-30x18x3-drip-tray",
+      "name": "Rod Type Support Bracket for 30x18x3 drip tray",
+      "siteSku": "0000070",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "Only compatiable with 30 x 18 x 3 stainless steel drip trays.",
+      "images": [
+        "/products/rod-type-support-bracket-for-30x18x3-drip-tray.jpg"
+      ],
+      "sitePriceGbp": 34.12,
+      "sourceUrl": "https://www.brewfitt.com/product/rod-type-support-bracket-for-30x18x3-drip-tray/"
+    },
+    {
+      "slug": "rod-type-support-bracket-for-50x22x3-drip-tray",
+      "name": "Rod Type Support Bracket for 50x22x3 drip tray",
+      "siteSku": "0000341",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "Only compatiable with 50 x 22 x 3 t stainless steel drip trays.",
+      "images": [
+        "/products/rod-type-support-bracket-for-50x22x3-drip-tray.jpg"
+      ],
+      "sitePriceGbp": 36.75,
+      "sourceUrl": "https://www.brewfitt.com/product/rod-type-support-bracket-for-50x22x3-drip-tray/"
+    },
+    {
+      "slug": "single-6-drip-tray-carrier",
+      "name": "Single 6\" Drip Tray Carrier",
+      "siteSku": "0007064",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "Compatiable with 6\" plastic drip tray.",
+      "images": [
+        "/products/single-6-drip-tray-carrier.jpg"
+      ],
+      "sitePriceGbp": 7.15,
+      "sourceUrl": "https://www.brewfitt.com/product/single-6-drip-tray-carrier/"
+    },
+    {
+      "slug": "spring-for-glass-freshener-x-10",
+      "name": "Spring for Glass Freshener (Pack of 10)",
+      "siteSku": "0007385",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "Purchase as a spare/replacement only for existing drip trays.",
+      "images": [
+        "/products/spring-for-glass-freshener-x-10.jpg"
+      ],
+      "sitePriceGbp": 5.3,
+      "sourceUrl": "https://www.brewfitt.com/product/spring-for-glass-freshener-x-10/"
+    },
+    {
+      "slug": "standard-drip-tray-support-brackets",
+      "name": "Standard Drip Tray Support Brackets",
+      "siteSku": "0000002",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "To be used with all standard stainless steel drip trays.",
+      "images": [
+        "/products/standard-drip-tray-support-brackets.jpg"
+      ],
+      "sitePriceGbp": 17.85,
+      "sourceUrl": "https://www.brewfitt.com/product/standard-drip-tray-support-brackets/"
+    },
+    {
+      "slug": "treble-4-black-drip-tray-carrier",
+      "name": "Treble 4\" Black Drip Tray Carrier",
+      "siteSku": "0000027",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "Compatiable with 4\" plastic drip tray.",
+      "images": [
+        "/products/treble-4-black-drip-tray-carrier.jpg"
+      ],
+      "sitePriceGbp": 20.16,
+      "sourceUrl": "https://www.brewfitt.com/product/treble-4-black-drip-tray-carrier/"
+    },
+    {
+      "slug": "twin-6-drip-tray-carrier",
+      "name": "Twin 6\" Drip Tray Carrier",
+      "siteSku": "0005006",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Drip Tray Accessories",
+      "description": "Compatiable with 6\" plastic drip tray.",
+      "images": [
+        "/products/twin-6-drip-tray-carrier.jpg"
+      ],
+      "sitePriceGbp": 17.7,
+      "sourceUrl": "https://www.brewfitt.com/product/twin-6-drip-tray-carrier/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-20x18x3-c-w-drain",
+      "name": "St/St Recessed Drip Tray 20x18x3 C/W Drain",
+      "siteSku": "0030954",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Drip Trays",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-20x18x3-c-w-drain.jpg"
+      ],
+      "sitePriceGbp": 81.18,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-20x18x3-c-w-drain/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-30x18x3-c-w-drain",
+      "name": "St/St Recessed Drip Tray 30x18x3 C/W Drain",
+      "siteSku": "0030955",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Drip Trays",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-30x18x3-c-w-drain.jpg"
+      ],
+      "sitePriceGbp": 84.05,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-30x18x3-c-w-drain/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-40x18x3-c-w-drain",
+      "name": "St/St Recessed Drip Tray 40x18x3 C/W Drain",
+      "siteSku": "0030956",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Drip Trays",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-40x18x3-c-w-drain.jpg",
+        "/products/st-st-recessed-drip-tray-40x18x3-c-w-drain-2.jpg"
+      ],
+      "sitePriceGbp": 110.01,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-40x18x3-c-w-drain/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-50x22x3-c-w-drain",
+      "name": "St/St Recessed Drip Tray 50x22x3 C/W Drain",
+      "siteSku": "0030957",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Drip Trays",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-50x22x3-c-w-drain.jpg",
+        "/products/st-st-recessed-drip-tray-50x22x3-c-w-drain-2.jpg"
+      ],
+      "sitePriceGbp": 141.22,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-50x22x3-c-w-drain/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-60x22x3-c-w-drain",
+      "name": "St/St Recessed Drip Tray 60x22x3 C/W Drain",
+      "siteSku": "0030958",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Drip Trays",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-60x22x3-c-w-drain.jpg",
+        "/products/st-st-recessed-drip-tray-60x22x3-c-w-drain-2.jpg"
+      ],
+      "sitePriceGbp": 140.23,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-60x22x3-c-w-drain/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-80x22x3-c-w-drain",
+      "name": "St/St Recessed Drip Tray 80x22x3 C/W Drain",
+      "siteSku": "0030959",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Drip Trays",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-80x22x3-c-w-drain.jpg",
+        "/products/st-st-recessed-drip-tray-80x22x3-c-w-drain-2.jpg"
+      ],
+      "sitePriceGbp": 200.06,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-80x22x3-c-w-drain/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-100x22x3-c-w-glass-freshener-drain",
+      "name": "St/St Recessed Drip Tray 100x22x3 C/W Glass Freshener & Drain",
+      "siteSku": "089430",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Glass Freshener",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a glass freshener & drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-100x22x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-recessed-drip-tray-100x22x3-c-w-glass-freshener-drain-2.png"
+      ],
+      "sitePriceGbp": 273.87,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-100x22x3-c-w-glass-freshener-drain-copy/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-30x18x3-c-w-glass-freshener-drain",
+      "name": "St/St Recessed Drip Tray 30x18x3 C/W Glass Freshener & Drain",
+      "siteSku": "0031578",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Glass Freshener",
+      "description": "to be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a glass freshener & drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-30x18x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-recessed-drip-tray-30x18x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 121.63,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-30x18x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-40x18x3-c-w-glass-freshener-drain",
+      "name": "St/St Recessed Drip Tray 40x18x3 C/W Glass Freshener & Drain",
+      "siteSku": "0031579",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Glass Freshener",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a glass freshener & drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-40x18x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-recessed-drip-tray-40x18x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 137.18,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-40x18x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-50x22x3-c-w-glass-freshener-drain",
+      "name": "St/St Recessed Drip Tray 50x22x3 C/W Glass Freshener & Drain",
+      "siteSku": "0031580",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Glass Freshener",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a glass freshener & drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-50x22x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-recessed-drip-tray-50x22x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 162.99,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-50x22x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-60x22x3-c-w-glass-freshener-drain",
+      "name": "St/St Recessed Drip Tray 60x22x3 C/W Glass Freshener & Drain",
+      "siteSku": "0031581",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Glass Freshener",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a glass freshener & drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-60x22x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-recessed-drip-tray-60x22x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 164.95,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-60x22x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "st-st-recessed-drip-tray-80x22x3-c-w-glass-freshener-drain",
+      "name": "St/St Recessed Drip Tray 80x22x3 C/W Glass Freshener & Drain",
+      "siteSku": "0031582",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Recessed Glass Freshener",
+      "description": "To be recessed/counter sunk in to the bar top. This drip tray has an extra lip all the way around and all come with a glass freshener & drain.",
+      "images": [
+        "/products/st-st-recessed-drip-tray-80x22x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-recessed-drip-tray-80x22x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 222.48,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-recessed-drip-tray-80x22x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "4-black-plastic-drip-tray-lid",
+      "name": "4\" Black Plastic Drip Tray & Lid",
+      "siteSku": "0000028",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Drip Trays",
+      "description": "Compatiable with 4\" treble drip tray carrier.",
+      "images": [
+        "/products/4-black-plastic-drip-tray-lid.jpg"
+      ],
+      "sitePriceGbp": 7.35,
+      "sourceUrl": "https://www.brewfitt.com/product/4-black-plastic-drip-tray-lid/"
+    },
+    {
+      "slug": "6-black-plastic-drip-tray-lid",
+      "name": "6\" Black Plastic Drip Tray & Lid",
+      "siteSku": "0005005",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Drip Trays",
+      "description": "Compatiable with 6\" Twin & Single drip tray carrier.",
+      "images": [
+        "/products/6-black-plastic-drip-tray-lid.jpg"
+      ],
+      "sitePriceGbp": 7.35,
+      "sourceUrl": "https://www.brewfitt.com/product/6-black-plastic-drip-tray-lid/"
+    },
+    {
+      "slug": "st-st-drip-tray-100x22x3-c-without-glass-freshener-drain",
+      "name": "St/St Drip Tray 100x22x3",
+      "siteSku": "100636",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Drip Trays",
+      "description": "Stainless steel drip tray with continental glass rinser. Used to cool glass from glass washer and used in cocktail stations.",
+      "images": [
+        "/products/st-st-drip-tray-100x22x3-c-without-glass-freshener-drain.jpg"
+      ],
+      "sitePriceGbp": 232.05,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-100x22x3-c-without-glass-freshener-drain-copy-2/"
+    },
+    {
+      "slug": "st-st-drip-tray-20x18x3",
+      "name": "St/St Drip Tray 20x18x3",
+      "siteSku": "0030942",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Drip Trays",
+      "description": "Can be used as a stand alone or on support Brackets.",
+      "images": [
+        "/products/st-st-drip-tray-20x18x3.jpg"
+      ],
+      "sitePriceGbp": 63.39,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-20x18x3/"
+    },
+    {
+      "slug": "st-st-drip-tray-30x18x3",
+      "name": "St/St Drip Tray 30x18x3",
+      "siteSku": "0062359",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Drip Trays",
+      "description": "Can be used as a stand alone or on support Brackets.",
+      "images": [
+        "/products/st-st-drip-tray-30x18x3.jpg"
+      ],
+      "sitePriceGbp": 69.16,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-30x18x3/"
+    },
+    {
+      "slug": "st-st-drip-tray-40x18x3",
+      "name": "St/St Drip Tray 40x18x3",
+      "siteSku": "0030944",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Drip Trays",
+      "description": "Can be used as a stand alone or on support Brackets.",
+      "images": [
+        "/products/st-st-drip-tray-40x18x3.jpg"
+      ],
+      "sitePriceGbp": 75.19,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-40x18x3/"
+    },
+    {
+      "slug": "st-st-drip-tray-50x22x3",
+      "name": "St/St Drip Tray 50x22x3",
+      "siteSku": "0030945",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Drip Trays",
+      "description": "Can be used as a stand alone or on support Brackets.",
+      "images": [
+        "/products/st-st-drip-tray-50x22x3.jpg"
+      ],
+      "sitePriceGbp": 95.5,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-50x22x3/"
+    },
+    {
+      "slug": "st-st-drip-tray-60x22x3",
+      "name": "St/St Drip Tray 60x22x3",
+      "siteSku": "0061744",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Drip Trays",
+      "description": "Can be used as a stand alone or on support Brackets.",
+      "images": [
+        "/products/st-st-drip-tray-60x22x3.jpg"
+      ],
+      "sitePriceGbp": 111.02,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-60x22x3/"
+    },
+    {
+      "slug": "st-st-drip-tray-80x22x3",
+      "name": "St/St Drip Tray 80x22x3",
+      "siteSku": "0030947",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Drip Trays",
+      "description": "Can be used as a stand alone or on support Brackets.",
+      "images": [
+        "/products/st-st-drip-tray-80x22x3.jpg"
+      ],
+      "sitePriceGbp": 178.22,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-80x22x3/"
+    },
+    {
+      "slug": "st-st-drip-tray-100x22x3-c-w-glass-freshener-drain",
+      "name": "St/St Drip Tray 100x22x3 C/W Glass Freshener & Drain",
+      "siteSku": "0088771",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Glass Freshener",
+      "description": "Stainless steel drip tray with continental glass rinser. Used to cool glass from glass washer and used in cocktail stations.",
+      "images": [
+        "/products/st-st-drip-tray-100x22x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-drip-tray-100x22x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 263.55,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-100x22x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "st-st-drip-tray-30x18x3-c-w-glass-freshener-drain",
+      "name": "St/St Drip Tray 30x18x3 C/W Glass Freshener & Drain",
+      "siteSku": "0062367",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Glass Freshener",
+      "description": "Stainless steel drip tray with continental glass rinser. Used to cool glass from glass washer and used in cocktail stations.",
+      "images": [
+        "/products/st-st-drip-tray-30x18x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-drip-tray-30x18x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 121.63,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-30x18x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "st-st-drip-tray-40x18x3-c-w-glass-freshener-drain",
+      "name": "St/St Drip Tray 40x18x3 C/W Glass Freshener & Drain",
+      "siteSku": "0033982",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Glass Freshener",
+      "description": "Stainless steel drip tray with continental glass rinser. Used to cool glass from glass washer and used in cocktail stations.",
+      "images": [
+        "/products/st-st-drip-tray-40x18x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-drip-tray-40x18x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 113.16,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-40x18x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "st-st-drip-tray-50x22x3-c-w-glass-freshener-drain",
+      "name": "St/St Drip Tray 50x22x3 C/W Glass Freshener & Drain",
+      "siteSku": "0033981",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Glass Freshener",
+      "description": "Stainless steel drip tray with continental glass rinser. Used to cool glass from glass washer and used in cocktail stations.",
+      "images": [
+        "/products/st-st-drip-tray-50x22x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-drip-tray-50x22x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 131.26,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-50x22x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "st-st-drip-tray-60x22x3-c-w-glass-freshener-drain",
+      "name": "St/St Drip Tray 60x22x3 C/W Glass Freshener & Drain",
+      "siteSku": "0033979",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Glass Freshener",
+      "description": "Stainless steel drip tray with continental glass rinser. Used to cool glass from glass washer and used in cocktail stations.",
+      "images": [
+        "/products/st-st-drip-tray-60x22x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-drip-tray-60x22x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 146.02,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-60x22x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "st-st-drip-tray-80x22x3-c-w-glass-freshener-drain",
+      "name": "St/St Drip Tray 80x22x3 C/W Glass Freshener & Drain",
+      "siteSku": "0033980",
+      "section": "bar",
+      "category": "Drip Trays",
+      "subcategory": "Standard Glass Freshener",
+      "description": "Stainless steel drip tray with continental glass rinser. Used to cool glass from glass washer and used in cocktail stations.",
+      "images": [
+        "/products/st-st-drip-tray-80x22x3-c-w-glass-freshener-drain.jpg",
+        "/products/st-st-drip-tray-80x22x3-c-w-glass-freshener-drain-2.jpg"
+      ],
+      "sitePriceGbp": 209.89,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-drip-tray-80x22x3-c-w-glass-freshener-drain/"
+    },
+    {
+      "slug": "angram-t-bar",
+      "name": "Angram T Bar",
+      "siteSku": "Angram T Bar",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "A great choice when the need for a compact and stylish solution with multiple taps is required. Available with a 10 year guarantee with exclusive LED lighting, the Angram T-Bar also has an optional cooled water re-circ to the tap.",
+      "images": [
+        "/products/angram-t-bar.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/angram-t-bar/"
+    },
+    {
+      "slug": "bridge-tower",
+      "name": "Bridge Tower",
+      "siteSku": "Brauhaus Bridge",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "The perfect choice for large industrial style settings. The elegant design is matched by technical excellence and maximum efficiency; Its versatility means that fixing is available on or above the bar; Available with three, four, five, six or eight dispense points; Other finishes available: Satin and Copper.",
+      "images": [
+        "/products/bridge-tower.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/bridge-tower/"
+    },
+    {
+      "slug": "classic-cobra-1-out-led",
+      "name": "Classic Cobra 1 Out LED",
+      "siteSku": "0302151",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish LED Badge Holder; Clamp Assembly; Plastic Drip Tray; Drip Tray Carrier.",
+      "images": [
+        "/products/classic-cobra-1-out-led.jpg",
+        "/products/classic-cobra-1-out-led-2.jpg"
+      ],
+      "sitePriceGbp": 200.55,
+      "sourceUrl": "https://www.brewfitt.com/product/classic-cobra-1-out-led/"
+    },
+    {
+      "slug": "classic-cobra-2-out-led",
+      "name": "Classic Cobra 2 Out LED",
+      "siteSku": "0303088",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish LED Badge Holder; Clamp Assembly; Plastic Drip Tray; Drip Tray Carrier.",
+      "images": [
+        "/products/classic-cobra-2-out-led.jpg",
+        "/products/classic-cobra-2-out-led-2.jpg"
+      ],
+      "sitePriceGbp": 255.15,
+      "sourceUrl": "https://www.brewfitt.com/product/classic-cobra-2-out-led/"
+    },
+    {
+      "slug": "classic-cobra-3-out-led",
+      "name": "Classic Cobra 3 Out LED",
+      "siteSku": "0303039",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish LED Badge Holder; Clamp Assembly, Plastic Drip Tray; Drip Tray Carrier; 3/8\" Water Recirc & 3/16\" Product Line.",
+      "images": [
+        "/products/classic-cobra-3-out-led.jpg",
+        "/products/classic-cobra-3-out-led-2.jpg"
+      ],
+      "sitePriceGbp": 287.21,
+      "sourceUrl": "https://www.brewfitt.com/product/classic-cobra-3-out-led/"
+    },
+    {
+      "slug": "cobra-3-out-chrome-led",
+      "name": "Cobra B 3 Out Chrome LED",
+      "siteSku": "0302402",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish LED Badge Holder; Clamp Assembly, Plastic Drip Tray; Drip Tray Carrier; 3/8\" Water Recirc & 3/16\" Product Line + FM design description (high quality italian design from the world's leading Celli).",
+      "images": [
+        "/products/cobra-3-out-chrome-led.jpg",
+        "/products/cobra-3-out-chrome-led-2.jpg"
+      ],
+      "sitePriceGbp": 476.73,
+      "sourceUrl": "https://www.brewfitt.com/product/cobra-3-out-chrome-led/"
+    },
+    {
+      "slug": "cobra-3-out-chrome-non-led",
+      "name": "Cobra B 3 Out Chrome NON LED",
+      "siteSku": "0301663",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish NON LED Badge Holder; Clamp Assembly; Plastic Drip Tray; Drip Tray Carrier.",
+      "images": [
+        "/products/cobra-3-out-chrome-non-led.jpg",
+        "/products/cobra-3-out-chrome-non-led-2.jpg"
+      ],
+      "sitePriceGbp": 354.9,
+      "sourceUrl": "https://www.brewfitt.com/product/cobra-3-out-chrome-non-led/"
+    },
+    {
+      "slug": "cobra-4-out-chrome-led",
+      "name": "Cobra B 4 Out Chrome LED",
+      "siteSku": null,
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish LED Badge Holder; Clamp Assembly; Plastic Drip Tray; Drip Tray Carrier.",
+      "images": [
+        "/products/cobra-4-out-chrome-led.jpg",
+        "/products/cobra-4-out-chrome-led-2.jpg"
+      ],
+      "sitePriceGbp": 540.23,
+      "sourceUrl": "https://www.brewfitt.com/product/cobra-4-out-chrome-led/"
+    },
+    {
+      "slug": "cobra-4-out-chrome-non-led",
+      "name": "Cobra B 4 Out Chrome NON LED",
+      "siteSku": "0302019",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish NON LED Badge Holder; Clamp Assembly; Plastic Drip Tray; Drip Tray Carrier.",
+      "images": [
+        "/products/cobra-4-out-chrome-non-led.jpg",
+        "/products/cobra-4-out-chrome-non-led-2.jpg"
+      ],
+      "sitePriceGbp": 362.21,
+      "sourceUrl": "https://www.brewfitt.com/product/cobra-4-out-chrome-non-led/"
+    },
+    {
+      "slug": "cobra-1-out-chrome-led",
+      "name": "Cobra PL 1 Out Chrome LED",
+      "siteSku": "0302401",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish LED Badge Holder; Clamp Assembly; Plastic Drip Tray; Drip Tray Carrier.",
+      "images": [
+        "/products/cobra-1-out-chrome-led.jpg",
+        "/products/cobra-1-out-chrome-led-2.jpg"
+      ],
+      "sitePriceGbp": 195.3,
+      "sourceUrl": "https://www.brewfitt.com/product/cobra-1-out-chrome-led/"
+    },
+    {
+      "slug": "cobra-1-out-chrome-non-led",
+      "name": "Cobra PL 1 Out Chrome NON LED",
+      "siteSku": "0302057",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish NON LED Badge Holder; Clamp Assembly; Plastic Drip Tray; Drip Tray Carrier.",
+      "images": [
+        "/products/cobra-1-out-chrome-non-led.jpg",
+        "/products/cobra-1-out-chrome-non-led-2.jpg"
+      ],
+      "sitePriceGbp": 153.3,
+      "sourceUrl": "https://www.brewfitt.com/product/cobra-1-out-chrome-non-led/"
+    },
+    {
+      "slug": "cobra-2-out-chrome-led",
+      "name": "Cobra PL 2 Out Chrome LED",
+      "siteSku": "COBRAPL2-LED-PARENT",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish LED Badge Holder; Clamp Assembly; Plastic Drip Tray; Drip Tray Carrier.",
+      "images": [
+        "/products/cobra-2-out-chrome-led.jpg",
+        "/products/cobra-2-out-chrome-led-2.jpg"
+      ],
+      "sitePriceGbp": 332.19,
+      "sourceUrl": "https://www.brewfitt.com/product/cobra-2-out-chrome-led/"
+    },
+    {
+      "slug": "cobra-2-out-chrome-non-led",
+      "name": "Cobra PL 2 Out Chrome NON LED",
+      "siteSku": "COBRAPL2-PARENT",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Chrome Brass finish NON LED Badge Holder; Clamp Assembly, Plastic Drip Tray; Drip Tray Carrier; 3/8\" Water Recirc & 3/16\" Product Line + FM design description (high quality italian design from the world's leading Celli).",
+      "images": [
+        "/products/cobra-2-out-chrome-non-led.jpg",
+        "/products/cobra-2-out-chrome-non-led-2.jpg"
+      ],
+      "sitePriceGbp": 210.89,
+      "sourceUrl": "https://www.brewfitt.com/product/cobra-2-out-chrome-non-led/"
+    },
+    {
+      "slug": "cobra-plus-medium",
+      "name": "Cobra Plus Medium",
+      "siteSku": "Cobra Plus Medium",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Marginally taller than the Cobra Plus Small, the Cobra Plus Medium dispense font is 300mm high.",
+      "images": [
+        "/products/cobra-plus-medium.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/cobra-plus-medium/"
+    },
+    {
+      "slug": "easy-small",
+      "name": "Easy Small",
+      "siteSku": "Easy Small",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "The Easy Small dispense font is the perfect choice where space is more limited and a smaller option is required.",
+      "images": [
+        "/products/easy-small.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/easy-small/"
+    },
+    {
+      "slug": "easy-tower-font-chrome-clamp-on",
+      "name": "Easy Tower Font Chrome Clamp On",
+      "siteSku": "0201741",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "A simple, stylish tower from the Celli range; The Easy dispense font is the perfect choice for venues trying to achieve a minimalist feel to the bar; 407mm in height; The Easy can be clamped onto or bolted through the bar.",
+      "images": [
+        "/products/easy-tower-font-chrome-clamp-on.jpg",
+        "/products/easy-tower-font-chrome-clamp-on-2.jpg"
+      ],
+      "sitePriceGbp": 217.72,
+      "sourceUrl": "https://www.brewfitt.com/product/easy-tower-font-chrome-clamp-on/"
+    },
+    {
+      "slug": "easy-tower-font-chrome-ttb",
+      "name": "Easy Tower Font Chrome TTB",
+      "siteSku": "0201690",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "A simple, stylish tower from the Celli range. The Easy dispense font is the perfect choice for venues trying to achieve a minimalist feel to the bar; 407mm in height; The Easy can be clamped onto or bolted through the bar; Chrome Brass finish Badge Holder.",
+      "images": [
+        "/products/easy-tower-font-chrome-ttb.jpg",
+        "/products/easy-tower-font-chrome-ttb-2.jpg"
+      ],
+      "sitePriceGbp": 152.41,
+      "sourceUrl": "https://www.brewfitt.com/product/easy-tower-font-chrome-ttb/"
+    },
+    {
+      "slug": "event-tower-1",
+      "name": "Event Tower 1 Out",
+      "siteSku": "0203118",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "The Event tower combines a simple, clean industrial look that enhances any brand. It creates an eye catching display whilst being the perfect choice in space saving dispense towers.",
+      "images": [
+        "/products/event-tower-1.png",
+        "/products/event-tower-1-2.png"
+      ],
+      "sitePriceGbp": 189,
+      "sourceUrl": "https://www.brewfitt.com/product/event-tower-1/"
+    },
+    {
+      "slug": "event-tower",
+      "name": "Event Tower 2 Out",
+      "siteSku": "0203119",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "The Event tower combines a simple, clean industrial look that enhances any brand. It creates an eye catching display whilst being the perfect choice in space saving dispense towers.",
+      "images": [
+        "/products/event-tower.png",
+        "/products/event-tower-2.png"
+      ],
+      "sitePriceGbp": 271.6,
+      "sourceUrl": "https://www.brewfitt.com/product/event-tower/"
+    },
+    {
+      "slug": "event-tower-3-out",
+      "name": "Event Tower 3 Out",
+      "siteSku": "0202165",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "The Event tower combines a simple, clean industrial look that enhances any brand. It creates an eye catching display whilst being the perfect choice in space saving dispense towers.",
+      "images": [
+        "/products/event-tower-3-out.png"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/event-tower-3-out-copy/"
+    },
+    {
+      "slug": "flag-tower",
+      "name": "Flag Tower",
+      "siteSku": "Brauhaus Flag",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "The perfect choice for large industrial style settings. The elegant design is matched by technical excellence and maximum efficiency; Its versatility means that fixing is available on or above the bar; Available with three, four and five dispense points; Other finishes available: Satin and Copper.",
+      "images": [
+        "/products/flag-tower.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/flag-tower/"
+    },
+    {
+      "slug": "giada-100",
+      "name": "Giada 100",
+      "siteSku": "Giada 100",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "A ceramic font to make a statement on the bar.",
+      "images": [
+        "/products/giada-100.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/giada-100/"
+    },
+    {
+      "slug": "modulate-tower",
+      "name": "Modulite Tower",
+      "siteSku": "Modulite",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "Introducing Modulite: The Ultimate Beverage Dispensing Tower. Transform your beverage dispensing experience with Modulite's unparalleled versatility; Effortlessly renew the look of your tower for any occasion, from events to brand changes, with easy and affordable adaptability; Swap personalised covers in under a minute for a fresh, tailored appearance; Embrace sustainability with Modulite, made from recycled…",
+      "images": [
+        "/products/modulate-tower.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/modulate-tower/"
+    },
+    {
+      "slug": "tubular-tower-1-out-clamp-on",
+      "name": "Tubular Tower 1 Out Clamp On",
+      "siteSku": "0000659",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Beer Fonts",
+      "description": "1 out tap point; Polished Stainless steel Finsih; Clamp on; Front LED Badge Holder.",
+      "images": [
+        "/products/tubular-tower-1-out-clamp-on.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/tubular-tower-1-out-clamp-on/"
+    },
+    {
+      "slug": "adria-tower",
+      "name": "Adria Tower 4 Out",
+      "siteSku": "0076368",
+      "section": "bar",
+      "category": "Fonts",
+      "subcategory": "Post Mix",
+      "description": "The Adria Tower 4 out is the most flexible soft drinks tower in our range, available with up to 8 dispense points (please enquire), it has a large illuminated display area with the potential to customise your own branding.",
+      "images": [
+        "/products/adria-tower.jpg",
+        "/products/adria-tower-2.jpg"
+      ],
+      "sitePriceGbp": 577.5,
+      "sourceUrl": "https://www.brewfitt.com/product/adria-tower/"
+    },
+    {
+      "slug": "coldfusion-nitro-infusion-system",
+      "name": "ColdFusion Nitro infusion system",
+      "siteSku": "1002330",
+      "section": "bar",
+      "category": "Nitro Dispense",
+      "subcategory": null,
+      "description": "Capture the opportunities from one of the fastest global drinks trends with ColdFusion from Brewfitt. Consistent, premium, nitro infused drinks. Chilled to perfection and poured in seconds.",
+      "images": [
+        "/products/coldfusion-nitro-infusion-system.jpg",
+        "/products/coldfusion-nitro-infusion-system-2.jpg"
+      ],
+      "sitePriceGbp": 1517.06,
+      "sourceUrl": "https://www.brewfitt.com/product/coldfusion-nitro-infusion-system/"
+    },
+    {
+      "slug": "giotto-2-out",
+      "name": "Giotto 2 Out",
+      "siteSku": null,
+      "section": "bar",
+      "category": "Special Offers",
+      "subcategory": null,
+      "description": "Giotto 2 out, chrome, clamp, drip tray and pipework - excludes taps.",
+      "images": [
+        "/products/giotto-2-out.png"
+      ],
+      "sitePriceGbp": 56.5,
+      "sourceUrl": "https://www.brewfitt.com/product/giotto-2-out/"
+    },
+    {
+      "slug": "juliette-tower-5-out-c-w-clamp-st-st-drip-tray",
+      "name": "Juliette Tower - 5 Out C/W Clamp, St/St Drip Tray",
+      "siteSku": "0203116",
+      "section": "bar",
+      "category": "Special Offers",
+      "subcategory": null,
+      "description": "Juliette Tower with 5 out, complete with clamp, Stainless Steel drip tray brackets and recirc (No taps).",
+      "images": [
+        "/products/juliette-tower-5-out-c-w-clamp-st-st-drip-tray.png",
+        "/products/juliette-tower-5-out-c-w-clamp-st-st-drip-tray-2.png"
+      ],
+      "sitePriceGbp": 603,
+      "sourceUrl": "https://www.brewfitt.com/product/juliette-tower-5-out-c-w-clamp-st-st-drip-tray/"
+    },
+    {
+      "slug": "lotus-1-out",
+      "name": "Lotus 1 Out",
+      "siteSku": null,
+      "section": "bar",
+      "category": "Special Offers",
+      "subcategory": null,
+      "description": "Lotus 1 out, chrome, c/w LED, clamp, drip tray and pipework.",
+      "images": [
+        "/products/lotus-1-out.png",
+        "/products/lotus-1-out-2.png"
+      ],
+      "sitePriceGbp": 157,
+      "sourceUrl": "https://www.brewfitt.com/product/lotus-1-out/"
+    },
+    {
+      "slug": "lotus-6-out",
+      "name": "Lotus 6 Out",
+      "siteSku": null,
+      "section": "bar",
+      "category": "Special Offers",
+      "subcategory": null,
+      "description": "Lotus 6 out in chrome, no badge holder, c/w , clamp, s/s drip tray, and pipework - excludes tap. Image for illustration purposes only.",
+      "images": [
+        "/products/lotus-6-out.png",
+        "/products/lotus-6-out-2.png"
+      ],
+      "sitePriceGbp": 113,
+      "sourceUrl": "https://www.brewfitt.com/product/lotus-6-out/"
+    },
+    {
+      "slug": "magic-tower",
+      "name": "Magic Tower",
+      "siteSku": null,
+      "section": "bar",
+      "category": "Special Offers",
+      "subcategory": null,
+      "description": "Red Magic Tower, 1 out, complete with LED, clamp, drip tray and pipework - excludes taps.",
+      "images": [
+        "/products/magic-tower.png"
+      ],
+      "sitePriceGbp": 56.5,
+      "sourceUrl": "https://www.brewfitt.com/product/magic-tower/"
+    },
+    {
+      "slug": "marble-cobra",
+      "name": "Marble Cobra",
+      "siteSku": null,
+      "section": "bar",
+      "category": "Special Offers",
+      "subcategory": null,
+      "description": "Cobra Tower in Marble finish 1 Out, complete with LED, clamp, drip tray and pipework - excludes taps.",
+      "images": [
+        "/products/marble-cobra.png"
+      ],
+      "sitePriceGbp": 90,
+      "sourceUrl": "https://www.brewfitt.com/product/marble-cobra/"
+    },
+    {
+      "slug": "maya-1-out",
+      "name": "Maya 1 Out",
+      "siteSku": null,
+      "section": "bar",
+      "category": "Special Offers",
+      "subcategory": null,
+      "description": "Maya 1 out, chrome, c/w LED, clamp, drip trays and pipework - excludes taps. Image for illustration purposes only.",
+      "images": [
+        "/products/maya-1-out.png",
+        "/products/maya-1-out-2.png"
+      ],
+      "sitePriceGbp": 186,
+      "sourceUrl": "https://www.brewfitt.com/product/maya-1-out/"
+    },
+    {
+      "slug": "ricky-ceramic-cream",
+      "name": "Ricky Ceramic Cream",
+      "siteSku": null,
+      "section": "bar",
+      "category": "Special Offers",
+      "subcategory": null,
+      "description": "Ricky tower 1 out in cream, with decal, c/w LED, clamp, drip tray and pipework - excludes taps. Image for illustration purposes only.",
+      "images": [
+        "/products/ricky-ceramic-cream.png"
+      ],
+      "sitePriceGbp": 68.86,
+      "sourceUrl": "https://www.brewfitt.com/product/ricky-ceramic-cream/"
+    },
+    {
+      "slug": "vanity-gold",
+      "name": "Vanity Gold",
+      "siteSku": null,
+      "section": "bar",
+      "category": "Special Offers",
+      "subcategory": null,
+      "description": "Vanity Golden Brown, 1 out tower, c/w badge holder, clamp, drip trays and pipework - excludes taps. Image for illustration purposes only, please read description.",
+      "images": [
+        "/products/vanity-gold.png"
+      ],
+      "sitePriceGbp": 55.28,
+      "sourceUrl": "https://www.brewfitt.com/product/vanity-gold/"
+    },
+    {
+      "slug": "wood-effect-valy",
+      "name": "Wood Effect Valy",
+      "siteSku": null,
+      "section": "bar",
+      "category": "Special Offers",
+      "subcategory": null,
+      "description": "Wood Effect Valy 1 Out, Complete with LED, clamp, drip tray and pipework - excludes taps.",
+      "images": [
+        "/products/wood-effect-valy.png",
+        "/products/wood-effect-valy-2.png"
+      ],
+      "sitePriceGbp": 109.16,
+      "sourceUrl": "https://www.brewfitt.com/product/wood-effect-valy/"
+    },
+    {
+      "slug": "black-plastic-firstline-tap-lager",
+      "name": "Black Plastic Firstline Tap (Lager) 3/16JG",
+      "siteSku": "0000505",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "Suitable for wine Products; 1/2\" x 14 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point.",
+      "images": [
+        "/products/black-plastic-firstline-tap-lager.png"
+      ],
+      "sitePriceGbp": 16.48,
+      "sourceUrl": "https://www.brewfitt.com/product/black-plastic-firstline-tap-lager/"
+    },
+    {
+      "slug": "black-plastic-firstline-tap-nitro",
+      "name": "Black Plastic Firstline Tap (Nitro) 3/16JG",
+      "siteSku": "0000514",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "Suitable for nitro / creamflow product incl. creamer plate; 1/2\" x 14 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point.",
+      "images": [
+        "/products/black-plastic-firstline-tap-nitro.png"
+      ],
+      "sitePriceGbp": 16.96,
+      "sourceUrl": "https://www.brewfitt.com/product/black-plastic-firstline-tap-nitro/"
+    },
+    {
+      "slug": "celtic-tap-chrome-lager-1-2-x14x3-16jg",
+      "name": "Celtic Tap Chrome (Lager) 1/2\"x14x3/16JG",
+      "siteSku": "0056839",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "1/2\" x 14 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Brass tap body.",
+      "images": [
+        "/products/celtic-tap-chrome-lager-1-2-x14x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 71.92,
+      "sourceUrl": "https://www.brewfitt.com/product/celtic-tap-chrome-lager-1-2-x14x3-16jg/"
+    },
+    {
+      "slug": "celtic-tap-chrome-nitro-1-2-x14x3-16jg",
+      "name": "Celtic Tap Chrome (Nitro) 1/2\"x14x3/16JG",
+      "siteSku": "0056841",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "Suitable for nitro / creamflow product incl. creamer plate; 1/2\" x 14 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Brass tap body.",
+      "images": [
+        "/products/celtic-tap-chrome-nitro-1-2-x14x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 89.54,
+      "sourceUrl": "https://www.brewfitt.com/product/celtic-tap-chrome-nitro-1-2-x14x3-16jg/"
+    },
+    {
+      "slug": "celtic-tap-gold-lager-1-2-x14x3-16jg",
+      "name": "Celtic Tap Gold (Lager) 1/2\"x14x3/16JG",
+      "siteSku": "0056840",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "1/2\" x 14 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Brass tap body.",
+      "images": [
+        "/products/celtic-tap-gold-lager-1-2-x14x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 86.22,
+      "sourceUrl": "https://www.brewfitt.com/product/celtic-tap-gold-lager-1-2-x14x3-16jg/"
+    },
+    {
+      "slug": "celtic-tap-gold-nitro-1-2-x14x3-16jg",
+      "name": "Celtic Tap Gold (Nitro) 1/2\"x14x3/16JG",
+      "siteSku": "0056842",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "Suitable for nitro/creamflow product incl. creamer plate; 1/2\" x 14 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Brass tap body.",
+      "images": [
+        "/products/celtic-tap-gold-nitro-1-2-x14x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 92.69,
+      "sourceUrl": "https://www.brewfitt.com/product/celtic-tap-gold-nitro-1-2-x14x3-16jg/"
+    },
+    {
+      "slug": "continental-chrome-brass-nitro-compensator-tap",
+      "name": "Continental Chrome Brass Nitro Compensator Tap",
+      "siteSku": "0000774",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "Nitro Compensator tap (Suitable for use in our Lindr Dry Cooler Units); Brass Body.",
+      "images": [
+        "/products/continental-chrome-brass-nitro-compensator-tap.jpg"
+      ],
+      "sitePriceGbp": 63.01,
+      "sourceUrl": "https://www.brewfitt.com/product/continental-chrome-brass-nitro-compensator-tap/"
+    },
+    {
+      "slug": "continental-style-lager-tap-compensator-1-2x47xjg5-16",
+      "name": "Continental Style Lager Tap Compensator 1/2\"x47xJG5/16\"",
+      "siteSku": "0000775",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "1/2\" x 47mm backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Ringer spacer or badge holder required to cover longer backshaft; Brass tap body.",
+      "images": [
+        "/products/continental-style-lager-tap-compensator-1-2x47xjg5-16.jpg"
+      ],
+      "sitePriceGbp": 71.16,
+      "sourceUrl": "https://www.brewfitt.com/product/continental-style-lager-tap-compensator-1-2x47xjg5-16/"
+    },
+    {
+      "slug": "fc4-plastic-tap-with-st-st-spout",
+      "name": "FC4 Plastic Tap with St/St Spout",
+      "siteSku": "0076524",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "1/2\" x 35 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Ringer spacer or badge holder required to cover longer backshaft.",
+      "images": [
+        "/products/fc4-plastic-tap-with-st-st-spout.jpg"
+      ],
+      "sitePriceGbp": 34.96,
+      "sourceUrl": "https://www.brewfitt.com/product/fc4-plastic-tap-with-st-st-spout/"
+    },
+    {
+      "slug": "fc4-tap-chrome-lager-1-2-x35x3-16jg",
+      "name": "FC4 Tap Chrome (Lager) 1/2\"x35x3/16JG",
+      "siteSku": "0062192",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "1/2\" x 35 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Ringer spacer or badge holder required to cover longer backshaft; Brass tap body.",
+      "images": [
+        "/products/fc4-tap-chrome-lager-1-2-x35x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 60.33,
+      "sourceUrl": "https://www.brewfitt.com/product/fc4-tap-chrome-lager-1-2-x35x3-16jg/"
+    },
+    {
+      "slug": "fc4-tap-chrome-nitro-1-2-x35x3-16jg",
+      "name": "FC4 Tap Chrome (Nitro) 1/2\"x35x3/16JG",
+      "siteSku": "0062220",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "Suitable for nitro / creamflow product incl. creamer plate; 1/2\" x 35 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Ringer spacer or badge holder required to cover longer backshaft; Brass tap body.",
+      "images": [
+        "/products/fc4-tap-chrome-nitro-1-2-x35x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 96.81,
+      "sourceUrl": "https://www.brewfitt.com/product/fc4-tap-chrome-nitro-1-2-x35x3-16jg/"
+    },
+    {
+      "slug": "fc4-tap-chrome-with-compensator-lager-only-1-2-x47x5-16jg",
+      "name": "FC4 Tap Chrome With Compensator (Lager Only) 1/2\"x47x5/16JG",
+      "siteSku": "0045743",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "1/2\" x 47mm backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Ringer spacer or badge holder required to cover longer backshaft; Brass tap body.",
+      "images": [
+        "/products/fc4-tap-chrome-with-compensator-lager-only-1-2-x47x5-16jg.jpg"
+      ],
+      "sitePriceGbp": 71.16,
+      "sourceUrl": "https://www.brewfitt.com/product/fc4-tap-chrome-with-compensator-lager-only-1-2-x47x5-16jg/"
+    },
+    {
+      "slug": "fc4-tap-gold-lager-1-2-x35x3-16jg",
+      "name": "FC4 Tap Gold (Lager) 1/2\"x35x3/16JG",
+      "siteSku": "0062611",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "1/2\" x 35 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Ringer spacer or badge holder required to cover longer backshaft; Brass tap body.",
+      "images": [
+        "/products/fc4-tap-gold-lager-1-2-x35x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 63.88,
+      "sourceUrl": "https://www.brewfitt.com/product/fc4-tap-gold-lager-1-2-x35x3-16jg/"
+    },
+    {
+      "slug": "gold-aceline-tap-lager-1-2-x20x3-16jg",
+      "name": "Gold Aceline Tap (Lager) 1/2\"x20x3/16JG",
+      "siteSku": "0000555",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "Suitable for wine Products; 1/2\" x 14 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point.",
+      "images": [
+        "/products/gold-aceline-tap-lager-1-2-x20x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 75.28,
+      "sourceUrl": "https://www.brewfitt.com/product/gold-aceline-tap-lager-1-2-x20x3-16jg/"
+    },
+    {
+      "slug": "gold-aceline-tap-nitro-1-2-x20x3-16jg",
+      "name": "Gold Aceline Tap (Nitro) 1/2\"x20x3/16JG",
+      "siteSku": "503635",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "Suitable for nitro / creamflow product incl. creamer plate; 1/2\" x 14 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point.",
+      "images": [
+        "/products/gold-aceline-tap-nitro-1-2-x20x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 76.41,
+      "sourceUrl": "https://www.brewfitt.com/product/gold-aceline-tap-nitro-1-2-x20x3-16jg/"
+    },
+    {
+      "slug": "st-st-aceline-tap-lager-1-2-x20x3-16jg",
+      "name": "St/St Aceline Tap (Lager) 1/2\"x20x3/16JG",
+      "siteSku": "0000503",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "Suitable for wine Products; 1/2\" x 14 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point.",
+      "images": [
+        "/products/st-st-aceline-tap-lager-1-2-x20x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 52.2,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-aceline-tap-lager-1-2-x20x3-16jg/"
+    },
+    {
+      "slug": "st-st-aceline-tap-nitro-1-2-x20x3-16jg",
+      "name": "St/St Aceline Tap (Nitro) 1/2\"x20x3/16JG",
+      "siteSku": "0100504",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "Suitable for nitro / creamflow product incl. creamer plate; 1/2\" x 14 backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point.",
+      "images": [
+        "/products/st-st-aceline-tap-nitro-1-2-x20x3-16jg.jpg"
+      ],
+      "sitePriceGbp": 54.66,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-aceline-tap-nitro-1-2-x20x3-16jg/"
+    },
+    {
+      "slug": "stainless-steel-comapensator-tap-1-2-47-jg5-16",
+      "name": "STAINLESS STEEL COMPENSATOR TAP 1/2\"/47/JG5/16",
+      "siteSku": "10/79X",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Complete Taps",
+      "description": "1/2\" x 47mm backshaft and suitable with most Dispense fonts worldwide with 1/2\" tap point; Ringer spacer or badge holder required to cover longer backshaft; Stainless Steel tap body.",
+      "images": [
+        "/products/stainless-steel-comapensator-tap-1-2-47-jg5-16.jpg"
+      ],
+      "sitePriceGbp": 87.33,
+      "sourceUrl": "https://www.brewfitt.com/product/stainless-steel-comapensator-tap-1-2-47-jg5-16/"
+    },
+    {
+      "slug": "aluminium-handle-for-aceline-tap-3-8",
+      "name": "Aluminium Handle for Aceline Tap (3/8\")",
+      "siteSku": "0000511",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Tap Handles",
+      "description": "This handle is mostly used on Aceline taps, however can be used on alternatives if they have a 3/8\" male thread.",
+      "images": [
+        "/products/aluminium-handle-for-aceline-tap-3-8.jpg"
+      ],
+      "sitePriceGbp": 11.95,
+      "sourceUrl": "https://www.brewfitt.com/product/aluminium-handle-for-aceline-tap-3-8/"
+    },
+    {
+      "slug": "black-plastic-handle-for-celtic-tap",
+      "name": "Black Plastic Handle for Celtic Tap",
+      "siteSku": "0064628",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Tap Handles",
+      "description": "For Celtic tap only and metal thread required.",
+      "images": [
+        "/products/black-plastic-handle-for-celtic-tap.jpg"
+      ],
+      "sitePriceGbp": 6.3,
+      "sourceUrl": "https://www.brewfitt.com/product/black-plastic-handle-for-celtic-tap/"
+    },
+    {
+      "slug": "black-plastic-handle-for-fc4-tap-3-8",
+      "name": "Black Plastic Handle for FC4 Tap (3/8\")",
+      "siteSku": "0043526",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Tap Handles",
+      "description": "This handle is mostly used on FC4 taps, however can be used on alternatives if they have a 3/8\" male thread.",
+      "images": [
+        "/products/black-plastic-handle-for-fc4-tap-3-8.png"
+      ],
+      "sitePriceGbp": 6.3,
+      "sourceUrl": "https://www.brewfitt.com/product/black-plastic-handle-for-fc4-tap-3-8/"
+    },
+    {
+      "slug": "fc4-tap-o-ring-repair-kit",
+      "name": "FC4 Tap O Ring Repair Kit",
+      "siteSku": "0503103",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Tap Spares",
+      "description": "Small kit to repair taps and replace o rings.",
+      "images": [
+        "/products/fc4-tap-o-ring-repair-kit.jpg"
+      ],
+      "sitePriceGbp": 4.2,
+      "sourceUrl": "https://www.brewfitt.com/product/fc4-tap-o-ring-repair-kit/"
+    },
+    {
+      "slug": "black-plastic-spout-for-celtic-lager-tap",
+      "name": "Black Plastic Spout For Celtic Lager Tap",
+      "siteSku": "0064630",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Tap Spouts",
+      "description": "Screw thread - easy to attach for lager / beer / cider products.",
+      "images": [
+        "/products/black-plastic-spout-for-celtic-lager-tap.jpg"
+      ],
+      "sitePriceGbp": 5.25,
+      "sourceUrl": "https://www.brewfitt.com/product/black-plastic-spout-for-celtic-lager-tap/"
+    },
+    {
+      "slug": "nitro-spout-kit-for-celtic-tap",
+      "name": "Nitro Spout Kit for Celtic Tap",
+      "siteSku": "0061435",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Tap Spouts",
+      "description": "Screw thread - easy to attach for nitro / creamflow products including creamer plate.",
+      "images": [
+        "/products/nitro-spout-kit-for-celtic-tap.jpg"
+      ],
+      "sitePriceGbp": 14.93,
+      "sourceUrl": "https://www.brewfitt.com/product/nitro-spout-kit-for-celtic-tap/"
+    },
+    {
+      "slug": "nitro-spout-kit-for-fc4-tap",
+      "name": "Nitro Spout Kit for FC4 Tap",
+      "siteSku": "0068961",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Tap Spouts",
+      "description": "Screw thread - easy to attach for nitro / creamflow products including creamer plate.",
+      "images": [
+        "/products/nitro-spout-kit-for-fc4-tap.jpg"
+      ],
+      "sitePriceGbp": 30.3,
+      "sourceUrl": "https://www.brewfitt.com/product/nitro-spout-kit-for-fc4-tap/"
+    },
+    {
+      "slug": "st-st-nitro-spout-for-aceline-tap",
+      "name": "St/St Nitro Spout for Aceline Tap",
+      "siteSku": "0000539",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Tap Spouts",
+      "description": "Screw thread - easy to attach for nitro / creamflow products including creamer plate.",
+      "images": [
+        "/products/st-st-nitro-spout-for-aceline-tap.jpg"
+      ],
+      "sitePriceGbp": 16.59,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-nitro-spout-for-aceline-tap/"
+    },
+    {
+      "slug": "st-st-spout-for-aceline-lager-tap",
+      "name": "St/St Spout for Aceline Lager Tap",
+      "siteSku": "0000538",
+      "section": "bar",
+      "category": "Taps",
+      "subcategory": "Tap Spouts",
+      "description": "Screw thread - easy to attach for lager / beer / cider products.",
+      "images": [
+        "/products/st-st-spout-for-aceline-lager-tap.jpg"
+      ],
+      "sitePriceGbp": 8.14,
+      "sourceUrl": "https://www.brewfitt.com/product/st-st-spout-for-aceline-lager-tap/"
+    },
+    {
+      "slug": "kaelo-integrated-wine-cooler",
+      "name": "Kaelo Integrated Wine Cooler",
+      "siteSku": "KaleoUnit",
+      "section": "bar",
+      "category": "Wine Cooler",
+      "subcategory": null,
+      "description": "Kaelo is a British product designed to keep opened wine perfectly chilled. It can be integrated into various surfaces and utilises patented kryolux dry cooling technology. The device maintains wine within 1-2 degrees of its opening temperature without any drips, refills, or maintenance required.",
+      "images": [
+        "/products/kaelo-integrated-wine-cooler.jpg",
+        "/products/kaelo-integrated-wine-cooler-2.jpg"
+      ],
+      "sitePriceGbp": 522.44,
+      "sourceUrl": "https://www.brewfitt.com/product/kaelo-integrated-wine-cooler/"
+    },
+    {
+      "slug": "2-line-mini-python-loom-secondary-cooling-2-5mtr",
+      "name": "2 Line mini python loom secondary cooling 2.5mtr",
+      "siteSku": "0000532",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Accessories",
+      "description": "Suitable for Lindr DryWet systems where two lines require cooled product.",
+      "images": [
+        "/products/2-line-mini-python-loom-secondary-cooling-2-5mtr.png"
+      ],
+      "sitePriceGbp": 18.9,
+      "sourceUrl": "https://www.brewfitt.com/product/2-line-mini-python-loom-secondary-cooling-2-5mtr/"
+    },
+    {
+      "slug": "ale-stout-kit-for-lindr-cooler",
+      "name": "Ale/Stout Kit (for Lindr Cooler)",
+      "siteSku": "0503111",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Accessories",
+      "description": "Complete Stout and Ale kit for Lindr cooler range including home dispense systems. Complete kit includes: Chrome Nitro Tap with compensator; Primary Regulator; Gas Bottle Chain.",
+      "images": [
+        "/products/ale-stout-kit-for-lindr-cooler.jpg",
+        "/products/ale-stout-kit-for-lindr-cooler-2.jpg"
+      ],
+      "sitePriceGbp": 165.75,
+      "sourceUrl": "https://www.brewfitt.com/product/ale-stout-kit-for-lindr-cooler/"
+    },
+    {
+      "slug": "jg-fittings-kit-for-lindr-unit",
+      "name": "JG Fitting kit for Lindr Unit",
+      "siteSku": "0503011",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Accessories",
+      "description": "Lindr unit fitting pack. JG 5/16\" Stem - 3/8\" Tube Enlarger x 1; MDPE 250x3/8 Blue (Per meter) x 4; 3/8\" OD MDP Tube (Per meter) x 4; JG 3/8\" Y-Shaped Two Way Divider x 1.",
+      "images": [
+        "/products/jg-fittings-kit-for-lindr-unit.jpg"
+      ],
+      "sitePriceGbp": 7.9,
+      "sourceUrl": "https://www.brewfitt.com/product/jg-fittings-kit-for-lindr-unit/"
+    },
+    {
+      "slug": "lindr-to-tower-connection-kit",
+      "name": "Lindr to Tower connection kit",
+      "siteSku": "LIND-TC-MAIN",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Accessories",
+      "description": "Lindr Cooler to Tower Kit. Adapt your Lindr Cooler to function alongside a tower with our easy to fit kit.",
+      "images": [
+        "/products/lindr-to-tower-connection-kit.png",
+        "/products/lindr-to-tower-connection-kit-2.png"
+      ],
+      "sitePriceGbp": 37.32,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-to-tower-connection-kit/"
+    },
+    {
+      "slug": "ts-ranco-k50-l3100",
+      "name": "TS Ranco K50-L3100",
+      "siteSku": "ELM02365",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Accessories",
+      "description": "TS RANCO S20026-K50B Thermostat. The TS RANCO S20026-K50B thermostat is designed to deliver precise temperature control for Lindr dispensing systems. Ideal for use with the dry cooler and CWP cooler range, this high-performance controller ensures consistent cooling and quality service.",
+      "images": [
+        "/products/ts-ranco-k50-l3100.jpg"
+      ],
+      "sitePriceGbp": 18.29,
+      "sourceUrl": "https://www.brewfitt.com/product/ts-ranco-k50-l3100/"
+    },
+    {
+      "slug": "lindr-cwp-100-3x-coils",
+      "name": "Lindr CWP 100 3x Coils",
+      "siteSku": null,
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr CWP",
+      "description": "CWP Green Line undercounter coolers series are professional devices which stand out from conventional water based coolers not only by their design and manufacturing quality, but also by their ease of installation and high output at small size.",
+      "images": [
+        "/products/lindr-cwp-100-3x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-cwp-100-3x-coils/"
+    },
+    {
+      "slug": "cwp-200-4x-coils",
+      "name": "Lindr CWP 200 4x Coils",
+      "siteSku": null,
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr CWP",
+      "description": "CWP Green Line undercounter coolers series are professional devices which stand out from conventional water based coolers not only by their design and manufacturing quality, but also by their ease of installation and high output at small size.",
+      "images": [
+        "/products/cwp-200-4x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/cwp-200-4x-coils/"
+    },
+    {
+      "slug": "lindr-cwp-200-6x-coils",
+      "name": "Lindr CWP 200 6x Coils",
+      "siteSku": null,
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr CWP",
+      "description": "CWP Green Line undercounter coolers series are professional devices which stand out from conventional water based coolers not only by their design and manufacturing quality, but also by their ease of installation and high output at small size.",
+      "images": [
+        "/products/lindr-cwp-200-6x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-cwp-200-6x-coils/"
+    },
+    {
+      "slug": "lindr-cwp-200-green-line-mobile-tower-2-x-tap",
+      "name": "Lindr CWP 200 Green Line Mobile Tower (2 Taps)",
+      "siteSku": "CWP00540",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr CWP",
+      "description": "The CWP 200 GREEN LINE - mobile Water Cooler stands out from conventional water coolers not only because of its design and processing quality, but because of the completely innovative arrangement of the cooling unit, high performance, light weight, small dimensions and simple design.",
+      "images": [
+        "/products/lindr-cwp-200-green-line-mobile-tower-2-x-tap.jpg",
+        "/products/lindr-cwp-200-green-line-mobile-tower-2-x-tap-2.jpg"
+      ],
+      "sitePriceGbp": 1394.04,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-cwp-200-green-line-mobile-tower-2-x-tap/"
+    },
+    {
+      "slug": "lindr-cwp-300-4x-coils",
+      "name": "Lindr CWP 300 4x Coils",
+      "siteSku": null,
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr CWP",
+      "description": "CWP Green Line undercounter coolers series are professional devices which stand out from conventional water based coolers not only by their design and manufacturing quality, but also by their ease of installation and high output at small size.",
+      "images": [
+        "/products/lindr-cwp-300-4x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-cwp-300-4x-coils/"
+    },
+    {
+      "slug": "lindr-cwp-300-6x-coils",
+      "name": "Lindr CWP 300 6x Coils",
+      "siteSku": null,
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr CWP",
+      "description": "CWP Green Line undercounter coolers series are professional devices which stand out from conventional water based coolers not only by their design and manufacturing quality, but also by their ease of installation and high output at small size.",
+      "images": [
+        "/products/lindr-cwp-300-6x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-cwp-300-6x-coils/"
+    },
+    {
+      "slug": "lindr-cwp-300-8x-coils",
+      "name": "Lindr CWP 300 8x Coils",
+      "siteSku": null,
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr CWP",
+      "description": "CWP Green Line undercounter coolers series are professional devices which stand out from conventional water based coolers not only by their design and manufacturing quality, but also by their ease of installation and high output at small size.",
+      "images": [
+        "/products/lindr-cwp-300-8x-coils.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-cwp-300-8x-coils/"
+    },
+    {
+      "slug": "lindr-cwp-300-green-line-cooler-tower-2-tap",
+      "name": "Lindr CWP 300 Green Line Mobile Tower (2 Taps)",
+      "siteSku": "CWP0568",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr CWP",
+      "description": "The Lindr CWP 300 Green Line mobile water cooler stands out from conventional water coolers not only because of its design and processing quality, but because of the completely innovative arrangement of the cooling unit using the maximum possible power.",
+      "images": [
+        "/products/lindr-cwp-300-green-line-cooler-tower-2-tap.jpg",
+        "/products/lindr-cwp-300-green-line-cooler-tower-2-tap-2.jpg"
+      ],
+      "sitePriceGbp": 1590.72,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-cwp-300-green-line-cooler-tower-2-tap/"
+    },
+    {
+      "slug": "lindr-cwp-300k-profi",
+      "name": "Lindr CWP 300/K Profi mobile 2x tap",
+      "siteSku": null,
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr CWP",
+      "description": "The mobility of models from the CWP Mobile Green Line series allows the coolers to be fitted with dispense tower with an advertising medallion and drip tray, for use at larger events, fairs, sports events, etc. Model CWP 300 Mobile is fitted with a drain valve for easy draining of water from the device and with a water gauge for checking the water level.",
+      "images": [
+        "/products/lindr-cwp-300k-profi.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-cwp-300k-profi/"
+    },
+    {
+      "slug": "lindr-kontakt-155k-2-taps",
+      "name": "Lindr Kontakt 155K (2 Taps)",
+      "siteSku": "KCH01468-Lindr",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Units",
+      "description": "Designed for dispensing excellent chilled beer as a mobile bar, ideal for professional/commercial purposes and busy events.",
+      "images": [
+        "/products/lindr-kontakt-155k-2-taps.jpg",
+        "/products/lindr-kontakt-155k-2-taps-2.jpg"
+      ],
+      "sitePriceGbp": 1251.44,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-kontakt-155k-2-taps/"
+    },
+    {
+      "slug": "lindr-kontakt-40k-2-taps",
+      "name": "Lindr Kontakt 40K (2 Taps)",
+      "siteSku": "KCH01651-Lindr",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Units",
+      "description": "The Lindr Kontakt 40K is a high performance, small dimension and regulated air system. It opens new possibilities in professional and commercial use.",
+      "images": [
+        "/products/lindr-kontakt-40k-2-taps.jpg",
+        "/products/lindr-kontakt-40k-2-taps-2.jpg"
+      ],
+      "sitePriceGbp": 786.52,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-kontakt-40k-2-taps/"
+    },
+    {
+      "slug": "lindr-kontakt-40k-profi-2-taps",
+      "name": "Lindr Kontakt 40K Profi (2 Taps)",
+      "siteSku": "KCH01652-Lindr",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Units",
+      "description": "The profi models are specialised equipment. Has a high performance, small dimensions and regulated air system. It is opening new possibilities in professional and commercial use.",
+      "images": [
+        "/products/lindr-kontakt-40k-profi-2-taps.jpg"
+      ],
+      "sitePriceGbp": null,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-kontakt-40k-profi-2-taps/"
+    },
+    {
+      "slug": "lindr-kontakt-55k-profi-2-taps",
+      "name": "Lindr Kontakt 55K Profi (2 Taps)",
+      "siteSku": "LCH02246-Lindr",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Units",
+      "description": "Stands out from range of dry contact cooling systems for its versatile use in the commercial use, breweries or larger receptions.",
+      "images": [
+        "/products/lindr-kontakt-55k-profi-2-taps.png"
+      ],
+      "sitePriceGbp": 1148.52,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-kontakt-55k-profi-2-taps/"
+    },
+    {
+      "slug": "lindr-kontakt-60k-vision",
+      "name": "Lindr Kontakt 60K Vision",
+      "siteSku": "0402186",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Units",
+      "description": "The Lindr Kontakt 60/K Vision is an example of the combination of a modern beverage dispensing tower and cutting-edge cooling technology. This cooler has been designed with current trends in mind and its minimalist design together with the integrated LCD display creates the perfect backdrop for presenting your drinks.",
+      "images": [
+        "/products/lindr-kontakt-60k-vision.jpg",
+        "/products/lindr-kontakt-60k-vision-2.jpg"
+      ],
+      "sitePriceGbp": 1512,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-kontakt-60k-vision/"
+    },
+    {
+      "slug": "lindr-kontakt-70k-2-taps",
+      "name": "Lindr Kontakt 70K (2 Taps)",
+      "siteSku": "KCH01523-Lindr",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Units",
+      "description": "Designed for dispensing excellent chilled beer as a mobile bar, ideal for professional/commercial purposes and busy events.",
+      "images": [
+        "/products/lindr-kontakt-70k-2-taps.jpg",
+        "/products/lindr-kontakt-70k-2-taps-2.jpg"
+      ],
+      "sitePriceGbp": 886.99,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-kontakt-70k-2-taps/"
+    },
+    {
+      "slug": "lindr-pygmy-20k-uk-plug-1-tap",
+      "name": "Lindr Pygmy 20K",
+      "siteSku": "KCH01599-Lindr",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Units",
+      "description": "Designed for professional cooling and dispensing of excellent chilled beer for domestic use, garden parties or smaller events.",
+      "images": [
+        "/products/lindr-pygmy-20k-uk-plug-1-tap.jpg",
+        "/products/lindr-pygmy-20k-uk-plug-1-tap-2.jpg"
+      ],
+      "sitePriceGbp": 486.51,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-pygmy-20k-uk-plug-1-tap/"
+    },
+    {
+      "slug": "lindr-pygmy-25k-uk-plug-1-tap",
+      "name": "Lindr Pygmy 25K",
+      "siteSku": "KCH01654-Lindr",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Units",
+      "description": "Designed for professional cooling and dispensing of excellent chilled beer for domestic use, garden parties or smaller events.",
+      "images": [
+        "/products/lindr-pygmy-25k-uk-plug-1-tap.jpg",
+        "/products/lindr-pygmy-25k-uk-plug-1-tap-2.jpg"
+      ],
+      "sitePriceGbp": 523.48,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-pygmy-25k-uk-plug-1-tap/"
+    },
+    {
+      "slug": "lindr-pygmy-25k-exclusive-2-taps",
+      "name": "Lindr Pygmy 25K Exclusive (2 Taps)",
+      "siteSku": "NMB-LCH02222",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Units",
+      "description": "Lindr Pygmy 25K Exclusive with 2 Taps is Designed for professional cooling and dispensing of excellent chilled beer for domestic use, garden parties or smaller events.",
+      "images": [
+        "/products/lindr-pygmy-25k-exclusive-2-taps.jpg",
+        "/products/lindr-pygmy-25k-exclusive-2-taps-2.jpg"
+      ],
+      "sitePriceGbp": 709.73,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-pygmy-25k-exclusive-2-taps/"
+    },
+    {
+      "slug": "lindr-pygmy-kitchen-pro",
+      "name": "Lindr Pygmy Kitchen Pro",
+      "siteSku": "KCH01654-Lindr-1",
+      "section": "mobile-dispense",
+      "category": "Lindr Dispenser",
+      "subcategory": "Lindr Units",
+      "description": "Lindr Pygmy Pro Kitchen sets a new standard for luxury and uniqueness in the world of kitchen appliances. Its exclusive and innovative design takes kitchen aesthetics to the next level, while its built-in draught beer system offers an unparalleled experience for beer lovers.",
+      "images": [
+        "/products/lindr-pygmy-kitchen-pro.jpg",
+        "/products/lindr-pygmy-kitchen-pro-2.jpg"
+      ],
+      "sitePriceGbp": 1459.5,
+      "sourceUrl": "https://www.brewfitt.com/product/lindr-pygmy-kitchen-pro/"
+    },
+    {
+      "slug": "ciocab",
+      "name": "Ciocab",
+      "siteSku": "Ciocab",
+      "section": "bar",
+      "category": "Hot Drinks",
+      "subcategory": null,
+      "description": "Ciocab is a hot drinks dispenser that can work with hot chocolate, milk, mulled wine and hot tea. The mixing of the product happens by means of a vertical stirrer that prevents the formation of foam, preserving the taste of the product. The bain-marie system is able to heat the product without burning it, so without altering its taste.",
+      "images": [
+        "/products/ciocab.png",
+        "/products/ciocab-2.jpg"
+      ],
+      "sitePriceGbp": 461.38,
+      "sourceUrl": "https://www.brewfitt.com/product/ciocab/"
+    }
+  ]
+}

@@ -34,7 +34,7 @@ Build so each of these can be connected in Phase 2 without redesign.
 
 ## Tooling notes
 
-- Scripts: `npm run dev`, `typecheck`, `lint`, `build` (static export to `out/`), `format`.
+- Scripts: `npm run dev`, `typecheck`, `lint`, `build` (static export to `out/`), `format`, `gen:types`, `check:data` (seed consistency for today and +45/+120/+250 days), `check:api` (every endpoint and mutation per persona, reload replay, reset).
 - shadcn/ui: Radix base, `radix-nova` style, `iconLibrary: "phosphor"`. Add primitives with `npx shadcn@latest add <name>`. Generated files import `cn` from the `cn` package (shadcn's own). Never save `components.json` from PowerShell `Set-Content` (it writes a BOM, which breaks the CLI).
 - ESLint enforces the boundaries: no `lucide-react`, no `next-themes`, and nothing outside `src/lib/api/` and `src/lib/mock/` may import from `@/lib/mock`.
 - Theme: `src/stores/theme-store.ts` (Zustand, persisted) + `ThemeSync` and a pre-paint boot script in the root layout. Dark mode is the `.dark` class. Tokens (brand, surfaces, status `neutral/info/success/warning/danger` with `-subtle` variants, charts) live only in `src/app/globals.css`.
@@ -86,6 +86,17 @@ Where BLUEPRINT.md names a field without specifying it, these are the choices ma
 - Fields added because a blueprint requirement needs them: `Account.pendingChanges` and `approvalStatus` on Contact/Address (edits pending Brewfitt approval); `Quote.lastViewedAt`, `salesOrderId`, `declineReason`; `Rfq.threadId/notes/createdAt`; `PurchaseOrder.createdAt` (purchase history by month); `Delivery.noteDocumentId`; `Case.number/subject/engineerNotes/updatedAt`; `KnowledgeItem.body/submittedByAccountId/reviewNote`; `SupplierProduct.productId/threadId/submittedAt/updatedAt`; `Thread.accountId`; `Message.id`; `Notification.dismissed`; `Payment.reference/remittanceDocumentId`; `PaymentRun.status`; ids on `SupplierQuote` and `PendingChange`; `AIInsight.simulated: true`.
 - Agreements are Documents with category `agreement`, not a separate entity. Document categories extend the blueprint list with `proof-of-delivery`, `credit-note`, `remittance`, `compliance`, `company`.
 - Payment runs are Brewfitt-wide; the API returns each run filtered to the supplier's own invoices and total.
+- `ConfigurationSelections.dispense.optionIds` holds tap style, coupler and non-draught equipment. Configurator `OptionLine` can pick a product per dispense point by draught tap count (fonts, drip trays).
+
+## Mock layer (M2)
+
+- `src/lib/api/`: `contract.ts` (the `PortalApi` interface, one method per blueprint endpoint), `index.ts` (`api`, every response Zod-parsed), `query-keys.ts` (keys prefixed by `personaKey(persona)`), `errors.ts` (`ApiError`, `errorMessage`).
+- `src/lib/mock/`: `seed/` (deterministic generator, fixed RNG seed, all dates relative to today), `data/` (brewfitt.com catalogue JSON, UK postcodes from postcodes.io, configurator rules draft, knowledge and conversation content), `api/` (handlers), `scope.ts` (persona scoping), `db.ts`, `mutations.ts`.
+- **Persistence (decision 2, as implemented):** the seed is regenerated on load (~50 ms). User changes are stored in localStorage as a log of computed record changes (insert/patch/remove with ids and timestamps) and replayed with dates shifted forward by days elapsed. Handlers must put everything into the change list via `commit(op, changes)`; never mutate `getDb()` directly. Bump `src/lib/mock/version.ts` when seed ids or shapes change.
+- Read-time derivations: invoice `overdue` and `ageingBand`, quote `expired`.
+- Business logic shared by UI and mock lives outside the mock: `src/lib/configurator/engine.ts` (compatibility, validation, BOM), `src/lib/ai/rules.ts` (insight rules), `src/lib/ai/assistant.ts`, `src/lib/format.ts`.
+- Personas (`api.demo.personas()`): Olivia Bennett (Harbourside Drinks, brand owner, Premium Lager font rollout, default), Sarah Crowther (Pennine Stack Brewery), Kerry Flanagan (The Crown & Anchor, no credit terms, card), Lucy Carrington (Salt & Ember), Siobhan Kelly (Liffey Quarter Hotel, export 0% VAT), Jess Armitage (The Weaver's Rest, site), Andrew Hirst (Mill Race Inns, group), Neil Chapman (Vireo Dispense Systems, supplier).
+- Catalogue: 245 real brewfitt.com trade products plus 5 python loom variants (per metre, sharing the site's mini python image; the site has no pythons). Prices the site does not show are estimates in `seed/catalogue.ts`. The site's "Special Offers" fonts are filed under Fonts. Suppliers are invented and mapped by category. No glassware, gas cylinders or slush machines exist on the site, so the configurator has none. Configurator rules are labelled "draft-1 (pre-workshop)"; thresholds await Brewfitt's rules workshop.
 
 ## Coding standards
 
@@ -114,7 +125,7 @@ The persona switcher stands in for authentication. Personas: customer contact (p
 
 - Follow BLUEPRINT.md's suggested build order.
 - Do not build anything under the Phase 1 boundary. Do not add features BLUEPRINT.md does not ask for without checking with the user.
-- After each milestone: `npm run typecheck`, `npm run lint`, `npm run build` (plus `npm run check:data` once mock data exists); fix failures; commit with a clear message; give the user a one-paragraph summary plus anything needed from them, then continue straight into the next milestone without waiting for a reply. Stop only when a decision genuinely needs the user.
+- After each milestone: `npm run typecheck`, `npm run lint`, `npm run build`, `npm run check:data` and `npm run check:api`; fix failures; commit with a clear message; give the user a one-paragraph summary plus anything needed from them, then continue straight into the next milestone without waiting for a reply. Stop only when a decision genuinely needs the user.
 - Do not push unless asked.
 
 ## Milestones

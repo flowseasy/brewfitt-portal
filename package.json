@@ -8,7 +8,9 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
-    "gen:types": "node scripts/gen-types.mjs"
+    "gen:types": "node scripts/gen-types.mjs",
+    "check:data": "tsx scripts/check-data.ts",
+    "check:api": "tsx scripts/check-api.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

@@ -25,25 +25,38 @@ export const ConfiguratorGroup = z.object({
 });
 
 /** How many of a product an option contributes to the bill of materials. */
-export const QuantityBasis = z.enum(["fixed", "per-point", "per-tap", "per-metre"]);
+export const QuantityBasis = z.enum(["fixed", "per-point", "per-draught-tap", "per-metre"]);
 
-export const OptionLine = z.object({
-  productId: Id,
-  basis: QuantityBasis,
-  quantity: z.number().positive(),
-});
+export const OptionLine = z.union([
+  z.object({
+    productId: Id,
+    basis: QuantityBasis,
+    quantity: z.number().positive(),
+  }),
+  /** One product per dispense point, chosen by that point's draught tap count (fonts, drip trays). */
+  z.object({
+    productIdByDraughtTaps: z.record(z.string().regex(/^\d+$/), Id),
+    basis: z.literal("per-point"),
+    quantity: z.number().positive(),
+  }),
+]);
 
 export const OptionCompatibility = z.object({
   venueTypes: z.array(VenueType).optional(),
   /** At least one tap must serve one of these. */
   beverages: z.array(Beverage).optional(),
-  minTapsPerPoint: z.int().positive().optional(),
-  maxTapsPerPoint: z.int().positive().optional(),
-  minTotalTaps: z.int().positive().optional(),
-  maxTotalTaps: z.int().positive().optional(),
+  /** No tap may serve these. */
+  excludesBeverages: z.array(Beverage).optional(),
+  minDraughtTapsPerPoint: z.int().nonnegative().optional(),
+  maxDraughtTapsPerPoint: z.int().positive().optional(),
+  minTotalDraughtTaps: z.int().nonnegative().optional(),
+  maxTotalDraughtTaps: z.int().positive().optional(),
   minPythonMetres: z.number().nonnegative().optional(),
   maxPythonMetres: z.number().positive().optional(),
+  /** Every one of these must be selected. */
   requiresOptionIds: z.array(Id).optional(),
+  /** At least one of these must be selected. */
+  requiresAnyOptionIds: z.array(Id).optional(),
   excludesOptionIds: z.array(Id).optional(),
 });
 
@@ -93,6 +106,8 @@ export const ConfigurationSelections = z.object({
   }),
   dispense: z.object({
     points: z.array(DispensePoint).min(1),
+    /** Tap style, keg coupler and non-draught equipment. */
+    optionIds: z.array(Id),
   }),
   font: z.object({
     optionIds: z.array(Id),
