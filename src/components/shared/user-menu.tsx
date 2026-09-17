@@ -86,7 +86,9 @@ export function UserMenu() {
                 {name ? initials(name) : ""}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden max-w-40 truncate text-sm font-medium sm:inline">{name}</span>
+            <span className="hidden max-w-40 truncate text-sm font-medium sm:inline md:hidden">
+              {name}
+            </span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-64">

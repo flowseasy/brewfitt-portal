@@ -102,12 +102,12 @@ export function GlobalSearch() {
       <Button
         variant="outline"
         onClick={() => setOpen(true)}
-        className="h-9 w-full justify-start gap-2 rounded-full text-muted-foreground sm:w-64"
+        className="h-9 w-full justify-center gap-2 rounded-full px-0 text-muted-foreground xl:w-56 xl:justify-start xl:px-3 2xl:w-64"
         aria-label="Search"
       >
         <MagnifyingGlassIcon aria-hidden />
-        <span className="hidden sm:inline">Search</span>
-        <kbd className="ml-auto hidden rounded border bg-muted px-1.5 font-mono text-[10px] sm:inline">
+        <span className="hidden xl:inline">Search</span>
+        <kbd className="ml-auto hidden rounded border bg-muted px-1.5 font-mono text-[10px] xl:inline">
           Ctrl K
         </kbd>
       </Button>

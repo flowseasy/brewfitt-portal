@@ -36,17 +36,17 @@ export function DashboardCard({
         className,
       )}
     >
-      <div className="mb-4 flex items-center gap-2.5">
-        <span className="flex size-8 items-center justify-center rounded-lg bg-brand-subtle text-brand-subtle-foreground">
+      <div className="mb-4 flex flex-wrap items-center gap-x-2.5 gap-y-1">
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-subtle text-brand-subtle-foreground">
           <IconComponent className="size-[18px]" aria-hidden />
         </span>
-        <h2 id={headingId} className="font-medium">
+        <h2 id={headingId} className="min-w-0 font-medium">
           {title}
         </h2>
         {headerExtra ? <div className="ml-1">{headerExtra}</div> : null}
         <Link
           href={action.href}
-          className="group ml-auto flex items-center gap-1 rounded-md text-sm font-medium text-primary underline-offset-4 hover:underline"
+          className="group ml-auto flex shrink-0 items-center gap-1 rounded-md text-sm font-medium whitespace-nowrap text-primary underline-offset-4 hover:underline"
         >
           {action.label}
           <ArrowRightIcon

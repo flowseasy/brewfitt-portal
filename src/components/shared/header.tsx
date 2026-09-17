@@ -30,12 +30,12 @@ export function Header() {
         <Link href="/dashboard" className="shrink-0 lg:hidden" aria-label="Brewfitt Portal home">
           <BrandLogo className="h-6" />
         </Link>
-        <PortalBadge className="hidden md:inline" />
+        <PortalBadge className="hidden md:block" />
         <div className="hidden lg:block">
           <SiteSwitcher />
         </div>
-        <div className="ml-auto flex min-w-0 items-center gap-1.5 sm:gap-2">
-          <div className="w-9 sm:w-auto">
+        <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <div className="w-9 xl:w-auto">
             <GlobalSearch />
           </div>
           <AssistantButton />
