@@ -30,7 +30,7 @@ export function Header() {
         <Link href="/dashboard" className="shrink-0 lg:hidden" aria-label="Brewfitt Portal home">
           <BrandLogo className="h-6" />
         </Link>
-        <PortalBadge className="hidden md:inline-flex" />
+        <PortalBadge className="hidden md:inline" />
         <div className="hidden lg:block">
           <SiteSwitcher />
         </div>
