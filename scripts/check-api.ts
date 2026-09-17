@@ -190,6 +190,27 @@ async function main() {
       answer.answer.join(" "),
     );
   });
+  await step("assistant summarises outstanding orders", async () => {
+    const answer = await api.ai.ask({ question: "What's the latest on my outstanding orders?" });
+    const open = (await api.orders.salesOrders()).filter((o) =>
+      ["confirmed", "picking", "dispatched", "part-delivered"].includes(o.status),
+    );
+    expect(
+      answer.sources.filter((s) => s.relatedType === "sales-order").length ===
+        Math.min(open.length, 6),
+      answer.answer.join(" "),
+    );
+  });
+  await step("assistant lists a product range", async () => {
+    const answer = await api.ai.ask({
+      question: "Can you show me what Coolflow options are available?",
+    });
+    expect(
+      answer.sources.length > 1 &&
+        answer.sources.every((s) => s.relatedType === "product" && /coolflow/i.test(s.label)),
+      answer.answer.join(" "),
+    );
+  });
   const createdConfig = await step("create configuration", async () => {
     const rules = await api.configurator.rules();
     const address = (await api.account.addresses()).find((a) => a.isDefault)!;

@@ -6,6 +6,7 @@ import type {
   Invoice,
   Job,
   Message,
+  Money,
   Product,
   PurchaseOrder,
   Quote,
@@ -35,6 +36,8 @@ export type AssistantRecords = {
   messages: Message[];
   stock: StockPosition[];
   participantName: (id: string) => string;
+  /** The account's price for a product, when it has a price list. */
+  priceOf?: (productId: string) => Money | null;
 };
 
 const STOP_WORDS = new Set([
@@ -361,10 +364,46 @@ export function answerQuestion(question: string, r: AssistantRecords): AskRespon
     if (po) return { question: q, ...describePurchaseOrder(r, po), simulated: true };
   }
 
+  // 2. Everything still open ("What's the latest on my outstanding orders?").
+  const lower = q.toLowerCase();
+  if (
+    /\b(outstanding|open|current|pending|active|live|undelivered)\b[^.?]*\b(orders?|deliveries|purchase orders?)\b/.test(
+      lower,
+    ) ||
+    /\b(orders?|deliveries)\b[^.?]*\b(outstanding|still open|in progress|on (the|their) way)\b/.test(
+      lower,
+    ) ||
+    /\bwhere are my (orders|deliveries)\b/.test(lower)
+  ) {
+    return { question: q, ...describeOpenOrders(r), simulated: true };
+  }
+
+  // 3. A range of products ("Show me what Coolflow options are available").
+  const listing =
+    /\b(options?|range|available|availability|choices?|which|list|show me|do you (have|stock|sell))\b/.test(
+      lower,
+    );
+  if (listing) {
+    const productTerms = words(q).filter((w) => !LISTING_WORDS.has(w));
+    if (productTerms.length) {
+      const matches = r.products.filter((p) => {
+        const name = p.name.toLowerCase();
+        return productTerms.every((t) => name.includes(t));
+      });
+      if (matches.length > 1 || (matches.length === 1 && productTerms.length === 1)) {
+        return {
+          question: q,
+          ...describeRange(r, matches, productTerms.join(" ")),
+          simulated: true,
+        };
+      }
+    }
+  }
+
   const terms = words(q);
   if (terms.length === 0) return notFound(q);
 
-  // 2. Conversations about an order or quote (subjects and message text, e.g. "Premium Lager font order").
+  // 4. Conversations about an order or quote (subjects and message text, e.g. "Premium Lager font order").
   const phrase = terms.join(" ");
   const scoreText = (text: string) => {
     const lower = text.toLowerCase();
@@ -400,7 +439,7 @@ export function answerQuestion(question: string, r: AssistantRecords): AskRespon
       best = { score: subjectScore * 2, subjectScore, kind: "sales-order", id: o.id };
   }
 
-  // 3. A product named.
+  // 5. A product named.
   let bestProduct: { score: number; product: Product } | null = null;
   for (const p of r.products) {
     const score = scoreText(p.name) + (p.sku.toLowerCase() === phrase ? 3 : 0);
@@ -427,6 +466,133 @@ export function answerQuestion(question: string, r: AssistantRecords): AskRespon
     return { question: q, ...describeProduct(r, bestProduct.product), simulated: true };
   }
   return notFound(q);
+}
+
+/** Words that frame a range question rather than name the products. */
+const LISTING_WORDS = new Set([
+  "options",
+  "option",
+  "range",
+  "available",
+  "availability",
+  "choice",
+  "choices",
+  "which",
+  "list",
+  "see",
+  "sell",
+  "stock",
+  "products",
+  "product",
+  "types",
+  "kinds",
+  "all",
+  "your",
+  "brewfitt",
+]);
+
+const OPEN_SALES: SalesOrder["status"][] = ["confirmed", "picking", "dispatched", "part-delivered"];
+const OPEN_PURCHASE: PurchaseOrder["status"][] = [
+  "issued",
+  "acknowledged",
+  "in-transit",
+  "part-received",
+];
+
+function describeOpenOrders(r: AssistantRecords): { answer: string[]; sources: AskSource[] } {
+  const answer: string[] = [];
+  const sources: AskSource[] = [];
+
+  const pos = r.purchaseOrders
+    .filter((p) => OPEN_PURCHASE.includes(p.status))
+    .sort((a, b) => a.expectedDate.localeCompare(b.expectedDate));
+  const orders = r.salesOrders
+    .filter((o) => OPEN_SALES.includes(o.status))
+    .sort((a, b) =>
+      (a.confirmedDate ?? a.requestedDate).localeCompare(b.confirmedDate ?? b.requestedDate),
+    );
+
+  if (r.purchaseOrders.length && !r.salesOrders.length) {
+    if (!pos.length) {
+      answer.push("Every purchase order from Brewfitt has been received in full.");
+      return { answer, sources };
+    }
+    answer.push(`You have ${plural(pos.length, "open purchase order")}:`);
+    for (const p of pos.slice(0, 6)) {
+      answer.push(
+        `${p.number} is ${PO_STAGE[p.status]}, expected ${formatDate(p.expectedDate)}, worth ${formatMoney(p.total)}.`,
+      );
+      sources.push({
+        relatedType: "purchase-order",
+        relatedId: p.id,
+        label: `Purchase order ${p.number}`,
+      });
+    }
+    if (pos.length > 6) answer.push(`And ${plural(pos.length - 6, "more")} in Purchase orders.`);
+    return { answer, sources };
+  }
+
+  if (!orders.length) {
+    answer.push("You have no open orders: everything you have ordered has been delivered.");
+    return { answer, sources };
+  }
+  answer.push(`You have ${plural(orders.length, "open order")}:`);
+  for (const o of orders.slice(0, 6)) {
+    const due = o.confirmedDate ?? o.requestedDate;
+    const delivery = r.deliveries
+      .filter((d) => d.orderId === o.id && !d.deliveredAt)
+      .sort((a, b) => (b.dispatchedAt ?? "").localeCompare(a.dispatchedAt ?? ""))[0];
+    const tracking =
+      delivery && delivery.carrier
+        ? ` with ${delivery.carrier}${delivery.trackingRef ? ` (tracking ${delivery.trackingRef})` : ""}`
+        : "";
+    const when =
+      o.status === "dispatched" || o.status === "part-delivered"
+        ? `on its way${tracking}`
+        : due < r.today.toISOString().slice(0, 10)
+          ? `${STAGE[o.status]}, originally due ${formatDate(due)}`
+          : `${STAGE[o.status]}, due ${formatDate(due)}`;
+    answer.push(
+      `${o.number}${o.poReference ? ` (${o.poReference})` : ""}: ${when}, ${formatMoney(o.total)}.`,
+    );
+    sources.push({ relatedType: "sales-order", relatedId: o.id, label: `Order ${o.number}` });
+  }
+  if (orders.length > 6) answer.push(`And ${plural(orders.length - 6, "more")} in Orders.`);
+  return { answer, sources };
+}
+
+function describeRange(
+  r: AssistantRecords,
+  products: Product[],
+  term: string,
+): { answer: string[]; sources: AskSource[] } {
+  const shown = [...products].sort((a, b) => a.name.localeCompare(b.name)).slice(0, 8);
+  const answer = [
+    `${products.length === 1 ? "There is 1 product" : `There are ${products.length} products`} matching "${term}" on your price list:`,
+  ];
+  const sources: AskSource[] = [];
+  for (const p of shown) {
+    const price = r.priceOf?.(p.id);
+    const stock = r.stock.find((s) => s.productId === p.id);
+    const availability = !stock
+      ? ""
+      : stock.status === "in-stock"
+        ? `in stock (${stock.available})`
+        : stock.status === "low"
+          ? `low stock (${stock.available})`
+          : stock.expectedAt
+            ? `out of stock, expected ${formatDate(stock.expectedAt)}`
+            : "out of stock";
+    answer.push(
+      `${p.name}${price ? `: ${formatMoney(price)}` : ""}${availability ? `, ${availability}` : ""}.`,
+    );
+    sources.push({ relatedType: "product", relatedId: p.id, label: p.name });
+  }
+  if (products.length > shown.length)
+    answer.push(
+      `And ${plural(products.length - shown.length, "more")}; search the shop for the full list.`,
+    );
+  return { answer, sources };
 }
 
 function notFound(question: string): AskResponse {

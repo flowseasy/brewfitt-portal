@@ -26,6 +26,7 @@ import {
   openThreadChanges,
   orderingAccountIds,
   postChanges,
+  priceFor,
   priceListIdFor,
   quoteNow,
   requireCustomer,
@@ -602,6 +603,7 @@ export const ai: PortalApi["ai"] = {
         messages: db.messages.filter((m) => threadIds.has(m.threadId)),
         stock: db.stock,
         participantName,
+        priceOf: (productId) => priceFor(db, scope.viewAccount.id, productId),
       });
     }),
 };

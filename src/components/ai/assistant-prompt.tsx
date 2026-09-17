@@ -4,9 +4,11 @@ import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpIcon, SparkleIcon } from "@phosphor-icons/react";
+import { ArrowUpIcon, MicrophoneIcon, SparkleIcon, StopIcon } from "@phosphor-icons/react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useIsSupplier, usePersonaKey } from "@/features/session/use-session";
+import { useSpeechInput } from "@/hooks/use-speech-input";
 import { api, errorMessage, queryKeys } from "@/lib/api";
 import { hrefFor } from "@/lib/links";
 import { cn } from "@/lib/utils";
@@ -91,6 +93,13 @@ export function AssistantPrompt({
     ask.mutate(trimmed);
   };
 
+  // Ask by voice: words appear in the box as they are heard, then the question is sent.
+  const voice = useSpeechInput({
+    onInterim: setQuestion,
+    onFinal: submit,
+    onError: (message) => toast.error(message),
+  });
+
   const form = (
     <form
       onSubmit={(e) => {
@@ -112,9 +121,36 @@ export function AssistantPrompt({
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
         autoFocus={autoFocus}
-        placeholder="Ask about an order, quote or product…"
-        className="h-12 w-full rounded-full border bg-background pr-14 pl-11 text-base shadow-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 sm:text-sm"
+        placeholder={voice.listening ? "Listening…" : "Ask about an order, quote or product…"}
+        className={cn(
+          "h-12 w-full rounded-full border bg-background pl-11 text-base shadow-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 sm:text-sm",
+          voice.supported ? "pr-24" : "pr-14",
+          voice.listening && "border-primary ring-3 ring-primary/20",
+        )}
       />
+      {voice.supported ? (
+        <Button
+          type="button"
+          size="icon"
+          variant={voice.listening ? "default" : "ghost"}
+          className="absolute top-1/2 right-12 -translate-y-1/2 rounded-full"
+          onClick={voice.listening ? voice.stop : voice.start}
+          disabled={ask.isPending}
+          aria-pressed={voice.listening}
+          aria-label={voice.listening ? "Stop listening" : "Ask by voice"}
+          title={voice.listening ? "Stop listening" : "Ask by voice"}
+        >
+          {voice.listening ? (
+            <StopIcon weight="fill" aria-hidden />
+          ) : (
+            <MicrophoneIcon className="text-primary" aria-hidden />
+          )}
+        </Button>
+      ) : null}
+      <span className="sr-only" aria-live="assertive">
+        {voice.listening ? "Listening. Ask your question." : ""}
+      </span>
+
       <Button
         type="submit"
         size="icon"
