@@ -94,7 +94,9 @@ Where BLUEPRINT.md names a field without specifying it, these are the choices ma
 - Navigation per persona: `src/components/shared/navigation.tsx`. Record links: always use `hrefFor(relatedType, id)` from `src/lib/links.ts`.
 - Session hooks: `usePersona`, `usePersonaKey` (prefix every query key), `useMe`, `useIsSupplier` in `src/features/session/use-session.ts`.
 - Shared states: `LoadingState`, `EmptyState`, `ErrorState` (`states.tsx`), `StatusPill` tones, `PageHeader`, `ConfirmDialog`.
-- A `.claude/launch.json` config named `brewfitt-portal` runs the dev server for previews.
+- `.claude/launch.json`: `brewfitt-portal` runs `next dev`; `brewfitt-portal-static` serves the static export in `.next-build/` on port 4173 via `scripts/serve-out.mjs`. For browser verification prefer the static preview after `npm run build:check`: the dev server's hot reload on Windows can leave pages stuck on the loading skeleton (chunk 404s) while files change. With a custom `distDir` Next writes the export into that directory, so `build:check` output is `.next-build/`; `npm run build` exports to `out/`.
+- Detail pages that read `?id=` use `useSearchParams` inside a `<Suspense>` boundary (required for static export).
+- Avoid `AnimatePresence mode="wait"` for navigation-critical content; it blocks the next view until exit animations finish, which stalls in throttled tabs.
 
 ## Mock layer (M2)
 

@@ -4,8 +4,21 @@
     {
       "name": "brewfitt-portal",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 3000
+    },
+    {
+      "name": "brewfitt-portal-static",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "scripts/serve-out.mjs",
+        "4173",
+        ".next-build"
+      ],
+      "port": 4173
     }
   ]
 }
