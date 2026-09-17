@@ -559,7 +559,7 @@ function buildSelections(spec: ConfigSpec, siteAddressId: string): { state: Conf
       })),
       optionIds: [],
     },
-    font: { optionIds: [], branding: spec.branding ?? null },
+    font: { optionIds: [], branding: spec.branding ?? null, artwork: [] },
     cooling: { optionIds: [], pythonMetres: spec.metres },
     gas: { optionIds: [] },
     ancillaries: { optionIds: [] },

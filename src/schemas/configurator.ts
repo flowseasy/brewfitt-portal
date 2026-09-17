@@ -127,6 +127,8 @@ export const ConfigurationSelections = z.object({
   font: z.object({
     optionIds: z.array(Id),
     branding: z.string().nullable(),
+    /** Artwork file names for fonts and badges (Phase 1 keeps names, not files). */
+    artwork: z.array(z.string().min(1)).max(20).default([]),
   }),
   cooling: z.object({
     optionIds: z.array(Id),

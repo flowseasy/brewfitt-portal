@@ -224,7 +224,11 @@ async function main() {
           points: [{ id: "pt-1", name: "Main bar", taps: ["lager", "lager"] }],
           optionIds: ["o-tap-fc4-chrome", "o-coupler-s"],
         },
-        font: { optionIds: ["o-font-cobra-pl-led"], branding: null },
+        font: {
+          optionIds: ["o-font-cobra-pl-led"],
+          branding: null,
+          artwork: ["Smoke lager badge.ai", "Smoke lager logo.pdf"],
+        },
         cooling: { optionIds: ["o-cooler-v15", "o-python-2"], pythonMetres: 12 },
         gas: { optionIds: ["o-gas-co2", "o-gas-chain"] },
         ancillaries: { optionIds: ["o-drip-standard", "o-clean-s"] },
@@ -232,6 +236,7 @@ async function main() {
     });
     expect(Object.keys(validateConfiguration(config, rules)).length === 0, "configuration invalid");
     expect(config.lines.length >= 8 && config.total.amount > 0, "BOM empty");
+    expect(config.selections.font.artwork.length === 2, "artwork not saved");
     return config;
   });
   const draftQuote =

@@ -502,7 +502,7 @@ export const configurator: PortalApi["configurator"] = {
         accountId: config.accountId,
         lines: config.lines,
         configurationId: config.id,
-        request: `Quote requested from the configuration "${config.name}".`,
+        request: `Quote requested from the configuration "${config.name}".${config.selections.font.artwork.length ? ` Artwork provided: ${config.selections.font.artwork.join(", ")}.` : ""}`,
       });
       commit("configurator.requestQuote", [
         ...changes,

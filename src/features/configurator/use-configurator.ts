@@ -76,7 +76,7 @@ export function initialState(rules: ConfiguratorRules, siteAddressId: string | n
   const selections: ConfigurationSelections = {
     venue: { newSite: null },
     dispense: { points, optionIds: [] },
-    font: { optionIds: [], branding: null },
+    font: { optionIds: [], branding: null, artwork: [] },
     cooling: { optionIds: [], pythonMetres: rules.defaults.pythonMetres },
     gas: { optionIds: [] },
     ancillaries: { optionIds: [] },
@@ -166,7 +166,8 @@ export type BuilderAction =
   | { type: "points"; points: DispensePoint[] }
   | { type: "select"; groupId: string; optionId: string; single: boolean; on: boolean }
   | { type: "python"; metres: number }
-  | { type: "branding"; branding: string | null };
+  | { type: "branding"; branding: string | null }
+  | { type: "artwork"; artwork: string[] };
 
 export function useBuilder(rules: ConfiguratorRules | undefined, init: () => BuilderState | null) {
   const [store, dispatch] = useReducer(
@@ -180,6 +181,9 @@ export function useBuilder(rules: ConfiguratorRules | undefined, init: () => Bui
           return { state: s, removed: [] };
         case "branding":
           s.selections.font.branding = action.branding;
+          return { state: s, removed: [] };
+        case "artwork":
+          s.selections.font.artwork = action.artwork;
           return { state: s, removed: [] };
         case "venue":
           s.venueType = action.venueType;

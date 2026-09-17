@@ -14,6 +14,10 @@ import {
   ListChecksIcon,
   MapPinIcon,
   PaperPlaneTiltIcon,
+  FileIcon,
+  FileImageIcon,
+  UploadSimpleIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { formatAddress } from "@/components/account/addresses";
@@ -403,7 +407,10 @@ function BuilderForm({
                 <PythonLength state={state} rules={rules} dispatch={act} />
               ) : null}
               {step === "font" ? (
-                <Branding value={state.selections.font.branding} dispatch={act} />
+                <>
+                  <Branding value={state.selections.font.branding} dispatch={act} />
+                  <Artwork files={state.selections.font.artwork} dispatch={act} />
+                </>
               ) : null}
               {step === "review" ? (
                 <Review
@@ -770,6 +777,101 @@ function Branding({
   );
 }
 
+const ARTWORK_TYPES = ".pdf,.ai,.eps,.svg,.png,.jpg,.jpeg";
+const MAX_ARTWORK = 20;
+
+/** Artwork files for fonts and badges, added several at a time by picking or dropping. */
+function Artwork({ files, dispatch }: { files: string[]; dispatch: (a: BuilderAction) => void }) {
+  const [dragging, setDragging] = useState(false);
+  const add = (list: FileList | null) => {
+    if (!list?.length) return;
+    const names = [...list].map((f) => f.name);
+    const next = [...new Set([...files, ...names])];
+    if (next.length > MAX_ARTWORK)
+      toast.error(`Add up to ${MAX_ARTWORK} artwork files`, {
+        description: "Combine smaller files into a PDF or send the rest to your account manager.",
+      });
+    dispatch({ type: "artwork", artwork: next.slice(0, MAX_ARTWORK) });
+  };
+
+  return (
+    <div className="rounded-2xl border bg-card p-4 sm:p-5">
+      <p id="artwork-label" className="font-medium">
+        Artwork
+      </p>
+      <p className="text-sm text-muted-foreground">
+        Logos and badge designs for the fonts. Vector files (AI, EPS, SVG or PDF) print best; add as
+        many as you need.
+      </p>
+      <label
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragging(false);
+          add(e.dataTransfer.files);
+        }}
+        className={cn(
+          "mt-3 flex cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed p-6 text-center transition focus-within:ring-3 focus-within:ring-ring/40 hover:border-primary/50 hover:bg-accent/40",
+          dragging && "border-primary bg-brand-subtle/50",
+        )}
+      >
+        <UploadSimpleIcon className="size-6 text-primary" aria-hidden />
+        <span className="text-sm font-medium">Drop artwork files here or choose files</span>
+        <span className="text-xs text-muted-foreground">
+          PDF, AI, EPS, SVG, PNG or JPG · up to {MAX_ARTWORK} files
+        </span>
+        <input
+          type="file"
+          multiple
+          accept={ARTWORK_TYPES}
+          aria-labelledby="artwork-label"
+          className="sr-only"
+          onChange={(e) => {
+            add(e.target.files);
+            e.target.value = "";
+          }}
+        />
+      </label>
+      {files.length ? (
+        <ul className="mt-3 space-y-1.5" aria-label="Artwork files">
+          {files.map((name) => (
+            <li
+              key={name}
+              className="flex items-center gap-2.5 rounded-lg border bg-background px-3 py-2 text-sm"
+            >
+              {/\.(png|jpe?g|svg)$/i.test(name) ? (
+                <FileImageIcon className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+              ) : (
+                <FileIcon className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+              )}
+              <span className="min-w-0 flex-1 truncate">{name}</span>
+              <button
+                type="button"
+                onClick={() =>
+                  dispatch({ type: "artwork", artwork: files.filter((f) => f !== name) })
+                }
+                className="flex size-7 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground"
+                aria-label={`Remove ${name}`}
+              >
+                <XIcon className="size-4" aria-hidden />
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      <p className="mt-2 text-xs text-muted-foreground" aria-live="polite">
+        {files.length
+          ? `${files.length} ${files.length === 1 ? "file" : "files"} added. Saved with the configuration and sent with the quote request.`
+          : "In this preview only file names are saved."}
+      </p>
+    </div>
+  );
+}
+
 function Review({
   state,
   rules,
@@ -829,6 +931,9 @@ function Review({
       lines: [
         ...chosen("font"),
         ...(state.selections.font.branding ? [`Branding: ${state.selections.font.branding}`] : []),
+        ...(state.selections.font.artwork.length
+          ? [`Artwork: ${state.selections.font.artwork.join(", ")}`]
+          : []),
       ],
     },
     {
