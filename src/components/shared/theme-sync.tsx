@@ -24,4 +24,4 @@ export function ThemeSync() {
 }
 
 /** Inline script run before paint so the first frame uses the right theme. */
-export const themeBootScript = `(function(){try{var p="system";var s=localStorage.getItem("${THEME_STORAGE_KEY}");if(s){p=JSON.parse(s).state.preference||p}var d=p==="dark"||(p==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);var e=document.documentElement;e.classList.toggle("dark",d);e.style.colorScheme=d?"dark":"light"}catch(_){}})();`;
+export const themeBootScript = `(function(){try{var p="light";var s=localStorage.getItem("${THEME_STORAGE_KEY}");if(s){p=JSON.parse(s).state.preference||p}var d=p==="dark"||(p==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);var e=document.documentElement;e.classList.toggle("dark",d);e.style.colorScheme=d?"dark":"light"}catch(_){}})();`;

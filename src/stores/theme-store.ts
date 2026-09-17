@@ -13,7 +13,8 @@ export const THEME_STORAGE_KEY = "brewfitt-theme";
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
-      preference: "system",
+      // Light by default; testers switch with the header toggle or pick "Match device".
+      preference: "light",
       setPreference: (preference) => set({ preference }),
     }),
     { name: THEME_STORAGE_KEY },

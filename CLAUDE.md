@@ -39,7 +39,7 @@ Build so each of these can be connected in Phase 2 without redesign.
 - ESLint enforces the boundaries: no `lucide-react`, no `next-themes`, and nothing outside `src/lib/api/` and `src/lib/mock/` may import from `@/lib/mock`.
 - Accessibility audit: `axe-core` is a dev dependency. After `npm run build:check`, copy `node_modules/axe-core/axe.min.js` into `.next-build/`, load routes in same-origin iframes on the static preview, `eval` axe into each and run WCAG 2.1 AA rules. Set dark mode through the `brewfitt-theme` storage key before loading, not by toggling the class (transitions give false contrast failures). Last full pass (M18): no violations across customer, group and supplier routes in light and dark.
 - A `<dl>` may only wrap `<dt>`/`<dd>` in `<div>`s: linked stat tiles put the link in the `<dt>` and stretch it with `after:absolute after:inset-0`.
-- Theme: `src/stores/theme-store.ts` (Zustand, persisted) + `ThemeSync` and a pre-paint boot script in the root layout. Dark mode is the `.dark` class. Tokens (brand, surfaces, status `neutral/info/success/warning/danger` with `-subtle` variants, charts) live only in `src/app/globals.css`.
+- Theme: light by default; sun/moon `ThemeToggle` in the header and on the start screen, with Light/Dark/Match device in the user menu. `src/stores/theme-store.ts` (Zustand, persisted) + `ThemeSync` and a pre-paint boot script in the root layout. Dark mode is the `.dark` class. Tokens (brand, surfaces, status `neutral/info/success/warning/danger` with `-subtle` variants, charts) live only in `src/app/globals.css`.
 - Typography: Inter for UI (sits beside the serif wordmark), JetBrains Mono for SKUs and references.
 - Logo served from `public/brand/brewfitt-logo.jpg` (2230×560); app icon `src/app/icon.svg`.
 

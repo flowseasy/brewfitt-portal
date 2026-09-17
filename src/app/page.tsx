@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/shared/brand-logo";
 import { PersonaList } from "@/components/shared/persona-list";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { landingFor } from "@/stores/onboarding-store";
 import { usePersonaStore } from "@/stores/persona-store";
@@ -28,7 +29,10 @@ export default function StartPage() {
         className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-gradient-to-b from-brand-subtle to-transparent"
       />
       <div className="relative mx-auto flex max-w-3xl flex-col px-4 py-12 sm:py-20">
-        <BrandLogo priority className="h-10 self-start" />
+        <div className="flex items-center justify-between gap-3">
+          <BrandLogo priority className="h-10" />
+          <ThemeToggle />
+        </div>
         <h1 className="mt-10 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
           Customer and supplier portal
         </h1>

@@ -11,6 +11,7 @@ import { BrandLogo } from "./brand-logo";
 import { GlobalSearch } from "./global-search";
 import { PrimaryCta } from "./primary-cta";
 import { SiteSwitcher } from "./site-switcher";
+import { ThemeToggle } from "./theme-toggle";
 import { UserMenu } from "./user-menu";
 
 export function Header() {
@@ -36,6 +37,7 @@ export function Header() {
             <GlobalSearch />
           </div>
           <AssistantButton />
+          <ThemeToggle />
           <Button asChild variant="ghost" size="icon" className="relative rounded-full">
             <Link
               href="/notifications"
