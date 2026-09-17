@@ -20,7 +20,9 @@ export function formatMoney(money: Money, options: { whole?: boolean } = {}): st
 
 /** £180 to £320 */
 export function formatMoneyRange(low: Money, high: Money): string {
-  return `${formatMoney(low, { whole: true })} to ${formatMoney(high, { whole: true })}`;
+  const a = formatMoney(low, { whole: true });
+  const b = formatMoney(high, { whole: true });
+  return a === b ? `About ${a}` : `${a} to ${b}`;
 }
 
 const dateFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
