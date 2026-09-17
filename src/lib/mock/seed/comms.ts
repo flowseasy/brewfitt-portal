@@ -314,7 +314,7 @@ export function seedComms(
   // Customer order threads
   const rollout = r.salesOrders.find((o) => o.id === r.rolloutOrderId)!;
   used.add(rollout.id);
-  applyScript("premium-lager-font-rollout", threadFor.get(rollout.id)!, new Date(rollout.createdAt), { ...orderVars(rollout), siteName: "the Birmingham flagship venue", productName: productName(rollout.lines[0]!.productId) });
+  applyScript("premium-lager-font-rollout", threadFor.get(rollout.id)!, new Date(rollout.createdAt), { ...orderVars(rollout), siteName: "The Brass Anchor in Birmingham", productName: productName(rollout.lines[0]!.productId) });
 
   const ordersBy = (filter: (o: SalesOrder) => boolean) => r.salesOrders.filter((o) => !used.has(o.id) && filter(o)).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   // The date-change conversation ends with Brewfitt confirming, so it belongs on an approved request.

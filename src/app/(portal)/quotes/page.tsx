@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FileTextIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { SearchInput } from "@/components/shared/filter-bar";
 import { PageHeader } from "@/components/shared/page-header";
+import { StatusTabs } from "@/components/shared/status-tabs";
 import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,6 @@ import { api, queryKeys } from "@/lib/api";
 import { daysFromToday, formatDate, formatMoney, formatRelativeDay, plural } from "@/lib/format";
 import { hrefFor } from "@/lib/links";
 import { QUOTE_STATUS, RFQ_STATUS } from "@/lib/status";
-import { cn } from "@/lib/utils";
 import type { Quote, Rfq } from "@/types";
 
 export default function QuotesPage() {
@@ -23,26 +23,6 @@ export default function QuotesPage() {
     <Suspense fallback={<LoadingState rows={5} />}>
       {useIsSupplier() ? <SupplierRfqs /> : <CustomerQuotes />}
     </Suspense>
-  );
-}
-
-function Tabs<T extends string>({ tabs, value, onChange }: { tabs: { value: T; label: string; count: number }[]; value: T; onChange: (v: T) => void }) {
-  return (
-    <div role="tablist" aria-label="Filter by status" className="-mx-4 mb-4 flex gap-1.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
-      {tabs.map((t) => (
-        <button
-          key={t.value}
-          role="tab"
-          type="button"
-          aria-selected={value === t.value}
-          onClick={() => onChange(t.value)}
-          className={cn("flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm transition", value === t.value ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:border-primary/40")}
-        >
-          {t.label}
-          <span className={cn("rounded-full px-1.5 text-xs tabular-nums", value === t.value ? "bg-primary-foreground/20" : "bg-muted")}>{t.count}</span>
-        </button>
-      ))}
-    </div>
   );
 }
 
@@ -80,7 +60,7 @@ function CustomerQuotes() {
           </Button>
         }
       />
-      <Tabs tabs={tabs} value={tab} onChange={setTab} />
+      <StatusTabs tabs={tabs} value={tab} onChange={setTab} />
       <div className="mb-4">
         <SearchInput value={search} onChange={setSearch} placeholder="Search by quote number, product or configuration" label="Search quotes" className="max-w-md" />
       </div>
@@ -146,7 +126,7 @@ function SupplierRfqs() {
   return (
     <div>
       <PageHeader title="RFQs and quotes" description="Requests for quotation from Brewfitt's buyer. Respond with your price and lead time before the deadline." />
-      <Tabs
+      <StatusTabs
         tabs={[
           { value: "open", label: "Awaiting response", count: all.filter((r) => inTab(r, "open")).length },
           { value: "responded", label: "Responded", count: all.filter((r) => inTab(r, "responded")).length },

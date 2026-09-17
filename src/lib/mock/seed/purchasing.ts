@@ -87,6 +87,11 @@ export function seedPurchasing(ctx: SeedContext, commerce: { salesOrders: SalesO
     { productId: slugId("cobra-4-out-chrome-led"), qty: 6 },
     { productId: slugId("cobra-3-out-chrome-led"), qty: 4 },
   ]).expectedDate = isoDate(workingDay(addDays(today, 9)));
+  // A new order Vireo has not yet acknowledged (demonstrates acknowledgement).
+  const awaitingAcknowledgement = makePo("sup_vireo", today, [
+    { productId: slugId("classic-cobra-3-out-led"), qty: 6 },
+    { productId: slugId("celtic-tap-chrome-lager-1-2-x14x3-16jg"), qty: 24 },
+  ]);
   // Recently received font and tap orders, so Vireo has invoices awaiting a payment run.
   makePo("sup_vireo", addDays(today, -31), [
     { productId: slugId("classic-cobra-2-out-led"), qty: 8 },
@@ -128,7 +133,7 @@ export function seedPurchasing(ctx: SeedContext, commerce: { salesOrders: SalesO
         proofDocumentId: null,
       });
 
-    if (age <= 1) {
+    if (age <= 1 || po === awaitingAcknowledgement) {
       po.status = "issued";
     } else if (toExpected > 3) {
       po.status = "acknowledged";
