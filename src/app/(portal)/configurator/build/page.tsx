@@ -5,7 +5,16 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CopyIcon, FloppyDiskIcon, ListChecksIcon, MapPinIcon, PaperPlaneTiltIcon } from "@phosphor-icons/react";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CheckCircleIcon,
+  CopyIcon,
+  FloppyDiskIcon,
+  ListChecksIcon,
+  MapPinIcon,
+  PaperPlaneTiltIcon,
+} from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { formatAddress } from "@/components/account/addresses";
 import { BillOfMaterials } from "@/components/configurator/bill-of-materials";
@@ -15,14 +24,38 @@ import { ConfiguratorStepper, type StepKey } from "@/components/configurator/ste
 import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { describePoints, fromConfiguration, initialState, useBillOfMaterials, useBuilder, useConfiguratorData, VENUE_LABEL, type BuilderAction, type BuilderState } from "@/features/configurator/use-configurator";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import {
+  describePoints,
+  fromConfiguration,
+  initialState,
+  useBillOfMaterials,
+  useBuilder,
+  useConfiguratorData,
+  VENUE_LABEL,
+  type BuilderAction,
+  type BuilderState,
+} from "@/features/configurator/use-configurator";
 import { usePersonaKey } from "@/features/session/use-session";
 import { api, errorMessage, queryKeys } from "@/lib/api";
 import { formatMoney } from "@/lib/format";
 import { hrefFor } from "@/lib/links";
 import { cn } from "@/lib/utils";
-import type { Address, Configuration, ConfiguratorRules, ConfiguratorStepId, Money, Quote, VenueType } from "@/types";
+import type {
+  Address,
+  Configuration,
+  ConfiguratorRules,
+  ConfiguratorStepId,
+  Money,
+  Quote,
+  VenueType,
+} from "@/types";
 
 export default function BuildPage() {
   return (
@@ -38,16 +71,35 @@ function Builder() {
   const duplicateId = params.get("duplicate");
   const data = useConfiguratorData();
 
-  if (data.rules.isPending || data.configurations.isPending || data.addresses.isPending || data.priceList.isPending || data.me.isPending) {
+  if (
+    data.rules.isPending ||
+    data.configurations.isPending ||
+    data.addresses.isPending ||
+    data.priceList.isPending ||
+    data.me.isPending
+  ) {
     return <LoadingState rows={5} label="Loading the configurator" />;
   }
-  const failed = [data.rules, data.configurations, data.addresses, data.priceList, data.me].find((q) => q.isError);
+  const failed = [data.rules, data.configurations, data.addresses, data.priceList, data.me].find(
+    (q) => q.isError,
+  );
   if (failed) return <ErrorState error={failed.error} onRetry={() => failed.refetch()} />;
 
   const rules = data.rules.data!;
   const source = data.configurations.data!.find((c) => c.id === (id ?? duplicateId));
   if ((id || duplicateId) && !source) {
-    return <EmptyState icon={ListChecksIcon} title="This configuration could not be found" description="It may belong to another site or have been removed." action={<Button asChild variant="outline"><Link href="/configurator">Saved configurations</Link></Button>} />;
+    return (
+      <EmptyState
+        icon={ListChecksIcon}
+        title="This configuration could not be found"
+        description="It may belong to another site or have been removed."
+        action={
+          <Button asChild variant="outline">
+            <Link href="/configurator">Saved configurations</Link>
+          </Button>
+        }
+      />
+    );
   }
   const accountId = data.me.data!.account.id;
   const addresses = data.addresses.data!.filter((a) => a.accountId === accountId);
@@ -57,7 +109,11 @@ function Builder() {
       key={`${id ?? ""}-${duplicateId ?? ""}`}
       rules={rules}
       existing={id ? source! : null}
-      initial={source ? fromConfiguration(source, !!duplicateId) : { ...initialState(rules, addresses.find((a) => a.isDefault)?.id ?? null), name: "" }}
+      initial={
+        source
+          ? fromConfiguration(source, !!duplicateId)
+          : { ...initialState(rules, addresses.find((a) => a.isDefault)?.id ?? null), name: "" }
+      }
       addresses={addresses}
       priceLines={data.priceList.data!.lines}
       vatRate={data.me.data!.vatRate}
@@ -89,15 +145,23 @@ function BuilderForm({
   const reduce = useReducedMotion();
   const { state, removed, dispatch } = useBuilder(rules, () => initial);
   const [step, setStep] = useState<StepKey>("venue");
-  const [visited, setVisited] = useState<Set<StepKey>>(new Set(existing ? ["venue", "dispense", "font", "cooling", "gas", "ancillaries"] : []));
+  const [visited, setVisited] = useState<Set<StepKey>>(
+    new Set(existing ? ["venue", "dispense", "font", "cooling", "gas", "ancillaries"] : []),
+  );
   const [dirty, setDirty] = useState(!existing);
   const [bomOpen, setBomOpen] = useState(false);
   const [quoted, setQuoted] = useState<Quote | null>(null);
   const liveRef = useRef<HTMLParagraphElement>(null);
   const readOnly = existing?.status === "quoted";
 
-  const prices = useMemo(() => new Map(priceLines.map((l) => [l.productId, l.price])), [priceLines]);
-  const products = useMemo(() => new Map(priceLines.map((l) => [l.productId, l.product])), [priceLines]);
+  const prices = useMemo(
+    () => new Map(priceLines.map((l) => [l.productId, l.price])),
+    [priceLines],
+  );
+  const products = useMemo(
+    () => new Map(priceLines.map((l) => [l.productId, l.product])),
+    [priceLines],
+  );
   const bom = useBillOfMaterials(state, rules, priceLines);
   const errors = bom?.errors ?? {};
 
@@ -124,22 +188,33 @@ function BuilderForm({
   const nameError =
     state && state.name.trim().length < 3
       ? "Give the configuration a name of at least 3 characters"
-      : state && !state.siteAddressId && newSite && [newSite.label, newSite.line1, newSite.town, newSite.postcode].some((v) => !v?.trim())
+      : state &&
+          !state.siteAddressId &&
+          newSite &&
+          [newSite.label, newSite.line1, newSite.town, newSite.postcode].some((v) => !v?.trim())
         ? "Complete the new site's name, address, town and postcode"
         : null;
 
   const save = useMutation({
     mutationFn: async (): Promise<Configuration> => {
       if (!state) throw new Error("Nothing to save");
-      const input = { name: state.name.trim(), venueType: state.venueType, siteAddressId: state.siteAddressId, selections: state.selections };
-      return existing ? api.configurator.update(existing.id, input) : api.configurator.create(input);
+      const input = {
+        name: state.name.trim(),
+        venueType: state.venueType,
+        siteAddressId: state.siteAddressId,
+        selections: state.selections,
+      };
+      return existing
+        ? api.configurator.update(existing.id, input)
+        : api.configurator.create(input);
     },
     onSuccess: (config) => {
       setDirty(false);
       void queryClient.invalidateQueries({ queryKey: queryKeys.configurations(key) });
       if (!existing) router.replace(`/configurator/build?id=${config.id}`);
     },
-    onError: (error) => toast.error("The configuration could not be saved", { description: errorMessage(error) }),
+    onError: (error) =>
+      toast.error("The configuration could not be saved", { description: errorMessage(error) }),
   });
 
   const requestQuote = useMutation({
@@ -149,20 +224,35 @@ function BuilderForm({
     },
     onSuccess: (quote) => {
       setQuoted(quote);
-      for (const k of [queryKeys.configurations(key), queryKeys.quotes(key), queryKeys.threads(key)]) void queryClient.invalidateQueries({ queryKey: k });
+      for (const k of [
+        queryKeys.configurations(key),
+        queryKeys.quotes(key),
+        queryKeys.threads(key),
+      ])
+        void queryClient.invalidateQueries({ queryKey: k });
     },
-    onError: (error) => toast.error("The quote request could not be sent", { description: errorMessage(error) }),
+    onError: (error) =>
+      toast.error("The quote request could not be sent", { description: errorMessage(error) }),
   });
 
   if (!state || !bom) return <LoadingState rows={4} />;
 
   if (quoted) {
     return (
-      <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} role="status" className="mx-auto max-w-xl rounded-3xl border bg-card p-8 text-center">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        role="status"
+        className="mx-auto max-w-xl rounded-3xl border bg-card p-8 text-center"
+      >
         <CheckCircleIcon weight="fill" className="mx-auto size-14 text-success" aria-hidden />
-        <h1 className="mt-4 text-2xl font-semibold tracking-tight">Quote {quoted.number} requested</h1>
+        <h1 className="mt-4 text-2xl font-semibold tracking-tight">
+          Quote {quoted.number} requested
+        </h1>
         <p className="mt-2 text-muted-foreground">
-          {state.name} has been sent to your Brewfitt account manager with {quoted.lines.length} lines totalling {formatMoney(quoted.subtotal)} before VAT. They will confirm installation and send the quote for you to accept.
+          {state.name} has been sent to your Brewfitt account manager with {quoted.lines.length}{" "}
+          lines totalling {formatMoney(quoted.subtotal)} before VAT. They will confirm installation
+          and send the quote for you to accept.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <Button asChild>
@@ -179,16 +269,25 @@ function BuilderForm({
   const stepMeta = rules.steps.find((s) => s.id === step);
   const complete = Object.keys(errors).length === 0 && !nameError;
   // The name and new-site details belong to the first step.
-  const stepErrors = nameError ? { ...errors, venue: [...(errors.venue ?? []), nameError] } : errors;
+  const stepErrors = nameError
+    ? { ...errors, venue: [...(errors.venue ?? []), nameError] }
+    : errors;
 
   return (
     <div className="pb-20 lg:pb-0">
       <div className="mb-5 flex flex-wrap items-center gap-3">
-        <Link href="/configurator" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Link
+          href="/configurator"
+          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        >
           <ArrowLeftIcon className="size-4" aria-hidden />
           Configurations
         </Link>
-        {existing ? <StatusPill tone={existing.status === "quoted" ? "success" : "neutral"}>{existing.status === "quoted" ? "Quoted" : "Draft"}</StatusPill> : null}
+        {existing ? (
+          <StatusPill tone={existing.status === "quoted" ? "success" : "neutral"}>
+            {existing.status === "quoted" ? "Quoted" : "Draft"}
+          </StatusPill>
+        ) : null}
         <div className="ml-auto flex gap-2">
           {existing ? (
             <Button asChild variant="outline" size="sm">
@@ -199,7 +298,12 @@ function BuilderForm({
             </Button>
           ) : null}
           {!readOnly ? (
-            <Button variant="outline" size="sm" onClick={() => (nameError ? (go("venue"), toast.error(nameError)) : save.mutate())} disabled={save.isPending || (!dirty && !!existing)}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => (nameError ? (go("venue"), toast.error(nameError)) : save.mutate())}
+              disabled={save.isPending || (!dirty && !!existing)}
+            >
               <FloppyDiskIcon aria-hidden />
               {save.isPending ? "Saving…" : dirty ? "Save draft" : "Saved"}
             </Button>
@@ -214,7 +318,10 @@ function BuilderForm({
             <>
               {" "}
               (
-              <Link href={hrefFor("quote", existing.quoteId)} className="font-medium text-primary hover:underline">
+              <Link
+                href={hrefFor("quote", existing.quoteId)}
+                className="font-medium text-primary hover:underline"
+              >
                 view quote
               </Link>
               )
@@ -223,63 +330,142 @@ function BuilderForm({
           . Duplicate it to make changes.
         </div>
       ) : null}
-      {groupRollUp ? <div className="mb-5 rounded-2xl border border-info/30 bg-info-subtle p-4 text-sm">You are viewing all sites. Choose a site with the site switcher to save a configuration for it.</div> : null}
+      {groupRollUp ? (
+        <div className="mb-5 rounded-2xl border border-info/30 bg-info-subtle p-4 text-sm">
+          You are viewing all sites. Choose a site with the site switcher to save a configuration
+          for it.
+        </div>
+      ) : null}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[200px_minmax(0,1fr)_320px]">
         <div className="lg:sticky lg:top-20 lg:self-start">
-          <ConfiguratorStepper rules={rules} current={step} onSelect={go} errors={stepErrors} visited={visited} />
+          <ConfiguratorStepper
+            rules={rules}
+            current={step}
+            onSelect={go}
+            errors={stepErrors}
+            visited={visited}
+          />
         </div>
 
         <div className="min-w-0">
           {/* The next step renders immediately; only its entrance is animated, so navigation never waits on an exit. */}
-          <motion.div key={step} initial={reduce ? false : { opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.18 }}>
-              <h1 id="step-heading" tabIndex={-1} className="text-2xl font-semibold tracking-tight outline-none">
-                {step === "review" ? "Review and request a quote" : stepMeta?.title}
-              </h1>
-              <p className="mt-1 mb-5 text-muted-foreground">{step === "review" ? "Check the system and its parts, then send it to Brewfitt." : stepMeta?.description}</p>
+          <motion.div
+            key={step}
+            initial={reduce ? false : { opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.18 }}
+          >
+            <h1
+              id="step-heading"
+              tabIndex={-1}
+              className="text-2xl font-semibold tracking-tight outline-none"
+            >
+              {step === "review" ? "Review and request a quote" : stepMeta?.title}
+            </h1>
+            <p className="mt-1 mb-5 text-muted-foreground">
+              {step === "review"
+                ? "Check the system and its parts, then send it to Brewfitt."
+                : stepMeta?.description}
+            </p>
 
-              <fieldset disabled={readOnly} className="space-y-4">
-                {step === "venue" ? <VenueStep state={state} addresses={addresses} dispatch={act} nameError={visited.has("dispense") ? nameError : null} /> : null}
-                {step === "dispense" ? <DispenseEditor points={state.selections.dispense.points} rules={rules} dispatch={act} /> : null}
-                {step !== "venue" && step !== "review"
-                  ? rules.groups.filter((g) => g.stepId === step).map((g) => <ConfiguratorOptionGroup key={g.id} group={g} rules={rules} state={state} dispatch={act} prices={prices} />)
-                  : null}
-                {step === "cooling" ? <PythonLength state={state} rules={rules} dispatch={act} /> : null}
-                {step === "font" ? <Branding value={state.selections.font.branding} dispatch={act} /> : null}
-                {step === "review" ? <Review state={state} rules={rules} errors={errors} nameError={nameError} addresses={addresses} onEdit={go} /> : null}
-              </fieldset>
-
-              {step !== "review" && errors[step as ConfiguratorStepId]?.length && visited.has(step) ? (
-                <ul role="alert" className="mt-4 space-y-1 rounded-xl bg-warning-subtle p-3 text-sm">
-                  {errors[step as ConfiguratorStepId]!.map((e) => (
-                    <li key={e}>{e}</li>
-                  ))}
-                </ul>
+            <fieldset disabled={readOnly} className="space-y-4">
+              {step === "venue" ? (
+                <VenueStep
+                  state={state}
+                  addresses={addresses}
+                  dispatch={act}
+                  nameError={visited.has("dispense") ? nameError : null}
+                />
               ) : null}
+              {step === "dispense" ? (
+                <DispenseEditor
+                  points={state.selections.dispense.points}
+                  rules={rules}
+                  dispatch={act}
+                />
+              ) : null}
+              {step !== "venue" && step !== "review"
+                ? rules.groups
+                    .filter((g) => g.stepId === step)
+                    .map((g) => (
+                      <ConfiguratorOptionGroup
+                        key={g.id}
+                        group={g}
+                        rules={rules}
+                        state={state}
+                        dispatch={act}
+                        prices={prices}
+                      />
+                    ))
+                : null}
+              {step === "cooling" ? (
+                <PythonLength state={state} rules={rules} dispatch={act} />
+              ) : null}
+              {step === "font" ? (
+                <Branding value={state.selections.font.branding} dispatch={act} />
+              ) : null}
+              {step === "review" ? (
+                <Review
+                  state={state}
+                  rules={rules}
+                  errors={errors}
+                  nameError={nameError}
+                  addresses={addresses}
+                  onEdit={go}
+                />
+              ) : null}
+            </fieldset>
 
-              <div className="mt-6 flex items-center justify-between gap-3">
-                <Button variant="outline" onClick={() => go(steps[Math.max(0, index - 1)]!)} disabled={index === 0}>
-                  <ArrowLeftIcon aria-hidden />
-                  Back
+            {step !== "review" &&
+            errors[step as ConfiguratorStepId]?.length &&
+            visited.has(step) ? (
+              <ul role="alert" className="mt-4 space-y-1 rounded-xl bg-warning-subtle p-3 text-sm">
+                {errors[step as ConfiguratorStepId]!.map((e) => (
+                  <li key={e}>{e}</li>
+                ))}
+              </ul>
+            ) : null}
+
+            <div className="mt-6 flex items-center justify-between gap-3">
+              <Button
+                variant="outline"
+                onClick={() => go(steps[Math.max(0, index - 1)]!)}
+                disabled={index === 0}
+              >
+                <ArrowLeftIcon aria-hidden />
+                Back
+              </Button>
+              {step === "review" ? (
+                <Button
+                  size="lg"
+                  className="rounded-full"
+                  disabled={readOnly || groupRollUp || !complete || requestQuote.isPending}
+                  onClick={() => requestQuote.mutate()}
+                >
+                  <PaperPlaneTiltIcon aria-hidden />
+                  {requestQuote.isPending ? "Sending…" : "Request quote"}
                 </Button>
-                {step === "review" ? (
-                  <Button size="lg" className="rounded-full" disabled={readOnly || groupRollUp || !complete || requestQuote.isPending} onClick={() => requestQuote.mutate()}>
-                    <PaperPlaneTiltIcon aria-hidden />
-                    {requestQuote.isPending ? "Sending…" : "Request quote"}
-                  </Button>
-                ) : (
-                  <Button onClick={() => go(steps[index + 1]!)}>
-                    Next
-                    <ArrowRightIcon aria-hidden />
-                  </Button>
-                )}
-              </div>
+              ) : (
+                <Button onClick={() => go(steps[index + 1]!)}>
+                  Next
+                  <ArrowRightIcon aria-hidden />
+                </Button>
+              )}
+            </div>
           </motion.div>
         </div>
 
         <aside aria-label="Bill of materials and price" className="hidden lg:block">
           <div className="sticky top-20 rounded-2xl border bg-card p-5">
-            <BillOfMaterials lines={bom.lines} total={bom.total} vatRate={vatRate} products={products} errors={errors} compact />
+            <BillOfMaterials
+              lines={bom.lines}
+              total={bom.total}
+              vatRate={vatRate}
+              products={products}
+              errors={errors}
+              compact
+            />
           </div>
         </aside>
       </div>
@@ -289,10 +475,19 @@ function BuilderForm({
       </p>
 
       <div className="fixed inset-x-0 bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-30 border-t bg-background/95 px-4 py-2.5 backdrop-blur lg:hidden">
-        <button type="button" onClick={() => setBomOpen(true)} className="flex w-full items-center justify-between gap-3" aria-haspopup="dialog">
+        <button
+          type="button"
+          onClick={() => setBomOpen(true)}
+          className="flex w-full items-center justify-between gap-3"
+          aria-haspopup="dialog"
+        >
           <span className="text-left">
-            <span className="block text-xs text-muted-foreground">{bom.lines.length} parts · before VAT</span>
-            <span className="block text-lg font-semibold tabular-nums">{formatMoney(bom.total)}</span>
+            <span className="block text-xs text-muted-foreground">
+              {bom.lines.length} parts · before VAT
+            </span>
+            <span className="block text-lg font-semibold tabular-nums">
+              {formatMoney(bom.total)}
+            </span>
           </span>
           <span className="flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-medium">
             <ListChecksIcon aria-hidden />
@@ -301,22 +496,56 @@ function BuilderForm({
         </button>
       </div>
       <Sheet open={bomOpen} onOpenChange={setBomOpen}>
-        <SheetContent side="bottom" className="max-h-[85dvh] overflow-y-auto rounded-t-3xl px-4 pb-8">
+        <SheetContent
+          side="bottom"
+          className="max-h-[85dvh] overflow-y-auto rounded-t-3xl px-4 pb-8"
+        >
           <SheetHeader className="px-0">
             <SheetTitle>Parts and price</SheetTitle>
             <SheetDescription>{state.name || "This configuration"}</SheetDescription>
           </SheetHeader>
-          <BillOfMaterials lines={bom.lines} total={bom.total} vatRate={vatRate} products={products} errors={errors} />
+          <BillOfMaterials
+            lines={bom.lines}
+            total={bom.total}
+            vatRate={vatRate}
+            products={products}
+            errors={errors}
+          />
         </SheetContent>
       </Sheet>
     </div>
   );
 }
 
-function VenueStep({ state, addresses, dispatch, nameError }: { state: BuilderState; addresses: Address[]; dispatch: (a: BuilderAction) => void; nameError: string | null }) {
+function VenueStep({
+  state,
+  addresses,
+  dispatch,
+  nameError,
+}: {
+  state: BuilderState;
+  addresses: Address[];
+  dispatch: (a: BuilderAction) => void;
+  nameError: string | null;
+}) {
   const newSite = state.selections.venue.newSite;
   const setNew = (patch: Partial<NonNullable<typeof newSite>>) =>
-    dispatch({ type: "newSite", newSite: { label: "New site", line1: "", line2: null, town: "", county: null, postcode: "", country: "GB", isDefault: false, deliveryNotes: null, ...newSite, ...patch } });
+    dispatch({
+      type: "newSite",
+      newSite: {
+        label: "New site",
+        line1: "",
+        line2: null,
+        town: "",
+        county: null,
+        postcode: "",
+        country: "GB",
+        isDefault: false,
+        deliveryNotes: null,
+        ...newSite,
+        ...patch,
+      },
+    });
 
   return (
     <>
@@ -324,7 +553,9 @@ function VenueStep({ state, addresses, dispatch, nameError }: { state: BuilderSt
         <label htmlFor="config-name" className="font-medium">
           Configuration name
         </label>
-        <p className="text-sm text-muted-foreground">So you and Brewfitt can find it, for example “Main bar refit”.</p>
+        <p className="text-sm text-muted-foreground">
+          So you and Brewfitt can find it, for example “Main bar refit”.
+        </p>
         <input
           id="config-name"
           value={state.name}
@@ -344,8 +575,23 @@ function VenueStep({ state, addresses, dispatch, nameError }: { state: BuilderSt
         <legend className="mb-3 font-medium">Venue type</legend>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {(Object.keys(VENUE_LABEL) as VenueType[]).map((v) => (
-            <label key={v} className={cn("flex cursor-pointer items-center justify-center rounded-xl border px-3 py-3 text-center text-sm transition focus-within:ring-3 focus-within:ring-ring/40", state.venueType === v ? "border-primary bg-brand-subtle/60 font-medium" : "hover:border-primary/40")}>
-              <input type="radio" name="venueType" value={v} checked={state.venueType === v} onChange={() => dispatch({ type: "venue", venueType: v })} className="sr-only" />
+            <label
+              key={v}
+              className={cn(
+                "flex cursor-pointer items-center justify-center rounded-xl border px-3 py-3 text-center text-sm transition focus-within:ring-3 focus-within:ring-ring/40",
+                state.venueType === v
+                  ? "border-primary bg-brand-subtle/60 font-medium"
+                  : "hover:border-primary/40",
+              )}
+            >
+              <input
+                type="radio"
+                name="venueType"
+                value={v}
+                checked={state.venueType === v}
+                onChange={() => dispatch({ type: "venue", venueType: v })}
+                className="sr-only"
+              />
               {VENUE_LABEL[v]}
             </label>
           ))}
@@ -356,8 +602,22 @@ function VenueStep({ state, addresses, dispatch, nameError }: { state: BuilderSt
         <legend className="mb-3 font-medium">Site</legend>
         <div className="space-y-2">
           {addresses.map((a) => (
-            <label key={a.id} className={cn("flex cursor-pointer gap-3 rounded-xl border p-3 transition focus-within:ring-3 focus-within:ring-ring/40", state.siteAddressId === a.id ? "border-primary bg-brand-subtle/60" : "hover:border-primary/40")}>
-              <input type="radio" name="site" checked={state.siteAddressId === a.id} onChange={() => dispatch({ type: "site", siteAddressId: a.id })} className="sr-only" />
+            <label
+              key={a.id}
+              className={cn(
+                "flex cursor-pointer gap-3 rounded-xl border p-3 transition focus-within:ring-3 focus-within:ring-ring/40",
+                state.siteAddressId === a.id
+                  ? "border-primary bg-brand-subtle/60"
+                  : "hover:border-primary/40",
+              )}
+            >
+              <input
+                type="radio"
+                name="site"
+                checked={state.siteAddressId === a.id}
+                onChange={() => dispatch({ type: "site", siteAddressId: a.id })}
+                className="sr-only"
+              />
               <MapPinIcon className="mt-0.5 size-5 shrink-0 text-muted-foreground" aria-hidden />
               <span className="text-sm">
                 <span className="block font-medium">{a.label}</span>
@@ -365,8 +625,37 @@ function VenueStep({ state, addresses, dispatch, nameError }: { state: BuilderSt
               </span>
             </label>
           ))}
-          <label className={cn("flex cursor-pointer gap-3 rounded-xl border p-3 transition focus-within:ring-3 focus-within:ring-ring/40", newSite && !state.siteAddressId ? "border-primary bg-brand-subtle/60" : "hover:border-primary/40")}>
-            <input type="radio" name="site" checked={!!newSite && !state.siteAddressId} onChange={() => dispatch({ type: "site", siteAddressId: null, newSite: newSite ?? { label: "New site", line1: "", line2: null, town: "", county: null, postcode: "", country: "GB", isDefault: false, deliveryNotes: null } })} className="sr-only" />
+          <label
+            className={cn(
+              "flex cursor-pointer gap-3 rounded-xl border p-3 transition focus-within:ring-3 focus-within:ring-ring/40",
+              newSite && !state.siteAddressId
+                ? "border-primary bg-brand-subtle/60"
+                : "hover:border-primary/40",
+            )}
+          >
+            <input
+              type="radio"
+              name="site"
+              checked={!!newSite && !state.siteAddressId}
+              onChange={() =>
+                dispatch({
+                  type: "site",
+                  siteAddressId: null,
+                  newSite: newSite ?? {
+                    label: "New site",
+                    line1: "",
+                    line2: null,
+                    town: "",
+                    county: null,
+                    postcode: "",
+                    country: "GB",
+                    isDefault: false,
+                    deliveryNotes: null,
+                  },
+                })
+              }
+              className="sr-only"
+            />
             <MapPinIcon className="mt-0.5 size-5 shrink-0 text-muted-foreground" aria-hidden />
             <span className="text-sm font-medium">A new site</span>
           </label>
@@ -393,7 +682,9 @@ function VenueStep({ state, addresses, dispatch, nameError }: { state: BuilderSt
                 />
               </div>
             ))}
-            <p className="text-xs text-muted-foreground sm:col-span-2">Brewfitt adds the site to your account when the quote is confirmed.</p>
+            <p className="text-xs text-muted-foreground sm:col-span-2">
+              Brewfitt adds the site to your account when the quote is confirmed.
+            </p>
           </div>
         ) : null}
       </fieldset>
@@ -401,8 +692,18 @@ function VenueStep({ state, addresses, dispatch, nameError }: { state: BuilderSt
   );
 }
 
-function PythonLength({ state, rules, dispatch }: { state: BuilderState; rules: ConfiguratorRules; dispatch: (a: BuilderAction) => void }) {
-  const needed = rules.options.some((o) => o.groupId === "g-python" && o.compatibility.venueTypes?.includes(state.venueType));
+function PythonLength({
+  state,
+  rules,
+  dispatch,
+}: {
+  state: BuilderState;
+  rules: ConfiguratorRules;
+  dispatch: (a: BuilderAction) => void;
+}) {
+  const needed = rules.options.some(
+    (o) => o.groupId === "g-python" && o.compatibility.venueTypes?.includes(state.venueType),
+  );
   if (!needed) return null;
   const m = state.selections.cooling.pythonMetres;
   return (
@@ -411,12 +712,31 @@ function PythonLength({ state, rules, dispatch }: { state: BuilderState; rules: 
         Python length
       </label>
       <p className="text-sm text-muted-foreground">
-        The run from the cellar cooler to the furthest font, between {rules.limits.minPythonMetres} and {rules.limits.maxPythonMetres} metres.
+        The run from the cellar cooler to the furthest font, between {rules.limits.minPythonMetres}{" "}
+        and {rules.limits.maxPythonMetres} metres.
       </p>
       <div className="mt-3 flex items-center gap-4">
-        <input id="python" type="range" min={rules.limits.minPythonMetres} max={rules.limits.maxPythonMetres} step={1} value={m} onChange={(e) => dispatch({ type: "python", metres: Number(e.target.value) })} className="flex-1 accent-[var(--primary)]" aria-valuetext={`${m} metres`} />
+        <input
+          id="python"
+          type="range"
+          min={rules.limits.minPythonMetres}
+          max={rules.limits.maxPythonMetres}
+          step={1}
+          value={m}
+          onChange={(e) => dispatch({ type: "python", metres: Number(e.target.value) })}
+          className="flex-1 accent-[var(--primary)]"
+          aria-valuetext={`${m} metres`}
+        />
         <div className="flex items-center gap-1">
-          <input type="number" min={rules.limits.minPythonMetres} max={rules.limits.maxPythonMetres} value={m} onChange={(e) => dispatch({ type: "python", metres: Number(e.target.value) || 0 })} aria-label="Python length in metres" className="h-10 w-20 rounded-md border bg-background px-2 text-right tabular-nums" />
+          <input
+            type="number"
+            min={rules.limits.minPythonMetres}
+            max={rules.limits.maxPythonMetres}
+            value={m}
+            onChange={(e) => dispatch({ type: "python", metres: Number(e.target.value) || 0 })}
+            aria-label="Python length in metres"
+            className="h-10 w-20 rounded-md border bg-background px-2 text-right tabular-nums"
+          />
           <span className="text-sm text-muted-foreground">m</span>
         </div>
       </div>
@@ -424,29 +744,98 @@ function PythonLength({ state, rules, dispatch }: { state: BuilderState; rules: 
   );
 }
 
-function Branding({ value, dispatch }: { value: string | null; dispatch: (a: BuilderAction) => void }) {
+function Branding({
+  value,
+  dispatch,
+}: {
+  value: string | null;
+  dispatch: (a: BuilderAction) => void;
+}) {
   return (
     <div className="rounded-2xl border bg-card p-4 sm:p-5">
       <label htmlFor="branding" className="font-medium">
         Branding
       </label>
-      <p className="text-sm text-muted-foreground">Brands to show on the fonts and badges. Brewfitt will ask for artwork when quoting.</p>
-      <input id="branding" value={value ?? ""} onChange={(e) => dispatch({ type: "branding", branding: e.target.value || null })} placeholder="For example: house lager and guest cider badges" className="mt-2 h-10 w-full rounded-md border bg-background px-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 sm:text-sm" />
+      <p className="text-sm text-muted-foreground">
+        Brands to show on the fonts and badges. Brewfitt will ask for artwork when quoting.
+      </p>
+      <input
+        id="branding"
+        value={value ?? ""}
+        onChange={(e) => dispatch({ type: "branding", branding: e.target.value || null })}
+        placeholder="For example: house lager and guest cider badges"
+        className="mt-2 h-10 w-full rounded-md border bg-background px-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 sm:text-sm"
+      />
     </div>
   );
 }
 
-function Review({ state, rules, errors, nameError, addresses, onEdit }: { state: BuilderState; rules: ConfiguratorRules; errors: Partial<Record<ConfiguratorStepId, string[]>>; nameError: string | null; addresses: Address[]; onEdit: (s: StepKey) => void }) {
+function Review({
+  state,
+  rules,
+  errors,
+  nameError,
+  addresses,
+  onEdit,
+}: {
+  state: BuilderState;
+  rules: ConfiguratorRules;
+  errors: Partial<Record<ConfiguratorStepId, string[]>>;
+  nameError: string | null;
+  addresses: Address[];
+  onEdit: (s: StepKey) => void;
+}) {
   const chosen = (stepId: ConfiguratorStepId) =>
     rules.groups
       .filter((g) => g.stepId === stepId)
-      .flatMap((g) => rules.options.filter((o) => o.groupId === g.id && [...state.selections.dispense.optionIds, ...state.selections.font.optionIds, ...state.selections.cooling.optionIds, ...state.selections.gas.optionIds, ...state.selections.ancillaries.optionIds].includes(o.id)).map((o) => `${g.label}: ${o.label}`));
+      .flatMap((g) =>
+        rules.options
+          .filter(
+            (o) =>
+              o.groupId === g.id &&
+              [
+                ...state.selections.dispense.optionIds,
+                ...state.selections.font.optionIds,
+                ...state.selections.cooling.optionIds,
+                ...state.selections.gas.optionIds,
+                ...state.selections.ancillaries.optionIds,
+              ].includes(o.id),
+          )
+          .map((o) => `${g.label}: ${o.label}`),
+      );
   const site = addresses.find((a) => a.id === state.siteAddressId);
   const rows: { step: ConfiguratorStepId; title: string; lines: string[] }[] = [
-    { step: "venue", title: "Venue and site", lines: [state.name || "Unnamed configuration", VENUE_LABEL[state.venueType], site ? `${site.label}, ${site.town}` : state.selections.venue.newSite ? `New site: ${[state.selections.venue.newSite.line1, state.selections.venue.newSite.town].filter(Boolean).join(", ")}` : "No site chosen"] },
-    { step: "dispense", title: "Dispense points", lines: [describePoints(state.selections.dispense.points), ...chosen("dispense")] },
-    { step: "font", title: "Font and branding", lines: [...chosen("font"), ...(state.selections.font.branding ? [`Branding: ${state.selections.font.branding}`] : [])] },
-    { step: "cooling", title: "Cooling", lines: [...chosen("cooling"), `Python run: ${state.selections.cooling.pythonMetres} m`] },
+    {
+      step: "venue",
+      title: "Venue and site",
+      lines: [
+        state.name || "Unnamed configuration",
+        VENUE_LABEL[state.venueType],
+        site
+          ? `${site.label}, ${site.town}`
+          : state.selections.venue.newSite
+            ? `New site: ${[state.selections.venue.newSite.line1, state.selections.venue.newSite.town].filter(Boolean).join(", ")}`
+            : "No site chosen",
+      ],
+    },
+    {
+      step: "dispense",
+      title: "Dispense points",
+      lines: [describePoints(state.selections.dispense.points), ...chosen("dispense")],
+    },
+    {
+      step: "font",
+      title: "Font and branding",
+      lines: [
+        ...chosen("font"),
+        ...(state.selections.font.branding ? [`Branding: ${state.selections.font.branding}`] : []),
+      ],
+    },
+    {
+      step: "cooling",
+      title: "Cooling",
+      lines: [...chosen("cooling"), `Python run: ${state.selections.cooling.pythonMetres} m`],
+    },
     { step: "gas", title: "Gas", lines: chosen("gas") },
     { step: "ancillaries", title: "Ancillaries", lines: chosen("ancillaries") },
   ];
@@ -457,7 +846,9 @@ function Review({ state, rules, errors, nameError, addresses, onEdit }: { state:
           <p className="font-medium">Complete these before requesting a quote</p>
           <ul className="mt-1 list-disc pl-5">
             {nameError ? <li>{nameError}</li> : null}
-            {Object.entries(errors).flatMap(([s, list]) => list!.map((e) => <li key={`${s}-${e}`}>{e}</li>))}
+            {Object.entries(errors).flatMap(([s, list]) =>
+              list!.map((e) => <li key={`${s}-${e}`}>{e}</li>),
+            )}
           </ul>
         </div>
       ) : null}
@@ -466,7 +857,9 @@ function Review({ state, rules, errors, nameError, addresses, onEdit }: { state:
           <div className="min-w-0 flex-1">
             <h2 className="flex items-center gap-2 font-medium">
               {r.title}
-              {errors[r.step]?.length ? <StatusPill tone="warning">Needs attention</StatusPill> : null}
+              {errors[r.step]?.length ? (
+                <StatusPill tone="warning">Needs attention</StatusPill>
+              ) : null}
             </h2>
             <ul className="mt-1 text-sm text-muted-foreground">
               {(r.lines.length ? r.lines : ["Nothing selected"]).map((l) => (

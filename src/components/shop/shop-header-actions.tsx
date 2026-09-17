@@ -12,7 +12,11 @@ export function BasketButton() {
       <Link href="/shop/basket" aria-label={count ? `Basket, ${count} items` : "Basket, empty"}>
         <ShoppingCartSimpleIcon aria-hidden />
         Basket
-        {count ? <span className="rounded-full bg-primary-foreground/20 px-1.5 text-xs tabular-nums">{count}</span> : null}
+        {count ? (
+          <span className="rounded-full bg-primary-foreground/20 px-1.5 text-xs tabular-nums">
+            {count}
+          </span>
+        ) : null}
       </Link>
     </Button>
   );

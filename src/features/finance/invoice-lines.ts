@@ -9,7 +9,11 @@ const gbp = (amount: number): Money => ({ amount, currency: "GBP" });
  * Lines are rebuilt from that delivery at the order's prices; a credit note
  * credits one unit of the order's last line, as issued for returns.
  */
-export function invoiceLines(invoice: Invoice, order: SalesOrder | PurchaseOrder | undefined, deliveries: Delivery[]): InvoiceLine[] {
+export function invoiceLines(
+  invoice: Invoice,
+  order: SalesOrder | PurchaseOrder | undefined,
+  deliveries: Delivery[],
+): InvoiceLine[] {
   if (!order) return [];
   const price = new Map(order.lines.map((l) => [l.productId, l.price]));
   const toLine = (productId: string, qty: number): InvoiceLine => {
@@ -21,7 +25,9 @@ export function invoiceLines(invoice: Invoice, order: SalesOrder | PurchaseOrder
     return last ? [toLine(last.productId, 1)] : [];
   }
   const day = invoice.issuedAt.slice(0, 10);
-  const delivery = deliveries.find((d) => d.orderId === order.id && d.deliveredAt?.slice(0, 10) === day);
+  const delivery = deliveries.find(
+    (d) => d.orderId === order.id && d.deliveredAt?.slice(0, 10) === day,
+  );
   if (delivery) return delivery.lines.map((l) => toLine(l.productId, l.qty));
   return order.lines.map((l) => toLine(l.productId, l.qty));
 }

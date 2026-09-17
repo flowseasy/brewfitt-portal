@@ -18,19 +18,35 @@ import { SimulatedBadge } from "./ai-insight-card";
 function useSuggestions(): string[] {
   const key = usePersonaKey();
   const supplier = useIsSupplier();
-  const threads = useQuery({ queryKey: queryKeys.threads(key), queryFn: () => api.messages.threads() });
+  const threads = useQuery({
+    queryKey: queryKeys.threads(key),
+    queryFn: () => api.messages.threads(),
+  });
   const list = threads.data ?? [];
   // Project conversations make natural questions, e.g. "What's the latest on the Premium Lager font order?"
   const topical = list
-    .filter((t) => t.relatedType === "sales-order" && /rollout|fit-out|refit|install/i.test(t.subject))
+    .filter(
+      (t) => t.relatedType === "sales-order" && /rollout|fit-out|refit|install/i.test(t.subject),
+    )
     .slice(0, 1)
-    .map((t) => `What's the latest on the ${t.subject.replace(/\s*[-–]\s*SO-\d+$/, "").replace(/font rollout/i, "font order")}?`);
+    .map(
+      (t) =>
+        `What's the latest on the ${t.subject.replace(/\s*[-–]\s*SO-\d+$/, "").replace(/font rollout/i, "font order")}?`,
+    );
   const numbered = list
-    .map((t) => (t.relatedType === (supplier ? "purchase-order" : "sales-order") ? t.subject.match(/\b(SO|PO)-\d+/)?.[0] : undefined))
+    .map((t) =>
+      t.relatedType === (supplier ? "purchase-order" : "sales-order")
+        ? t.subject.match(/\b(SO|PO)-\d+/)?.[0]
+        : undefined,
+    )
     .filter((n): n is string => !!n)
     .slice(0, 1)
     .map((n) => `Where is ${n}?`);
-  return [...topical, ...numbered, supplier ? "Cobra B 4 Out Chrome LED" : "Pipeline Purple cleaning powder"];
+  return [
+    ...topical,
+    ...numbered,
+    supplier ? "Cobra B 4 Out Chrome LED" : "Pipeline Purple cleaning powder",
+  ];
 }
 
 /**
@@ -38,7 +54,13 @@ function useSuggestions(): string[] {
  * latest answer beneath; `panel` shows the session's answers as a conversation.
  * Both add to the same session history, so the assistant panel carries on.
  */
-export function AssistantPrompt({ autoFocus, variant = "inline" }: { autoFocus?: boolean; variant?: "inline" | "panel" }) {
+export function AssistantPrompt({
+  autoFocus,
+  variant = "inline",
+}: {
+  autoFocus?: boolean;
+  variant?: "inline" | "panel";
+}) {
   const inputId = useId();
   const key = usePersonaKey();
   const [question, setQuestion] = useState("");
@@ -58,7 +80,8 @@ export function AssistantPrompt({ autoFocus, variant = "inline" }: { autoFocus?:
   });
 
   useEffect(() => {
-    if (variant === "panel") endRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    if (variant === "panel")
+      endRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [variant, history.length, ask.isPending]);
 
   const submit = (q: string) => {
@@ -79,7 +102,11 @@ export function AssistantPrompt({ autoFocus, variant = "inline" }: { autoFocus?:
       <label htmlFor={inputId} className="sr-only">
         Ask about an order, quote or product
       </label>
-      <SparkleIcon weight="fill" className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-primary" aria-hidden />
+      <SparkleIcon
+        weight="fill"
+        className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-primary"
+        aria-hidden
+      />
       <input
         id={inputId}
         value={question}
@@ -88,7 +115,13 @@ export function AssistantPrompt({ autoFocus, variant = "inline" }: { autoFocus?:
         placeholder="Ask about an order, quote or product…"
         className="h-12 w-full rounded-full border bg-background pr-14 pl-11 text-base shadow-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 sm:text-sm"
       />
-      <Button type="submit" size="icon" className="absolute top-1/2 right-1.5 -translate-y-1/2 rounded-full" disabled={ask.isPending || question.trim().length < 3} aria-label="Ask">
+      <Button
+        type="submit"
+        size="icon"
+        className="absolute top-1/2 right-1.5 -translate-y-1/2 rounded-full"
+        disabled={ask.isPending || question.trim().length < 3}
+        aria-label="Ask"
+      >
         <ArrowUpIcon weight="bold" aria-hidden />
       </Button>
     </form>
@@ -97,7 +130,13 @@ export function AssistantPrompt({ autoFocus, variant = "inline" }: { autoFocus?:
   const chips = (
     <div className="flex flex-wrap gap-2">
       {suggestions.map((s) => (
-        <button key={s} type="button" onClick={() => submit(s)} disabled={ask.isPending} className="rounded-full border bg-card px-3 py-1 text-xs text-muted-foreground transition hover:border-primary/40 hover:text-foreground disabled:opacity-60">
+        <button
+          key={s}
+          type="button"
+          onClick={() => submit(s)}
+          disabled={ask.isPending}
+          className="rounded-full border bg-card px-3 py-1 text-xs text-muted-foreground transition hover:border-primary/40 hover:text-foreground disabled:opacity-60"
+        >
           {s}
         </button>
       ))}
@@ -105,11 +144,23 @@ export function AssistantPrompt({ autoFocus, variant = "inline" }: { autoFocus?:
   );
 
   const status = ask.isPending ? (
-    <motion.p key="pending" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="mt-4 text-sm text-muted-foreground">
+    <motion.p
+      key="pending"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="mt-4 text-sm text-muted-foreground"
+    >
       Looking through your quotes, orders, deliveries and messages…
     </motion.p>
   ) : ask.isError ? (
-    <motion.p key="error" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 text-sm text-danger">
+    <motion.p
+      key="error"
+      role="alert"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="mt-4 text-sm text-danger"
+    >
       {errorMessage(ask.error)}
     </motion.p>
   ) : null;
@@ -121,13 +172,20 @@ export function AssistantPrompt({ autoFocus, variant = "inline" }: { autoFocus?:
           {history.length === 0 && !ask.isPending ? (
             <div className="py-6">
               <p className="text-sm font-medium">Ask about your own records</p>
-              <p className="mt-1 text-sm text-muted-foreground">Answers are drawn from your quotes, orders, deliveries and messages, with links to each source. Try one of these:</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Answers are drawn from your quotes, orders, deliveries and messages, with links to
+                each source. Try one of these:
+              </p>
               <div className="mt-3">{chips}</div>
             </div>
           ) : (
             <ol className="space-y-1" aria-label="Answers this session">
               {history.map((h, i) => (
-                <motion.li key={`${i}-${h.question}`} initial={i === history.length - 1 ? { opacity: 0, y: 6 } : false} animate={{ opacity: 1, y: 0 }}>
+                <motion.li
+                  key={`${i}-${h.question}`}
+                  initial={i === history.length - 1 ? { opacity: 0, y: 6 } : false}
+                  animate={{ opacity: 1, y: 0 }}
+                >
                   <AssistantAnswer answer={h} />
                 </motion.li>
               ))}
@@ -152,7 +210,13 @@ export function AssistantPrompt({ autoFocus, variant = "inline" }: { autoFocus?:
         <AnimatePresence mode="wait">
           {status ??
             (latest ? (
-              <motion.div key={latest.question} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+              <motion.div
+                key={latest.question}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
                 <AssistantAnswer answer={latest} />
               </motion.div>
             ) : null)}
@@ -162,7 +226,13 @@ export function AssistantPrompt({ autoFocus, variant = "inline" }: { autoFocus?:
   );
 }
 
-export function AssistantAnswer({ answer, className }: { answer: AskResponse; className?: string }) {
+export function AssistantAnswer({
+  answer,
+  className,
+}: {
+  answer: AskResponse;
+  className?: string;
+}) {
   const supplier = useIsSupplier();
   const setOpen = useAssistantStore((s) => s.setOpen);
   return (
@@ -183,7 +253,11 @@ export function AssistantAnswer({ answer, className }: { answer: AskResponse; cl
             {answer.sources.map((s) => (
               <li key={`${s.relatedType}-${s.relatedId}`}>
                 <Link
-                  href={supplier && s.relatedType === "product" ? "/stock" : hrefFor(s.relatedType, s.relatedId)}
+                  href={
+                    supplier && s.relatedType === "product"
+                      ? "/stock"
+                      : hrefFor(s.relatedType, s.relatedId)
+                  }
                   onClick={() => setOpen(false)}
                   className="inline-flex rounded-full border px-2.5 py-1 text-xs hover:border-primary/40 hover:bg-accent"
                 >

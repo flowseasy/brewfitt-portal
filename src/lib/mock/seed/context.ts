@@ -5,7 +5,18 @@ import { productRole, type ProductRole } from "./catalogue";
 
 /** Month (1–12) → demand factor: spring, run-up to summer and December peak. */
 export const SEASONALITY: Record<number, number> = {
-  1: 0.7, 2: 0.8, 3: 1.1, 4: 1.25, 5: 1.3, 6: 1.2, 7: 1.0, 8: 0.9, 9: 0.95, 10: 1.0, 11: 1.15, 12: 1.3,
+  1: 0.7,
+  2: 0.8,
+  3: 1.1,
+  4: 1.25,
+  5: 1.3,
+  6: 1.2,
+  7: 1.0,
+  8: 0.9,
+  9: 0.95,
+  10: 1.0,
+  11: 1.15,
+  12: 1.3,
 };
 
 export type SeedContext = {
@@ -112,7 +123,10 @@ export function createContext(args: {
   };
 }
 
-export const money = (amount: number, currency: Money["currency"] = "GBP"): Money => ({ amount: Math.round(amount), currency });
+export const money = (amount: number, currency: Money["currency"] = "GBP"): Money => ({
+  amount: Math.round(amount),
+  currency,
+});
 
 /** Due date from payment terms. */
 export function dueDate(issued: Date, terms: Account["paymentTerms"]): Date {

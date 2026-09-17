@@ -170,7 +170,10 @@ export interface PortalApi {
     /** GET /api/statement */
     statement(): Promise<Statement>;
     /** POST /api/invoices/:id/pay — mock card payment for customers not on account. */
-    pay(id: string, input: In<typeof s.PayInvoiceRequest>): Promise<{ invoice: Invoice; payment: Payment }>;
+    pay(
+      id: string,
+      input: In<typeof s.PayInvoiceRequest>,
+    ): Promise<{ invoice: Invoice; payment: Payment }>;
     /** GET /api/payments */
     payments(): Promise<Payment[]>;
     /** GET /api/payment-runs (supplier) */

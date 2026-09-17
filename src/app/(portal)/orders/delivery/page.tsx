@@ -21,12 +21,20 @@ function DeliveryRedirect() {
   const id = useSearchParams().get("id") ?? "";
   const router = useRouter();
   const key = usePersonaKey();
-  const delivery = useQuery({ queryKey: [key, "deliveries", id], queryFn: () => api.deliveries.get(id), enabled: !!id });
+  const delivery = useQuery({
+    queryKey: [key, "deliveries", id],
+    queryFn: () => api.deliveries.get(id),
+    enabled: !!id,
+  });
 
   useEffect(() => {
-    if (delivery.data) router.replace(`${hrefFor(delivery.data.orderType === "sales" ? "sales-order" : "purchase-order", delivery.data.orderId)}#${delivery.data.id}`);
+    if (delivery.data)
+      router.replace(
+        `${hrefFor(delivery.data.orderType === "sales" ? "sales-order" : "purchase-order", delivery.data.orderId)}#${delivery.data.id}`,
+      );
   }, [delivery.data, router]);
 
-  if (delivery.isError) return <ErrorState error={delivery.error} onRetry={() => delivery.refetch()} />;
+  if (delivery.isError)
+    return <ErrorState error={delivery.error} onRetry={() => delivery.refetch()} />;
   return <LoadingState rows={3} label="Opening delivery" />;
 }

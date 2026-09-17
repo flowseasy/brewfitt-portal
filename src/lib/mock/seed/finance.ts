@@ -1,4 +1,12 @@
-import type { AgeingBand, Delivery, Invoice, Payment, PaymentRun, PurchaseOrder, SalesOrder } from "@/types";
+import type {
+  AgeingBand,
+  Delivery,
+  Invoice,
+  Payment,
+  PaymentRun,
+  PurchaseOrder,
+  SalesOrder,
+} from "@/types";
 import { addDays, daysBetween, isoDate, isoDateTime, toDate } from "../clock";
 import { dueDate, money, type SeedContext } from "./context";
 import { SELF_BILLING_SUPPLIERS } from "./purchasing";
@@ -16,7 +24,12 @@ export function ageingBandFor(issuedAt: string, today: Date): AgeingBand {
 export function deriveInvoice(invoice: Invoice, today: Date): Invoice {
   const past = toDate(invoice.dueAt).getTime() < today.getTime();
   const open = invoice.kind !== "credit-note" && invoice.outstanding.amount > 0;
-  const base = invoice.status === "overdue" ? (invoice.outstanding.amount < invoice.total.amount ? "part-paid" : "open") : invoice.status;
+  const base =
+    invoice.status === "overdue"
+      ? invoice.outstanding.amount < invoice.total.amount
+        ? "part-paid"
+        : "open"
+      : invoice.status;
   return {
     ...invoice,
     status: open && past ? "overdue" : base,
@@ -30,7 +43,13 @@ const LATE_PAYERS = new Set(["acc_northlight", "acc_millrace_navigation"]);
 
 export function seedFinance(
   ctx: SeedContext,
-  args: { salesOrders: SalesOrder[]; deliveries: Delivery[]; purchaseOrders: PurchaseOrder[]; inboundDeliveries: Delivery[]; cardPaidOrderIds: Set<string> },
+  args: {
+    salesOrders: SalesOrder[];
+    deliveries: Delivery[];
+    purchaseOrders: PurchaseOrder[];
+    inboundDeliveries: Delivery[];
+    cardPaidOrderIds: Set<string>;
+  },
 ): FinanceSeed {
   const { rng, today } = ctx;
   const invoices: Invoice[] = [];
@@ -40,7 +59,12 @@ export function seedFinance(
   const gross = (accountId: string, net: number) => Math.round(net * (1 + ctx.vatRate(accountId)));
 
   const addInvoice = (inv: Omit<Invoice, "id" | "number" | "ageingBand">): Invoice => {
-    const full: Invoice = { ...inv, id: `inv_${invoices.length + 1}`, number: "", ageingBand: ageingBandFor(inv.issuedAt, today) };
+    const full: Invoice = {
+      ...inv,
+      id: `inv_${invoices.length + 1}`,
+      number: "",
+      ageingBand: ageingBandFor(inv.issuedAt, today),
+    };
     invoices.push(full);
     return full;
   };
@@ -68,7 +92,10 @@ export function seedFinance(
       continue;
     }
     for (const d of args.deliveries.filter((x) => x.orderId === order.id && x.deliveredAt)) {
-      const net = d.lines.reduce((s, l) => s + l.qty * order.lines.find((ol) => ol.productId === l.productId)!.price.amount, 0);
+      const net = d.lines.reduce(
+        (s, l) => s + l.qty * order.lines.find((ol) => ol.productId === l.productId)!.price.amount,
+        0,
+      );
       const issued = new Date(d.deliveredAt!);
       addInvoice({
         accountId: order.accountId,
@@ -86,8 +113,12 @@ export function seedFinance(
   }
 
   // Customers not on account: the most recent Crown & Anchor order awaits card payment.
-  const crownOrders = args.salesOrders.filter((o) => o.accountId === "acc_crown" && o.status !== "cancelled").sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  const crownInvoice = crownOrders[0] ? invoices.find((i) => i.orderId === crownOrders[0]!.id) : undefined;
+  const crownOrders = args.salesOrders
+    .filter((o) => o.accountId === "acc_crown" && o.status !== "cancelled")
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const crownInvoice = crownOrders[0]
+    ? invoices.find((i) => i.orderId === crownOrders[0]!.id)
+    : undefined;
   if (crownInvoice) {
     crownInvoice.status = "open";
     crownInvoice.outstanding = crownInvoice.total;
@@ -95,26 +126,47 @@ export function seedFinance(
   }
 
   // ---- Customer payments ----------------------------------------------------
-  const salesInvoices = invoices.filter((i) => i.orderType === "sales" && i.status === "open").sort((a, b) => a.dueAt.localeCompare(b.dueAt));
+  const salesInvoices = invoices
+    .filter((i) => i.orderType === "sales" && i.status === "open")
+    .sort((a, b) => a.dueAt.localeCompare(b.dueAt));
   const lateHeld = new Set<string>();
   for (const accountId of LATE_PAYERS) {
     // Leave the late payer's oldest recent invoices unpaid, one of them more than 30 days overdue.
-    const candidates = salesInvoices.filter((i) => i.accountId === accountId && daysBetween(i.dueAt, today) > 0).slice(-3);
+    const candidates = salesInvoices
+      .filter((i) => i.accountId === accountId && daysBetween(i.dueAt, today) > 0)
+      .slice(-3);
     for (const i of candidates) lateHeld.add(i.id);
   }
-  const partPaid = salesInvoices.find((i) => i.accountId === "acc_pennine" && daysBetween(i.dueAt, today) < 0);
+  const partPaid = salesInvoices.find(
+    (i) => i.accountId === "acc_pennine" && daysBetween(i.dueAt, today) < 0,
+  );
 
-  const pendingByAccountDate = new Map<string, { accountId: string; paidAt: Date; invoices: Invoice[] }>();
+  const pendingByAccountDate = new Map<
+    string,
+    { accountId: string; paidAt: Date; invoices: Invoice[] }
+  >();
   for (const inv of salesInvoices) {
     if (inv.id === crownInvoice?.id || lateHeld.has(inv.id)) continue;
     const account = ctx.account(inv.accountId);
     const due = new Date(inv.dueAt);
-    const offset = account.relationshipHealth === "strong" ? rng.int(-4, 1) : account.relationshipHealth === "steady" ? rng.int(-2, 9) : rng.int(5, 25);
+    const offset =
+      account.relationshipHealth === "strong"
+        ? rng.int(-4, 1)
+        : account.relationshipHealth === "steady"
+          ? rng.int(-2, 9)
+          : rng.int(5, 25);
     const paidAt = addDays(due, offset);
     if (paidAt.getTime() > today.getTime()) continue;
     // Month-end payers settle a month's invoices in one payment.
-    const key = account.paymentTerms === "30-days-eom" ? `${inv.accountId}|${isoDate(due)}` : `${inv.accountId}|${inv.id}`;
-    const group = pendingByAccountDate.get(key) ?? { accountId: inv.accountId, paidAt, invoices: [] };
+    const key =
+      account.paymentTerms === "30-days-eom"
+        ? `${inv.accountId}|${isoDate(due)}`
+        : `${inv.accountId}|${inv.id}`;
+    const group = pendingByAccountDate.get(key) ?? {
+      accountId: inv.accountId,
+      paidAt,
+      invoices: [],
+    };
     group.invoices.push(inv);
     pendingByAccountDate.set(key, group);
   }
@@ -138,18 +190,41 @@ export function seedFinance(
       amount: money(total),
       method: rng.chance(0.2) ? "direct-debit" : "bacs",
       reference: "",
-      paidAt: isoDateTime(group.paidAt.getTime() > today.getTime() ? today : group.paidAt, rng.int(8, 11), 0),
+      paidAt: isoDateTime(
+        group.paidAt.getTime() > today.getTime() ? today : group.paidAt,
+        rng.int(8, 11),
+        0,
+      ),
       allocatedTo: allocations,
       remittanceDocumentId: null,
     });
   }
   // Card payments for orders placed without an account.
-  for (const inv of invoices.filter((i) => i.status === "paid" && args.cardPaidOrderIds.has(i.orderId) && !payments.some((p) => p.allocatedTo.some((a) => a.invoiceId === i.id)))) {
-    addPayment({ accountId: inv.accountId, amount: inv.total, method: "card", reference: "", paidAt: inv.issuedAt, allocatedTo: [{ invoiceId: inv.id, amount: inv.total }], remittanceDocumentId: null });
+  for (const inv of invoices.filter(
+    (i) =>
+      i.status === "paid" &&
+      args.cardPaidOrderIds.has(i.orderId) &&
+      !payments.some((p) => p.allocatedTo.some((a) => a.invoiceId === i.id)),
+  )) {
+    addPayment({
+      accountId: inv.accountId,
+      amount: inv.total,
+      method: "card",
+      reference: "",
+      paidAt: inv.issuedAt,
+      allocatedTo: [{ invoiceId: inv.id, amount: inv.total }],
+      remittanceDocumentId: null,
+    });
   }
 
   // ---- Credit notes ---------------------------------------------------------
-  const creditable = invoices.filter((i) => i.orderType === "sales" && i.kind === "invoice" && daysBetween(i.issuedAt, today) > 25 && daysBetween(i.issuedAt, today) < 200);
+  const creditable = invoices.filter(
+    (i) =>
+      i.orderType === "sales" &&
+      i.kind === "invoice" &&
+      daysBetween(i.issuedAt, today) > 25 &&
+      daysBetween(i.issuedAt, today) < 200,
+  );
   const creditAccounts = new Set<string>();
   const creditTargets = rng.shuffle(creditable).filter((i) => {
     if (creditAccounts.has(i.accountId) || args.cardPaidOrderIds.has(i.orderId)) return false;
@@ -157,7 +232,10 @@ export function seedFinance(
     return true;
   });
   const harbourCredit = creditable.find((i) => i.accountId === "acc_harbourside");
-  const targets = [...new Set([...(harbourCredit ? [harbourCredit] : []), ...creditTargets])].slice(0, 7);
+  const targets = [...new Set([...(harbourCredit ? [harbourCredit] : []), ...creditTargets])].slice(
+    0,
+    7,
+  );
   targets.forEach((original, index) => {
     const order = orderById.get(original.orderId)!;
     const line = order.lines[order.lines.length - 1]!;
@@ -210,7 +288,10 @@ export function seedFinance(
   for (const d of args.inboundDeliveries.filter((x) => x.deliveredAt)) {
     const po = poById.get(d.orderId)!;
     const supplier = ctx.account(po.supplierId);
-    const net = d.lines.reduce((s, l) => s + l.qty * po.lines.find((pl) => pl.productId === l.productId)!.price.amount, 0);
+    const net = d.lines.reduce(
+      (s, l) => s + l.qty * po.lines.find((pl) => pl.productId === l.productId)!.price.amount,
+      0,
+    );
     const issued = new Date(d.deliveredAt!);
     addInvoice({
       accountId: po.supplierId,
@@ -231,11 +312,18 @@ export function seedFinance(
   let friday = addDays(today, (5 - today.getUTCDay() + 7) % 7 || 7);
   if (rng.chance(0.5)) friday = addDays(friday, 7);
   // Brewfitt's payment calendar runs about nine weeks ahead.
-  for (let d = addDays(friday, 14 * 4); d.getTime() > addDays(today, -420).getTime(); d = addDays(d, -14)) runDates.push(d);
+  for (
+    let d = addDays(friday, 14 * 4);
+    d.getTime() > addDays(today, -420).getTime();
+    d = addDays(d, -14)
+  )
+    runDates.push(d);
   runDates.sort((a, b) => a.getTime() - b.getTime());
 
   const runInvoices = new Map<number, Invoice[]>();
-  const supplierInvoices = invoices.filter((i) => i.orderType === "purchase").sort((a, b) => a.dueAt.localeCompare(b.dueAt));
+  const supplierInvoices = invoices
+    .filter((i) => i.orderType === "purchase")
+    .sort((a, b) => a.dueAt.localeCompare(b.dueAt));
   for (const inv of supplierInvoices) {
     const due = new Date(inv.dueAt);
     // The last run on or before the due date (or the first after it).
@@ -260,9 +348,13 @@ export function seedFinance(
     paymentRuns.push(run);
     if (!paid) continue;
     const bySupplier = new Map<string, Invoice[]>();
-    for (const inv of list) bySupplier.set(inv.accountId, [...(bySupplier.get(inv.accountId) ?? []), inv]);
+    for (const inv of list)
+      bySupplier.set(inv.accountId, [...(bySupplier.get(inv.accountId) ?? []), inv]);
     for (const [supplierId, supplierList] of bySupplier) {
-      const allocations = supplierList.map((inv) => ({ invoiceId: inv.id, amount: inv.outstanding }));
+      const allocations = supplierList.map((inv) => ({
+        invoiceId: inv.id,
+        amount: inv.outstanding,
+      }));
       for (const inv of supplierList) {
         inv.outstanding = money(0);
         inv.status = "paid";
@@ -283,13 +375,26 @@ export function seedFinance(
   invoices.sort((a, b) => a.issuedAt.localeCompare(b.issuedAt));
   for (const inv of invoices) {
     inv.number =
-      inv.kind === "credit-note" ? ctx.number("creditNote") : inv.kind === "self-bill" ? ctx.number("selfBill") : inv.orderType === "purchase" ? ctx.number("supplierInvoice") : ctx.number("invoice");
+      inv.kind === "credit-note"
+        ? ctx.number("creditNote")
+        : inv.kind === "self-bill"
+          ? ctx.number("selfBill")
+          : inv.orderType === "purchase"
+            ? ctx.number("supplierInvoice")
+            : ctx.number("invoice");
   }
   payments.sort((a, b) => a.paidAt.localeCompare(b.paidAt));
   const runNumber = new Map(paymentRuns.map((r) => [r.id, ctx.number("paymentRun")]));
   for (const p of payments) {
-    const run = paymentRuns.find((r) => r.status === "paid" && p.allocatedTo.every((a) => r.invoiceIds.includes(a.invoiceId)) && ctx.account(p.accountId).kind === "supplier");
-    const invoiceNumbers = p.allocatedTo.map((a) => invoices.find((i) => i.id === a.invoiceId)!.number);
+    const run = paymentRuns.find(
+      (r) =>
+        r.status === "paid" &&
+        p.allocatedTo.every((a) => r.invoiceIds.includes(a.invoiceId)) &&
+        ctx.account(p.accountId).kind === "supplier",
+    );
+    const invoiceNumbers = p.allocatedTo.map(
+      (a) => invoices.find((i) => i.id === a.invoiceId)!.number,
+    );
     p.reference =
       p.method === "credit-allocation"
         ? `Credit applied to ${invoiceNumbers.join(", ")}`

@@ -36,7 +36,12 @@ export const ORDER_STATUS: StatusMap<SalesOrder["status"]> = {
 };
 
 /** Order stages in sequence, for stage trackers. */
-export const ORDER_STAGES: SalesOrder["status"][] = ["confirmed", "picking", "dispatched", "delivered"];
+export const ORDER_STAGES: SalesOrder["status"][] = [
+  "confirmed",
+  "picking",
+  "dispatched",
+  "delivered",
+];
 
 export const PO_STATUS: StatusMap<PurchaseOrder["status"]> = {
   issued: { label: "Issued", tone: "info" },
@@ -46,7 +51,12 @@ export const PO_STATUS: StatusMap<PurchaseOrder["status"]> = {
   received: { label: "Received", tone: "success" },
 };
 
-export const PO_STAGES: PurchaseOrder["status"][] = ["issued", "acknowledged", "in-transit", "received"];
+export const PO_STAGES: PurchaseOrder["status"][] = [
+  "issued",
+  "acknowledged",
+  "in-transit",
+  "received",
+];
 
 export const RFQ_STATUS: StatusMap<Rfq["status"]> = {
   open: { label: "Awaiting your response", tone: "info" },
@@ -105,6 +115,16 @@ export const OFFER_STATUS: StatusMap<Offer["status"]> = {
   expired: { label: "Expired", tone: "neutral" },
 };
 
-export const OPEN_ORDER_STATUSES: SalesOrder["status"][] = ["confirmed", "picking", "dispatched", "part-delivered"];
-export const OPEN_PO_STATUSES: PurchaseOrder["status"][] = ["issued", "acknowledged", "in-transit", "part-received"];
+export const OPEN_ORDER_STATUSES: SalesOrder["status"][] = [
+  "confirmed",
+  "picking",
+  "dispatched",
+  "part-delivered",
+];
+export const OPEN_PO_STATUSES: PurchaseOrder["status"][] = [
+  "issued",
+  "acknowledged",
+  "in-transit",
+  "part-received",
+];
 export const OPEN_CASE_STATUSES: Case["status"][] = ["open", "in-progress", "awaiting-parts"];

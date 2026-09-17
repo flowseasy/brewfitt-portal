@@ -56,30 +56,61 @@ async function main() {
     usePersonaStore.getState().setPersona(option.persona);
     const who = option.label;
     const supplier = option.persona.kind === "supplier";
-    await step(`${who} me`, async () => expect((await api.session.me()).brewfittTeam.length > 0, "no Brewfitt team"));
+    await step(`${who} me`, async () =>
+      expect((await api.session.me()).brewfittTeam.length > 0, "no Brewfitt team"),
+    );
     await step(`${who} account`, () => api.account.get());
-    await step(`${who} addresses`, async () => expect((await api.account.addresses()).length > 0, "no addresses"));
-    await step(`${who} contacts`, async () => expect((await api.account.contacts()).length > 0, "no contacts"));
+    await step(`${who} addresses`, async () =>
+      expect((await api.account.addresses()).length > 0, "no addresses"),
+    );
+    await step(`${who} contacts`, async () =>
+      expect((await api.account.contacts()).length > 0, "no contacts"),
+    );
     await step(`${who} account documents`, () => api.account.documents());
-    await step(`${who} products`, async () => expect((await api.products.list()).length > 0, "no products"));
+    await step(`${who} products`, async () =>
+      expect((await api.products.list()).length > 0, "no products"),
+    );
     await step(`${who} categories`, () => api.products.categories());
-    await step(`${who} price list`, async () => expect((await api.priceList.get()).lines.length > 0, "empty price list"));
-    await step(`${who} price list export`, async () => expect((await api.priceList.export()).content.split("\r\n").length > 2, "empty CSV"));
+    await step(`${who} price list`, async () =>
+      expect((await api.priceList.get()).lines.length > 0, "empty price list"),
+    );
+    await step(`${who} price list export`, async () =>
+      expect((await api.priceList.export()).content.split("\r\n").length > 2, "empty CSV"),
+    );
     await step(`${who} stock`, () => api.stock.list());
     await step(`${who} deliveries`, () => api.deliveries.list());
     await step(`${who} invoices`, () => api.invoices.list());
     await step(`${who} credit notes`, () => api.invoices.creditNotes());
     await step(`${who} payments`, () => api.invoices.payments());
     await step(`${who} statement reconciles`, async () => {
-      const [statement, invoices, credits] = await Promise.all([api.invoices.statement(), api.invoices.list(), api.invoices.creditNotes()]);
-      const outstanding = invoices.reduce((s, i) => s + i.outstanding.amount, 0) - credits.reduce((s, i) => s + i.outstanding.amount, 0);
-      expect(statement.closingBalance.amount === outstanding, `closing ${statement.closingBalance.amount} ≠ outstanding ${outstanding}`);
+      const [statement, invoices, credits] = await Promise.all([
+        api.invoices.statement(),
+        api.invoices.list(),
+        api.invoices.creditNotes(),
+      ]);
+      const outstanding =
+        invoices.reduce((s, i) => s + i.outstanding.amount, 0) -
+        credits.reduce((s, i) => s + i.outstanding.amount, 0);
+      expect(
+        statement.closingBalance.amount === outstanding,
+        `closing ${statement.closingBalance.amount} ≠ outstanding ${outstanding}`,
+      );
       const bands = Object.values(statement.ageing).reduce((s, m) => s + m.amount, 0);
-      expect(bands - statement.unallocatedCredit.amount === outstanding, `ageing ${bands} − credit ${statement.unallocatedCredit.amount} ≠ outstanding ${outstanding}`);
-      expect(Object.values(statement.ageing).every((m) => m.amount >= 0), "negative ageing band");
+      expect(
+        bands - statement.unallocatedCredit.amount === outstanding,
+        `ageing ${bands} − credit ${statement.unallocatedCredit.amount} ≠ outstanding ${outstanding}`,
+      );
+      expect(
+        Object.values(statement.ageing).every((m) => m.amount >= 0),
+        "negative ageing band",
+      );
     });
-    await step(`${who} knowledge`, async () => expect((await api.knowledge.list()).length >= 30, "too few knowledge items"));
-    await step(`${who} documents`, async () => expect((await api.documents.list()).length > 0, "no documents"));
+    await step(`${who} knowledge`, async () =>
+      expect((await api.knowledge.list()).length >= 30, "too few knowledge items"),
+    );
+    await step(`${who} documents`, async () =>
+      expect((await api.documents.list()).length > 0, "no documents"),
+    );
     await step(`${who} threads`, async () => {
       const threads = await api.messages.threads();
       expect(threads.length > 0, "no threads");
@@ -90,19 +121,32 @@ async function main() {
     await step(`${who} insights`, async () => {
       const insights = await api.ai.insights();
       expect(insights.length > 0, "no insights");
-      expect(insights.every((i) => i.simulated), "insight not labelled simulated");
+      expect(
+        insights.every((i) => i.simulated),
+        "insight not labelled simulated",
+      );
     });
     if (supplier) {
-      await step(`${who} rfqs`, async () => expect((await api.quotes.rfqs()).length > 0, "no RFQs"));
+      await step(`${who} rfqs`, async () =>
+        expect((await api.quotes.rfqs()).length > 0, "no RFQs"),
+      );
       await step(`${who} purchase orders`, async () => {
         const pos = await api.orders.purchaseOrders();
         expect(pos.length > 0, "no POs");
         await api.orders.purchaseOrder(pos[0]!.id);
       });
-      await step(`${who} payment runs`, async () => expect((await api.invoices.paymentRuns()).length > 0, "no payment runs"));
-      await step(`${who} forecast`, async () => expect((await api.stock.forecast()).length > 0, "no forecast"));
-      await step(`${who} supplier products`, async () => expect((await api.supplierProducts.list()).length > 0, "no submissions"));
-      await step(`${who} offers`, async () => expect((await api.supplierProducts.offers()).length > 0, "no offers"));
+      await step(`${who} payment runs`, async () =>
+        expect((await api.invoices.paymentRuns()).length > 0, "no payment runs"),
+      );
+      await step(`${who} forecast`, async () =>
+        expect((await api.stock.forecast()).length > 0, "no forecast"),
+      );
+      await step(`${who} supplier products`, async () =>
+        expect((await api.supplierProducts.list()).length > 0, "no submissions"),
+      );
+      await step(`${who} offers`, async () =>
+        expect((await api.supplierProducts.offers()).length > 0, "no offers"),
+      );
       await step(`${who} customer endpoints refused`, async () => {
         let refused = false;
         await api.quotes.list().catch(() => (refused = true));
@@ -125,13 +169,24 @@ async function main() {
   // ---- Customer journey on account: configurator → quote → order ----------------
   as("Olivia Bennett");
   await step("assistant answers the Premium Lager question", async () => {
-    const answer = await api.ai.ask({ question: "What's the latest on the Premium Lager font order?" });
-    expect(answer.sources.some((s) => s.relatedType === "sales-order"), `no order source: ${answer.answer.join(" ")}`);
-    expect(answer.answer.some((a) => /back order/i.test(a)), "answer does not mention the back order");
+    const answer = await api.ai.ask({
+      question: "What's the latest on the Premium Lager font order?",
+    });
+    expect(
+      answer.sources.some((s) => s.relatedType === "sales-order"),
+      `no order source: ${answer.answer.join(" ")}`,
+    );
+    expect(
+      answer.answer.some((a) => /back order/i.test(a)),
+      "answer does not mention the back order",
+    );
   });
   await step("assistant answers a product question", async () => {
     const answer = await api.ai.ask({ question: "Pipeline Purple cleaning powder" });
-    expect(answer.sources.some((s) => s.relatedType === "product"), answer.answer.join(" "));
+    expect(
+      answer.sources.some((s) => s.relatedType === "product"),
+      answer.answer.join(" "),
+    );
   });
   const createdConfig = await step("create configuration", async () => {
     const rules = await api.configurator.rules();
@@ -142,7 +197,10 @@ async function main() {
       venueType: "pub",
       selections: {
         venue: { newSite: null },
-        dispense: { points: [{ id: "pt-1", name: "Main bar", taps: ["lager", "lager"] }], optionIds: ["o-tap-fc4-chrome", "o-coupler-s"] },
+        dispense: {
+          points: [{ id: "pt-1", name: "Main bar", taps: ["lager", "lager"] }],
+          optionIds: ["o-tap-fc4-chrome", "o-coupler-s"],
+        },
         font: { optionIds: ["o-font-cobra-pl-led"], branding: null },
         cooling: { optionIds: ["o-cooler-v15", "o-python-2"], pythonMetres: 12 },
         gas: { optionIds: ["o-gas-co2", "o-gas-chain"] },
@@ -153,48 +211,107 @@ async function main() {
     expect(config.lines.length >= 8 && config.total.amount > 0, "BOM empty");
     return config;
   });
-  const draftQuote = createdConfig && (await step("request quote from configuration", () => api.configurator.requestQuote(createdConfig.id)));
+  const draftQuote =
+    createdConfig &&
+    (await step("request quote from configuration", () =>
+      api.configurator.requestQuote(createdConfig.id),
+    ));
   await step("quoted configuration is draft quote with BOM lines", async () => {
-    expect(draftQuote && draftQuote.status === "draft" && draftQuote.lines.length === createdConfig!.lines.length, "quote lines do not match BOM");
+    expect(
+      draftQuote &&
+        draftQuote.status === "draft" &&
+        draftQuote.lines.length === createdConfig!.lines.length,
+      "quote lines do not match BOM",
+    );
   });
   const sent = (await api.quotes.list()).filter((q) => q.status === "sent");
   const accepted = await step("accept a sent quote", async () => {
     const result = await api.quotes.accept(sent[0]!.id);
-    expect(result.quote.status === "accepted" && result.salesOrder.quoteId === sent[0]!.id, "not converted");
+    expect(
+      result.quote.status === "accepted" && result.salesOrder.quoteId === sent[0]!.id,
+      "not converted",
+    );
     return result;
   });
-  await step("decline a sent quote", async () => expect((await api.quotes.decline(sent[1]!.id, { reason: "Postponed until the spring refit." })).status === "declined", "not declined"));
+  await step("decline a sent quote", async () =>
+    expect(
+      (await api.quotes.decline(sent[1]!.id, { reason: "Postponed until the spring refit." }))
+        .status === "declined",
+      "not declined",
+    ),
+  );
   await step("change request before dispatch", async () => {
     const order = accepted!.salesOrder;
-    const change = await api.orders.requestChange(order.id, { kind: "date", requested: new Date(Date.now() + 20 * 86_400_000).toISOString().slice(0, 10), reason: "Venue opening moved." });
+    const change = await api.orders.requestChange(order.id, {
+      kind: "date",
+      requested: new Date(Date.now() + 20 * 86_400_000).toISOString().slice(0, 10),
+      reason: "Venue opening moved.",
+    });
     expect(change.status === "pending", "not pending");
     const detail = await api.orders.salesOrder(order.id);
-    expect(detail.changeRequests.some((c) => c.id === change.id), "change request not on order");
+    expect(
+      detail.changeRequests.some((c) => c.id === change.id),
+      "change request not on order",
+    );
   });
   await step("change request refused after dispatch", async () => {
     const delivered = (await api.orders.salesOrders()).find((o) => o.status === "delivered")!;
     let refused = false;
-    await api.orders.requestChange(delivered.id, { kind: "date", requested: "2099-01-01", reason: null }).catch(() => (refused = true));
+    await api.orders
+      .requestChange(delivered.id, { kind: "date", requested: "2099-01-01", reason: null })
+      .catch(() => (refused = true));
     expect(refused, "change accepted after delivery");
   });
   const onAccountOrder = await step("shop checkout on account", async () => {
-    const product = (await api.priceList.get()).lines.find((l) => l.stock?.status === "in-stock")!.product;
+    const product = (await api.priceList.get()).lines.find(
+      (l) => l.stock?.status === "in-stock",
+    )!.product;
     await api.shop.addToBasket({ productId: product.id, qty: 2 });
     await api.shop.updateBasket({ poReference: "SMOKE-1" });
     const address = (await api.account.addresses()).find((a) => a.isDefault)!;
-    const order = await api.shop.checkout({ deliveryAddressId: address.id, requestedDate: new Date(Date.now() + 5 * 86_400_000).toISOString().slice(0, 10), poReference: "SMOKE-1", notes: "Deliver to the goods-in door.", paymentMethod: "account", card: null });
-    expect(order.status === "confirmed" && (await api.shop.basket()).lines.length === 0, "checkout did not clear basket");
+    const order = await api.shop.checkout({
+      deliveryAddressId: address.id,
+      requestedDate: new Date(Date.now() + 5 * 86_400_000).toISOString().slice(0, 10),
+      poReference: "SMOKE-1",
+      notes: "Deliver to the goods-in door.",
+      paymentMethod: "account",
+      card: null,
+    });
+    expect(
+      order.status === "confirmed" && (await api.shop.basket()).lines.length === 0,
+      "checkout did not clear basket",
+    );
     return order;
   });
   await step("raise and close a case", async () => {
     const order = (await api.orders.salesOrders())[0]!;
-    const c = await api.cases.create({ kind: "fault", urgency: "high", subject: "Smoke test fault", description: "The font is fobbing on every first pour since installation.", productId: order.lines[0]!.productId, orderId: order.id, jobId: null, photos: [] });
+    const c = await api.cases.create({
+      kind: "fault",
+      urgency: "high",
+      subject: "Smoke test fault",
+      description: "The font is fobbing on every first pour since installation.",
+      productId: order.lines[0]!.productId,
+      orderId: order.id,
+      jobId: null,
+      photos: [],
+    });
     expect((await api.cases.update(c.id, { status: "closed" })).status === "closed", "not closed");
   });
   await step("send a message and start a thread", async () => {
-    const thread = await api.messages.createThread({ subject: "Smoke test question", body: "Can you confirm the delivery window?", relatedType: null, relatedId: null });
-    const msg = await api.messages.send(thread.id, { body: "Following up on this.", attachments: [] });
-    expect((await api.messages.thread(thread.id)).messages.some((m) => m.id === msg.id), "message missing");
+    const thread = await api.messages.createThread({
+      subject: "Smoke test question",
+      body: "Can you confirm the delivery window?",
+      relatedType: null,
+      relatedId: null,
+    });
+    const msg = await api.messages.send(thread.id, {
+      body: "Following up on this.",
+      attachments: [],
+    });
+    expect(
+      (await api.messages.thread(thread.id)).messages.some((m) => m.id === msg.id),
+      "message missing",
+    );
   });
   await step("notification read and dismiss", async () => {
     const n = (await api.notifications.list())[0]!;
@@ -204,8 +321,22 @@ async function main() {
   });
   await step("account edits are pending approval", async () => {
     const account = await api.account.update({ vatNumber: "GB 999 9999 99" });
-    expect(account.pendingChanges.some((c) => c.field === "vatNumber" && c.status === "pending") && account.vatNumber !== "GB 999 9999 99", "edit applied without approval");
-    const address = await api.account.createAddress({ label: "Pop-up bar", line1: "1 Market Street", line2: null, town: "Leeds", county: "West Yorkshire", postcode: "LS1 6DT", country: "GB", isDefault: false, deliveryNotes: null });
+    expect(
+      account.pendingChanges.some((c) => c.field === "vatNumber" && c.status === "pending") &&
+        account.vatNumber !== "GB 999 9999 99",
+      "edit applied without approval",
+    );
+    const address = await api.account.createAddress({
+      label: "Pop-up bar",
+      line1: "1 Market Street",
+      line2: null,
+      town: "Leeds",
+      county: "West Yorkshire",
+      postcode: "LS1 6DT",
+      country: "GB",
+      isDefault: false,
+      deliveryNotes: null,
+    });
     expect(address.approvalStatus === "pending", "address not pending");
   });
 
@@ -216,16 +347,34 @@ async function main() {
     const basket = await api.shop.basket();
     expect(basket.lines.length > 0, "seeded basket empty");
     let refused = false;
-    await api.shop.checkout({ deliveryAddressId: address.id, requestedDate: "2099-01-10", poReference: null, notes: null, paymentMethod: "account", card: null }).catch(() => (refused = true));
+    await api.shop
+      .checkout({
+        deliveryAddressId: address.id,
+        requestedDate: "2099-01-10",
+        poReference: null,
+        notes: null,
+        paymentMethod: "account",
+        card: null,
+      })
+      .catch(() => (refused = true));
     expect(refused, "non-account customer checked out on account");
-    const order = await api.shop.checkout({ deliveryAddressId: address.id, requestedDate: new Date(Date.now() + 4 * 86_400_000).toISOString().slice(0, 10), poReference: null, notes: null, paymentMethod: "card", card: { nameOnCard: "K Flanagan", last4: "4242" } });
+    const order = await api.shop.checkout({
+      deliveryAddressId: address.id,
+      requestedDate: new Date(Date.now() + 4 * 86_400_000).toISOString().slice(0, 10),
+      poReference: null,
+      notes: null,
+      paymentMethod: "card",
+      card: { nameOnCard: "K Flanagan", last4: "4242" },
+    });
     const invoice = (await api.invoices.list()).find((i) => i.orderId === order.id);
     expect(invoice && invoice.status === "paid", "card order invoice not paid");
   });
   await step("pay an open invoice by card", async () => {
     const open = (await api.invoices.list()).find((i) => i.outstanding.amount > 0)!;
     expect(open, "no open invoice to pay");
-    const { invoice } = await api.invoices.pay(open.id, { card: { nameOnCard: "K Flanagan", last4: "4242" } });
+    const { invoice } = await api.invoices.pay(open.id, {
+      card: { nameOnCard: "K Flanagan", last4: "4242" },
+    });
     expect(invoice.status === "paid" && invoice.outstanding.amount === 0, "not paid");
   });
 
@@ -239,8 +388,14 @@ async function main() {
     const all = await api.orders.salesOrders();
     expect(all.length > siteOrders, "roll-up not larger than one site");
     usePersonaStore.getState().setActiveSite("acc_millrace_weavers");
-    expect((await api.orders.salesOrders()).length === siteOrders, "switching into a site did not scope orders");
-    expect((await api.priceList.get()).priceList.id === "pl_pubgroup", "site does not use the group price list");
+    expect(
+      (await api.orders.salesOrders()).length === siteOrders,
+      "switching into a site did not scope orders",
+    );
+    expect(
+      (await api.priceList.get()).priceList.id === "pl_pubgroup",
+      "site does not use the group price list",
+    );
     usePersonaStore.getState().setPersona(group.persona);
   });
 
@@ -248,33 +403,80 @@ async function main() {
   as("Neil Chapman");
   await step("respond to an RFQ", async () => {
     const rfq = (await api.quotes.rfqs()).find((r) => r.status === "open")!;
-    const response = await api.quotes.respondToRfq(rfq.id, { lines: rfq.lines.map((l) => ({ productId: l.productId, price: { amount: 12_500, currency: "GBP" }, leadTimeDays: 10 })), notes: "Price held for 60 days." });
-    expect((await api.quotes.rfqs()).find((r) => r.id === rfq.id)?.response?.id === response.id, "response not recorded");
+    const response = await api.quotes.respondToRfq(rfq.id, {
+      lines: rfq.lines.map((l) => ({
+        productId: l.productId,
+        price: { amount: 12_500, currency: "GBP" },
+        leadTimeDays: 10,
+      })),
+      notes: "Price held for 60 days.",
+    });
+    expect(
+      (await api.quotes.rfqs()).find((r) => r.id === rfq.id)?.response?.id === response.id,
+      "response not recorded",
+    );
   });
   await step("acknowledge a purchase order", async () => {
     const po = (await api.orders.purchaseOrders()).find((p) => p.status === "issued");
-    if (po) expect((await api.orders.acknowledge(po.id)).status === "acknowledged", "not acknowledged");
+    if (po)
+      expect((await api.orders.acknowledge(po.id)).status === "acknowledged", "not acknowledged");
   });
   await step("submit and resubmit a product", async () => {
     const category = (await api.products.categories())[0]!;
-    const product = await api.supplierProducts.create({ name: "Cobra B 6 Out Chrome LED", sku: "VIR-6OUT", category: category.id, images: ["/products/cobra-4-out-chrome-led.jpg"], brandingAssets: [], specSheetFileName: "Cobra B 6 Out spec sheet.pdf", costPrice: { amount: 38_000, currency: "GBP" }, leadTimeDays: 14, minimumOrder: 2 });
-    expect(product.status === "submitted" && product.specSheetDocumentId, "not submitted with spec sheet");
-    expect((await api.supplierProducts.update(product.id, { leadTimeDays: 12 })).leadTimeDays === 12, "not updated");
+    const product = await api.supplierProducts.create({
+      name: "Cobra B 6 Out Chrome LED",
+      sku: "VIR-6OUT",
+      category: category.id,
+      images: ["/products/cobra-4-out-chrome-led.jpg"],
+      brandingAssets: [],
+      specSheetFileName: "Cobra B 6 Out spec sheet.pdf",
+      costPrice: { amount: 38_000, currency: "GBP" },
+      leadTimeDays: 14,
+      minimumOrder: 2,
+    });
+    expect(
+      product.status === "submitted" && product.specSheetDocumentId,
+      "not submitted with spec sheet",
+    );
+    expect(
+      (await api.supplierProducts.update(product.id, { leadTimeDays: 12 })).leadTimeDays === 12,
+      "not updated",
+    );
   });
   await step("create an offer", async () => {
     const own = await api.products.list();
-    const offer = await api.supplierProducts.createOffer({ productIds: [own[0]!.id], description: "Autumn price on single fonts.", price: { amount: 9_900, currency: "GBP" }, validFrom: "2099-01-01", validTo: "2099-02-01" });
+    const offer = await api.supplierProducts.createOffer({
+      productIds: [own[0]!.id],
+      description: "Autumn price on single fonts.",
+      price: { amount: 9_900, currency: "GBP" },
+      validFrom: "2099-01-01",
+      validTo: "2099-02-01",
+    });
     expect(offer.status === "submitted", "offer not submitted");
   });
   await step("submit a knowledge article", async () => {
     const own = await api.products.list();
-    const item = await api.knowledge.submit({ title: "Fitting a Cobra font clamp", type: "guide", category: own[0]!.category, productIds: [own[0]!.id], summary: "How to fit and tighten the clamp assembly on a Cobra font.", fileName: null, videoUrl: null });
-    expect((await api.knowledge.list()).some((k) => k.id === item.id), "supplier cannot see own submission");
+    const item = await api.knowledge.submit({
+      title: "Fitting a Cobra font clamp",
+      type: "guide",
+      category: own[0]!.category,
+      productIds: [own[0]!.id],
+      summary: "How to fit and tighten the clamp assembly on a Cobra font.",
+      fileName: null,
+      videoUrl: null,
+    });
+    expect(
+      (await api.knowledge.list()).some((k) => k.id === item.id),
+      "supplier cannot see own submission",
+    );
   });
   await step("supplier assistant answers about a purchase order", async () => {
     const po = (await api.orders.purchaseOrders())[0]!;
     const answer = await api.ai.ask({ question: `Where is ${po.number}?` });
-    expect(answer.sources.some((s) => s.relatedType === "purchase-order"), answer.answer.join(" "));
+    expect(
+      answer.sources.some((s) => s.relatedType === "purchase-order"),
+      answer.answer.join(" "),
+    );
   });
 
   // ---- Persistence: reload replays the change log ------------------------------------
@@ -282,14 +484,26 @@ async function main() {
     reloadDb();
     as("Olivia Bennett");
     const orders = await api.orders.salesOrders();
-    expect(onAccountOrder && orders.some((o) => o.id === onAccountOrder.id), "checkout order lost on reload");
-    expect(accepted && (await api.quotes.get(accepted.quote.id)).status === "accepted", "accepted quote lost on reload");
-    expect(createdConfig && (await api.configurator.get(createdConfig.id)).status === "quoted", "configuration lost on reload");
+    expect(
+      onAccountOrder && orders.some((o) => o.id === onAccountOrder.id),
+      "checkout order lost on reload",
+    );
+    expect(
+      accepted && (await api.quotes.get(accepted.quote.id)).status === "accepted",
+      "accepted quote lost on reload",
+    );
+    expect(
+      createdConfig && (await api.configurator.get(createdConfig.id)).status === "quoted",
+      "configuration lost on reload",
+    );
   });
   await step("reset demo data clears changes", async () => {
     await api.demo.reset();
     as("Olivia Bennett");
-    expect(!(await api.orders.salesOrders()).some((o) => o.id === onAccountOrder?.id), "reset did not clear changes");
+    expect(
+      !(await api.orders.salesOrders()).some((o) => o.id === onAccountOrder?.id),
+      "reset did not clear changes",
+    );
   });
 
   console.log(`${passed} checks passed, ${failures.length} failed`);

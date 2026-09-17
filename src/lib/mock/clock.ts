@@ -22,7 +22,9 @@ export function daysBetween(a: Date | string, b: Date | string): number {
 }
 
 export function toDate(value: Date | string): Date {
-  return value instanceof Date ? value : new Date(value.length === 10 ? `${value}T00:00:00Z` : value);
+  return value instanceof Date
+    ? value
+    : new Date(value.length === 10 ? `${value}T00:00:00Z` : value);
 }
 
 /** YYYY-MM-DD */
@@ -61,7 +63,8 @@ export function shiftDates<T>(value: T, days: number): T {
   const walk = (v: unknown): unknown => {
     if (typeof v === "string") {
       if (ISO_DATE.test(v)) return isoDate(addDays(toDate(v), days));
-      if (ISO_DATE_TIME.test(v)) return new Date(new Date(v).getTime() + days * DAY_MS).toISOString();
+      if (ISO_DATE_TIME.test(v))
+        return new Date(new Date(v).getTime() + days * DAY_MS).toISOString();
       return v;
     }
     if (Array.isArray(v)) return v.map(walk);

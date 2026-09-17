@@ -28,14 +28,24 @@ export function BillOfMaterials({
         <span className="text-xs text-muted-foreground">{plural(lines.length, "line")}</span>
       </div>
       {lines.length === 0 ? (
-        <p className="mt-3 text-sm text-muted-foreground">Choose options to build the list of parts.</p>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Choose options to build the list of parts.
+        </p>
       ) : (
         <ul className={compact ? "mt-3 max-h-[40dvh] divide-y overflow-y-auto" : "mt-3 divide-y"}>
           <AnimatePresence initial={false}>
             {lines.map((l) => {
               const p = products.get(l.productId);
               return (
-                <motion.li key={l.productId} layout initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.18 }} className="flex gap-3 py-2 text-sm">
+                <motion.li
+                  key={l.productId}
+                  layout
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.18 }}
+                  className="flex gap-3 py-2 text-sm"
+                >
                   <span className="w-8 shrink-0 text-right font-medium tabular-nums">{l.qty}×</span>
                   <span className="min-w-0 flex-1">
                     <span className="line-clamp-2">{p?.name ?? l.productId}</span>
@@ -43,7 +53,9 @@ export function BillOfMaterials({
                       {p?.sku} · {formatMoney(l.price)} {p?.unit === "metre" ? "per metre" : "each"}
                     </span>
                   </span>
-                  <span className="shrink-0 tabular-nums">{formatMoney({ amount: l.qty * l.price.amount, currency: l.price.currency })}</span>
+                  <span className="shrink-0 tabular-nums">
+                    {formatMoney({ amount: l.qty * l.price.amount, currency: l.price.currency })}
+                  </span>
                 </motion.li>
               );
             })}
@@ -67,7 +79,8 @@ export function BillOfMaterials({
         </div>
       </dl>
       <p className="mt-2 text-xs text-muted-foreground">
-        {openSteps ? `${plural(openSteps, "step")} still to complete. ` : ""}Brewfitt confirms installation and final pricing on the quote.
+        {openSteps ? `${plural(openSteps, "step")} still to complete. ` : ""}Brewfitt confirms
+        installation and final pricing on the quote.
       </p>
     </div>
   );

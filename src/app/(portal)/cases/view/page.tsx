@@ -4,7 +4,15 @@ import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeftIcon, ChatsCircleIcon, CheckCircleIcon, PackageIcon, ShieldCheckIcon, TagIcon, WrenchIcon } from "@phosphor-icons/react";
+import {
+  ArrowLeftIcon,
+  ChatsCircleIcon,
+  CheckCircleIcon,
+  PackageIcon,
+  ShieldCheckIcon,
+  TagIcon,
+  WrenchIcon,
+} from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { CASE_KIND_LABEL } from "@/components/cases/case-sheet";
 import { ThreadView } from "@/components/messages/thread-view";
@@ -33,20 +41,37 @@ function CaseView() {
   const id = useSearchParams().get("id") ?? "";
   const key = usePersonaKey();
   const queryClient = useQueryClient();
-  const kase = useQuery({ queryKey: queryKeys.case(key, id), queryFn: () => api.cases.get(id), enabled: !!id });
-  const priceList = useQuery({ queryKey: queryKeys.priceList(key), queryFn: () => api.priceList.get() });
-  const orders = useQuery({ queryKey: queryKeys.salesOrders(key), queryFn: () => api.orders.salesOrders() });
+  const kase = useQuery({
+    queryKey: queryKeys.case(key, id),
+    queryFn: () => api.cases.get(id),
+    enabled: !!id,
+  });
+  const priceList = useQuery({
+    queryKey: queryKeys.priceList(key),
+    queryFn: () => api.priceList.get(),
+  });
+  const orders = useQuery({
+    queryKey: queryKeys.salesOrders(key),
+    queryFn: () => api.orders.salesOrders(),
+  });
   const jobs = useQuery({ queryKey: queryKeys.jobs(key), queryFn: () => api.jobs.list() });
   const [closeOpen, setCloseOpen] = useState(false);
 
   const close = useMutation({
     mutationFn: () => api.cases.update(id, { status: "closed" }),
     onSuccess: (c) => {
-      for (const k of [queryKeys.case(key, id), queryKeys.cases(key), queryKeys.thread(key, c.threadId), queryKeys.threads(key)]) void queryClient.invalidateQueries({ queryKey: k });
+      for (const k of [
+        queryKeys.case(key, id),
+        queryKeys.cases(key),
+        queryKeys.thread(key, c.threadId),
+        queryKeys.threads(key),
+      ])
+        void queryClient.invalidateQueries({ queryKey: k });
       setCloseOpen(false);
       toast.success(`Case ${c.number} closed`);
     },
-    onError: (error) => toast.error("The case could not be closed", { description: errorMessage(error) }),
+    onError: (error) =>
+      toast.error("The case could not be closed", { description: errorMessage(error) }),
   });
 
   if (kase.isPending) return <LoadingState rows={5} label="Loading case" />;
@@ -61,7 +86,10 @@ function CaseView() {
 
   return (
     <div>
-      <Link href="/cases" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        href="/cases"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeftIcon className="size-4" aria-hidden />
         Cases
       </Link>
@@ -106,7 +134,9 @@ function CaseView() {
                 {c.photos.map((p) => (
                   <li key={p} className="w-24">
                     <SubmissionImage src={p} className="size-24 rounded-xl border" />
-                    {isUpload(p) ? <p className="mt-1 truncate text-xs text-muted-foreground">{uploadName(p)}</p> : null}
+                    {isUpload(p) ? (
+                      <p className="mt-1 truncate text-xs text-muted-foreground">{uploadName(p)}</p>
+                    ) : null}
                   </li>
                 ))}
               </ul>
@@ -118,9 +148,20 @@ function CaseView() {
               Engineer notes
             </h2>
             {c.engineerNotes.length ? (
-              <Timeline entries={c.engineerNotes.map((n, i) => ({ id: `${i}`, at: n.at, title: n.note, detail: n.author, icon: WrenchIcon }))} />
+              <Timeline
+                entries={c.engineerNotes.map((n, i) => ({
+                  id: `${i}`,
+                  at: n.at,
+                  title: n.note,
+                  detail: n.author,
+                  icon: WrenchIcon,
+                }))}
+              />
             ) : (
-              <p className="text-sm text-muted-foreground">No engineer notes yet. Brewfitt&apos;s technical team replies in the conversation below.</p>
+              <p className="text-sm text-muted-foreground">
+                No engineer notes yet. Brewfitt&apos;s technical team replies in the conversation
+                below.
+              </p>
             )}
           </section>
 
@@ -135,7 +176,10 @@ function CaseView() {
 
         <aside className="space-y-3">
           {product ? (
-            <Link href={hrefFor("product", product.id)} className="flex items-center gap-3 rounded-2xl border bg-card p-4 hover:border-primary/40">
+            <Link
+              href={hrefFor("product", product.id)}
+              className="flex items-center gap-3 rounded-2xl border bg-card p-4 hover:border-primary/40"
+            >
               <TagIcon className="size-5 shrink-0 text-primary" aria-hidden />
               <span className="min-w-0 text-sm">
                 <span className="block text-xs text-muted-foreground">Product</span>
@@ -144,7 +188,10 @@ function CaseView() {
             </Link>
           ) : null}
           {order ? (
-            <Link href={hrefFor("sales-order", order.id)} className="flex items-center gap-3 rounded-2xl border bg-card p-4 hover:border-primary/40">
+            <Link
+              href={hrefFor("sales-order", order.id)}
+              className="flex items-center gap-3 rounded-2xl border bg-card p-4 hover:border-primary/40"
+            >
               <PackageIcon className="size-5 shrink-0 text-primary" aria-hidden />
               <span className="text-sm">
                 <span className="block text-xs text-muted-foreground">Order</span>
@@ -155,7 +202,10 @@ function CaseView() {
             </Link>
           ) : null}
           {job ? (
-            <Link href={hrefFor("job", job.id)} className="flex items-center gap-3 rounded-2xl border bg-card p-4 hover:border-primary/40">
+            <Link
+              href={hrefFor("job", job.id)}
+              className="flex items-center gap-3 rounded-2xl border bg-card p-4 hover:border-primary/40"
+            >
               <WrenchIcon className="size-5 shrink-0 text-primary" aria-hidden />
               <span className="min-w-0 text-sm">
                 <span className="block text-xs text-muted-foreground">Install job</span>
@@ -165,17 +215,32 @@ function CaseView() {
           ) : null}
           {job?.warrantyEnd ? (
             <div className="flex items-center gap-3 rounded-2xl border bg-card p-4">
-              <ShieldCheckIcon className={warrantyActive ? "size-5 text-success" : "size-5 text-muted-foreground"} aria-hidden />
+              <ShieldCheckIcon
+                className={warrantyActive ? "size-5 text-success" : "size-5 text-muted-foreground"}
+                aria-hidden
+              />
               <span className="text-sm">
                 <span className="block text-xs text-muted-foreground">Warranty</span>
-                <span className="font-medium">{warrantyActive ? `Active until ${formatDate(job.warrantyEnd)}` : `Ended ${formatDate(job.warrantyEnd)}`}</span>
+                <span className="font-medium">
+                  {warrantyActive
+                    ? `Active until ${formatDate(job.warrantyEnd)}`
+                    : `Ended ${formatDate(job.warrantyEnd)}`}
+                </span>
               </span>
             </div>
           ) : null}
         </aside>
       </div>
 
-      <ConfirmDialog open={closeOpen} onOpenChange={setCloseOpen} title={`Close case ${c.number}?`} description="Close it if the problem is fixed. You can raise a new case if it comes back." confirmLabel="Close case" pending={close.isPending} onConfirm={() => close.mutate()} />
+      <ConfirmDialog
+        open={closeOpen}
+        onOpenChange={setCloseOpen}
+        title={`Close case ${c.number}?`}
+        description="Close it if the problem is fixed. You can raise a new case if it comes back."
+        confirmLabel="Close case"
+        pending={close.isPending}
+        onConfirm={() => close.mutate()}
+      />
     </div>
   );
 }

@@ -19,7 +19,11 @@ export const useShopStore = create<ShopState>()(
       view: "grid",
       toggleNotify: (productId) => {
         const on = !get().notifyMe.includes(productId);
-        set({ notifyMe: on ? [...get().notifyMe, productId] : get().notifyMe.filter((id) => id !== productId) });
+        set({
+          notifyMe: on
+            ? [...get().notifyMe, productId]
+            : get().notifyMe.filter((id) => id !== productId),
+        });
         return on;
       },
       setView: (view) => set({ view }),

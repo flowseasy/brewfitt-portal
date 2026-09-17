@@ -38,9 +38,52 @@ export type AssistantRecords = {
 };
 
 const STOP_WORDS = new Set([
-  "what", "whats", "what's", "the", "latest", "on", "about", "with", "for", "is", "are", "my", "our", "an", "a", "of", "to",
-  "where", "when", "status", "update", "order", "orders", "quote", "quotes", "any", "news", "how", "does", "did", "has",
-  "have", "been", "this", "that", "there", "please", "tell", "me", "can", "you", "show", "give", "happening", "and", "it",
+  "what",
+  "whats",
+  "what's",
+  "the",
+  "latest",
+  "on",
+  "about",
+  "with",
+  "for",
+  "is",
+  "are",
+  "my",
+  "our",
+  "an",
+  "a",
+  "of",
+  "to",
+  "where",
+  "when",
+  "status",
+  "update",
+  "order",
+  "orders",
+  "quote",
+  "quotes",
+  "any",
+  "news",
+  "how",
+  "does",
+  "did",
+  "has",
+  "have",
+  "been",
+  "this",
+  "that",
+  "there",
+  "please",
+  "tell",
+  "me",
+  "can",
+  "you",
+  "show",
+  "give",
+  "happening",
+  "and",
+  "it",
 ]);
 
 const words = (text: string) =>
@@ -61,7 +104,12 @@ const STAGE: Record<SalesOrder["status"], string> = {
 
 function latestMessage(r: AssistantRecords, threadId: string | null | undefined) {
   if (!threadId) return null;
-  return r.messages.filter((m) => m.threadId === threadId).sort((a, b) => a.sentAt.localeCompare(b.sentAt)).at(-1) ?? null;
+  return (
+    r.messages
+      .filter((m) => m.threadId === threadId)
+      .sort((a, b) => a.sentAt.localeCompare(b.sentAt))
+      .at(-1) ?? null
+  );
 }
 
 function snippet(body: string, max = 180) {
@@ -71,24 +119,41 @@ function snippet(body: string, max = 180) {
   return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
 }
 
-function describeOrder(r: AssistantRecords, order: SalesOrder): { answer: string[]; sources: AskSource[] } {
+function describeOrder(
+  r: AssistantRecords,
+  order: SalesOrder,
+): { answer: string[]; sources: AskSource[] } {
   const productName = (id: string) => r.products.find((p) => p.id === id)?.name ?? "an item";
   const answer: string[] = [];
-  const sources: AskSource[] = [{ relatedType: "sales-order", relatedId: order.id, label: `Order ${order.number}` }];
+  const sources: AskSource[] = [
+    { relatedType: "sales-order", relatedId: order.id, label: `Order ${order.number}` },
+  ];
 
   const delivered = order.status === "delivered" || order.status === "cancelled";
   const due = order.confirmedDate ?? order.requestedDate;
-  const dateText = delivered ? null : due < r.today.toISOString().slice(0, 10) ? `was originally due ${formatDate(due)}` : order.confirmedDate ? `due ${formatDate(due)}` : `requested for ${formatDate(due)}`;
-  answer.push(`Order ${order.number}${order.poReference ? ` (your reference ${order.poReference})` : ""} is ${STAGE[order.status]}${dateText ? ` and ${dateText}` : ""}, with a value of ${formatMoney(order.total)}.`);
+  const dateText = delivered
+    ? null
+    : due < r.today.toISOString().slice(0, 10)
+      ? `was originally due ${formatDate(due)}`
+      : order.confirmedDate
+        ? `due ${formatDate(due)}`
+        : `requested for ${formatDate(due)}`;
+  answer.push(
+    `Order ${order.number}${order.poReference ? ` (your reference ${order.poReference})` : ""} is ${STAGE[order.status]}${dateText ? ` and ${dateText}` : ""}, with a value of ${formatMoney(order.total)}.`,
+  );
 
   const back = order.lines.filter((l) => l.backordered > 0);
   if (back.length) {
     const delivered = order.lines.reduce((s, l) => s + l.delivered, 0);
     const total = order.lines.reduce((s, l) => s + l.qty, 0);
-    answer.push(`${delivered} of ${total} items have been delivered. On back order: ${back.map((l) => `${l.backordered} × ${productName(l.productId)}`).join("; ")}.`);
+    answer.push(
+      `${delivered} of ${total} items have been delivered. On back order: ${back.map((l) => `${l.backordered} × ${productName(l.productId)}`).join("; ")}.`,
+    );
   }
 
-  const deliveries = r.deliveries.filter((d) => d.orderId === order.id).sort((a, b) => (a.dispatchedAt ?? "").localeCompare(b.dispatchedAt ?? ""));
+  const deliveries = r.deliveries
+    .filter((d) => d.orderId === order.id)
+    .sort((a, b) => (a.dispatchedAt ?? "").localeCompare(b.dispatchedAt ?? ""));
   for (const d of deliveries) {
     sources.push({ relatedType: "delivery", relatedId: d.id, label: `Delivery ${d.number}` });
   }
@@ -101,7 +166,9 @@ function describeOrder(r: AssistantRecords, order: SalesOrder): { answer: string
     );
   }
 
-  const jobs = r.jobs.filter((j) => j.orderId === order.id).sort((a, b) => a.scheduledDate.localeCompare(b.scheduledDate));
+  const jobs = r.jobs
+    .filter((j) => j.orderId === order.id)
+    .sort((a, b) => a.scheduledDate.localeCompare(b.scheduledDate));
   if (jobs.length) {
     const done = jobs.filter((j) => j.status === "signed-off" || j.status === "completed").length;
     const next = jobs.find((j) => j.status === "scheduled" || j.status === "in-progress");
@@ -111,24 +178,42 @@ function describeOrder(r: AssistantRecords, order: SalesOrder): { answer: string
     for (const j of jobs) sources.push({ relatedType: "job", relatedId: j.id, label: j.name });
   }
 
-  const openCases = r.cases.filter((c) => c.orderId === order.id && c.status !== "closed" && c.status !== "resolved");
+  const openCases = r.cases.filter(
+    (c) => c.orderId === order.id && c.status !== "closed" && c.status !== "resolved",
+  );
   if (openCases.length) {
-    answer.push(`Open ${openCases.length === 1 ? "case" : "cases"}: ${openCases.map((c) => `${c.number} ${c.subject.toLowerCase()} (${c.status.replace("-", " ")})`).join("; ")}.`);
-    for (const c of openCases) sources.push({ relatedType: "case", relatedId: c.id, label: `Case ${c.number}` });
+    answer.push(
+      `Open ${openCases.length === 1 ? "case" : "cases"}: ${openCases.map((c) => `${c.number} ${c.subject.toLowerCase()} (${c.status.replace("-", " ")})`).join("; ")}.`,
+    );
+    for (const c of openCases)
+      sources.push({ relatedType: "case", relatedId: c.id, label: `Case ${c.number}` });
   }
 
-  const threads = r.threads.filter((t) => (t.relatedType === "sales-order" && t.relatedId === order.id) || t.id === order.threadId);
-  const last = threads.map((t) => latestMessage(r, t.id)).filter((m): m is Message => !!m).sort((a, b) => a.sentAt.localeCompare(b.sentAt)).at(-1);
+  const threads = r.threads.filter(
+    (t) => (t.relatedType === "sales-order" && t.relatedId === order.id) || t.id === order.threadId,
+  );
+  const last = threads
+    .map((t) => latestMessage(r, t.id))
+    .filter((m): m is Message => !!m)
+    .sort((a, b) => a.sentAt.localeCompare(b.sentAt))
+    .at(-1);
   if (last) {
-    answer.push(`Latest message, from ${r.participantName(last.senderId)} on ${formatDate(last.sentAt)}: "${snippet(last.body)}"`);
+    answer.push(
+      `Latest message, from ${r.participantName(last.senderId)} on ${formatDate(last.sentAt)}: "${snippet(last.body)}"`,
+    );
     sources.push({ relatedType: "thread", relatedId: last.threadId, label: "Order conversation" });
   }
 
   const invoices = r.invoices.filter((i) => i.orderId === order.id && i.kind === "invoice");
   const outstanding = invoices.reduce((s, i) => s + i.outstanding.amount, 0);
   if (invoices.length) {
-    answer.push(outstanding > 0 ? `${formatMoney({ amount: outstanding, currency: order.total.currency })} is outstanding on ${plural(invoices.length, "invoice")} for this order.` : `The ${plural(invoices.length, "invoice")} for this order ${invoices.length === 1 ? "is" : "are"} paid.`);
-    for (const i of invoices) sources.push({ relatedType: "invoice", relatedId: i.id, label: `Invoice ${i.number}` });
+    answer.push(
+      outstanding > 0
+        ? `${formatMoney({ amount: outstanding, currency: order.total.currency })} is outstanding on ${plural(invoices.length, "invoice")} for this order.`
+        : `The ${plural(invoices.length, "invoice")} for this order ${invoices.length === 1 ? "is" : "are"} paid.`,
+    );
+    for (const i of invoices)
+      sources.push({ relatedType: "invoice", relatedId: i.id, label: `Invoice ${i.number}` });
   }
   return { answer, sources };
 }
@@ -141,30 +226,57 @@ const PO_STAGE: Record<PurchaseOrder["status"], string> = {
   received: "received in full",
 };
 
-function describePurchaseOrder(r: AssistantRecords, po: PurchaseOrder): { answer: string[]; sources: AskSource[] } {
+function describePurchaseOrder(
+  r: AssistantRecords,
+  po: PurchaseOrder,
+): { answer: string[]; sources: AskSource[] } {
   const productName = (id: string) => r.products.find((p) => p.id === id)?.name ?? "an item";
-  const answer = [`Purchase order ${po.number} is ${PO_STAGE[po.status]}, expected ${formatDate(po.expectedDate)}, worth ${formatMoney(po.total)}.`];
+  const answer = [
+    `Purchase order ${po.number} is ${PO_STAGE[po.status]}, expected ${formatDate(po.expectedDate)}, worth ${formatMoney(po.total)}.`,
+  ];
   const open = po.lines.filter((l) => l.received < l.qty);
   if (po.status === "part-received" && open.length) {
-    answer.push(`Still to deliver: ${open.map((l) => `${l.qty - l.received} × ${productName(l.productId)}`).join("; ")}.`);
+    answer.push(
+      `Still to deliver: ${open.map((l) => `${l.qty - l.received} × ${productName(l.productId)}`).join("; ")}.`,
+    );
   }
-  const sources: AskSource[] = [{ relatedType: "purchase-order", relatedId: po.id, label: `Purchase order ${po.number}` }];
+  const sources: AskSource[] = [
+    { relatedType: "purchase-order", relatedId: po.id, label: `Purchase order ${po.number}` },
+  ];
   const last = latestMessage(r, po.threadId);
   if (last) {
-    answer.push(`Latest message, from ${r.participantName(last.senderId)} on ${formatDate(last.sentAt)}: "${snippet(last.body)}"`);
-    sources.push({ relatedType: "thread", relatedId: po.threadId, label: "Purchase order conversation" });
+    answer.push(
+      `Latest message, from ${r.participantName(last.senderId)} on ${formatDate(last.sentAt)}: "${snippet(last.body)}"`,
+    );
+    sources.push({
+      relatedType: "thread",
+      relatedId: po.threadId,
+      label: "Purchase order conversation",
+    });
   }
   return { answer, sources };
 }
 
-function describeQuote(r: AssistantRecords, quote: Quote): { answer: string[]; sources: AskSource[] } {
+function describeQuote(
+  r: AssistantRecords,
+  quote: Quote,
+): { answer: string[]; sources: AskSource[] } {
   const answer = [
     `Quote ${quote.number} is ${quote.status}, for ${formatMoney(quote.total)} including VAT across ${plural(quote.lines.length, "line")}.`,
-    quote.status === "sent" ? `It is valid until ${formatDate(quote.validUntil)}.` : quote.status === "declined" && quote.declineReason ? `Reason given: ${quote.declineReason}` : "",
+    quote.status === "sent"
+      ? `It is valid until ${formatDate(quote.validUntil)}.`
+      : quote.status === "declined" && quote.declineReason
+        ? `Reason given: ${quote.declineReason}`
+        : "",
   ].filter(Boolean);
-  const sources: AskSource[] = [{ relatedType: "quote", relatedId: quote.id, label: `Quote ${quote.number}` }];
+  const sources: AskSource[] = [
+    { relatedType: "quote", relatedId: quote.id, label: `Quote ${quote.number}` },
+  ];
   const last = latestMessage(r, quote.threadId);
-  if (last) answer.push(`Latest message, from ${r.participantName(last.senderId)} on ${formatDate(last.sentAt)}: "${snippet(last.body)}"`);
+  if (last)
+    answer.push(
+      `Latest message, from ${r.participantName(last.senderId)} on ${formatDate(last.sentAt)}: "${snippet(last.body)}"`,
+    );
   if (quote.salesOrderId) {
     const order = r.salesOrders.find((o) => o.id === quote.salesOrderId);
     if (order) {
@@ -176,23 +288,48 @@ function describeQuote(r: AssistantRecords, quote: Quote): { answer: string[]; s
   return { answer, sources };
 }
 
-function describeProduct(r: AssistantRecords, product: Product): { answer: string[]; sources: AskSource[] } {
+function describeProduct(
+  r: AssistantRecords,
+  product: Product,
+): { answer: string[]; sources: AskSource[] } {
   const answer: string[] = [];
-  const sources: AskSource[] = [{ relatedType: "product", relatedId: product.id, label: product.name }];
-  const orders = r.salesOrders.filter((o) => o.status !== "cancelled" && o.lines.some((l) => l.productId === product.id)).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const sources: AskSource[] = [
+    { relatedType: "product", relatedId: product.id, label: product.name },
+  ];
+  const orders = r.salesOrders
+    .filter((o) => o.status !== "cancelled" && o.lines.some((l) => l.productId === product.id))
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   if (orders.length) {
     const lastOrder = orders[0]!;
-    answer.push(`You have ordered ${product.name} ${plural(orders.length, "time")}; most recently on ${formatDate(lastOrder.createdAt)} (order ${lastOrder.number}, ${STAGE[lastOrder.status]}).`);
-    sources.push({ relatedType: "sales-order", relatedId: lastOrder.id, label: `Order ${lastOrder.number}` });
+    answer.push(
+      `You have ordered ${product.name} ${plural(orders.length, "time")}; most recently on ${formatDate(lastOrder.createdAt)} (order ${lastOrder.number}, ${STAGE[lastOrder.status]}).`,
+    );
+    sources.push({
+      relatedType: "sales-order",
+      relatedId: lastOrder.id,
+      label: `Order ${lastOrder.number}`,
+    });
   } else {
     answer.push(`You have not ordered ${product.name} before.`);
   }
-  const openOrders = orders.filter((o) => ["confirmed", "picking", "dispatched", "part-delivered"].includes(o.status));
-  if (openOrders.length) answer.push(`${plural(openOrders.length, "open order")} include it: ${openOrders.map((o) => o.number).join(", ")}.`);
-  const quotes = r.quotes.filter((q) => (q.status === "sent" || q.status === "draft") && q.lines.some((l) => l.productId === product.id));
+  const openOrders = orders.filter((o) =>
+    ["confirmed", "picking", "dispatched", "part-delivered"].includes(o.status),
+  );
+  if (openOrders.length)
+    answer.push(
+      `${plural(openOrders.length, "open order")} include it: ${openOrders.map((o) => o.number).join(", ")}.`,
+    );
+  const quotes = r.quotes.filter(
+    (q) =>
+      (q.status === "sent" || q.status === "draft") &&
+      q.lines.some((l) => l.productId === product.id),
+  );
   if (quotes.length) {
-    answer.push(`It is on ${plural(quotes.length, "open quote")}: ${quotes.map((q) => `${q.number} (valid until ${formatDate(q.validUntil)})`).join(", ")}.`);
-    for (const q of quotes) sources.push({ relatedType: "quote", relatedId: q.id, label: `Quote ${q.number}` });
+    answer.push(
+      `It is on ${plural(quotes.length, "open quote")}: ${quotes.map((q) => `${q.number} (valid until ${formatDate(q.validUntil)})`).join(", ")}.`,
+    );
+    for (const q of quotes)
+      sources.push({ relatedType: "quote", relatedId: q.id, label: `Quote ${q.number}` });
   }
   const stock = r.stock.find((s) => s.productId === product.id);
   if (stock) {
@@ -231,19 +368,36 @@ export function answerQuestion(question: string, r: AssistantRecords): AskRespon
   const phrase = terms.join(" ");
   const scoreText = (text: string) => {
     const lower = text.toLowerCase();
-    return terms.filter((t) => lower.includes(t)).length + (lower.includes(phrase) ? terms.length : 0);
+    return (
+      terms.filter((t) => lower.includes(t)).length + (lower.includes(phrase) ? terms.length : 0)
+    );
   };
-  let best: { score: number; subjectScore: number; kind: "sales-order" | "quote" | "purchase-order"; id: string } | null = null;
+  let best: {
+    score: number;
+    subjectScore: number;
+    kind: "sales-order" | "quote" | "purchase-order";
+    id: string;
+  } | null = null;
   for (const t of r.threads) {
-    if (t.relatedType !== "sales-order" && t.relatedType !== "quote" && t.relatedType !== "purchase-order") continue;
-    const bodies = r.messages.filter((m) => m.threadId === t.id).map((m) => m.body).join(" ");
+    if (
+      t.relatedType !== "sales-order" &&
+      t.relatedType !== "quote" &&
+      t.relatedType !== "purchase-order"
+    )
+      continue;
+    const bodies = r.messages
+      .filter((m) => m.threadId === t.id)
+      .map((m) => m.body)
+      .join(" ");
     const subjectScore = scoreText(t.subject);
     const score = subjectScore * 2 + Math.min(scoreText(bodies), terms.length * 2);
-    if (score > (best?.score ?? 0)) best = { score, subjectScore, kind: t.relatedType, id: t.relatedId! };
+    if (score > (best?.score ?? 0))
+      best = { score, subjectScore, kind: t.relatedType, id: t.relatedId! };
   }
   for (const o of r.salesOrders) {
     const subjectScore = o.poReference ? scoreText(o.poReference) : 0;
-    if (subjectScore * 2 > (best?.score ?? 0)) best = { score: subjectScore * 2, subjectScore, kind: "sales-order", id: o.id };
+    if (subjectScore * 2 > (best?.score ?? 0))
+      best = { score: subjectScore * 2, subjectScore, kind: "sales-order", id: o.id };
   }
 
   // 3. A product named.
@@ -255,7 +409,8 @@ export function answerQuestion(question: string, r: AssistantRecords): AskRespon
 
   const threshold = Math.max(2, Math.ceil(terms.length * 0.6));
   // A product whose name contains every word wins over conversations that merely mention it.
-  const productNamed = !!bestProduct && bestProduct.score >= terms.length && (best?.subjectScore ?? 0) < terms.length;
+  const productNamed =
+    !!bestProduct && bestProduct.score >= terms.length && (best?.subjectScore ?? 0) < terms.length;
   if (best && !productNamed && best.score >= threshold && best.score >= (bestProduct?.score ?? 0)) {
     if (best.kind === "purchase-order") {
       const po = r.purchaseOrders.find((x) => x.id === best.id);
@@ -279,7 +434,7 @@ function notFound(question: string): AskResponse {
     question,
     answer: [
       "I could not match that to a quote, order or product on your account.",
-      "Try naming an order, purchase order or quote number, a product such as \"FC4 chrome tap\", or words from the conversation.",
+      'Try naming an order, purchase order or quote number, a product such as "FC4 chrome tap", or words from the conversation.',
     ],
     sources: [],
     simulated: true,

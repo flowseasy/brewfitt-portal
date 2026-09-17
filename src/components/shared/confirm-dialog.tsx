@@ -2,7 +2,14 @@
 
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export function ConfirmDialog({
   open,
@@ -37,7 +44,12 @@ export function ConfirmDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={pending}>
             Cancel
           </Button>
-          <Button variant={destructive ? "destructive" : "default"} onClick={onConfirm} disabled={pending} aria-busy={pending}>
+          <Button
+            variant={destructive ? "destructive" : "default"}
+            onClick={onConfirm}
+            disabled={pending}
+            aria-busy={pending}
+          >
             {pending ? "Working…" : confirmLabel}
           </Button>
         </DialogFooter>

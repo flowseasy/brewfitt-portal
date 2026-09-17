@@ -31,21 +31,54 @@ type QuoteTab = "awaiting" | "requested" | "accepted" | "closed" | "all";
 function CustomerQuotes() {
   const key = usePersonaKey();
   const quotes = useQuery({ queryKey: queryKeys.quotes(key), queryFn: () => api.quotes.list() });
-  const configurations = useQuery({ queryKey: queryKeys.configurations(key), queryFn: () => api.configurator.list() });
+  const configurations = useQuery({
+    queryKey: queryKeys.configurations(key),
+    queryFn: () => api.configurator.list(),
+  });
   const [tab, setTab] = useState<QuoteTab>("awaiting");
   const [search, setSearch] = useState("");
 
-  const configName = useMemo(() => new Map((configurations.data ?? []).map((c) => [c.id, c.name])), [configurations.data]);
+  const configName = useMemo(
+    () => new Map((configurations.data ?? []).map((c) => [c.id, c.name])),
+    [configurations.data],
+  );
   const all = useMemo(() => quotes.data ?? [], [quotes.data]);
   const inTab = (q: Quote, t: QuoteTab) =>
-    t === "all" ? true : t === "awaiting" ? q.status === "sent" : t === "requested" ? q.status === "draft" : t === "accepted" ? q.status === "accepted" : q.status === "declined" || q.status === "expired";
+    t === "all"
+      ? true
+      : t === "awaiting"
+        ? q.status === "sent"
+        : t === "requested"
+          ? q.status === "draft"
+          : t === "accepted"
+            ? q.status === "accepted"
+            : q.status === "declined" || q.status === "expired";
   const term = search.trim().toLowerCase();
-  const filtered = all.filter((q) => inTab(q, tab) && (!term || q.number.toLowerCase().includes(term) || q.lines.some((l) => l.description.toLowerCase().includes(term)) || (q.configurationId && configName.get(q.configurationId)?.toLowerCase().includes(term))));
+  const filtered = all.filter(
+    (q) =>
+      inTab(q, tab) &&
+      (!term ||
+        q.number.toLowerCase().includes(term) ||
+        q.lines.some((l) => l.description.toLowerCase().includes(term)) ||
+        (q.configurationId && configName.get(q.configurationId)?.toLowerCase().includes(term))),
+  );
   const tabs: { value: QuoteTab; label: string; count: number }[] = [
-    { value: "awaiting", label: "Awaiting you", count: all.filter((q) => inTab(q, "awaiting")).length },
-    { value: "requested", label: "Requested", count: all.filter((q) => inTab(q, "requested")).length },
+    {
+      value: "awaiting",
+      label: "Awaiting you",
+      count: all.filter((q) => inTab(q, "awaiting")).length,
+    },
+    {
+      value: "requested",
+      label: "Requested",
+      count: all.filter((q) => inTab(q, "requested")).length,
+    },
     { value: "accepted", label: "Accepted", count: all.filter((q) => inTab(q, "accepted")).length },
-    { value: "closed", label: "Declined or expired", count: all.filter((q) => inTab(q, "closed")).length },
+    {
+      value: "closed",
+      label: "Declined or expired",
+      count: all.filter((q) => inTab(q, "closed")).length,
+    },
     { value: "all", label: "All", count: all.length },
   ];
 
@@ -62,7 +95,13 @@ function CustomerQuotes() {
       />
       <StatusTabs tabs={tabs} value={tab} onChange={setTab} />
       <div className="mb-4">
-        <SearchInput value={search} onChange={setSearch} placeholder="Search by quote number, product or configuration" label="Search quotes" className="max-w-md" />
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder="Search by quote number, product or configuration"
+          label="Search quotes"
+          className="max-w-md"
+        />
       </div>
       {quotes.isPending ? (
         <LoadingState rows={5} label="Loading quotes" />
@@ -71,8 +110,18 @@ function CustomerQuotes() {
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={term ? MagnifyingGlassIcon : FileTextIcon}
-          title={term ? "No quotes match your search" : tab === "awaiting" ? "No quotes awaiting you" : "No quotes here"}
-          description={tab === "awaiting" && !term ? "When Brewfitt sends a quote it appears here for you to accept." : undefined}
+          title={
+            term
+              ? "No quotes match your search"
+              : tab === "awaiting"
+                ? "No quotes awaiting you"
+                : "No quotes here"
+          }
+          description={
+            tab === "awaiting" && !term
+              ? "When Brewfitt sends a quote it appears here for you to accept."
+              : undefined
+          }
         />
       ) : (
         <ul className="space-y-2">
@@ -81,24 +130,41 @@ function CustomerQuotes() {
             const s = QUOTE_STATUS[q.status];
             return (
               <li key={q.id}>
-                <Link href={hrefFor("quote", q.id)} className="flex flex-col gap-3 rounded-2xl border bg-card p-4 transition hover:border-primary/40 sm:flex-row sm:items-center">
+                <Link
+                  href={hrefFor("quote", q.id)}
+                  className="flex flex-col gap-3 rounded-2xl border bg-card p-4 transition hover:border-primary/40 sm:flex-row sm:items-center"
+                >
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-medium">{q.number}</span>
                       <StatusPill tone={s.tone}>{s.label}</StatusPill>
-                      {q.status === "sent" && days <= 7 ? <StatusPill tone="warning">Expires {formatRelativeDay(q.validUntil)}</StatusPill> : null}
+                      {q.status === "sent" && days <= 7 ? (
+                        <StatusPill tone="warning">
+                          Expires {formatRelativeDay(q.validUntil)}
+                        </StatusPill>
+                      ) : null}
                     </div>
                     <p className="mt-1 truncate text-sm text-muted-foreground">
-                      {q.configurationId && configName.get(q.configurationId) ? `${configName.get(q.configurationId)} · ` : ""}
-                      {plural(q.lines.length, "line")}: {q.lines.slice(0, 2).map((l) => l.description).join(", ")}
+                      {q.configurationId && configName.get(q.configurationId)
+                        ? `${configName.get(q.configurationId)} · `
+                        : ""}
+                      {plural(q.lines.length, "line")}:{" "}
+                      {q.lines
+                        .slice(0, 2)
+                        .map((l) => l.description)
+                        .join(", ")}
                       {q.lines.length > 2 ? "…" : ""}
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-6 sm:justify-end">
                     <p className="text-sm text-muted-foreground">
-                      {q.status === "sent" || q.status === "draft" ? `Valid until ${formatDate(q.validUntil)}` : `Raised ${formatDate(q.createdAt)}`}
+                      {q.status === "sent" || q.status === "draft"
+                        ? `Valid until ${formatDate(q.validUntil)}`
+                        : `Raised ${formatDate(q.createdAt)}`}
                     </p>
-                    <p className="text-right text-lg font-semibold tabular-nums">{formatMoney(q.total, { whole: true })}</p>
+                    <p className="text-right text-lg font-semibold tabular-nums">
+                      {formatMoney(q.total, { whole: true })}
+                    </p>
                   </div>
                 </Link>
               </li>
@@ -116,21 +182,52 @@ function SupplierRfqs() {
   const key = usePersonaKey();
   const params = useSearchParams();
   const rfqs = useQuery({ queryKey: queryKeys.rfqs(key), queryFn: () => api.quotes.rfqs() });
-  const products = useQuery({ queryKey: queryKeys.products(key), queryFn: () => api.products.list() });
-  const [tab, setTab] = useState<RfqTab>((["open", "responded", "decided", "all"] as const).find((t) => t === params.get("filter")) ?? "open");
-  const name = useMemo(() => new Map((products.data ?? []).map((p) => [p.id, p.name])), [products.data]);
+  const products = useQuery({
+    queryKey: queryKeys.products(key),
+    queryFn: () => api.products.list(),
+  });
+  const [tab, setTab] = useState<RfqTab>(
+    (["open", "responded", "decided", "all"] as const).find((t) => t === params.get("filter")) ??
+      "open",
+  );
+  const name = useMemo(
+    () => new Map((products.data ?? []).map((p) => [p.id, p.name])),
+    [products.data],
+  );
   const all = rfqs.data ?? [];
-  const inTab = (r: Rfq, t: RfqTab) => (t === "all" ? true : t === "open" ? r.status === "open" : t === "responded" ? r.status === "responded" : ["awarded", "not-awarded", "closed"].includes(r.status));
+  const inTab = (r: Rfq, t: RfqTab) =>
+    t === "all"
+      ? true
+      : t === "open"
+        ? r.status === "open"
+        : t === "responded"
+          ? r.status === "responded"
+          : ["awarded", "not-awarded", "closed"].includes(r.status);
   const filtered = all.filter((r) => inTab(r, tab));
 
   return (
     <div>
-      <PageHeader title="RFQs and quotes" description="Requests for quotation from Brewfitt's buyer. Respond with your price and lead time before the deadline." />
+      <PageHeader
+        title="RFQs and quotes"
+        description="Requests for quotation from Brewfitt's buyer. Respond with your price and lead time before the deadline."
+      />
       <StatusTabs
         tabs={[
-          { value: "open", label: "Awaiting response", count: all.filter((r) => inTab(r, "open")).length },
-          { value: "responded", label: "Responded", count: all.filter((r) => inTab(r, "responded")).length },
-          { value: "decided", label: "Awarded or closed", count: all.filter((r) => inTab(r, "decided")).length },
+          {
+            value: "open",
+            label: "Awaiting response",
+            count: all.filter((r) => inTab(r, "open")).length,
+          },
+          {
+            value: "responded",
+            label: "Responded",
+            count: all.filter((r) => inTab(r, "responded")).length,
+          },
+          {
+            value: "decided",
+            label: "Awarded or closed",
+            count: all.filter((r) => inTab(r, "decided")).length,
+          },
           { value: "all", label: "All", count: all.length },
         ]}
         value={tab}
@@ -141,7 +238,11 @@ function SupplierRfqs() {
       ) : rfqs.isError ? (
         <ErrorState error={rfqs.error} onRetry={() => rfqs.refetch()} />
       ) : filtered.length === 0 ? (
-        <EmptyState icon={FileTextIcon} title={tab === "open" ? "No requests awaiting your response" : "No requests here"} description="New requests from Brewfitt appear here with their deadline." />
+        <EmptyState
+          icon={FileTextIcon}
+          title={tab === "open" ? "No requests awaiting your response" : "No requests here"}
+          description="New requests from Brewfitt appear here with their deadline."
+        />
       ) : (
         <ul className="space-y-2">
           {filtered.map((r) => {
@@ -149,19 +250,30 @@ function SupplierRfqs() {
             const days = daysFromToday(r.deadline);
             return (
               <li key={r.id}>
-                <Link href={hrefFor("rfq", r.id)} className="flex flex-col gap-3 rounded-2xl border bg-card p-4 transition hover:border-primary/40 sm:flex-row sm:items-center">
+                <Link
+                  href={hrefFor("rfq", r.id)}
+                  className="flex flex-col gap-3 rounded-2xl border bg-card p-4 transition hover:border-primary/40 sm:flex-row sm:items-center"
+                >
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-medium">{r.number}</span>
                       <StatusPill tone={s.tone}>{s.label}</StatusPill>
                     </div>
-                    <p className="mt-1 truncate text-sm text-muted-foreground">{r.lines.map((l) => `${l.qty} × ${name.get(l.productId) ?? "item"}`).join(", ")}</p>
+                    <p className="mt-1 truncate text-sm text-muted-foreground">
+                      {r.lines
+                        .map((l) => `${l.qty} × ${name.get(l.productId) ?? "item"}`)
+                        .join(", ")}
+                    </p>
                   </div>
                   <div className="text-sm sm:text-right">
                     {r.status === "open" ? (
-                      <StatusPill tone={days <= 3 ? "warning" : "info"}>Respond {days < 0 ? "overdue" : formatRelativeDay(r.deadline)}</StatusPill>
+                      <StatusPill tone={days <= 3 ? "warning" : "info"}>
+                        Respond {days < 0 ? "overdue" : formatRelativeDay(r.deadline)}
+                      </StatusPill>
                     ) : (
-                      <span className="text-muted-foreground">Raised {formatDate(r.createdAt)}</span>
+                      <span className="text-muted-foreground">
+                        Raised {formatDate(r.createdAt)}
+                      </span>
                     )}
                   </div>
                 </Link>

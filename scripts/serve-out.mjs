@@ -44,6 +44,8 @@ createServer(async (req, res) => {
     res.writeHead(404).end("Not found");
     return;
   }
-  res.writeHead(file.endsWith("404.html") && !url.pathname.endsWith("404.html") ? 404 : 200, { "content-type": types[extname(file)] ?? "application/octet-stream" });
+  res.writeHead(file.endsWith("404.html") && !url.pathname.endsWith("404.html") ? 404 : 200, {
+    "content-type": types[extname(file)] ?? "application/octet-stream",
+  });
   res.end(body);
 }).listen(port, () => console.log(`Serving out/ on http://localhost:${port}`));

@@ -55,6 +55,11 @@ export const queryKeys = {
 };
 
 /** Stable key for the active persona, including the site a group contact has switched into. */
-export function personaKey(persona: { kind: string; contactId: string; accountId: string; activeSiteId: string | null }): PersonaKey {
+export function personaKey(persona: {
+  kind: string;
+  contactId: string;
+  accountId: string;
+  activeSiteId: string | null;
+}): PersonaKey {
   return `${persona.kind}:${persona.contactId}:${persona.accountId}:${persona.activeSiteId ?? "all"}`;
 }

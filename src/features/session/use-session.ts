@@ -15,7 +15,11 @@ export function usePersonaKey(): string {
 
 export function useMe() {
   const key = usePersonaKey();
-  return useQuery({ queryKey: queryKeys.me(key), queryFn: () => api.session.me(), staleTime: 5 * 60_000 });
+  return useQuery({
+    queryKey: queryKeys.me(key),
+    queryFn: () => api.session.me(),
+    staleTime: 5 * 60_000,
+  });
 }
 
 export function useIsSupplier(): boolean {

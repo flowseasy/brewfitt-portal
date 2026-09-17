@@ -27,7 +27,8 @@ function clampToNow(cap: number, targets: [object[], string[]][]) {
     for (const record of records as Record<string, unknown>[]) {
       for (const field of fields) {
         const value = record[field];
-        if (typeof value === "string" && value.length > 10 && Date.parse(value) > cap) late.push({ record, field, ms: Date.parse(value) });
+        if (typeof value === "string" && value.length > 10 && Date.parse(value) > cap)
+          late.push({ record, field, ms: Date.parse(value) });
       }
     }
   }
@@ -58,7 +59,16 @@ export function generateDb(today: Date): MockDb {
     const account = people.accounts.find((a) => a.id === accountId)!;
     return people.addresses.find((a) => a.id === account.billingAddressId)!.country;
   };
-  const ctx = createContext({ rng, today, accounts: people.accounts, categories, products, priceLists, priceListLines, countryOf });
+  const ctx = createContext({
+    rng,
+    today,
+    accounts: people.accounts,
+    categories,
+    products,
+    priceLists,
+    priceListLines,
+    countryOf,
+  });
 
   const commerce = seedCommerce(ctx, { addresses: people.addresses });
   const purchasing = seedPurchasing(ctx, commerce);
@@ -99,7 +109,11 @@ export function generateDb(today: Date): MockDb {
     seasonality: SEASONALITY,
   };
   const insights = people.accounts.flatMap((a) =>
-    a.kind === "supplier" ? supplierInsights(a.id, insightInputs) : a.isGroup ? [] : customerInsights(a.id, insightInputs),
+    a.kind === "supplier"
+      ? supplierInsights(a.id, insightInputs)
+      : a.isGroup
+        ? []
+        : customerInsights(a.id, insightInputs),
   );
 
   const comms = seedComms(ctx, {
@@ -147,13 +161,21 @@ export function generateDb(today: Date): MockDb {
     ]);
     for (const t of comms.threads) {
       const list = comms.messages.filter((m) => m.threadId === t.id);
-      t.lastMessageAt = list.map((m) => m.sentAt).sort().at(-1) ?? t.lastMessageAt;
+      t.lastMessageAt =
+        list
+          .map((m) => m.sentAt)
+          .sort()
+          .at(-1) ?? t.lastMessageAt;
     }
   }
 
   // Last contact reflects the latest message on the account.
   for (const account of people.accounts) {
-    const latest = comms.threads.filter((t) => t.accountId === account.id).map((t) => t.lastMessageAt).sort().pop();
+    const latest = comms.threads
+      .filter((t) => t.accountId === account.id)
+      .map((t) => t.lastMessageAt)
+      .sort()
+      .pop();
     if (latest) account.lastContactAt = latest;
   }
 

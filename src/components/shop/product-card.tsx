@@ -15,15 +15,44 @@ import { hrefFor } from "@/lib/links";
 import { useShopStore } from "@/stores/shop-store";
 import { QuantityStepper } from "./quantity-stepper";
 
-export function ProductImage({ src, alt, className, sizes = "240px", priority }: { src: string | undefined; alt: string; className?: string; sizes?: string; priority?: boolean }) {
+export function ProductImage({
+  src,
+  alt,
+  className,
+  sizes = "240px",
+  priority,
+}: {
+  src: string | undefined;
+  alt: string;
+  className?: string;
+  sizes?: string;
+  priority?: boolean;
+}) {
   return (
     <div className={`relative overflow-hidden bg-white ${className ?? ""}`}>
-      {src ? <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className="object-contain p-3" /> : null}
+      {src ? (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={sizes}
+          priority={priority}
+          className="object-contain p-3"
+        />
+      ) : null}
     </div>
   );
 }
 
-export function NotifyMeButton({ productId, name, size = "sm" }: { productId: string; name: string; size?: "sm" | "default" }) {
+export function NotifyMeButton({
+  productId,
+  name,
+  size = "sm",
+}: {
+  productId: string;
+  name: string;
+  size?: "sm" | "default";
+}) {
   const on = useShopStore((s) => s.notifyMe.includes(productId));
   const toggle = useShopStore((s) => s.toggleNotify);
   return (
@@ -34,7 +63,9 @@ export function NotifyMeButton({ productId, name, size = "sm" }: { productId: st
       aria-pressed={on}
       onClick={() => {
         const now = toggle(productId);
-        toast.success(now ? `We will let you know when ${name} is back in stock` : "Stock alert removed");
+        toast.success(
+          now ? `We will let you know when ${name} is back in stock` : "Stock alert removed",
+        );
       }}
     >
       {on ? <BellRingingIcon weight="fill" aria-hidden /> : <BellSimpleIcon aria-hidden />}
@@ -56,7 +87,11 @@ export function ProductCard({ line, index = 0 }: { line: CatalogueLine; index?: 
       className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-card transition hover:border-primary/30 hover:shadow-sm"
     >
       <Link href={hrefFor("product", p.id)} className="block" tabIndex={-1} aria-hidden>
-        <ProductImage src={p.images[0]} alt="" className="aspect-[4/3] border-b transition group-hover:scale-[1.01]" />
+        <ProductImage
+          src={p.images[0]}
+          alt=""
+          className="aspect-[4/3] border-b transition group-hover:scale-[1.01]"
+        />
       </Link>
       <div className="flex flex-1 flex-col p-4">
         <p className="font-mono text-[11px] text-muted-foreground">{p.sku}</p>
@@ -67,21 +102,35 @@ export function ProductCard({ line, index = 0 }: { line: CatalogueLine; index?: 
         </h3>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <StockPill stock={line.stock} />
-          {p.packSize > 1 ? <span className="text-xs text-muted-foreground">Pack of {p.packSize}</span> : null}
+          {p.packSize > 1 ? (
+            <span className="text-xs text-muted-foreground">Pack of {p.packSize}</span>
+          ) : null}
         </div>
         <div className="mt-auto pt-3">
           <p className="flex items-baseline gap-2">
             <span className="text-lg font-semibold tabular-nums">{formatMoney(line.price)}</span>
-            {line.discountPercent > 0 ? <span className="text-xs text-muted-foreground line-through tabular-nums">{formatMoney(p.listPrice)}</span> : null}
+            {line.discountPercent > 0 ? (
+              <span className="text-xs text-muted-foreground tabular-nums line-through">
+                {formatMoney(p.listPrice)}
+              </span>
+            ) : null}
           </p>
-          <p className="text-[11px] text-muted-foreground">Your price per {p.unit === "each" ? "item" : p.unit}, ex VAT</p>
+          <p className="text-[11px] text-muted-foreground">
+            Your price per {p.unit === "each" ? "item" : p.unit}, ex VAT
+          </p>
           <div className="mt-3 flex items-center gap-2">
             {unavailable ? (
               <NotifyMeButton productId={p.id} name={p.name} />
             ) : (
               <>
                 <QuantityStepper value={qty} onChange={setQty} label={p.name} size="sm" />
-                <Button size="sm" className="flex-1" disabled={add.isPending} onClick={() => add.mutate({ productId: p.id, qty, name: p.name })} aria-label={`Add ${qty} × ${p.name} to basket`}>
+                <Button
+                  size="sm"
+                  className="flex-1"
+                  disabled={add.isPending}
+                  onClick={() => add.mutate({ productId: p.id, qty, name: p.name })}
+                  aria-label={`Add ${qty} × ${p.name} to basket`}
+                >
                   <ShoppingCartSimpleIcon aria-hidden />
                   Add
                 </Button>

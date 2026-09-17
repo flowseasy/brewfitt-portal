@@ -4,7 +4,14 @@ import { Controller, type Control, type FieldValues, type Path } from "react-hoo
 import { CreditCardIcon, LockKeyIcon } from "@phosphor-icons/react";
 import { z } from "zod";
 import { TextField } from "@/components/forms/fields";
-import { Field, FieldDescription, FieldError, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from "@/components/ui/field";
 
 /** Luhn check, run only in the browser; card numbers never leave the page. */
 export function luhn(value: string): boolean {
@@ -22,25 +29,52 @@ export function luhn(value: string): boolean {
   return sum % 10 === 0;
 }
 
-export const cardFieldsSchema = z.object({ nameOnCard: z.string().trim(), cardNumber: z.string(), expiry: z.string(), cvc: z.string() });
+export const cardFieldsSchema = z.object({
+  nameOnCard: z.string().trim(),
+  cardNumber: z.string(),
+  expiry: z.string(),
+  cvc: z.string(),
+});
 export type CardFieldValues = z.infer<typeof cardFieldsSchema>;
 export const emptyCard: CardFieldValues = { nameOnCard: "", cardNumber: "", expiry: "", cvc: "" };
 
 /** Adds card validation issues; call from a schema's superRefine when paying by card. */
 export function validateCard(v: CardFieldValues, ctx: z.RefinementCtx) {
-  if (v.nameOnCard.length < 2) ctx.addIssue({ code: "custom", path: ["nameOnCard"], message: "Enter the name on the card" });
-  if (!luhn(v.cardNumber)) ctx.addIssue({ code: "custom", path: ["cardNumber"], message: "Enter a valid card number" });
+  if (v.nameOnCard.length < 2)
+    ctx.addIssue({ code: "custom", path: ["nameOnCard"], message: "Enter the name on the card" });
+  if (!luhn(v.cardNumber))
+    ctx.addIssue({ code: "custom", path: ["cardNumber"], message: "Enter a valid card number" });
   const m = v.expiry.match(/^(\d{2})\s*\/\s*(\d{2})$/);
-  if (!m || Number(m[1]) < 1 || Number(m[1]) > 12 || new Date(2000 + Number(m[2]), Number(m[1])) <= new Date()) {
-    ctx.addIssue({ code: "custom", path: ["expiry"], message: "Enter a future expiry date as MM/YY" });
+  if (
+    !m ||
+    Number(m[1]) < 1 ||
+    Number(m[1]) > 12 ||
+    new Date(2000 + Number(m[2]), Number(m[1])) <= new Date()
+  ) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["expiry"],
+      message: "Enter a future expiry date as MM/YY",
+    });
   }
-  if (!/^\d{3,4}$/.test(v.cvc)) ctx.addIssue({ code: "custom", path: ["cvc"], message: "Enter the 3 or 4 digit security code" });
+  if (!/^\d{3,4}$/.test(v.cvc))
+    ctx.addIssue({
+      code: "custom",
+      path: ["cvc"],
+      message: "Enter the 3 or 4 digit security code",
+    });
 }
 
 export const last4 = (cardNumber: string) => cardNumber.replace(/\D/g, "").slice(-4);
 
 /** Mock card step (decision 4). Only the last four digits are recorded. */
-export function CardFields<T extends FieldValues & CardFieldValues>({ control, title = "Pay by card" }: { control: Control<T>; title?: string }) {
+export function CardFields<T extends FieldValues & CardFieldValues>({
+  control,
+  title = "Pay by card",
+}: {
+  control: Control<T>;
+  title?: string;
+}) {
   return (
     <FieldSet className="rounded-xl border bg-muted/40 p-4">
       <FieldLegend className="flex items-center gap-2">
@@ -49,9 +83,15 @@ export function CardFields<T extends FieldValues & CardFieldValues>({ control, t
       </FieldLegend>
       <FieldDescription className="flex items-start gap-1.5">
         <LockKeyIcon className="mt-0.5 size-4 shrink-0" aria-hidden />
-        Preview only: card details are checked in your browser and never sent or stored. Phase 2 uses a secure payment provider.
+        Preview only: card details are checked in your browser and never sent or stored. Phase 2
+        uses a secure payment provider.
       </FieldDescription>
-      <TextField control={control} name={"nameOnCard" as Path<T>} label="Name on card" autoComplete="off" />
+      <TextField
+        control={control}
+        name={"nameOnCard" as Path<T>}
+        label="Name on card"
+        autoComplete="off"
+      />
       <Controller
         control={control}
         name={"cardNumber" as Path<T>}
@@ -74,8 +114,22 @@ export function CardFields<T extends FieldValues & CardFieldValues>({ control, t
         )}
       />
       <div className="grid grid-cols-2 gap-3">
-        <TextField control={control} name={"expiry" as Path<T>} label="Expiry (MM/YY)" inputMode="numeric" autoComplete="off" placeholder="09/28" />
-        <TextField control={control} name={"cvc" as Path<T>} label="Security code" inputMode="numeric" autoComplete="off" maxLength={4} />
+        <TextField
+          control={control}
+          name={"expiry" as Path<T>}
+          label="Expiry (MM/YY)"
+          inputMode="numeric"
+          autoComplete="off"
+          placeholder="09/28"
+        />
+        <TextField
+          control={control}
+          name={"cvc" as Path<T>}
+          label="Security code"
+          inputMode="numeric"
+          autoComplete="off"
+          maxLength={4}
+        />
       </div>
     </FieldSet>
   );

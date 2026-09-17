@@ -44,12 +44,19 @@ export function CustomerDashboard() {
 
   return (
     <div className="space-y-6">
-      <section aria-labelledby="welcome" className="rounded-3xl border bg-gradient-to-br from-brand-subtle via-card to-card p-5 sm:p-7">
-        <p className="text-sm text-muted-foreground">{viewingGroup ? `${me?.account.name}, all sites` : me?.account.name}</p>
+      <section
+        aria-labelledby="welcome"
+        className="rounded-3xl border bg-gradient-to-br from-brand-subtle via-card to-card p-5 sm:p-7"
+      >
+        <p className="text-sm text-muted-foreground">
+          {viewingGroup ? `${me?.account.name}, all sites` : me?.account.name}
+        </p>
         <h1 id="welcome" className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
           {firstName ? `Good to see you, ${firstName}` : "Your dashboard"}
         </h1>
-        <p className="mt-1 text-muted-foreground">Where you stand with Brewfitt and what needs your attention.</p>
+        <p className="mt-1 text-muted-foreground">
+          Where you stand with Brewfitt and what needs your attention.
+        </p>
         <div className="mt-5 max-w-2xl">
           <AssistantPrompt />
         </div>
@@ -57,7 +64,13 @@ export function CustomerDashboard() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* 1. Account status */}
-        <DashboardCard index={0} className="lg:col-span-2" title="Account status" icon={WalletIcon} action={{ label: "Invoices and statement", href: "/invoices" }}>
+        <DashboardCard
+          index={0}
+          className="lg:col-span-2"
+          title="Account status"
+          icon={WalletIcon}
+          action={{ label: "Invoices and statement", href: "/invoices" }}
+        >
           {d.statement.isPending || d.me.isPending ? (
             <LoadingState rows={2} />
           ) : d.statement.isError ? (
@@ -65,7 +78,12 @@ export function CustomerDashboard() {
           ) : (
             <div>
               <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <Kpi label="Balance" value={<AnimatedNumber value={d.statement.data.closingBalance.amount} format={money} />} />
+                <Kpi
+                  label="Balance"
+                  value={
+                    <AnimatedNumber value={d.statement.data.closingBalance.amount} format={money} />
+                  }
+                />
                 <Kpi
                   label="Overdue"
                   value={<AnimatedNumber value={d.statement.data.overdue.amount} format={money} />}
@@ -74,17 +92,31 @@ export function CustomerDashboard() {
                 {me?.credit?.onAccount && me.credit.limit ? (
                   <Kpi
                     label="Credit available"
-                    value={<AnimatedNumber value={me.credit.available?.amount ?? 0} format={money} />}
+                    value={
+                      <AnimatedNumber value={me.credit.available?.amount ?? 0} format={money} />
+                    }
                     hint={`of ${formatMoney(me.credit.limit, { whole: true })} limit${me.credit.heldByAccountId !== me.account.id ? ", shared by the group" : ""}`}
-                    tone={(me.credit.available?.amount ?? 0) < me.credit.limit.amount * 0.1 ? "warning" : undefined}
+                    tone={
+                      (me.credit.available?.amount ?? 0) < me.credit.limit.amount * 0.1
+                        ? "warning"
+                        : undefined
+                    }
                   />
                 ) : (
                   <Kpi label="Payment terms" value="Pay by card" hint="No credit account" />
                 )}
                 <Kpi
                   label="Next payment due"
-                  value={d.nextPayment ? formatMoney(d.nextPayment.outstanding, { whole: true }) : "Nothing due"}
-                  hint={d.nextPayment ? `${d.nextPayment.number}, ${formatRelativeDay(d.nextPayment.dueAt)}` : undefined}
+                  value={
+                    d.nextPayment
+                      ? formatMoney(d.nextPayment.outstanding, { whole: true })
+                      : "Nothing due"
+                  }
+                  hint={
+                    d.nextPayment
+                      ? `${d.nextPayment.number}, ${formatRelativeDay(d.nextPayment.dueAt)}`
+                      : undefined
+                  }
                   href={d.nextPayment ? hrefFor("invoice", d.nextPayment.id) : undefined}
                 />
               </dl>
@@ -92,28 +124,51 @@ export function CustomerDashboard() {
                 <p className="mb-2 text-xs font-medium text-muted-foreground">Outstanding by age</p>
                 <AgeingBar ageing={d.statement.data.ageing} />
                 {d.statement.data.unallocatedCredit.amount > 0 ? (
-                  <p className="mt-2 text-xs text-muted-foreground">Less {formatMoney(d.statement.data.unallocatedCredit)} credit on account, not yet allocated.</p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Less {formatMoney(d.statement.data.unallocatedCredit)} credit on account, not
+                    yet allocated.
+                  </p>
                 ) : null}
               </div>
               {d.invoiceInsights[0] ? (
-                <InsightStrip text={d.invoiceInsights[0].title} action={d.invoiceInsights[0].recommendedAction} href={hrefFor("invoice", d.invoiceInsights[0].relatedId)} />
+                <InsightStrip
+                  text={d.invoiceInsights[0].title}
+                  action={d.invoiceInsights[0].recommendedAction}
+                  href={hrefFor("invoice", d.invoiceInsights[0].relatedId)}
+                />
               ) : null}
             </div>
           )}
         </DashboardCard>
 
         {/* 2. Quotes awaiting acceptance */}
-        <DashboardCard index={1} title="Quotes awaiting you" icon={FileTextIcon} action={{ label: "All quotes", href: "/quotes" }}>
+        <DashboardCard
+          index={1}
+          title="Quotes awaiting you"
+          icon={FileTextIcon}
+          action={{ label: "All quotes", href: "/quotes" }}
+        >
           {d.quotes.isPending ? (
             <LoadingState rows={3} />
           ) : d.quotes.isError ? (
             <ErrorState error={d.quotes.error} onRetry={() => d.quotes.refetch()} />
           ) : d.awaitingQuotes.length === 0 ? (
-            <EmptyState icon={FileTextIcon} title="No quotes awaiting you" description="New quotes from Brewfitt appear here for you to accept." action={<Button asChild variant="outline" size="sm"><Link href="/configurator">Build a system</Link></Button>} />
+            <EmptyState
+              icon={FileTextIcon}
+              title="No quotes awaiting you"
+              description="New quotes from Brewfitt appear here for you to accept."
+              action={
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/configurator">Build a system</Link>
+                </Button>
+              }
+            />
           ) : (
             <ul>
               {d.awaitingQuotes.slice(0, 4).map((q) => {
-                const days = Math.round((Date.parse(`${q.validUntil}T00:00:00Z`) - Date.now()) / 86_400_000);
+                const days = Math.round(
+                  (Date.parse(`${q.validUntil}T00:00:00Z`) - Date.now()) / 86_400_000,
+                );
                 const followUp = d.quoteFollowUps.some((i) => i.relatedId === q.id);
                 return (
                   <CardRow key={q.id} href={hrefFor("quote", q.id)}>
@@ -124,8 +179,12 @@ export function CustomerDashboard() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium tabular-nums">{formatMoney(q.total, { whole: true })}</p>
-                      {followUp || days <= 7 ? <StatusPill tone="warning">Expiring</StatusPill> : null}
+                      <p className="font-medium tabular-nums">
+                        {formatMoney(q.total, { whole: true })}
+                      </p>
+                      {followUp || days <= 7 ? (
+                        <StatusPill tone="warning">Expiring</StatusPill>
+                      ) : null}
                     </div>
                   </CardRow>
                 );
@@ -135,7 +194,13 @@ export function CustomerDashboard() {
         </DashboardCard>
 
         {/* 3. Orders by stage and next deliveries */}
-        <DashboardCard index={2} className="lg:col-span-2" title="Orders and deliveries" icon={PackageIcon} action={{ label: "All orders", href: "/orders" }}>
+        <DashboardCard
+          index={2}
+          className="lg:col-span-2"
+          title="Orders and deliveries"
+          icon={PackageIcon}
+          action={{ label: "All orders", href: "/orders" }}
+        >
           {d.orders.isPending ? (
             <LoadingState rows={2} />
           ) : d.orders.isError ? (
@@ -151,7 +216,11 @@ export function CustomerDashboard() {
                     ["Part-delivered", d.stageCounts.partDelivered, "part-delivered"],
                   ] as const
                 ).map(([label, count, status]) => (
-                  <Link key={label} href={`/orders?status=${status}`} className="rounded-xl border p-3 transition hover:border-primary/40 hover:bg-accent/40">
+                  <Link
+                    key={label}
+                    href={`/orders?status=${status}`}
+                    className="rounded-xl border p-3 transition hover:border-primary/40 hover:bg-accent/40"
+                  >
                     <dt className="text-xs text-muted-foreground">{label}</dt>
                     <dd className="mt-0.5 text-2xl font-semibold tabular-nums">{count}</dd>
                   </Link>
@@ -160,7 +229,9 @@ export function CustomerDashboard() {
               <div>
                 <p className="mb-1 text-xs font-medium text-muted-foreground">Next deliveries</p>
                 {d.nextDeliveries.length === 0 ? (
-                  <p className="py-6 text-sm text-muted-foreground">No open orders. Reorder from the shop when you are ready.</p>
+                  <p className="py-6 text-sm text-muted-foreground">
+                    No open orders. Reorder from the shop when you are ready.
+                  </p>
                 ) : (
                   <ul>
                     {d.nextDeliveries.map((o) => (
@@ -173,8 +244,12 @@ export function CustomerDashboard() {
                           </p>
                         </div>
                         <div className="text-right">
-                          <StatusPill tone={ORDER_STATUS[o.status].tone}>{ORDER_STATUS[o.status].label}</StatusPill>
-                          <p className="mt-0.5 text-xs text-muted-foreground">{formatDate(o.confirmedDate ?? o.requestedDate)}</p>
+                          <StatusPill tone={ORDER_STATUS[o.status].tone}>
+                            {ORDER_STATUS[o.status].label}
+                          </StatusPill>
+                          <p className="mt-0.5 text-xs text-muted-foreground">
+                            {formatDate(o.confirmedDate ?? o.requestedDate)}
+                          </p>
                         </div>
                       </CardRow>
                     ))}
@@ -186,27 +261,50 @@ export function CustomerDashboard() {
         </DashboardCard>
 
         {/* 4. Stock of frequently bought products */}
-        <DashboardCard index={3} title="Your regular products" icon={WarehouseIcon} action={{ label: "Stock", href: "/stock" }}>
+        <DashboardCard
+          index={3}
+          title="Your regular products"
+          icon={WarehouseIcon}
+          action={{ label: "Stock", href: "/stock" }}
+        >
           {d.priceList.isPending || d.orders.isPending ? (
             <LoadingState rows={3} />
           ) : d.priceList.isError ? (
             <ErrorState error={d.priceList.error} onRetry={() => d.priceList.refetch()} />
           ) : d.frequent.length === 0 ? (
-            <EmptyState icon={WarehouseIcon} title="No regular products yet" description="Products you order more than once appear here with one-tap reorder." />
+            <EmptyState
+              icon={WarehouseIcon}
+              title="No regular products yet"
+              description="Products you order more than once appear here with one-tap reorder."
+            />
           ) : (
             <ul className="space-y-1">
               {d.frequent.map((f) => (
                 <li key={f.line.productId} className="flex items-center gap-3 py-1.5">
-                  <Link href={hrefFor("product", f.line.productId)} className="relative size-11 shrink-0 overflow-hidden rounded-lg border bg-white">
-                    <Image src={f.line.product.images[0]!} alt="" fill sizes="44px" className="object-contain p-1" />
+                  <Link
+                    href={hrefFor("product", f.line.productId)}
+                    className="relative size-11 shrink-0 overflow-hidden rounded-lg border bg-white"
+                  >
+                    <Image
+                      src={f.line.product.images[0]!}
+                      alt=""
+                      fill
+                      sizes="44px"
+                      className="object-contain p-1"
+                    />
                   </Link>
                   <div className="min-w-0 flex-1">
-                    <Link href={hrefFor("product", f.line.productId)} className="line-clamp-1 text-sm font-medium hover:underline">
+                    <Link
+                      href={hrefFor("product", f.line.productId)}
+                      className="line-clamp-1 text-sm font-medium hover:underline"
+                    >
                       {f.line.product.name}
                     </Link>
                     <div className="mt-0.5 flex items-center gap-2">
                       <StockPill stock={f.line.stock} />
-                      <span className="text-xs text-muted-foreground tabular-nums">{formatMoney(f.line.price)}</span>
+                      <span className="text-xs text-muted-foreground tabular-nums">
+                        {formatMoney(f.line.price)}
+                      </span>
                     </div>
                   </div>
                   <Button
@@ -214,7 +312,13 @@ export function CustomerDashboard() {
                     variant="outline"
                     className="shrink-0"
                     disabled={addToBasket.isPending}
-                    onClick={() => addToBasket.mutate({ productId: f.line.productId, qty: f.lastQty, name: f.line.product.name })}
+                    onClick={() =>
+                      addToBasket.mutate({
+                        productId: f.line.productId,
+                        qty: f.lastQty,
+                        name: f.line.product.name,
+                      })
+                    }
                     aria-label={`Reorder ${f.lastQty} × ${f.line.product.name}`}
                   >
                     <ArrowsClockwiseIcon aria-hidden />
@@ -224,17 +328,34 @@ export function CustomerDashboard() {
               ))}
             </ul>
           )}
-          {d.stockRisks[0] ? <InsightStrip text={d.stockRisks[0].title} action={d.stockRisks[0].recommendedAction} href={hrefFor("product", d.stockRisks[0].relatedId)} /> : null}
+          {d.stockRisks[0] ? (
+            <InsightStrip
+              text={d.stockRisks[0].title}
+              action={d.stockRisks[0].recommendedAction}
+              href={hrefFor("product", d.stockRisks[0].relatedId)}
+            />
+          ) : null}
         </DashboardCard>
 
         {/* 5. Offers and suggested products */}
-        <DashboardCard index={4} className="lg:col-span-2" title="Suggested for you" icon={SparkleIcon} action={{ label: "Shop", href: "/shop" }} headerExtra={<SimulatedBadge className="hidden sm:inline-flex" />}>
+        <DashboardCard
+          index={4}
+          className="lg:col-span-2"
+          title="Suggested for you"
+          icon={SparkleIcon}
+          action={{ label: "Shop", href: "/shop" }}
+          headerExtra={<SimulatedBadge className="hidden sm:inline-flex" />}
+        >
           {d.insights.isPending ? (
             <LoadingState rows={2} />
           ) : d.insights.isError ? (
             <ErrorState error={d.insights.error} onRetry={() => d.insights.refetch()} />
           ) : d.suggestions.length === 0 ? (
-            <EmptyState icon={SparkleIcon} title="No suggestions right now" description="Suggestions appear when a regular item is due or similar venues buy something you do not." />
+            <EmptyState
+              icon={SparkleIcon}
+              title="No suggestions right now"
+              description="Suggestions appear when a regular item is due or similar venues buy something you do not."
+            />
           ) : (
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {d.suggestions.slice(0, 4).map((i) => (
@@ -242,7 +363,9 @@ export function CustomerDashboard() {
               ))}
             </div>
           )}
-          {d.insights.data?.length ? <AllInsightsButton count={d.insights.data.length} className="mt-3" /> : null}
+          {d.insights.data?.length ? (
+            <AllInsightsButton count={d.insights.data.length} className="mt-3" />
+          ) : null}
         </DashboardCard>
 
         {/* 6. Conversations */}
@@ -251,34 +374,67 @@ export function CustomerDashboard() {
           title="Conversations"
           icon={ChatsCircleIcon}
           action={{ label: "Messages", href: "/messages" }}
-          headerExtra={d.needsReply.length ? <StatusPill tone="info">{d.needsReply.length} new</StatusPill> : null}
+          headerExtra={
+            d.needsReply.length ? (
+              <StatusPill tone="info">{d.needsReply.length} new</StatusPill>
+            ) : null
+          }
         >
           {d.threads.isPending ? (
             <LoadingState rows={3} />
           ) : d.threads.isError ? (
             <ErrorState error={d.threads.error} onRetry={() => d.threads.refetch()} />
           ) : d.recentThreads.length === 0 ? (
-            <EmptyState icon={ChatsCircleIcon} title="No conversations yet" action={<Button asChild size="sm" variant="outline"><Link href="/messages?new=1">Message Brewfitt</Link></Button>} />
+            <EmptyState
+              icon={ChatsCircleIcon}
+              title="No conversations yet"
+              action={
+                <Button asChild size="sm" variant="outline">
+                  <Link href="/messages?new=1">Message Brewfitt</Link>
+                </Button>
+              }
+            />
           ) : (
             <ul>
-              {[...d.needsReply, ...d.recentThreads.filter((t) => t.unreadCount === 0)].slice(0, 4).map((t) => (
-                <CardRow key={t.id} href={hrefFor("thread", t.id)}>
-                  <span aria-hidden className={cn("size-2 shrink-0 rounded-full", t.unreadCount ? "bg-primary" : "bg-transparent")} />
-                  <div className="min-w-0 flex-1">
-                    <p className={cn("truncate text-sm", t.unreadCount ? "font-semibold" : "font-medium")}>{t.subject}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {t.unreadCount ? `${plural(t.unreadCount, "unread message")} · ` : ""}
-                      {formatSince(t.lastMessageAt)}
-                    </p>
-                  </div>
-                </CardRow>
-              ))}
+              {[...d.needsReply, ...d.recentThreads.filter((t) => t.unreadCount === 0)]
+                .slice(0, 4)
+                .map((t) => (
+                  <CardRow key={t.id} href={hrefFor("thread", t.id)}>
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "size-2 shrink-0 rounded-full",
+                        t.unreadCount ? "bg-primary" : "bg-transparent",
+                      )}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p
+                        className={cn(
+                          "truncate text-sm",
+                          t.unreadCount ? "font-semibold" : "font-medium",
+                        )}
+                      >
+                        {t.subject}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {t.unreadCount ? `${plural(t.unreadCount, "unread message")} · ` : ""}
+                        {formatSince(t.lastMessageAt)}
+                      </p>
+                    </div>
+                  </CardRow>
+                ))}
             </ul>
           )}
         </DashboardCard>
 
         {/* 7. Cases and jobs */}
-        <DashboardCard index={6} className="lg:col-span-2" title="After-sales and installs" icon={LifebuoyIcon} action={{ label: "Cases", href: "/cases" }}>
+        <DashboardCard
+          index={6}
+          className="lg:col-span-2"
+          title="After-sales and installs"
+          icon={LifebuoyIcon}
+          action={{ label: "Cases", href: "/cases" }}
+        >
           {d.cases.isPending || d.jobs.isPending ? (
             <LoadingState rows={2} />
           ) : d.cases.isError ? (
@@ -304,14 +460,18 @@ export function CustomerDashboard() {
                             {c.number} · updated {formatSince(c.updatedAt)}
                           </p>
                         </div>
-                        <StatusPill tone={CASE_STATUS[c.status].tone}>{CASE_STATUS[c.status].label}</StatusPill>
+                        <StatusPill tone={CASE_STATUS[c.status].tone}>
+                          {CASE_STATUS[c.status].label}
+                        </StatusPill>
                       </CardRow>
                     ))}
                   </ul>
                 )}
               </div>
               <div>
-                <p className="mb-1 text-xs font-medium text-muted-foreground">Supply and install jobs</p>
+                <p className="mb-1 text-xs font-medium text-muted-foreground">
+                  Supply and install jobs
+                </p>
                 {d.activeJobs.length === 0 ? (
                   <p className="py-4 text-sm text-muted-foreground">No installs scheduled.</p>
                 ) : (
@@ -324,7 +484,9 @@ export function CustomerDashboard() {
                             {formatDate(j.scheduledDate)} · {j.engineerName}
                           </p>
                         </div>
-                        <StatusPill tone={JOB_STATUS[j.status].tone}>{JOB_STATUS[j.status].label}</StatusPill>
+                        <StatusPill tone={JOB_STATUS[j.status].tone}>
+                          {JOB_STATUS[j.status].label}
+                        </StatusPill>
                       </CardRow>
                     ))}
                   </ul>
@@ -335,7 +497,12 @@ export function CustomerDashboard() {
         </DashboardCard>
 
         {/* 8. Brewfitt contacts */}
-        <DashboardCard index={7} title="Your Brewfitt contacts" icon={UsersIcon} action={{ label: "Account", href: "/account" }}>
+        <DashboardCard
+          index={7}
+          title="Your Brewfitt contacts"
+          icon={UsersIcon}
+          action={{ label: "Account", href: "/account" }}
+        >
           {d.me.isPending ? (
             <LoadingState rows={3} />
           ) : d.me.isError ? (
@@ -351,7 +518,13 @@ export function CustomerDashboard() {
           )}
         </DashboardCard>
 
-        <DashboardCard index={8} className="lg:col-span-3" title="Recent activity" icon={BellSimpleIcon} action={{ label: "Notifications", href: "/notifications" }}>
+        <DashboardCard
+          index={8}
+          className="lg:col-span-3"
+          title="Recent activity"
+          icon={BellSimpleIcon}
+          action={{ label: "Notifications", href: "/notifications" }}
+        >
           {d.notifications.isPending ? (
             <LoadingState rows={2} />
           ) : d.activity.length === 0 ? (
@@ -360,12 +533,20 @@ export function CustomerDashboard() {
             <ul className="grid grid-cols-1 gap-x-6 md:grid-cols-2">
               {d.activity.map((n) => (
                 <CardRow key={n.id} href={hrefFor(n.relatedType, n.relatedId)}>
-                  <span aria-hidden className={cn("size-2 shrink-0 rounded-full", n.read ? "bg-muted-foreground/30" : "bg-primary")} />
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "size-2 shrink-0 rounded-full",
+                      n.read ? "bg-muted-foreground/30" : "bg-primary",
+                    )}
+                  />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium">{n.title}</p>
                     <p className="truncate text-xs text-muted-foreground">{n.body}</p>
                   </div>
-                  <span className="shrink-0 text-xs text-muted-foreground">{formatSince(n.createdAt)}</span>
+                  <span className="shrink-0 text-xs text-muted-foreground">
+                    {formatSince(n.createdAt)}
+                  </span>
                 </CardRow>
               ))}
             </ul>
@@ -376,11 +557,31 @@ export function CustomerDashboard() {
   );
 }
 
-function Kpi({ label, value, hint, tone, href }: { label: string; value: ReactNode; hint?: string; tone?: "danger" | "warning"; href?: string }) {
+function Kpi({
+  label,
+  value,
+  hint,
+  tone,
+  href,
+}: {
+  label: string;
+  value: ReactNode;
+  hint?: string;
+  tone?: "danger" | "warning";
+  href?: string;
+}) {
   const body = (
     <>
       <dt className="text-xs text-muted-foreground">{label}</dt>
-      <dd className={cn("mt-0.5 text-xl font-semibold tracking-tight sm:text-2xl", tone === "danger" && "text-danger", tone === "warning" && "text-warning")}>{value}</dd>
+      <dd
+        className={cn(
+          "mt-0.5 text-xl font-semibold tracking-tight sm:text-2xl",
+          tone === "danger" && "text-danger",
+          tone === "warning" && "text-warning",
+        )}
+      >
+        {value}
+      </dd>
       {hint ? <dd className="mt-0.5 text-xs text-muted-foreground">{hint}</dd> : null}
     </>
   );
@@ -395,13 +596,18 @@ function Kpi({ label, value, hint, tone, href }: { label: string; value: ReactNo
 
 function InsightStrip({ text, action, href }: { text: string; action: string; href: string }) {
   return (
-    <Link href={href} className="mt-4 flex items-start gap-3 rounded-xl bg-brand-subtle/60 px-3 py-2.5 text-sm transition hover:bg-brand-subtle">
+    <Link
+      href={href}
+      className="mt-4 flex items-start gap-3 rounded-xl bg-brand-subtle/60 px-3 py-2.5 text-sm transition hover:bg-brand-subtle"
+    >
       <SparkleIcon weight="fill" className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
       <span className="min-w-0 flex-1">
         <span className="font-medium">{text}</span>
         <span className="block text-muted-foreground">{action}</span>
       </span>
-      <span className="shrink-0 text-[11px] font-medium text-brand-subtle-foreground">Simulated insight</span>
+      <span className="shrink-0 text-[11px] font-medium text-brand-subtle-foreground">
+        Simulated insight
+      </span>
     </Link>
   );
 }

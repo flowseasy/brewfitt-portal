@@ -7,10 +7,26 @@ import { DocumentFooter, DocumentHeader, DocumentParty } from "@/components/shar
 import { formatDate, formatMoney } from "@/lib/format";
 import { hrefFor } from "@/lib/links";
 
-export type LineRow = { productId: string; description: string; qty: number; unitPrice: Money; discountPercent?: number; lineTotal: Money; extra?: string };
+export type LineRow = {
+  productId: string;
+  description: string;
+  qty: number;
+  unitPrice: Money;
+  discountPercent?: number;
+  lineTotal: Money;
+  extra?: string;
+};
 
 /** Lines table for quotes, orders and invoices; a stacked list on phones. */
-export function LinesTable({ lines, products, linkProducts = true }: { lines: LineRow[]; products?: Map<string, Product>; linkProducts?: boolean }) {
+export function LinesTable({
+  lines,
+  products,
+  linkProducts = true,
+}: {
+  lines: LineRow[];
+  products?: Map<string, Product>;
+  linkProducts?: boolean;
+}) {
   return (
     <>
       <div className="hidden overflow-hidden rounded-2xl border bg-card sm:block">
@@ -38,7 +54,10 @@ export function LinesTable({ lines, products, linkProducts = true }: { lines: Li
                 <tr key={`${l.productId}-${i}`}>
                   <td className="px-4 py-3">
                     {linkProducts ? (
-                      <Link href={hrefFor("product", l.productId)} className="font-medium hover:underline">
+                      <Link
+                        href={hrefFor("product", l.productId)}
+                        className="font-medium hover:underline"
+                      >
                         {l.description}
                       </Link>
                     ) : (
@@ -52,7 +71,9 @@ export function LinesTable({ lines, products, linkProducts = true }: { lines: Li
                   </td>
                   <td className="px-3 py-3 text-right tabular-nums">{l.qty}</td>
                   <td className="px-3 py-3 text-right tabular-nums">{formatMoney(l.unitPrice)}</td>
-                  <td className="px-4 py-3 text-right font-medium tabular-nums">{formatMoney(l.lineTotal)}</td>
+                  <td className="px-4 py-3 text-right font-medium tabular-nums">
+                    {formatMoney(l.lineTotal)}
+                  </td>
                 </tr>
               );
             })}
@@ -77,7 +98,17 @@ export function LinesTable({ lines, products, linkProducts = true }: { lines: Li
   );
 }
 
-export function TotalsList({ subtotal, vat, total, vatLabel }: { subtotal: Money; vat: Money; total: Money; vatLabel?: string }) {
+export function TotalsList({
+  subtotal,
+  vat,
+  total,
+  vatLabel,
+}: {
+  subtotal: Money;
+  vat: Money;
+  total: Money;
+  vatLabel?: string;
+}) {
   return (
     <dl className="space-y-1.5 text-sm">
       <div className="flex justify-between">
@@ -85,7 +116,9 @@ export function TotalsList({ subtotal, vat, total, vatLabel }: { subtotal: Money
         <dd className="tabular-nums">{formatMoney(subtotal)}</dd>
       </div>
       <div className="flex justify-between">
-        <dt className="text-muted-foreground">{vatLabel ?? (vat.amount === 0 ? "VAT (zero-rated)" : "VAT")}</dt>
+        <dt className="text-muted-foreground">
+          {vatLabel ?? (vat.amount === 0 ? "VAT (zero-rated)" : "VAT")}
+        </dt>
         <dd className="tabular-nums">{formatMoney(vat)}</dd>
       </div>
       <div className="flex justify-between border-t pt-2 text-base font-semibold">
@@ -96,13 +129,38 @@ export function TotalsList({ subtotal, vat, total, vatLabel }: { subtotal: Money
   );
 }
 
-export function QuoteDocument({ quote, account, billing, products }: { quote: Quote; account: Account; billing: Address | undefined; products: Map<string, Product> }) {
+export function QuoteDocument({
+  quote,
+  account,
+  billing,
+  products,
+}: {
+  quote: Quote;
+  account: Account;
+  billing: Address | undefined;
+  products: Map<string, Product>;
+}) {
   return (
     <>
-      <DocumentHeader kind="Quotation" number={quote.number} date={quote.createdAt} meta={[{ label: "Valid until", value: formatDate(quote.validUntil) }]} />
+      <DocumentHeader
+        kind="Quotation"
+        number={quote.number}
+        date={quote.createdAt}
+        meta={[{ label: "Valid until", value: formatDate(quote.validUntil) }]}
+      />
       <div className="my-6 grid grid-cols-2 gap-6">
-        <DocumentParty label="Quote for" lines={[account.name, ...(billing ? formatAddress(billing) : [])]} />
-        <DocumentParty label="Status" lines={[quote.status === "sent" ? "Awaiting acceptance" : quote.status[0]!.toUpperCase() + quote.status.slice(1)]} />
+        <DocumentParty
+          label="Quote for"
+          lines={[account.name, ...(billing ? formatAddress(billing) : [])]}
+        />
+        <DocumentParty
+          label="Status"
+          lines={[
+            quote.status === "sent"
+              ? "Awaiting acceptance"
+              : quote.status[0]!.toUpperCase() + quote.status.slice(1),
+          ]}
+        />
       </div>
       <table className="w-full text-[12px]">
         <thead>
@@ -117,7 +175,9 @@ export function QuoteDocument({ quote, account, billing, products }: { quote: Qu
         <tbody>
           {quote.lines.map((l, i) => (
             <tr key={i} className="border-b border-neutral-100 align-top">
-              <td className="py-1.5 pr-2 font-mono whitespace-nowrap">{products.get(l.productId)?.sku}</td>
+              <td className="py-1.5 pr-2 font-mono whitespace-nowrap">
+                {products.get(l.productId)?.sku}
+              </td>
               <td className="py-1.5 pr-2">{l.description}</td>
               <td className="py-1.5 text-right">{l.qty}</td>
               <td className="py-1.5 text-right whitespace-nowrap">{formatMoney(l.unitPrice)}</td>
@@ -140,7 +200,9 @@ export function QuoteDocument({ quote, account, billing, products }: { quote: Qu
           <span>{formatMoney(quote.total)}</span>
         </div>
       </div>
-      <DocumentFooter note={`This quotation is valid until ${formatDate(quote.validUntil)}. Installation, where included, is scheduled on acceptance.`} />
+      <DocumentFooter
+        note={`This quotation is valid until ${formatDate(quote.validUntil)}. Installation, where included, is scheduled on acceptance.`}
+      />
     </>
   );
 }

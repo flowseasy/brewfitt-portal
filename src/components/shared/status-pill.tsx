@@ -22,9 +22,25 @@ const DOTS: Record<Tone, string> = {
 };
 
 /** Systematic status colour: neutral for normal, clear success, warning and danger. */
-export function StatusPill({ tone = "neutral", children, className, dot = true }: { tone?: Tone; children: ReactNode; className?: string; dot?: boolean }) {
+export function StatusPill({
+  tone = "neutral",
+  children,
+  className,
+  dot = true,
+}: {
+  tone?: Tone;
+  children: ReactNode;
+  className?: string;
+  dot?: boolean;
+}) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap", TONES[tone], className)}>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap",
+        TONES[tone],
+        className,
+      )}
+    >
       {dot ? <span aria-hidden className={cn("size-1.5 rounded-full", DOTS[tone])} /> : null}
       {children}
     </span>

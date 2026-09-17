@@ -22,6 +22,8 @@ export const useAssistantStore = create<AssistantState>()((set) => ({
   openPanel: (tab) => set((s) => ({ open: true, tab: tab ?? s.tab })),
   setOpen: (open) => set({ open }),
   setTab: (tab) => set({ tab }),
-  addAnswer: (personaKey, response) => set((s) => ({ history: [...s.history, { personaKey, response }].slice(-20) })),
-  clearHistory: (personaKey) => set((s) => ({ history: s.history.filter((h) => h.personaKey !== personaKey) })),
+  addAnswer: (personaKey, response) =>
+    set((s) => ({ history: [...s.history, { personaKey, response }].slice(-20) })),
+  clearHistory: (personaKey) =>
+    set((s) => ({ history: s.history.filter((h) => h.personaKey !== personaKey) })),
 }));

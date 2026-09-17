@@ -14,7 +14,12 @@ import {
   TagIcon,
   TruckIcon,
 } from "@phosphor-icons/react";
-import { CompanyDetailsDialog, ComplianceDocuments, GroupSites, PendingChanges } from "@/components/account/account-panels";
+import {
+  CompanyDetailsDialog,
+  ComplianceDocuments,
+  GroupSites,
+  PendingChanges,
+} from "@/components/account/account-panels";
 import { AddressesPanel } from "@/components/account/addresses";
 import { ContactsPanel } from "@/components/account/contacts";
 import { BarChart, monthBarLabels } from "@/components/shared/bar-chart";
@@ -25,7 +30,12 @@ import { TeamMemberCard } from "@/components/shared/team-member-card";
 import { Timeline, type TimelineEntry } from "@/components/shared/timeline";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { customerSpend, useAccountActivity, useAccountQueries, type ActivityItem } from "@/features/account/use-account";
+import {
+  customerSpend,
+  useAccountActivity,
+  useAccountQueries,
+  type ActivityItem,
+} from "@/features/account/use-account";
 import { useIsSupplier, usePersonaKey } from "@/features/session/use-session";
 import { api, queryKeys } from "@/lib/api";
 import { formatDate, formatMoney, formatSince, plural } from "@/lib/format";
@@ -52,7 +62,11 @@ const TERMS: Record<Account["paymentTerms"], string> = {
   "60-days": "60 days from invoice",
 };
 
-const HEALTH = { strong: { label: "Strong relationship", tone: "success" }, steady: { label: "Steady relationship", tone: "info" }, "at-risk": { label: "Needs attention", tone: "warning" } } as const;
+const HEALTH = {
+  strong: { label: "Strong relationship", tone: "success" },
+  steady: { label: "Steady relationship", tone: "info" },
+  "at-risk": { label: "Needs attention", tone: "warning" },
+} as const;
 
 const ACTIVITY_ICON: Record<ActivityItem["kind"], TimelineEntry["icon"]> = {
   order: PackageIcon,
@@ -70,19 +84,43 @@ export default function AccountPage() {
   const supplier = useIsSupplier();
   const key = usePersonaKey();
   const activity = useAccountActivity(25);
-  const performance = useQuery({ queryKey: queryKeys.supplierPerformance(key), queryFn: () => api.supplierProducts.performance(), enabled: supplier });
-  const productsQuery = useQuery({ queryKey: queryKeys.products(key), queryFn: () => api.products.list() });
+  const performance = useQuery({
+    queryKey: queryKeys.supplierPerformance(key),
+    queryFn: () => api.supplierProducts.performance(),
+    enabled: supplier,
+  });
+  const productsQuery = useQuery({
+    queryKey: queryKeys.products(key),
+    queryFn: () => api.products.list(),
+  });
   const [editOpen, setEditOpen] = useState(false);
 
   const me = q.me.data;
   const account = q.account.data;
-  const accountNames = useMemo(() => new Map([...(me?.group ? [me.group.account, ...me.group.sites] : []), ...(account ? [account] : [])].map((a) => [a.id, a.name])), [me, account]);
-  const productName = useMemo(() => new Map((productsQuery.data ?? []).map((p) => [p.id, p.name])), [productsQuery.data]);
+  const accountNames = useMemo(
+    () =>
+      new Map(
+        [
+          ...(me?.group ? [me.group.account, ...me.group.sites] : []),
+          ...(account ? [account] : []),
+        ].map((a) => [a.id, a.name]),
+      ),
+    [me, account],
+  );
+  const productName = useMemo(
+    () => new Map((productsQuery.data ?? []).map((p) => [p.id, p.name])),
+    [productsQuery.data],
+  );
 
-  const spend = useMemo(() => (activity.orders.data ? customerSpend(activity.orders.data) : null), [activity.orders.data]);
+  const spend = useMemo(
+    () => (activity.orders.data ? customerSpend(activity.orders.data) : null),
+    [activity.orders.data],
+  );
 
-  if (q.account.isPending || q.me.isPending) return <LoadingState rows={4} label="Loading account" />;
-  if (q.account.isError) return <ErrorState error={q.account.error} onRetry={() => q.account.refetch()} />;
+  if (q.account.isPending || q.me.isPending)
+    return <LoadingState rows={4} label="Loading account" />;
+  if (q.account.isError)
+    return <ErrorState error={q.account.error} onRetry={() => q.account.refetch()} />;
   if (q.me.isError) return <ErrorState error={q.me.error} onRetry={() => q.me.refetch()} />;
   const a = q.account.data;
   const commercial = me?.group && a.parentAccountId ? me.group.account : a;
@@ -91,15 +129,32 @@ export default function AccountPage() {
   const chart = supplier
     ? performance.data
       ? {
-          bars: performance.data.monthly.map((m) => ({ key: m.month, ...monthBarLabels(m.month), value: m.total.amount, display: formatMoney(m.total, { whole: true }) })),
+          bars: performance.data.monthly.map((m) => ({
+            key: m.month,
+            ...monthBarLabels(m.month),
+            value: m.total.amount,
+            display: formatMoney(m.total, { whole: true }),
+          })),
           summary: `Brewfitt bought ${formatMoney(performance.data.last12Months, { whole: true })} from you over the last 12 months.`,
-          top: performance.data.topProducts.map((t) => ({ id: t.productId, total: t.total.amount, qty: t.quantity })),
+          top: performance.data.topProducts.map((t) => ({
+            id: t.productId,
+            total: t.total.amount,
+            qty: t.quantity,
+          })),
         }
       : null
     : spend
       ? {
-          bars: spend.monthly.map((m) => ({ key: m.month, ...monthBarLabels(m.month), value: m.total, display: formatMoney({ amount: m.total, currency: "GBP" }, { whole: true }) })),
-          summary: `You spent ${formatMoney({ amount: spend.total, currency: "GBP" }, { whole: true })} with Brewfitt over the last 12 months, excluding VAT, across ${plural(spend.monthly.reduce((s, m) => s + m.count, 0), "order")}.`,
+          bars: spend.monthly.map((m) => ({
+            key: m.month,
+            ...monthBarLabels(m.month),
+            value: m.total,
+            display: formatMoney({ amount: m.total, currency: "GBP" }, { whole: true }),
+          })),
+          summary: `You spent ${formatMoney({ amount: spend.total, currency: "GBP" }, { whole: true })} with Brewfitt over the last 12 months, excluding VAT, across ${plural(
+            spend.monthly.reduce((s, m) => s + m.count, 0),
+            "order",
+          )}.`,
           top: spend.top.map(([id, t]) => ({ id, total: t.total, qty: t.qty })),
         }
       : null;
@@ -112,7 +167,9 @@ export default function AccountPage() {
         description={
           <span className="flex flex-wrap items-center gap-2">
             <StatusPill tone={health.tone}>{health.label}</StatusPill>
-            <span>{supplier ? "Supplying" : "Customer of"} Brewfitt since {formatDate(a.createdAt)}</span>
+            <span>
+              {supplier ? "Supplying" : "Customer of"} Brewfitt since {formatDate(a.createdAt)}
+            </span>
             <span aria-hidden>·</span>
             <span>Last contact {formatSince(a.lastContactAt)}</span>
           </span>
@@ -127,7 +184,12 @@ export default function AccountPage() {
         }
       />
 
-      <PendingChanges changes={[...a.pendingChanges, ...(commercial.id !== a.id ? commercial.pendingChanges : [])]} />
+      <PendingChanges
+        changes={[
+          ...a.pendingChanges,
+          ...(commercial.id !== a.id ? commercial.pendingChanges : []),
+        ]}
+      />
 
       <Tabs defaultValue="overview">
         <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
@@ -148,23 +210,47 @@ export default function AccountPage() {
               </h2>
               <dl className="space-y-3 text-sm">
                 <Row label="Company number" value={commercial.companyNumber ?? "Not held"} />
-                <Row label="VAT number" value={commercial.vatNumber ?? "Not VAT registered in the UK"} />
+                <Row
+                  label="VAT number"
+                  value={commercial.vatNumber ?? "Not VAT registered in the UK"}
+                />
                 <Row label="Payment terms" value={TERMS[commercial.paymentTerms]} />
                 {supplier ? (
                   <Row label="Agreed terms" value="Brewfitt pays in fortnightly payment runs" />
                 ) : commercial.onAccount && commercial.creditLimit ? (
                   <>
-                    <Row label="Credit limit" value={`${formatMoney(commercial.creditLimit, { whole: true })}${commercial.id !== a.id ? `, held by ${commercial.name}` : ""}`} />
-                    {me?.credit?.available ? <Row label="Credit available" value={formatMoney(me.credit.available, { whole: true })} /> : null}
+                    <Row
+                      label="Credit limit"
+                      value={`${formatMoney(commercial.creditLimit, { whole: true })}${commercial.id !== a.id ? `, held by ${commercial.name}` : ""}`}
+                    />
+                    {me?.credit?.available ? (
+                      <Row
+                        label="Credit available"
+                        value={formatMoney(me.credit.available, { whole: true })}
+                      />
+                    ) : null}
                   </>
                 ) : (
                   <Row label="Credit" value="No credit terms; orders are paid by card" />
                 )}
-                <Row label="Price list" value={supplier ? "Agreed cost prices" : commercial.priceListId ? "Assigned trade price list" : "Standard"} href={supplier ? "/stock" : "/price-list"} />
+                <Row
+                  label="Price list"
+                  value={
+                    supplier
+                      ? "Agreed cost prices"
+                      : commercial.priceListId
+                        ? "Assigned trade price list"
+                        : "Standard"
+                  }
+                  href={supplier ? "/stock" : "/price-list"}
+                />
               </dl>
             </section>
 
-            <section aria-labelledby="relationship" className="rounded-2xl border bg-card p-5 lg:col-span-2">
+            <section
+              aria-labelledby="relationship"
+              className="rounded-2xl border bg-card p-5 lg:col-span-2"
+            >
               <h2 id="relationship" className="mb-4 font-medium">
                 {supplier ? "Purchases by Brewfitt" : "Spend with Brewfitt"}
               </h2>
@@ -179,7 +265,9 @@ export default function AccountPage() {
                       {chart.top.slice(0, 5).map((t) => (
                         <li key={t.id} className="flex justify-between gap-3">
                           <span className="line-clamp-1">{productName.get(t.id) ?? "Product"}</span>
-                          <span className="shrink-0 tabular-nums text-muted-foreground">{formatMoney({ amount: t.total, currency: "GBP" }, { whole: true })}</span>
+                          <span className="shrink-0 text-muted-foreground tabular-nums">
+                            {formatMoney({ amount: t.total, currency: "GBP" }, { whole: true })}
+                          </span>
                         </li>
                       ))}
                     </ol>
@@ -201,7 +289,10 @@ export default function AccountPage() {
               </ul>
             </section>
 
-            <section aria-labelledby="recent" className="rounded-2xl border bg-card p-5 lg:col-span-2">
+            <section
+              aria-labelledby="recent"
+              className="rounded-2xl border bg-card p-5 lg:col-span-2"
+            >
               <h2 id="recent" className="mb-3 font-medium">
                 Recent activity
               </h2>
@@ -210,7 +301,21 @@ export default function AccountPage() {
               ) : activity.error ? (
                 <ErrorState error={activity.error} />
               ) : (
-                <Timeline entries={activity.items.slice(0, 6).map((i) => ({ id: i.id, at: i.at, title: i.title, detail: i.detail, href: supplier && i.relatedType === "product" ? "/stock" : hrefFor(i.relatedType, i.relatedId), icon: ACTIVITY_ICON[i.kind] }))} />
+                <Timeline
+                  entries={activity.items
+                    .slice(0, 6)
+                    .map((i) => ({
+                      id: i.id,
+                      at: i.at,
+                      title: i.title,
+                      detail: i.detail,
+                      href:
+                        supplier && i.relatedType === "product"
+                          ? "/stock"
+                          : hrefFor(i.relatedType, i.relatedId),
+                      icon: ACTIVITY_ICON[i.kind],
+                    }))}
+                />
               )}
             </section>
 
@@ -223,15 +328,36 @@ export default function AccountPage() {
         </TabsContent>
 
         <TabsContent value="contacts" className="mt-5">
-          {q.contacts.isPending ? <LoadingState /> : q.contacts.isError ? <ErrorState error={q.contacts.error} onRetry={() => q.contacts.refetch()} /> : <ContactsPanel contacts={q.contacts.data} />}
+          {q.contacts.isPending ? (
+            <LoadingState />
+          ) : q.contacts.isError ? (
+            <ErrorState error={q.contacts.error} onRetry={() => q.contacts.refetch()} />
+          ) : (
+            <ContactsPanel contacts={q.contacts.data} />
+          )}
         </TabsContent>
 
         <TabsContent value="addresses" className="mt-5">
-          {q.addresses.isPending ? <LoadingState /> : q.addresses.isError ? <ErrorState error={q.addresses.error} onRetry={() => q.addresses.refetch()} /> : <AddressesPanel addresses={q.addresses.data} accountNames={accountNames.size > 1 ? accountNames : undefined} />}
+          {q.addresses.isPending ? (
+            <LoadingState />
+          ) : q.addresses.isError ? (
+            <ErrorState error={q.addresses.error} onRetry={() => q.addresses.refetch()} />
+          ) : (
+            <AddressesPanel
+              addresses={q.addresses.data}
+              accountNames={accountNames.size > 1 ? accountNames : undefined}
+            />
+          )}
         </TabsContent>
 
         <TabsContent value="documents" className="mt-5">
-          {q.documents.isPending ? <LoadingState /> : q.documents.isError ? <ErrorState error={q.documents.error} onRetry={() => q.documents.refetch()} /> : <ComplianceDocuments documents={q.documents.data} canUpload />}
+          {q.documents.isPending ? (
+            <LoadingState />
+          ) : q.documents.isError ? (
+            <ErrorState error={q.documents.error} onRetry={() => q.documents.refetch()} />
+          ) : (
+            <ComplianceDocuments documents={q.documents.data} canUpload />
+          )}
         </TabsContent>
 
         <TabsContent value="activity" className="mt-5">
@@ -241,13 +367,24 @@ export default function AccountPage() {
             ) : activity.error ? (
               <ErrorState error={activity.error} />
             ) : (
-              <Timeline entries={activity.items.map((i) => ({ id: i.id, at: i.at, title: i.title, detail: i.detail, href: hrefFor(i.relatedType, i.relatedId), icon: ACTIVITY_ICON[i.kind] }))} />
+              <Timeline
+                entries={activity.items.map((i) => ({
+                  id: i.id,
+                  at: i.at,
+                  title: i.title,
+                  detail: i.detail,
+                  href: hrefFor(i.relatedType, i.relatedId),
+                  icon: ACTIVITY_ICON[i.kind],
+                }))}
+              />
             )}
           </section>
         </TabsContent>
       </Tabs>
 
-      {editOpen ? <CompanyDetailsDialog account={commercial} open={editOpen} onOpenChange={setEditOpen} /> : null}
+      {editOpen ? (
+        <CompanyDetailsDialog account={commercial} open={editOpen} onOpenChange={setEditOpen} />
+      ) : null}
     </div>
   );
 }

@@ -4,7 +4,13 @@ import type { ComponentProps, ReactNode } from "react";
 import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 type BaseProps<T extends FieldValues> = {
@@ -24,7 +30,8 @@ export function TextField<T extends FieldValues>({
   className,
   nullable,
   ...input
-}: BaseProps<T> & Omit<ComponentProps<typeof Input>, "name" | "defaultValue"> & { nullable?: boolean }) {
+}: BaseProps<T> &
+  Omit<ComponentProps<typeof Input>, "name" | "defaultValue"> & { nullable?: boolean }) {
   return (
     <Controller
       control={control}
@@ -42,7 +49,15 @@ export function TextField<T extends FieldValues>({
             aria-invalid={fieldState.invalid || undefined}
             onChange={(e) => {
               const v = e.target.value;
-              field.onChange(input.type === "number" ? (v === "" ? undefined : Number(v)) : nullable && v === "" ? null : v);
+              field.onChange(
+                input.type === "number"
+                  ? v === ""
+                    ? undefined
+                    : Number(v)
+                  : nullable && v === ""
+                    ? null
+                    : v,
+              );
             }}
           />
           {description ? <FieldDescription>{description}</FieldDescription> : null}
@@ -61,7 +76,8 @@ export function TextareaField<T extends FieldValues>({
   className,
   nullable,
   ...input
-}: BaseProps<T> & Omit<ComponentProps<typeof Textarea>, "name" | "defaultValue"> & { nullable?: boolean }) {
+}: BaseProps<T> &
+  Omit<ComponentProps<typeof Textarea>, "name" | "defaultValue"> & { nullable?: boolean }) {
   return (
     <Controller
       control={control}
@@ -77,7 +93,9 @@ export function TextareaField<T extends FieldValues>({
             onBlur={field.onBlur}
             value={field.value ?? ""}
             aria-invalid={fieldState.invalid || undefined}
-            onChange={(e) => field.onChange(nullable && e.target.value === "" ? null : e.target.value)}
+            onChange={(e) =>
+              field.onChange(nullable && e.target.value === "" ? null : e.target.value)
+            }
           />
           {description ? <FieldDescription>{description}</FieldDescription> : null}
           <FieldError errors={[fieldState.error]} />
@@ -104,7 +122,13 @@ export function SelectField<T extends FieldValues>({
         <Field data-invalid={fieldState.invalid || undefined} className={className}>
           <FieldLabel htmlFor={name}>{label}</FieldLabel>
           <Select value={field.value ?? ""} onValueChange={field.onChange} name={field.name}>
-            <SelectTrigger id={name} ref={field.ref} onBlur={field.onBlur} aria-invalid={fieldState.invalid || undefined} className="w-full">
+            <SelectTrigger
+              id={name}
+              ref={field.ref}
+              onBlur={field.onBlur}
+              aria-invalid={fieldState.invalid || undefined}
+              className="w-full"
+            >
               <SelectValue placeholder={placeholder ?? "Choose"} />
             </SelectTrigger>
             <SelectContent>

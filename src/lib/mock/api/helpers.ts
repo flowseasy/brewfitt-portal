@@ -1,4 +1,13 @@
-import type { Account, Contact, Invoice, Message, Money, Quote, StockPosition, Thread } from "@/types";
+import type {
+  Account,
+  Contact,
+  Invoice,
+  Message,
+  Money,
+  Quote,
+  StockPosition,
+  Thread,
+} from "@/types";
 import type { InsightInputs } from "@/lib/ai/rules";
 import { ageingBandFor, deriveInvoice } from "../seed/finance";
 import { effectivePriceListId } from "../seed/context";
@@ -40,13 +49,19 @@ export function invoiceNow(invoice: Invoice): Invoice {
 
 /** Sent quotes past their validity date read as expired. */
 export function quoteNow(quote: Quote): Quote {
-  if (quote.status === "sent" && daysBetween(today(), quote.validUntil) < 0) return { ...quote, status: "expired" };
+  if (quote.status === "sent" && daysBetween(today(), quote.validUntil) < 0)
+    return { ...quote, status: "expired" };
   return quote;
 }
 
 export { ageingBandFor };
 
-export function stockStatus(onHand: number, allocated: number, onOrder: number, minimumLevel: number): StockPosition["status"] {
+export function stockStatus(
+  onHand: number,
+  allocated: number,
+  onOrder: number,
+  minimumLevel: number,
+): StockPosition["status"] {
   const available = onHand - allocated;
   if (available <= 0) return onOrder > 0 ? "on-order" : "out";
   if (onHand < minimumLevel) return onOrder > 0 ? "on-order" : "low";
@@ -65,7 +80,10 @@ export function priceListIdFor(db: MockDb, accountId: string): string | null {
 
 export function priceFor(db: MockDb, accountId: string, productId: string): Money | null {
   const listId = priceListIdFor(db, accountId);
-  return db.priceListLines.find((l) => l.priceListId === listId && l.productId === productId)?.price ?? null;
+  return (
+    db.priceListLines.find((l) => l.priceListId === listId && l.productId === productId)?.price ??
+    null
+  );
 }
 
 /** Flat mock VAT (decision 8): 20% for UK accounts, 0% for export. */
@@ -75,7 +93,11 @@ export function vatRate(db: MockDb, accountId: string): number {
   return billing?.country === "GB" ? 0.2 : 0;
 }
 
-export function withVat(db: MockDb, accountId: string, net: number): { vat: number; gross: number } {
+export function withVat(
+  db: MockDb,
+  accountId: string,
+  net: number,
+): { vat: number; gross: number } {
   const vat = Math.round(net * vatRate(db, accountId));
   return { vat, gross: net + vat };
 }
@@ -84,9 +106,20 @@ export function contactOf(db: MockDb, scope: Scope): Contact {
   return db.contacts.find((c) => c.id === scope.persona.contactId) ?? notFound("Contact");
 }
 
-export function teamMember(db: MockDb, scope: Scope, role: "account-manager" | "technical-manager" | "buyer" | "sales-office" | "credit-control") {
+export function teamMember(
+  db: MockDb,
+  scope: Scope,
+  role: "account-manager" | "technical-manager" | "buyer" | "sales-office" | "credit-control",
+) {
   const c = scope.commercialAccount;
-  const id = role === "account-manager" ? c.accountManagerId : role === "technical-manager" ? c.technicalContactId : role === "buyer" ? c.buyerId : null;
+  const id =
+    role === "account-manager"
+      ? c.accountManagerId
+      : role === "technical-manager"
+        ? c.technicalContactId
+        : role === "buyer"
+          ? c.buyerId
+          : null;
   return db.team.find((t) => t.id === id) ?? db.team.find((t) => t.role === role) ?? db.team[0]!;
 }
 
@@ -96,7 +129,14 @@ export function teamMember(db: MockDb, scope: Scope, role: "account-manager" | "
 export function openThreadChanges(
   db: MockDb,
   scope: Scope,
-  args: { accountId: string; subject: string; relatedType: Thread["relatedType"]; relatedId: string | null; brewfittRole: Parameters<typeof teamMember>[2]; first: { side: Message["senderSide"]; channel: Message["channel"]; body: string; at: string } },
+  args: {
+    accountId: string;
+    subject: string;
+    relatedType: Thread["relatedType"];
+    relatedId: string | null;
+    brewfittRole: Parameters<typeof teamMember>[2];
+    first: { side: Message["senderSide"]; channel: Message["channel"]; body: string; at: string };
+  },
 ): { thread: Thread; changes: Change[] } {
   const contact = contactOf(db, scope);
   const brewfitt = teamMember(db, scope, args.brewfittRole);
@@ -127,12 +167,36 @@ export function openThreadChanges(
 }
 
 /** Changes that post a message from the signed-in contact to an existing thread. */
-export function postChanges(db: MockDb, scope: Scope, threadId: string, body: string, at: string, attachments: string[] = []): { message: Message; changes: Change[] } {
+export function postChanges(
+  db: MockDb,
+  scope: Scope,
+  threadId: string,
+  body: string,
+  at: string,
+  attachments: string[] = [],
+): { message: Message; changes: Change[] } {
   const thread = db.threads.find((t) => t.id === threadId) ?? notFound("Conversation");
   const contact = contactOf(db, scope);
-  const message: Message = { id: newId("msg"), threadId, senderId: contact.id, senderSide: "account", channel: "portal", body, attachments, sentAt: at };
-  const participants = thread.participants.some((p) => p.id === contact.id) ? thread.participants : [...thread.participants, { id: contact.id, name: contact.name, side: "account" as const }];
-  return { message, changes: [insert("messages", message), patch("threads", threadId, { lastMessageAt: at, unreadCount: 0, participants })] };
+  const message: Message = {
+    id: newId("msg"),
+    threadId,
+    senderId: contact.id,
+    senderSide: "account",
+    channel: "portal",
+    body,
+    attachments,
+    sentAt: at,
+  };
+  const participants = thread.participants.some((p) => p.id === contact.id)
+    ? thread.participants
+    : [...thread.participants, { id: contact.id, name: contact.name, side: "account" as const }];
+  return {
+    message,
+    changes: [
+      insert("messages", message),
+      patch("threads", threadId, { lastMessageAt: at, unreadCount: 0, participants }),
+    ],
+  };
 }
 
 // ---- AI inputs ----------------------------------------------------------------

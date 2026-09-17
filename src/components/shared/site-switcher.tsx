@@ -3,7 +3,14 @@
 import { useRouter } from "next/navigation";
 import { BuildingsIcon, CaretUpDownIcon, CheckIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useMe, usePersona } from "@/features/session/use-session";
 import { usePersonaStore } from "@/stores/persona-store";
 
@@ -41,7 +48,11 @@ export function SiteSwitcher() {
         <DropdownMenuSeparator />
         {sites.map((site) => (
           <DropdownMenuItem key={site.id} onSelect={() => choose(site.id)}>
-            {persona.activeSiteId === site.id ? <CheckIcon aria-hidden /> : <span className="size-4" />}
+            {persona.activeSiteId === site.id ? (
+              <CheckIcon aria-hidden />
+            ) : (
+              <span className="size-4" />
+            )}
             {site.name}
           </DropdownMenuItem>
         ))}

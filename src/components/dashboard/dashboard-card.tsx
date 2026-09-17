@@ -31,7 +31,10 @@ export function DashboardCard({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index, 8) * 0.03, ease: "easeOut" }}
-      className={cn("flex flex-col rounded-2xl border bg-card p-5 shadow-[0_1px_2px_rgb(0_0_0/0.03)]", className)}
+      className={cn(
+        "flex flex-col rounded-2xl border bg-card p-5 shadow-[0_1px_2px_rgb(0_0_0/0.03)]",
+        className,
+      )}
     >
       <div className="mb-4 flex items-center gap-2.5">
         <span className="flex size-8 items-center justify-center rounded-lg bg-brand-subtle text-brand-subtle-foreground">
@@ -43,10 +46,13 @@ export function DashboardCard({
         {headerExtra ? <div className="ml-1">{headerExtra}</div> : null}
         <Link
           href={action.href}
-          className="group ml-auto flex items-center gap-1 rounded-md text-sm font-medium text-primary hover:underline underline-offset-4"
+          className="group ml-auto flex items-center gap-1 rounded-md text-sm font-medium text-primary underline-offset-4 hover:underline"
         >
           {action.label}
-          <ArrowRightIcon className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+          <ArrowRightIcon
+            className="size-3.5 transition-transform group-hover:translate-x-0.5"
+            aria-hidden
+          />
         </Link>
       </div>
       <div className="flex-1">{children}</div>
@@ -55,10 +61,24 @@ export function DashboardCard({
 }
 
 /** A tappable row inside a card that drills into one record. */
-export function CardRow({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
+export function CardRow({
+  href,
+  children,
+  className,
+}: {
+  href: string;
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <li>
-      <Link href={href} className={cn("-mx-2 flex items-center gap-3 rounded-lg px-2 py-2.5 transition-colors hover:bg-accent/60", className)}>
+      <Link
+        href={href}
+        className={cn(
+          "-mx-2 flex items-center gap-3 rounded-lg px-2 py-2.5 transition-colors hover:bg-accent/60",
+          className,
+        )}
+      >
         {children}
       </Link>
     </li>

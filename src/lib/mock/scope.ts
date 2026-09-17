@@ -25,23 +25,39 @@ export function currentPersona(): Persona {
 
 export function resolveScope(db: MockDb, persona: Persona = currentPersona()): Scope {
   const account = db.accounts.find((a) => a.id === persona.accountId);
-  if (!account) throw new ApiError(401, "The selected persona's account no longer exists. Reset demo data or switch persona.");
+  if (!account)
+    throw new ApiError(
+      401,
+      "The selected persona's account no longer exists. Reset demo data or switch persona.",
+    );
 
   const viewAccount =
     persona.kind === "group" && persona.activeSiteId
-      ? (db.accounts.find((a) => a.id === persona.activeSiteId && a.parentAccountId === account.id) ?? account)
+      ? (db.accounts.find(
+          (a) => a.id === persona.activeSiteId && a.parentAccountId === account.id,
+        ) ?? account)
       : account;
 
   const accountIds =
     persona.kind === "group" && viewAccount.id === account.id
-      ? [account.id, ...db.accounts.filter((a) => a.parentAccountId === account.id).map((a) => a.id)]
+      ? [
+          account.id,
+          ...db.accounts.filter((a) => a.parentAccountId === account.id).map((a) => a.id),
+        ]
       : [viewAccount.id];
 
   const commercialAccount = viewAccount.parentAccountId
     ? (db.accounts.find((a) => a.id === viewAccount.parentAccountId) ?? viewAccount)
     : viewAccount;
 
-  return { persona, account, viewAccount, accountIds, commercialAccount, isSupplier: account.kind === "supplier" };
+  return {
+    persona,
+    account,
+    viewAccount,
+    accountIds,
+    commercialAccount,
+    isSupplier: account.kind === "supplier",
+  };
 }
 
 export function notFound(what: string): never {

@@ -25,8 +25,17 @@ export function formatMoneyRange(low: Money, high: Money): string {
   return a === b ? `About ${a}` : `${a} to ${b}`;
 }
 
-const dateFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
-const shortDateFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: "UTC",
+});
+const shortDateFormat = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  timeZone: "UTC",
+});
 const dateTimeFormat = new Intl.DateTimeFormat("en-GB", {
   day: "numeric",
   month: "short",
@@ -83,7 +92,8 @@ export function formatSince(value: string | Date): string {
   const ms = Date.now() - toDate(value).getTime();
   if (ms < 60_000) return "just now";
   if (ms < 3_600_000) return `${Math.floor(ms / 60_000)} min ago`;
-  if (ms < 24 * 3_600_000 && daysFromToday(value) === 0) return `${Math.floor(ms / 3_600_000)} h ago`;
+  if (ms < 24 * 3_600_000 && daysFromToday(value) === 0)
+    return `${Math.floor(ms / 3_600_000)} h ago`;
   return formatRelativeDay(value);
 }
 
@@ -96,7 +106,10 @@ export function gbp(amountPence: number): Money {
 }
 
 export function sumMoney(values: Money[], currency: Money["currency"] = "GBP"): Money {
-  return { amount: values.reduce((sum, m) => sum + m.amount, 0), currency: values[0]?.currency ?? currency };
+  return {
+    amount: values.reduce((sum, m) => sum + m.amount, 0),
+    currency: values[0]?.currency ?? currency,
+  };
 }
 
 export function initials(name: string): string {

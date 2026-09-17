@@ -2,9 +2,24 @@ import { z } from "zod";
 import { AddressInput } from "./account";
 import { Id, IsoDateTime, Money } from "./common";
 
-export const ConfiguratorStepId = z.enum(["venue", "dispense", "font", "cooling", "gas", "ancillaries"]);
+export const ConfiguratorStepId = z.enum([
+  "venue",
+  "dispense",
+  "font",
+  "cooling",
+  "gas",
+  "ancillaries",
+]);
 
-export const VenueType = z.enum(["pub", "bar", "restaurant", "hotel", "brewery-taproom", "event", "stadium"]);
+export const VenueType = z.enum([
+  "pub",
+  "bar",
+  "restaurant",
+  "hotel",
+  "brewery-taproom",
+  "event",
+  "stadium",
+]);
 
 export const Beverage = z.enum(["beer", "cider", "lager", "soft", "water", "coffee"]);
 

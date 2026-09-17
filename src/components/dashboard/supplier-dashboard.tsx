@@ -3,7 +3,17 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { ChartBarIcon, ChatsCircleIcon, FileTextIcon, PackageIcon, SparkleIcon, TagIcon, TrendUpIcon, UsersIcon, WalletIcon } from "@phosphor-icons/react";
+import {
+  ChartBarIcon,
+  ChatsCircleIcon,
+  FileTextIcon,
+  PackageIcon,
+  SparkleIcon,
+  TagIcon,
+  TrendUpIcon,
+  UsersIcon,
+  WalletIcon,
+} from "@phosphor-icons/react";
 import { AIInsightCard } from "@/components/ai/ai-insight-card";
 import { AllInsightsButton } from "@/components/ai/assistant-panel";
 import { AssistantPrompt } from "@/components/ai/assistant-prompt";
@@ -23,22 +33,52 @@ import { cn } from "@/lib/utils";
 import { CardRow, DashboardCard } from "./dashboard-card";
 
 const money = (n: number) => formatMoney({ amount: n, currency: "GBP" }, { whole: true });
-const monthLabel = (m: string) => new Intl.DateTimeFormat("en-GB", { month: "short", timeZone: "UTC" }).format(new Date(`${m}-01T00:00:00Z`));
+const monthLabel = (m: string) =>
+  new Intl.DateTimeFormat("en-GB", { month: "short", timeZone: "UTC" }).format(
+    new Date(`${m}-01T00:00:00Z`),
+  );
 
 export function SupplierDashboard() {
   const key = usePersonaKey();
   const me = useQuery({ queryKey: queryKeys.me(key), queryFn: () => api.session.me() });
-  const statement = useQuery({ queryKey: queryKeys.statement(key), queryFn: () => api.invoices.statement() });
-  const runs = useQuery({ queryKey: queryKeys.paymentRuns(key), queryFn: () => api.invoices.paymentRuns() });
+  const statement = useQuery({
+    queryKey: queryKeys.statement(key),
+    queryFn: () => api.invoices.statement(),
+  });
+  const runs = useQuery({
+    queryKey: queryKeys.paymentRuns(key),
+    queryFn: () => api.invoices.paymentRuns(),
+  });
   const rfqs = useQuery({ queryKey: queryKeys.rfqs(key), queryFn: () => api.quotes.rfqs() });
-  const pos = useQuery({ queryKey: queryKeys.purchaseOrders(key), queryFn: () => api.orders.purchaseOrders() });
+  const pos = useQuery({
+    queryKey: queryKeys.purchaseOrders(key),
+    queryFn: () => api.orders.purchaseOrders(),
+  });
   const stock = useQuery({ queryKey: queryKeys.stock(key), queryFn: () => api.stock.list() });
-  const forecast = useQuery({ queryKey: queryKeys.forecast(key), queryFn: () => api.stock.forecast() });
-  const products = useQuery({ queryKey: queryKeys.products(key), queryFn: () => api.products.list() });
-  const submissions = useQuery({ queryKey: queryKeys.supplierProducts(key), queryFn: () => api.supplierProducts.list() });
-  const threads = useQuery({ queryKey: queryKeys.threads(key), queryFn: () => api.messages.threads() });
-  const performance = useQuery({ queryKey: queryKeys.supplierPerformance(key), queryFn: () => api.supplierProducts.performance() });
-  const insights = useQuery({ queryKey: queryKeys.insights(key), queryFn: () => api.ai.insights() });
+  const forecast = useQuery({
+    queryKey: queryKeys.forecast(key),
+    queryFn: () => api.stock.forecast(),
+  });
+  const products = useQuery({
+    queryKey: queryKeys.products(key),
+    queryFn: () => api.products.list(),
+  });
+  const submissions = useQuery({
+    queryKey: queryKeys.supplierProducts(key),
+    queryFn: () => api.supplierProducts.list(),
+  });
+  const threads = useQuery({
+    queryKey: queryKeys.threads(key),
+    queryFn: () => api.messages.threads(),
+  });
+  const performance = useQuery({
+    queryKey: queryKeys.supplierPerformance(key),
+    queryFn: () => api.supplierProducts.performance(),
+  });
+  const insights = useQuery({
+    queryKey: queryKeys.insights(key),
+    queryFn: () => api.ai.insights(),
+  });
 
   const d = useMemo(() => {
     const productName = new Map((products.data ?? []).map((p) => [p.id, p.name]));
@@ -47,32 +87,58 @@ export function SupplierDashboard() {
     const statusRank = { out: 0, "on-order": 1, low: 2, "in-stock": 3 } as const;
     return {
       productName,
-      nextRun: (runs.data ?? []).filter((r) => r.status === "scheduled").sort((a, b) => a.scheduledFor.localeCompare(b.scheduledFor))[0] ?? null,
-      openRfqs: (rfqs.data ?? []).filter((r) => r.status === "open").sort((a, b) => a.deadline.localeCompare(b.deadline)),
+      nextRun:
+        (runs.data ?? [])
+          .filter((r) => r.status === "scheduled")
+          .sort((a, b) => a.scheduledFor.localeCompare(b.scheduledFor))[0] ?? null,
+      openRfqs: (rfqs.data ?? [])
+        .filter((r) => r.status === "open")
+        .sort((a, b) => a.deadline.localeCompare(b.deadline)),
       openPos: openPos.sort((a, b) => a.expectedDate.localeCompare(b.expectedDate)),
-      stageCounts: (["issued", "acknowledged", "in-transit", "part-received"] as const).map((s) => [s, openPos.filter((p) => p.status === s).length] as const),
+      stageCounts: (["issued", "acknowledged", "in-transit", "part-received"] as const).map(
+        (s) => [s, openPos.filter((p) => p.status === s).length] as const,
+      ),
       stockRows: (stock.data ?? [])
         .map((s) => ({ stock: s, forecast: forecastById.get(s.productId) }))
-        .sort((a, b) => statusRank[a.stock.status] - statusRank[b.stock.status] || (b.forecast?.averageMonthlyQuantity ?? 0) - (a.forecast?.averageMonthlyQuantity ?? 0))
+        .sort(
+          (a, b) =>
+            statusRank[a.stock.status] - statusRank[b.stock.status] ||
+            (b.forecast?.averageMonthlyQuantity ?? 0) - (a.forecast?.averageMonthlyQuantity ?? 0),
+        )
         .slice(0, 5),
       openSubmissions: (submissions.data ?? []).slice(0, 4),
       recentThreads: (threads.data ?? []).slice(0, 4),
       unread: (threads.data ?? []).filter((t) => t.unreadCount > 0).length,
       supplierInsights: (insights.data ?? []).slice(0, 2),
     };
-  }, [products.data, forecast.data, pos.data, runs.data, rfqs.data, stock.data, submissions.data, threads.data, insights.data]);
+  }, [
+    products.data,
+    forecast.data,
+    pos.data,
+    runs.data,
+    rfqs.data,
+    stock.data,
+    submissions.data,
+    threads.data,
+    insights.data,
+  ]);
 
   const firstName = me.data?.contact.name.split(" ")[0];
   const maxMonth = Math.max(1, ...(performance.data?.monthly.map((m) => m.total.amount) ?? [1]));
 
   return (
     <div className="space-y-6">
-      <section aria-labelledby="welcome" className="rounded-3xl border bg-gradient-to-br from-brand-subtle via-card to-card p-5 sm:p-7">
+      <section
+        aria-labelledby="welcome"
+        className="rounded-3xl border bg-gradient-to-br from-brand-subtle via-card to-card p-5 sm:p-7"
+      >
         <p className="text-sm text-muted-foreground">{me.data?.account.name}</p>
         <h1 id="welcome" className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
           {firstName ? `Good to see you, ${firstName}` : "Your dashboard"}
         </h1>
-        <p className="mt-1 text-muted-foreground">What Brewfitt needs from you, what it owes you and how your range is moving.</p>
+        <p className="mt-1 text-muted-foreground">
+          What Brewfitt needs from you, what it owes you and how your range is moving.
+        </p>
         <div className="mt-5 max-w-2xl">
           <AssistantPrompt />
         </div>
@@ -80,7 +146,13 @@ export function SupplierDashboard() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* 1. Account status */}
-        <DashboardCard index={0} className="lg:col-span-2" title="Amounts due to you" icon={WalletIcon} action={{ label: "Payments", href: "/invoices" }}>
+        <DashboardCard
+          index={0}
+          className="lg:col-span-2"
+          title="Amounts due to you"
+          icon={WalletIcon}
+          action={{ label: "Payments", href: "/invoices" }}
+        >
           {statement.isPending || runs.isPending ? (
             <LoadingState rows={2} />
           ) : statement.isError ? (
@@ -96,16 +168,27 @@ export function SupplierDashboard() {
                 </div>
                 <div>
                   <dt className="text-xs text-muted-foreground">Past due date</dt>
-                  <dd className={cn("mt-0.5 text-2xl font-semibold tracking-tight", statement.data.overdue.amount > 0 && "text-warning")}>
+                  <dd
+                    className={cn(
+                      "mt-0.5 text-2xl font-semibold tracking-tight",
+                      statement.data.overdue.amount > 0 && "text-warning",
+                    )}
+                  >
                     <AnimatedNumber value={statement.data.overdue.amount} format={money} />
                   </dd>
                 </div>
-                <Link href="/invoices?tab=runs" className="col-span-2 -m-2 rounded-lg p-2 hover:bg-accent/50 sm:col-span-1">
+                <Link
+                  href="/invoices?tab=runs"
+                  className="col-span-2 -m-2 rounded-lg p-2 hover:bg-accent/50 sm:col-span-1"
+                >
                   <dt className="text-xs text-muted-foreground">Next payment run</dt>
-                  <dd className="mt-0.5 text-2xl font-semibold tracking-tight">{d.nextRun ? formatMoney(d.nextRun.total, { whole: true }) : "None scheduled"}</dd>
+                  <dd className="mt-0.5 text-2xl font-semibold tracking-tight">
+                    {d.nextRun ? formatMoney(d.nextRun.total, { whole: true }) : "None scheduled"}
+                  </dd>
                   {d.nextRun ? (
                     <dd className="text-xs text-muted-foreground">
-                      {formatDate(d.nextRun.scheduledFor)}, {plural(d.nextRun.invoiceIds.length, "invoice")}
+                      {formatDate(d.nextRun.scheduledFor)},{" "}
+                      {plural(d.nextRun.invoiceIds.length, "invoice")}
                     </dd>
                   ) : null}
                 </Link>
@@ -119,25 +202,40 @@ export function SupplierDashboard() {
         </DashboardCard>
 
         {/* 2. RFQs */}
-        <DashboardCard index={1} title="RFQs awaiting response" icon={FileTextIcon} action={{ label: "All RFQs", href: "/quotes" }}>
+        <DashboardCard
+          index={1}
+          title="RFQs awaiting response"
+          icon={FileTextIcon}
+          action={{ label: "All RFQs", href: "/quotes" }}
+        >
           {rfqs.isPending ? (
             <LoadingState rows={3} />
           ) : rfqs.isError ? (
             <ErrorState error={rfqs.error} onRetry={() => rfqs.refetch()} />
           ) : d.openRfqs.length === 0 ? (
-            <EmptyState icon={FileTextIcon} title="No requests awaiting you" description="New requests for quotation from Brewfitt appear here." />
+            <EmptyState
+              icon={FileTextIcon}
+              title="No requests awaiting you"
+              description="New requests for quotation from Brewfitt appear here."
+            />
           ) : (
             <ul>
               {d.openRfqs.map((r) => {
-                const days = Math.round((Date.parse(`${r.deadline}T00:00:00Z`) - Date.now()) / 86_400_000);
+                const days = Math.round(
+                  (Date.parse(`${r.deadline}T00:00:00Z`) - Date.now()) / 86_400_000,
+                );
                 return (
                   <CardRow key={r.id} href={hrefFor("rfq", r.id)}>
                     <div className="min-w-0 flex-1">
                       <p className="font-medium">{r.number}</p>
-                      <p className="truncate text-sm text-muted-foreground">{r.lines.map((l) => d.productName.get(l.productId) ?? "Item").join(", ")}</p>
+                      <p className="truncate text-sm text-muted-foreground">
+                        {r.lines.map((l) => d.productName.get(l.productId) ?? "Item").join(", ")}
+                      </p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <StatusPill tone={days <= 3 ? "warning" : "info"}>Due {formatRelativeDay(r.deadline)}</StatusPill>
+                      <StatusPill tone={days <= 3 ? "warning" : "info"}>
+                        Due {formatRelativeDay(r.deadline)}
+                      </StatusPill>
                     </div>
                   </CardRow>
                 );
@@ -147,7 +245,13 @@ export function SupplierDashboard() {
         </DashboardCard>
 
         {/* 3. Purchase orders */}
-        <DashboardCard index={2} className="lg:col-span-2" title="Purchase orders" icon={PackageIcon} action={{ label: "All purchase orders", href: "/orders" }}>
+        <DashboardCard
+          index={2}
+          className="lg:col-span-2"
+          title="Purchase orders"
+          icon={PackageIcon}
+          action={{ label: "All purchase orders", href: "/orders" }}
+        >
           {pos.isPending ? (
             <LoadingState rows={2} />
           ) : pos.isError ? (
@@ -156,7 +260,11 @@ export function SupplierDashboard() {
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
               <dl className="grid grid-cols-2 gap-2">
                 {d.stageCounts.map(([status, count]) => (
-                  <Link key={status} href={`/orders?status=${status}`} className="rounded-xl border p-3 transition hover:border-primary/40 hover:bg-accent/40">
+                  <Link
+                    key={status}
+                    href={`/orders?status=${status}`}
+                    className="rounded-xl border p-3 transition hover:border-primary/40 hover:bg-accent/40"
+                  >
                     <dt className="text-xs text-muted-foreground">{PO_STATUS[status].label}</dt>
                     <dd className="mt-0.5 text-2xl font-semibold tabular-nums">{count}</dd>
                   </Link>
@@ -172,11 +280,17 @@ export function SupplierDashboard() {
                       <CardRow key={p.id} href={hrefFor("purchase-order", p.id)}>
                         <div className="min-w-0 flex-1">
                           <p className="font-medium">{p.number}</p>
-                          <p className="text-sm text-muted-foreground">{formatMoney(p.total, { whole: true })}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {formatMoney(p.total, { whole: true })}
+                          </p>
                         </div>
                         <div className="text-right">
-                          <StatusPill tone={PO_STATUS[p.status].tone}>{PO_STATUS[p.status].label}</StatusPill>
-                          <p className="mt-0.5 text-xs text-muted-foreground">Expected {formatDate(p.expectedDate)}</p>
+                          <StatusPill tone={PO_STATUS[p.status].tone}>
+                            {PO_STATUS[p.status].label}
+                          </StatusPill>
+                          <p className="mt-0.5 text-xs text-muted-foreground">
+                            Expected {formatDate(p.expectedDate)}
+                          </p>
                         </div>
                       </CardRow>
                     ))}
@@ -188,7 +302,12 @@ export function SupplierDashboard() {
         </DashboardCard>
 
         {/* 4. Brewfitt stock and forecast */}
-        <DashboardCard index={3} title="Brewfitt stock of your items" icon={TrendUpIcon} action={{ label: "Stock and forecast", href: "/stock" }}>
+        <DashboardCard
+          index={3}
+          title="Brewfitt stock of your items"
+          icon={TrendUpIcon}
+          action={{ label: "Stock and forecast", href: "/stock" }}
+        >
           {stock.isPending || forecast.isPending ? (
             <LoadingState rows={3} />
           ) : stock.isError ? (
@@ -197,7 +316,9 @@ export function SupplierDashboard() {
             <ul className="divide-y">
               {d.stockRows.map(({ stock: s, forecast: f }) => (
                 <li key={s.productId} className="py-2.5 first:pt-0">
-                  <p className="line-clamp-1 text-sm font-medium">{d.productName.get(s.productId)}</p>
+                  <p className="line-clamp-1 text-sm font-medium">
+                    {d.productName.get(s.productId)}
+                  </p>
                   <div className="mt-1 flex items-center justify-between gap-2 text-xs text-muted-foreground">
                     <span className="tabular-nums">
                       {s.onHand} held · min {s.minimumLevel}
@@ -212,22 +333,39 @@ export function SupplierDashboard() {
         </DashboardCard>
 
         {/* 5. Product submissions */}
-        <DashboardCard index={4} title="Product submissions" icon={TagIcon} action={{ label: "Products and offers", href: "/products" }}>
+        <DashboardCard
+          index={4}
+          title="Product submissions"
+          icon={TagIcon}
+          action={{ label: "Products and offers", href: "/products" }}
+        >
           {submissions.isPending ? (
             <LoadingState rows={3} />
           ) : submissions.isError ? (
             <ErrorState error={submissions.error} onRetry={() => submissions.refetch()} />
           ) : d.openSubmissions.length === 0 ? (
-            <EmptyState icon={TagIcon} title="No submissions yet" action={<Button asChild size="sm" variant="outline"><Link href="/products?new=product">Submit a product</Link></Button>} />
+            <EmptyState
+              icon={TagIcon}
+              title="No submissions yet"
+              action={
+                <Button asChild size="sm" variant="outline">
+                  <Link href="/products?new=product">Submit a product</Link>
+                </Button>
+              }
+            />
           ) : (
             <ul>
               {d.openSubmissions.map((sp) => (
                 <CardRow key={sp.id} href={hrefFor("supplier-product", sp.id)}>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium">{sp.name}</p>
-                    <p className="text-xs text-muted-foreground">Updated {formatSince(sp.updatedAt)}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Updated {formatSince(sp.updatedAt)}
+                    </p>
                   </div>
-                  <StatusPill tone={SUBMISSION_STATUS[sp.status].tone}>{SUBMISSION_STATUS[sp.status].label}</StatusPill>
+                  <StatusPill tone={SUBMISSION_STATUS[sp.status].tone}>
+                    {SUBMISSION_STATUS[sp.status].label}
+                  </StatusPill>
                 </CardRow>
               ))}
             </ul>
@@ -235,7 +373,12 @@ export function SupplierDashboard() {
         </DashboardCard>
 
         {/* Simulated insights (supply-side) */}
-        <DashboardCard index={5} title="What Brewfitt is likely to need" icon={SparkleIcon} action={{ label: "Forecast", href: "/stock" }}>
+        <DashboardCard
+          index={5}
+          title="What Brewfitt is likely to need"
+          icon={SparkleIcon}
+          action={{ label: "Forecast", href: "/stock" }}
+        >
           {insights.isPending ? (
             <LoadingState rows={2} />
           ) : d.supplierInsights.length === 0 ? (
@@ -247,11 +390,19 @@ export function SupplierDashboard() {
               ))}
             </div>
           )}
-          {(insights.data?.length ?? 0) > d.supplierInsights.length ? <AllInsightsButton count={insights.data!.length} className="mt-3" /> : null}
+          {(insights.data?.length ?? 0) > d.supplierInsights.length ? (
+            <AllInsightsButton count={insights.data!.length} className="mt-3" />
+          ) : null}
         </DashboardCard>
 
         {/* 6. Conversations */}
-        <DashboardCard index={6} title="Conversations" icon={ChatsCircleIcon} action={{ label: "Messages", href: "/messages" }} headerExtra={d.unread ? <StatusPill tone="info">{d.unread} new</StatusPill> : null}>
+        <DashboardCard
+          index={6}
+          title="Conversations"
+          icon={ChatsCircleIcon}
+          action={{ label: "Messages", href: "/messages" }}
+          headerExtra={d.unread ? <StatusPill tone="info">{d.unread} new</StatusPill> : null}
+        >
           {threads.isPending ? (
             <LoadingState rows={3} />
           ) : threads.isError ? (
@@ -260,9 +411,22 @@ export function SupplierDashboard() {
             <ul>
               {d.recentThreads.map((t) => (
                 <CardRow key={t.id} href={hrefFor("thread", t.id)}>
-                  <span aria-hidden className={cn("size-2 shrink-0 rounded-full", t.unreadCount ? "bg-primary" : "bg-transparent")} />
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "size-2 shrink-0 rounded-full",
+                      t.unreadCount ? "bg-primary" : "bg-transparent",
+                    )}
+                  />
                   <div className="min-w-0 flex-1">
-                    <p className={cn("truncate text-sm", t.unreadCount ? "font-semibold" : "font-medium")}>{t.subject}</p>
+                    <p
+                      className={cn(
+                        "truncate text-sm",
+                        t.unreadCount ? "font-semibold" : "font-medium",
+                      )}
+                    >
+                      {t.subject}
+                    </p>
                     <p className="text-xs text-muted-foreground">{formatSince(t.lastMessageAt)}</p>
                   </div>
                 </CardRow>
@@ -272,7 +436,13 @@ export function SupplierDashboard() {
         </DashboardCard>
 
         {/* 7. Purchase history and ranking */}
-        <DashboardCard index={7} className="lg:col-span-2" title="Purchase history" icon={ChartBarIcon} action={{ label: "Purchase orders", href: "/orders" }}>
+        <DashboardCard
+          index={7}
+          className="lg:col-span-2"
+          title="Purchase history"
+          icon={ChartBarIcon}
+          action={{ label: "Purchase orders", href: "/orders" }}
+        >
           {performance.isPending ? (
             <LoadingState rows={2} />
           ) : performance.isError ? (
@@ -282,36 +452,63 @@ export function SupplierDashboard() {
               <figure>
                 <div className="flex h-36 items-end gap-1.5" aria-hidden>
                   {performance.data.monthly.map((m) => (
-                    <div key={m.month} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
-                      <div className="w-full rounded-t-md bg-chart-1/85" style={{ height: `${Math.max(2, (m.total.amount / maxMonth) * 100)}%` }} title={`${monthLabel(m.month)}: ${formatMoney(m.total, { whole: true })}`} />
-                      <span className="text-[10px] text-muted-foreground">{monthLabel(m.month).slice(0, 1)}</span>
+                    <div
+                      key={m.month}
+                      className="flex h-full flex-1 flex-col items-center justify-end gap-1"
+                    >
+                      <div
+                        className="w-full rounded-t-md bg-chart-1/85"
+                        style={{ height: `${Math.max(2, (m.total.amount / maxMonth) * 100)}%` }}
+                        title={`${monthLabel(m.month)}: ${formatMoney(m.total, { whole: true })}`}
+                      />
+                      <span className="text-[10px] text-muted-foreground">
+                        {monthLabel(m.month).slice(0, 1)}
+                      </span>
                     </div>
                   ))}
                 </div>
                 <figcaption className="mt-3 text-sm text-muted-foreground">
-                  Brewfitt bought {formatMoney(performance.data.last12Months, { whole: true })} from you in the last 12 months across{" "}
-                  {plural(performance.data.monthly.reduce((s, m) => s + m.orders, 0), "purchase order")}.
+                  Brewfitt bought {formatMoney(performance.data.last12Months, { whole: true })} from
+                  you in the last 12 months across{" "}
+                  {plural(
+                    performance.data.monthly.reduce((s, m) => s + m.orders, 0),
+                    "purchase order",
+                  )}
+                  .
                   {(() => {
-                    const peak = [...performance.data.monthly].sort((a, b) => b.total.amount - a.total.amount)[0];
-                    return peak && peak.total.amount > 0 ? ` The busiest month was ${new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${peak.month}-01T00:00:00Z`))}.` : "";
+                    const peak = [...performance.data.monthly].sort(
+                      (a, b) => b.total.amount - a.total.amount,
+                    )[0];
+                    return peak && peak.total.amount > 0
+                      ? ` The busiest month was ${new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${peak.month}-01T00:00:00Z`))}.`
+                      : "";
                   })()}
                 </figcaption>
               </figure>
               <div>
                 <div className="rounded-xl bg-brand-subtle/60 p-4">
-                  <p className="text-xs text-brand-subtle-foreground">Ranking among Brewfitt&apos;s {performance.data.sector}s</p>
+                  <p className="text-xs text-brand-subtle-foreground">
+                    Ranking among Brewfitt&apos;s {performance.data.sector}s
+                  </p>
                   <p className="mt-1 text-3xl font-semibold tracking-tight">
                     {performance.data.rank}
-                    <span className="text-base font-normal text-muted-foreground"> of {performance.data.supplierCount}</span>
+                    <span className="text-base font-normal text-muted-foreground">
+                      {" "}
+                      of {performance.data.supplierCount}
+                    </span>
                   </p>
-                  <p className="text-xs text-muted-foreground">By spend over 12 months. Other suppliers are not named.</p>
+                  <p className="text-xs text-muted-foreground">
+                    By spend over 12 months. Other suppliers are not named.
+                  </p>
                 </div>
                 <p className="mt-4 mb-1 text-xs font-medium text-muted-foreground">Top products</p>
                 <ol className="space-y-1.5 text-sm">
                   {performance.data.topProducts.slice(0, 3).map((p) => (
                     <li key={p.productId} className="flex justify-between gap-3">
                       <span className="line-clamp-1">{d.productName.get(p.productId)}</span>
-                      <span className="shrink-0 tabular-nums text-muted-foreground">{formatMoney(p.total, { whole: true })}</span>
+                      <span className="shrink-0 text-muted-foreground tabular-nums">
+                        {formatMoney(p.total, { whole: true })}
+                      </span>
                     </li>
                   ))}
                 </ol>
@@ -321,7 +518,12 @@ export function SupplierDashboard() {
         </DashboardCard>
 
         {/* 8. Brewfitt contacts */}
-        <DashboardCard index={8} title="Your Brewfitt contacts" icon={UsersIcon} action={{ label: "Account", href: "/account" }}>
+        <DashboardCard
+          index={8}
+          title="Your Brewfitt contacts"
+          icon={UsersIcon}
+          action={{ label: "Account", href: "/account" }}
+        >
           {me.isPending ? (
             <LoadingState rows={2} />
           ) : me.isError ? (

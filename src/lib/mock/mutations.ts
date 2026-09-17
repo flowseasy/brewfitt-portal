@@ -29,18 +29,25 @@ export function applyMutation(db: MockDb, entry: MutationEntry): void {
   for (const change of entry.changes) {
     if (change.type === "insert") continue;
     const key = `${change.collection}|${change.match.field}`;
-    if (!pending.has(key)) pending.set(key, new Set(list(db, change.collection).map((item) => item[change.match.field])));
+    if (!pending.has(key))
+      pending.set(
+        key,
+        new Set(list(db, change.collection).map((item) => item[change.match.field])),
+      );
   }
   for (const change of entry.changes) {
     if (change.type === "insert") {
       for (const [key, values] of pending) {
         const [collection, field] = key.split("|");
-        if (collection === change.collection) values.add((change.record as Record<string, unknown>)[field!]);
+        if (collection === change.collection)
+          values.add((change.record as Record<string, unknown>)[field!]);
       }
       continue;
     }
     if (!pending.get(`${change.collection}|${change.match.field}`)!.has(change.match.value)) {
-      throw new Error(`${entry.op}: no ${change.collection} with ${change.match.field} ${change.match.value}`);
+      throw new Error(
+        `${entry.op}: no ${change.collection} with ${change.match.field} ${change.match.value}`,
+      );
     }
   }
 
@@ -51,13 +58,29 @@ export function applyMutation(db: MockDb, entry: MutationEntry): void {
       continue;
     }
     const index = items.findIndex((item) => item[change.match.field] === change.match.value);
-    if (index < 0) throw new Error(`${entry.op}: no ${change.collection} with ${change.match.field} ${change.match.value}`);
+    if (index < 0)
+      throw new Error(
+        `${entry.op}: no ${change.collection} with ${change.match.field} ${change.match.value}`,
+      );
     if (change.type === "patch") items[index] = { ...items[index], ...structuredClone(change.set) };
     else items.splice(index, 1);
   }
 }
 
 // Small helpers so handlers read clearly.
-export const insert = (collection: Collection, record: object): Change => ({ type: "insert", collection, record });
-export const patch = (collection: Collection, id: string, set: object, field = "id"): Change => ({ type: "patch", collection, match: { field, value: id }, set });
-export const remove = (collection: Collection, id: string, field = "id"): Change => ({ type: "remove", collection, match: { field, value: id } });
+export const insert = (collection: Collection, record: object): Change => ({
+  type: "insert",
+  collection,
+  record,
+});
+export const patch = (collection: Collection, id: string, set: object, field = "id"): Change => ({
+  type: "patch",
+  collection,
+  match: { field, value: id },
+  set,
+});
+export const remove = (collection: Collection, id: string, field = "id"): Change => ({
+  type: "remove",
+  collection,
+  match: { field, value: id },
+});

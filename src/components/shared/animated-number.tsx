@@ -4,7 +4,13 @@ import { useEffect, useRef } from "react";
 import { animate, useReducedMotion } from "framer-motion";
 
 /** KPI number transition: counts to the value quickly, or jumps when motion is reduced. */
-export function AnimatedNumber({ value, format }: { value: number; format: (n: number) => string }) {
+export function AnimatedNumber({
+  value,
+  format,
+}: {
+  value: number;
+  format: (n: number) => string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const previous = useRef(0);
   const reduce = useReducedMotion();

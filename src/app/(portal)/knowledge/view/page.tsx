@@ -28,12 +28,26 @@ function KnowledgeView() {
   const id = useSearchParams().get("id") ?? "";
   const key = usePersonaKey();
   const isSupplier = useIsSupplier();
-  const item = useQuery({ queryKey: queryKeys.knowledgeItem(key, id), queryFn: () => api.knowledge.get(id), enabled: !!id });
+  const item = useQuery({
+    queryKey: queryKeys.knowledgeItem(key, id),
+    queryFn: () => api.knowledge.get(id),
+    enabled: !!id,
+  });
   const all = useQuery({ queryKey: queryKeys.knowledge(key), queryFn: () => api.knowledge.list() });
-  const products = useQuery({ queryKey: queryKeys.products(key), queryFn: () => api.products.list() });
-  const categories = useQuery({ queryKey: queryKeys.categories(key), queryFn: () => api.products.categories() });
+  const products = useQuery({
+    queryKey: queryKeys.products(key),
+    queryFn: () => api.products.list(),
+  });
+  const categories = useQuery({
+    queryKey: queryKeys.categories(key),
+    queryFn: () => api.products.categories(),
+  });
   const documentId = item.data?.documentId ?? "";
-  const doc = useQuery({ queryKey: queryKeys.document(key, documentId), queryFn: () => api.documents.get(documentId), enabled: !!documentId });
+  const doc = useQuery({
+    queryKey: queryKeys.document(key, documentId),
+    queryFn: () => api.documents.get(documentId),
+    enabled: !!documentId,
+  });
 
   if (item.isPending) return <LoadingState rows={5} label="Loading article" />;
   if (item.isError) return <ErrorState error={item.error} onRetry={() => item.refetch()} />;
@@ -42,11 +56,21 @@ function KnowledgeView() {
   const type = KNOWLEDGE_TYPE[k.type];
   const categoryName = new Map((categories.data ?? []).map((c) => [c.id, c.name]));
   const visibleProducts = new Map((products.data ?? []).map((p) => [p.id, p]));
-  const related = (all.data ?? []).filter((x) => x.id !== k.id && x.status === "approved" && (x.category === k.category || x.productIds.some((pid) => k.productIds.includes(pid)))).slice(0, 3);
+  const related = (all.data ?? [])
+    .filter(
+      (x) =>
+        x.id !== k.id &&
+        x.status === "approved" &&
+        (x.category === k.category || x.productIds.some((pid) => k.productIds.includes(pid))),
+    )
+    .slice(0, 3);
 
   return (
     <div>
-      <Link href="/knowledge" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        href="/knowledge"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeftIcon className="size-4" aria-hidden />
         Knowledge centre
       </Link>
@@ -61,21 +85,34 @@ function KnowledgeView() {
         title={k.title}
         description={
           <span className="flex flex-wrap items-center gap-2">
-            {k.status !== "approved" || (isSupplier && k.source === "supplier") ? <StatusPill tone={SUBMISSION_STATUS[k.status].tone}>{SUBMISSION_STATUS[k.status].label}</StatusPill> : null}
+            {k.status !== "approved" || (isSupplier && k.source === "supplier") ? (
+              <StatusPill tone={SUBMISSION_STATUS[k.status].tone}>
+                {SUBMISSION_STATUS[k.status].label}
+              </StatusPill>
+            ) : null}
             <span>
-              {k.source === "supplier" ? "Supplier content, reviewed by Brewfitt" : "Brewfitt"} · updated {formatDate(k.updatedAt)}
+              {k.source === "supplier" ? "Supplier content, reviewed by Brewfitt" : "Brewfitt"} ·
+              updated {formatDate(k.updatedAt)}
             </span>
           </span>
         }
       />
 
       {k.reviewNote ? (
-        <div className={k.status === "rejected" ? "mb-6 rounded-2xl border border-danger/30 bg-danger-subtle p-4 text-sm" : "mb-6 rounded-2xl border bg-muted/50 p-4 text-sm"}>
+        <div
+          className={
+            k.status === "rejected"
+              ? "mb-6 rounded-2xl border border-danger/30 bg-danger-subtle p-4 text-sm"
+              : "mb-6 rounded-2xl border bg-muted/50 p-4 text-sm"
+          }
+        >
           <p className="font-medium">Note from Brewfitt</p>
           <p className="mt-1">{k.reviewNote}</p>
         </div>
       ) : k.status === "submitted" || k.status === "under-review" ? (
-        <div className="mb-6 rounded-2xl border bg-info-subtle p-4 text-sm">Brewfitt is reviewing this. Customers will see it once it is approved.</div>
+        <div className="mb-6 rounded-2xl border bg-info-subtle p-4 text-sm">
+          Brewfitt is reviewing this. Customers will see it once it is approved.
+        </div>
       ) : null}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
@@ -88,9 +125,18 @@ function KnowledgeView() {
                 <span className="flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow">
                   <PlayIcon weight="fill" className="size-6" aria-hidden />
                 </span>
-                <p className="max-w-sm text-sm text-muted-foreground">{k.videoUrl ? "This video is hosted by the supplier." : "Video playback arrives with the live portal. The walkthrough is written out below."}</p>
+                <p className="max-w-sm text-sm text-muted-foreground">
+                  {k.videoUrl
+                    ? "This video is hosted by the supplier."
+                    : "Video playback arrives with the live portal. The walkthrough is written out below."}
+                </p>
                 {k.videoUrl ? (
-                  <a href={k.videoUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+                  <a
+                    href={k.videoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                  >
                     Open the video
                     <ArrowSquareOutIcon className="size-4" aria-hidden />
                   </a>
@@ -113,7 +159,13 @@ function KnowledgeView() {
               <h2 id="kb-doc" className="mb-2 font-medium">
                 Document
               </h2>
-              {doc.isPending ? <LoadingState rows={1} /> : doc.isError ? <ErrorState error={doc.error} onRetry={() => doc.refetch()} /> : <DocumentCard doc={doc.data} showApproval={isSupplier} />}
+              {doc.isPending ? (
+                <LoadingState rows={1} />
+              ) : doc.isError ? (
+                <ErrorState error={doc.error} onRetry={() => doc.refetch()} />
+              ) : (
+                <DocumentCard doc={doc.data} showApproval={isSupplier} />
+              )}
             </section>
           ) : null}
         </article>

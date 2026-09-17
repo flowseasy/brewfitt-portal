@@ -14,7 +14,14 @@ export const Sector = z.enum([
   "distributor",
 ]);
 
-export const PaymentTerms = z.enum(["proforma", "7-days", "14-days", "30-days-eom", "30-days", "60-days"]);
+export const PaymentTerms = z.enum([
+  "proforma",
+  "7-days",
+  "14-days",
+  "30-days-eom",
+  "30-days",
+  "60-days",
+]);
 
 export const RelationshipHealth = z.enum(["strong", "steady", "at-risk"]);
 
@@ -119,7 +126,11 @@ export const AccountPatch = z.object({
   vatNumber: z.string().nullable().optional(),
 });
 
-export const AddressInput = Address.omit({ id: true, accountId: true, approvalStatus: true }).extend({
+export const AddressInput = Address.omit({
+  id: true,
+  accountId: true,
+  approvalStatus: true,
+}).extend({
   latitude: z.number().min(-90).max(90).optional(),
   longitude: z.number().min(-180).max(180).optional(),
 });

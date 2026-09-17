@@ -27,7 +27,8 @@ export const DOCUMENT_GROUP: Record<DocumentGroup, string> = {
 };
 
 export function documentGroup(d: Document): DocumentGroup {
-  if (!d.ownerAccountId && (d.category === "company" || d.category === "insurance")) return "company";
+  if (!d.ownerAccountId && (d.category === "company" || d.category === "insurance"))
+    return "company";
   if (d.category === "insurance" || d.category === "compliance") return "compliance";
   if (d.category === "agreement") return "agreements";
   if (d.category === "spec" || d.category === "manual") return "product";
@@ -35,7 +36,12 @@ export function documentGroup(d: Document): DocumentGroup {
 }
 
 /** Categories whose PDF preview lives on the related record's page. */
-export const RECORD_PREVIEW = new Set<Document["category"]>(["quote", "order", "invoice", "credit-note"]);
+export const RECORD_PREVIEW = new Set<Document["category"]>([
+  "quote",
+  "order",
+  "invoice",
+  "credit-note",
+]);
 
 /** Expired, or expiring within 30 days. */
 export function isExpiring(d: Document, daysFromToday: (iso: string) => number): boolean {
@@ -44,5 +50,14 @@ export function isExpiring(d: Document, daysFromToday: (iso: string) => number):
 
 /** A newer certificate of the same kind has been uploaded and is waiting for Brewfitt. */
 export function hasPendingRenewal(d: Document, all: Document[]): boolean {
-  return all.some((x) => x.id !== d.id && x.ownerAccountId === d.ownerAccountId && x.category === d.category && x.approvalStatus === "pending" && !!x.expiresAt && !!d.expiresAt && x.expiresAt > d.expiresAt);
+  return all.some(
+    (x) =>
+      x.id !== d.id &&
+      x.ownerAccountId === d.ownerAccountId &&
+      x.category === d.category &&
+      x.approvalStatus === "pending" &&
+      !!x.expiresAt &&
+      !!d.expiresAt &&
+      x.expiresAt > d.expiresAt,
+  );
 }

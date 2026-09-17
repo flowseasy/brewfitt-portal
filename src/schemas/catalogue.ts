@@ -86,7 +86,13 @@ export const StockForecast = z.object({
  * among suppliers of the same kind (manufacturers or distributors).
  */
 export const SupplierPerformance = z.object({
-  monthly: z.array(z.object({ month: z.string().regex(/^\d{4}-\d{2}$/), total: Money, orders: z.int().nonnegative() })),
+  monthly: z.array(
+    z.object({
+      month: z.string().regex(/^\d{4}-\d{2}$/),
+      total: Money,
+      orders: z.int().nonnegative(),
+    }),
+  ),
   topProducts: z.array(z.object({ productId: Id, quantity: z.int().nonnegative(), total: Money })),
   last12Months: Money,
   sector: z.enum(["manufacturer", "distributor"]),

@@ -25,14 +25,27 @@ import { toast } from "sonner";
 import { formatAddress } from "@/components/account/addresses";
 import { TextareaField, TextField } from "@/components/forms/fields";
 import { ThreadView } from "@/components/messages/thread-view";
-import { DeliveryTimeline, OrderDocument, OrderStageTracker, purchaseOrderStages, salesOrderStages } from "@/components/orders/order-parts";
+import {
+  DeliveryTimeline,
+  OrderDocument,
+  OrderStageTracker,
+  purchaseOrderStages,
+  salesOrderStages,
+} from "@/components/orders/order-parts";
 import { LinesTable, TotalsList } from "@/components/quotes/quote-parts";
 import { PageHeader } from "@/components/shared/page-header";
 import { PdfPreview } from "@/components/shared/pdf-preview";
 import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { FieldGroup } from "@/components/ui/field";
 import { useIsSupplier, usePersonaKey } from "@/features/session/use-session";
 import { api, errorMessage, queryKeys } from "@/lib/api";
@@ -57,14 +70,25 @@ function OrderView() {
 
 function Back({ label }: { label: string }) {
   return (
-    <Link href="/orders" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+    <Link
+      href="/orders"
+      className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+    >
       <ArrowLeftIcon className="size-4" aria-hidden />
       {label}
     </Link>
   );
 }
 
-function SideCard({ title, icon: Icon, children }: { title: string; icon: typeof MapPinIcon; children: React.ReactNode }) {
+function SideCard({
+  title,
+  icon: Icon,
+  children,
+}: {
+  title: string;
+  icon: typeof MapPinIcon;
+  children: React.ReactNode;
+}) {
   return (
     <section className="rounded-2xl border bg-card p-4" aria-label={title}>
       <h2 className="mb-2 flex items-center gap-2 text-sm font-medium">
@@ -84,28 +108,51 @@ function SalesOrderView({ id }: { id: string }) {
   const router = useRouter();
   const key = usePersonaKey();
   const queryClient = useQueryClient();
-  const order = useQuery({ queryKey: queryKeys.salesOrder(key, id), queryFn: () => api.orders.salesOrder(id), enabled: !!id });
+  const order = useQuery({
+    queryKey: queryKeys.salesOrder(key, id),
+    queryFn: () => api.orders.salesOrder(id),
+    enabled: !!id,
+  });
   const me = useQuery({ queryKey: queryKeys.me(key), queryFn: () => api.session.me() });
-  const priceList = useQuery({ queryKey: queryKeys.priceList(key), queryFn: () => api.priceList.get() });
-  const addresses = useQuery({ queryKey: queryKeys.addresses(key), queryFn: () => api.account.addresses() });
-  const invoices = useQuery({ queryKey: queryKeys.invoices(key), queryFn: () => api.invoices.list() });
+  const priceList = useQuery({
+    queryKey: queryKeys.priceList(key),
+    queryFn: () => api.priceList.get(),
+  });
+  const addresses = useQuery({
+    queryKey: queryKeys.addresses(key),
+    queryFn: () => api.account.addresses(),
+  });
+  const invoices = useQuery({
+    queryKey: queryKeys.invoices(key),
+    queryFn: () => api.invoices.list(),
+  });
   const jobs = useQuery({ queryKey: queryKeys.jobs(key), queryFn: () => api.jobs.list() });
   const cases = useQuery({ queryKey: queryKeys.cases(key), queryFn: () => api.cases.list() });
   const [pdfOpen, setPdfOpen] = useState(useSearchParams().get("pdf") === "1");
   const [changeOpen, setChangeOpen] = useState(false);
 
-  const products = useMemo(() => new Map((priceList.data?.lines ?? []).map((l) => [l.productId, l.product])), [priceList.data]);
-  const addressById = useMemo(() => new Map((addresses.data ?? []).map((a) => [a.id, a])), [addresses.data]);
+  const products = useMemo(
+    () => new Map((priceList.data?.lines ?? []).map((l) => [l.productId, l.product])),
+    [priceList.data],
+  );
+  const addressById = useMemo(
+    () => new Map((addresses.data ?? []).map((a) => [a.id, a])),
+    [addresses.data],
+  );
 
   const reorder = useMutation({
     mutationFn: async (o: SalesOrderDetail) => {
       let basket = await api.shop.basket();
-      for (const l of o.lines) if (products.has(l.productId)) basket = await api.shop.addToBasket({ productId: l.productId, qty: l.qty });
+      for (const l of o.lines)
+        if (products.has(l.productId))
+          basket = await api.shop.addToBasket({ productId: l.productId, qty: l.qty });
       return basket;
     },
     onSuccess: (basket) => {
       queryClient.setQueryData(queryKeys.basket(key), basket);
-      toast.success("Order lines added to your basket", { action: { label: "View basket", onClick: () => router.push("/shop/basket") } });
+      toast.success("Order lines added to your basket", {
+        action: { label: "View basket", onClick: () => router.push("/shop/basket") },
+      });
     },
     onError: (error) => toast.error("Could not reorder", { description: errorMessage(error) }),
   });
@@ -149,7 +196,11 @@ function SalesOrderView({ id }: { id: string }) {
               <FilePdfIcon aria-hidden />
               Confirmation
             </Button>
-            <Button variant="outline" onClick={() => reorder.mutate(o)} disabled={reorder.isPending}>
+            <Button
+              variant="outline"
+              onClick={() => reorder.mutate(o)}
+              disabled={reorder.isPending}
+            >
               <ArrowsClockwiseIcon aria-hidden />
               Reorder
             </Button>
@@ -164,7 +215,10 @@ function SalesOrderView({ id }: { id: string }) {
       />
 
       <section aria-label="Order progress" className="mb-6 rounded-2xl border bg-card p-5">
-        <OrderStageTracker stages={salesOrderStages(o, o.deliveries)} cancelled={o.status === "cancelled"} />
+        <OrderStageTracker
+          stages={salesOrderStages(o, o.deliveries)}
+          cancelled={o.status === "cancelled"}
+        />
       </section>
 
       {pending.length ? (
@@ -192,7 +246,11 @@ function SalesOrderView({ id }: { id: string }) {
                 qty: l.qty,
                 unitPrice: l.price,
                 lineTotal: { amount: l.qty * l.price.amount, currency: l.price.currency },
-                extra: l.backordered ? `${l.delivered} delivered, ${l.backordered} on back order` : o.status === "part-delivered" || (o.status === "delivered" && l.delivered) ? `${l.delivered} delivered` : undefined,
+                extra: l.backordered
+                  ? `${l.delivered} delivered, ${l.backordered} on back order`
+                  : o.status === "part-delivered" || (o.status === "delivered" && l.delivered)
+                    ? `${l.delivered} delivered`
+                    : undefined,
               }))}
             />
           </section>
@@ -202,7 +260,11 @@ function SalesOrderView({ id }: { id: string }) {
               Deliveries
             </h2>
             {o.deliveries.length === 0 ? (
-              <EmptyState icon={PackageIcon} title="Not dispatched yet" description={`Delivery is ${o.confirmedDate ? "confirmed" : "requested"} for ${formatDate(o.confirmedDate ?? o.requestedDate)}. Tracking appears here when it leaves Huddersfield.`} />
+              <EmptyState
+                icon={PackageIcon}
+                title="Not dispatched yet"
+                description={`Delivery is ${o.confirmedDate ? "confirmed" : "requested"} for ${formatDate(o.confirmedDate ?? o.requestedDate)}. Tracking appears here when it leaves Huddersfield.`}
+              />
             ) : (
               <DeliveryTimeline deliveries={o.deliveries} products={products} />
             )}
@@ -215,9 +277,26 @@ function SalesOrderView({ id }: { id: string }) {
               </h2>
               <ul className="space-y-2">
                 {o.changeRequests.map((c) => (
-                  <li key={c.id} className="flex flex-wrap items-center gap-2 rounded-xl border bg-card p-3 text-sm">
+                  <li
+                    key={c.id}
+                    className="flex flex-wrap items-center gap-2 rounded-xl border bg-card p-3 text-sm"
+                  >
                     <span className="flex-1">{describeChange(c, addressById)}</span>
-                    <StatusPill tone={c.status === "approved" ? "success" : c.status === "rejected" ? "danger" : "info"}>{c.status === "pending" ? "Awaiting approval" : c.status === "approved" ? "Approved" : "Not approved"}</StatusPill>
+                    <StatusPill
+                      tone={
+                        c.status === "approved"
+                          ? "success"
+                          : c.status === "rejected"
+                            ? "danger"
+                            : "info"
+                      }
+                    >
+                      {c.status === "pending"
+                        ? "Awaiting approval"
+                        : c.status === "approved"
+                          ? "Approved"
+                          : "Not approved"}
+                    </StatusPill>
                     {c.reason ? <p className="w-full text-muted-foreground">{c.reason}</p> : null}
                   </li>
                 ))}
@@ -225,7 +304,10 @@ function SalesOrderView({ id }: { id: string }) {
             </section>
           ) : null}
 
-          <section aria-labelledby="order-conversation" className="rounded-2xl border bg-card p-4 sm:p-5">
+          <section
+            aria-labelledby="order-conversation"
+            className="rounded-2xl border bg-card p-4 sm:p-5"
+          >
             <h2 id="order-conversation" className="mb-4 flex items-center gap-2 font-medium">
               <ChatsCircleIcon className="size-5 text-primary" aria-hidden />
               Conversation about this order
@@ -236,14 +318,22 @@ function SalesOrderView({ id }: { id: string }) {
 
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
           <section aria-label="Totals" className="rounded-2xl border bg-card p-5">
-            <TotalsList subtotal={{ amount: net, currency: "GBP" }} vat={{ amount: vat, currency: "GBP" }} total={o.total} />
+            <TotalsList
+              subtotal={{ amount: net, currency: "GBP" }}
+              vat={{ amount: vat, currency: "GBP" }}
+              total={o.total}
+            />
           </section>
           <SideCard title="Delivery" icon={MapPinIcon}>
             {address ? (
               <>
                 <p className="text-sm font-medium">{address.label}</p>
                 <p className="text-sm text-muted-foreground">{formatAddress(address).join(", ")}</p>
-                {address.deliveryNotes ? <p className="mt-2 rounded-lg bg-muted/60 px-2.5 py-1.5 text-xs">{address.deliveryNotes}</p> : null}
+                {address.deliveryNotes ? (
+                  <p className="mt-2 rounded-lg bg-muted/60 px-2.5 py-1.5 text-xs">
+                    {address.deliveryNotes}
+                  </p>
+                ) : null}
               </>
             ) : null}
             <dl className="mt-3 space-y-1 text-sm">
@@ -258,7 +348,10 @@ function SalesOrderView({ id }: { id: string }) {
             </dl>
           </SideCard>
           {o.quoteId ? (
-            <Link href={hrefFor("quote", o.quoteId)} className="flex items-center gap-3 rounded-2xl border bg-card p-4 text-sm hover:border-primary/40">
+            <Link
+              href={hrefFor("quote", o.quoteId)}
+              className="flex items-center gap-3 rounded-2xl border bg-card p-4 text-sm hover:border-primary/40"
+            >
               <FileTextIcon className="size-5 text-primary" aria-hidden />
               From an accepted quote
             </Link>
@@ -268,9 +361,14 @@ function SalesOrderView({ id }: { id: string }) {
               <ul className="space-y-1.5 text-sm">
                 {orderInvoices.map((i) => (
                   <li key={i.id}>
-                    <Link href={hrefFor("invoice", i.id)} className="flex items-center justify-between gap-2 hover:underline">
+                    <Link
+                      href={hrefFor("invoice", i.id)}
+                      className="flex items-center justify-between gap-2 hover:underline"
+                    >
                       <span>{i.number}</span>
-                      <StatusPill tone={INVOICE_STATUS[i.status].tone}>{INVOICE_STATUS[i.status].label}</StatusPill>
+                      <StatusPill tone={INVOICE_STATUS[i.status].tone}>
+                        {INVOICE_STATUS[i.status].label}
+                      </StatusPill>
                     </Link>
                   </li>
                 ))}
@@ -282,9 +380,14 @@ function SalesOrderView({ id }: { id: string }) {
               <ul className="space-y-1.5 text-sm">
                 {orderJobs.map((j) => (
                   <li key={j.id}>
-                    <Link href={hrefFor("job", j.id)} className="flex items-center justify-between gap-2 hover:underline">
+                    <Link
+                      href={hrefFor("job", j.id)}
+                      className="flex items-center justify-between gap-2 hover:underline"
+                    >
                       <span className="min-w-0 truncate">{j.name}</span>
-                      <StatusPill tone={JOB_STATUS[j.status].tone}>{formatShortDate(j.scheduledDate)}</StatusPill>
+                      <StatusPill tone={JOB_STATUS[j.status].tone}>
+                        {formatShortDate(j.scheduledDate)}
+                      </StatusPill>
                     </Link>
                   </li>
                 ))}
@@ -303,7 +406,10 @@ function SalesOrderView({ id }: { id: string }) {
                 ))}
               </ul>
             ) : null}
-            <Link href={`/cases?new=1&orderId=${o.id}`} className="text-sm font-medium text-primary hover:underline">
+            <Link
+              href={`/cases?new=1&orderId=${o.id}`}
+              className="text-sm font-medium text-primary hover:underline"
+            >
               Raise a case about this order
             </Link>
           </SideCard>
@@ -311,16 +417,30 @@ function SalesOrderView({ id }: { id: string }) {
       </div>
 
       {me.data ? (
-        <PdfPreview open={pdfOpen} onOpenChange={setPdfOpen} title={`Order confirmation ${o.number}`}>
+        <PdfPreview
+          open={pdfOpen}
+          onOpenChange={setPdfOpen}
+          title={`Order confirmation ${o.number}`}
+        >
           <OrderDocument
             kind="Order confirmation"
             number={o.number}
             date={o.createdAt}
             reference={o.poReference}
             partyLabel="Customer"
-            partyLines={[me.data.account.name, ...(addressById.get(me.data.account.billingAddressId) ? formatAddress(addressById.get(me.data.account.billingAddressId)!) : [])]}
+            partyLines={[
+              me.data.account.name,
+              ...(addressById.get(me.data.account.billingAddressId)
+                ? formatAddress(addressById.get(me.data.account.billingAddressId)!)
+                : []),
+            ]}
             deliverTo={address ?? null}
-            lines={o.lines.map((l) => ({ sku: products.get(l.productId)?.sku ?? "", name: products.get(l.productId)?.name ?? l.productId, qty: l.qty, unit: l.price.amount }))}
+            lines={o.lines.map((l) => ({
+              sku: products.get(l.productId)?.sku ?? "",
+              name: products.get(l.productId)?.name ?? l.productId,
+              qty: l.qty,
+              unit: l.price.amount,
+            }))}
             total={o.total.amount}
             vatRate={me.data.vatRate}
             note={`Delivery ${o.confirmedDate ? "confirmed for" : "requested for"} ${formatDate(o.confirmedDate ?? o.requestedDate)}.`}
@@ -328,36 +448,79 @@ function SalesOrderView({ id }: { id: string }) {
         </PdfPreview>
       ) : null}
 
-      {canChange ? <ChangeRequestDialog open={changeOpen} onOpenChange={setChangeOpen} orderId={o.id} orderNumber={o.number} currentDate={o.confirmedDate ?? o.requestedDate} currentAddressId={o.deliveryAddressId} addresses={(addresses.data ?? []).filter((a) => a.accountId === o.accountId)} /> : null}
+      {canChange ? (
+        <ChangeRequestDialog
+          open={changeOpen}
+          onOpenChange={setChangeOpen}
+          orderId={o.id}
+          orderNumber={o.number}
+          currentDate={o.confirmedDate ?? o.requestedDate}
+          currentAddressId={o.deliveryAddressId}
+          addresses={(addresses.data ?? []).filter((a) => a.accountId === o.accountId)}
+        />
+      ) : null}
     </div>
   );
 }
 
 function describeChange(c: ChangeRequest, addresses: Map<string, Address>) {
-  if (c.kind === "date") return `Delivery date from ${formatDate(c.current)} to ${formatDate(c.requested)}`;
+  if (c.kind === "date")
+    return `Delivery date from ${formatDate(c.current)} to ${formatDate(c.requested)}`;
   return `Delivery address from ${addresses.get(c.current)?.label ?? "current address"} to ${addresses.get(c.requested)?.label ?? "a new address"}`;
 }
 
 const ChangeForm = z.discriminatedUnion("kind", [
-  z.object({ kind: z.literal("date"), requested: z.iso.date({ message: "Choose the new delivery date" }), reason: z.string().trim().max(300).nullable() }),
-  z.object({ kind: z.literal("address"), requested: z.string().min(1, "Choose the new delivery address"), reason: z.string().trim().max(300).nullable() }),
+  z.object({
+    kind: z.literal("date"),
+    requested: z.iso.date({ message: "Choose the new delivery date" }),
+    reason: z.string().trim().max(300).nullable(),
+  }),
+  z.object({
+    kind: z.literal("address"),
+    requested: z.string().min(1, "Choose the new delivery address"),
+    reason: z.string().trim().max(300).nullable(),
+  }),
 ]);
 type ChangeValues = z.infer<typeof ChangeForm>;
 
-function ChangeRequestDialog({ open, onOpenChange, orderId, orderNumber, currentDate, currentAddressId, addresses }: { open: boolean; onOpenChange: (o: boolean) => void; orderId: string; orderNumber: string; currentDate: string; currentAddressId: string; addresses: Address[] }) {
+function ChangeRequestDialog({
+  open,
+  onOpenChange,
+  orderId,
+  orderNumber,
+  currentDate,
+  currentAddressId,
+  addresses,
+}: {
+  open: boolean;
+  onOpenChange: (o: boolean) => void;
+  orderId: string;
+  orderNumber: string;
+  currentDate: string;
+  currentAddressId: string;
+  addresses: Address[];
+}) {
   const key = usePersonaKey();
   const queryClient = useQueryClient();
-  const form = useForm<ChangeValues>({ resolver: zodResolver(ChangeForm), defaultValues: { kind: "date", requested: "", reason: null } });
+  const form = useForm<ChangeValues>({
+    resolver: zodResolver(ChangeForm),
+    defaultValues: { kind: "date", requested: "", reason: null },
+  });
   const kind = form.watch("kind");
   const change = useMutation({
-    mutationFn: (v: ChangeValues) => api.orders.requestChange(orderId, { ...v, reason: v.reason || null }),
+    mutationFn: (v: ChangeValues) =>
+      api.orders.requestChange(orderId, { ...v, reason: v.reason || null }),
     onSuccess: () => {
-      for (const k of [queryKeys.salesOrder(key, orderId), queryKeys.threads(key)]) void queryClient.invalidateQueries({ queryKey: k });
+      for (const k of [queryKeys.salesOrder(key, orderId), queryKeys.threads(key)])
+        void queryClient.invalidateQueries({ queryKey: k });
       onOpenChange(false);
       form.reset({ kind: "date", requested: "", reason: null });
-      toast.success("Change requested", { description: "It shows as pending until Brewfitt approves it." });
+      toast.success("Change requested", {
+        description: "It shows as pending until Brewfitt approves it.",
+      });
     },
-    onError: (error) => toast.error("The change could not be requested", { description: errorMessage(error) }),
+    onError: (error) =>
+      toast.error("The change could not be requested", { description: errorMessage(error) }),
   });
   const tomorrow = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
 
@@ -366,21 +529,44 @@ function ChangeRequestDialog({ open, onOpenChange, orderId, orderNumber, current
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Request a change to {orderNumber}</DialogTitle>
-          <DialogDescription>Changes can be requested until the order is dispatched. Brewfitt approves them before they apply.</DialogDescription>
+          <DialogDescription>
+            Changes can be requested until the order is dispatched. Brewfitt approves them before
+            they apply.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit((v) => change.mutate(v))} noValidate>
           <FieldGroup>
             <fieldset className="grid grid-cols-2 gap-2">
               <legend className="mb-2 text-sm font-medium">What needs to change?</legend>
               {(["date", "address"] as const).map((k) => (
-                <label key={k} className={cn("flex cursor-pointer items-center justify-center rounded-xl border p-3 text-sm focus-within:ring-3 focus-within:ring-ring/40", kind === k ? "border-primary bg-brand-subtle/60 font-medium" : "")}>
-                  <input type="radio" className="sr-only" checked={kind === k} onChange={() => form.reset({ kind: k, requested: "", reason: form.getValues("reason") })} />
+                <label
+                  key={k}
+                  className={cn(
+                    "flex cursor-pointer items-center justify-center rounded-xl border p-3 text-sm focus-within:ring-3 focus-within:ring-ring/40",
+                    kind === k ? "border-primary bg-brand-subtle/60 font-medium" : "",
+                  )}
+                >
+                  <input
+                    type="radio"
+                    className="sr-only"
+                    checked={kind === k}
+                    onChange={() =>
+                      form.reset({ kind: k, requested: "", reason: form.getValues("reason") })
+                    }
+                  />
                   {k === "date" ? "Delivery date" : "Delivery address"}
                 </label>
               ))}
             </fieldset>
             {kind === "date" ? (
-              <TextField control={form.control} name="requested" label="New delivery date" type="date" min={tomorrow} description={`Currently ${formatDate(currentDate)}.`} />
+              <TextField
+                control={form.control}
+                name="requested"
+                label="New delivery date"
+                type="date"
+                min={tomorrow}
+                description={`Currently ${formatDate(currentDate)}.`}
+              />
             ) : (
               <fieldset>
                 <legend className="mb-2 text-sm font-medium">New delivery address</legend>
@@ -388,20 +574,44 @@ function ChangeRequestDialog({ open, onOpenChange, orderId, orderNumber, current
                   {addresses
                     .filter((a) => a.id !== currentAddressId)
                     .map((a) => (
-                      <label key={a.id} className="flex cursor-pointer gap-3 rounded-xl border p-3 text-sm has-checked:border-primary has-checked:bg-brand-subtle/50">
-                        <input type="radio" value={a.id} {...form.register("requested")} className="mt-1 accent-[var(--primary)]" />
+                      <label
+                        key={a.id}
+                        className="flex cursor-pointer gap-3 rounded-xl border p-3 text-sm has-checked:border-primary has-checked:bg-brand-subtle/50"
+                      >
+                        <input
+                          type="radio"
+                          value={a.id}
+                          {...form.register("requested")}
+                          className="mt-1 accent-[var(--primary)]"
+                        />
                         <span>
                           <span className="block font-medium">{a.label}</span>
-                          <span className="block text-muted-foreground">{formatAddress(a).join(", ")}</span>
+                          <span className="block text-muted-foreground">
+                            {formatAddress(a).join(", ")}
+                          </span>
                         </span>
                       </label>
                     ))}
-                  {addresses.length <= 1 ? <p className="text-sm text-muted-foreground">You have no other delivery addresses. Add one in Account first.</p> : null}
+                  {addresses.length <= 1 ? (
+                    <p className="text-sm text-muted-foreground">
+                      You have no other delivery addresses. Add one in Account first.
+                    </p>
+                  ) : null}
                 </div>
-                {form.formState.errors.requested ? <p className="mt-1 text-sm text-destructive">{form.formState.errors.requested.message}</p> : null}
+                {form.formState.errors.requested ? (
+                  <p className="mt-1 text-sm text-destructive">
+                    {form.formState.errors.requested.message}
+                  </p>
+                ) : null}
               </fieldset>
             )}
-            <TextareaField control={form.control} name="reason" label="Reason (optional)" nullable rows={2} />
+            <TextareaField
+              control={form.control}
+              name="reason"
+              label="Reason (optional)"
+              nullable
+              rows={2}
+            />
           </FieldGroup>
           <DialogFooter className="mt-6">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
@@ -424,18 +634,38 @@ function ChangeRequestDialog({ open, onOpenChange, orderId, orderNumber, current
 function PurchaseOrderDetailView({ id }: { id: string }) {
   const key = usePersonaKey();
   const queryClient = useQueryClient();
-  const po = useQuery({ queryKey: queryKeys.purchaseOrder(key, id), queryFn: () => api.orders.purchaseOrder(id), enabled: !!id });
+  const po = useQuery({
+    queryKey: queryKeys.purchaseOrder(key, id),
+    queryFn: () => api.orders.purchaseOrder(id),
+    enabled: !!id,
+  });
   const me = useQuery({ queryKey: queryKeys.me(key), queryFn: () => api.session.me() });
-  const products = useQuery({ queryKey: queryKeys.products(key), queryFn: () => api.products.list() });
-  const invoices = useQuery({ queryKey: queryKeys.invoices(key), queryFn: () => api.invoices.list() });
+  const products = useQuery({
+    queryKey: queryKeys.products(key),
+    queryFn: () => api.products.list(),
+  });
+  const invoices = useQuery({
+    queryKey: queryKeys.invoices(key),
+    queryFn: () => api.invoices.list(),
+  });
   const [pdfOpen, setPdfOpen] = useState(useSearchParams().get("pdf") === "1");
-  const productById = useMemo(() => new Map((products.data ?? []).map((p) => [p.id, p])), [products.data]);
+  const productById = useMemo(
+    () => new Map((products.data ?? []).map((p) => [p.id, p])),
+    [products.data],
+  );
 
   const acknowledge = useMutation({
     mutationFn: () => api.orders.acknowledge(id),
     onSuccess: (updated) => {
-      for (const k of [queryKeys.purchaseOrder(key, id), queryKeys.purchaseOrders(key), queryKeys.threads(key)]) void queryClient.invalidateQueries({ queryKey: k });
-      toast.success(`${updated.number} acknowledged`, { description: `Delivery confirmed for ${formatDate(updated.expectedDate)}.` });
+      for (const k of [
+        queryKeys.purchaseOrder(key, id),
+        queryKeys.purchaseOrders(key),
+        queryKeys.threads(key),
+      ])
+        void queryClient.invalidateQueries({ queryKey: k });
+      toast.success(`${updated.number} acknowledged`, {
+        description: `Delivery confirmed for ${formatDate(updated.expectedDate)}.`,
+      });
     },
     onError: (error) => toast.error("Could not acknowledge", { description: errorMessage(error) }),
   });
@@ -507,9 +737,20 @@ function PurchaseOrderDetailView({ id }: { id: string }) {
             <h2 id="po-deliveries" className="mb-3 font-medium">
               Deliveries to Brewfitt
             </h2>
-            {p.deliveries.length ? <DeliveryTimeline deliveries={p.deliveries} products={productById} inbound /> : <EmptyState icon={PackageIcon} title="Nothing dispatched yet" description={`Brewfitt expects this order on ${formatDate(p.expectedDate)}.`} />}
+            {p.deliveries.length ? (
+              <DeliveryTimeline deliveries={p.deliveries} products={productById} inbound />
+            ) : (
+              <EmptyState
+                icon={PackageIcon}
+                title="Nothing dispatched yet"
+                description={`Brewfitt expects this order on ${formatDate(p.expectedDate)}.`}
+              />
+            )}
           </section>
-          <section aria-labelledby="po-conversation" className="rounded-2xl border bg-card p-4 sm:p-5">
+          <section
+            aria-labelledby="po-conversation"
+            className="rounded-2xl border bg-card p-4 sm:p-5"
+          >
             <h2 id="po-conversation" className="mb-4 flex items-center gap-2 font-medium">
               <ChatsCircleIcon className="size-5 text-primary" aria-hidden />
               Conversation with the buyer
@@ -519,16 +760,25 @@ function PurchaseOrderDetailView({ id }: { id: string }) {
         </div>
         <aside className="space-y-4 lg:sticky lg:top-20 lg:self-start">
           <section aria-label="Totals" className="rounded-2xl border bg-card p-5">
-            <TotalsList subtotal={{ amount: net, currency: "GBP" }} vat={{ amount: p.total.amount - net, currency: "GBP" }} total={p.total} />
+            <TotalsList
+              subtotal={{ amount: net, currency: "GBP" }}
+              vat={{ amount: p.total.amount - net, currency: "GBP" }}
+              total={p.total}
+            />
           </section>
           <SideCard title="Invoices and payment" icon={ReceiptIcon}>
             {poInvoices.length ? (
               <ul className="space-y-1.5 text-sm">
                 {poInvoices.map((i) => (
                   <li key={i.id}>
-                    <Link href={hrefFor("invoice", i.id)} className="flex items-center justify-between gap-2 hover:underline">
+                    <Link
+                      href={hrefFor("invoice", i.id)}
+                      className="flex items-center justify-between gap-2 hover:underline"
+                    >
                       <span>{i.number}</span>
-                      <StatusPill tone={INVOICE_STATUS[i.status].tone}>{INVOICE_STATUS[i.status].label}</StatusPill>
+                      <StatusPill tone={INVOICE_STATUS[i.status].tone}>
+                        {INVOICE_STATUS[i.status].label}
+                      </StatusPill>
                     </Link>
                   </li>
                 ))}
@@ -549,7 +799,12 @@ function PurchaseOrderDetailView({ id }: { id: string }) {
             partyLabel="Supplier"
             partyLines={[me.data.account.name]}
             deliverTo={null}
-            lines={p.lines.map((l) => ({ sku: productById.get(l.productId)?.sku ?? "", name: productById.get(l.productId)?.name ?? l.productId, qty: l.qty, unit: l.price.amount }))}
+            lines={p.lines.map((l) => ({
+              sku: productById.get(l.productId)?.sku ?? "",
+              name: productById.get(l.productId)?.name ?? l.productId,
+              qty: l.qty,
+              unit: l.price.amount,
+            }))}
             total={p.total.amount}
             vatRate={p.total.amount > net ? 0.2 : 0}
             note={`Deliver to Brewfitt Limited, Huddersfield, by ${formatDate(p.expectedDate)}. Quote ${p.number} on the delivery note.`}

@@ -2,7 +2,14 @@ import Link from "next/link";
 import type { Icon } from "@phosphor-icons/react";
 import { formatDateTime, formatSince } from "@/lib/format";
 
-export type TimelineEntry = { id: string; at: string; title: string; detail?: string; href?: string; icon: Icon };
+export type TimelineEntry = {
+  id: string;
+  at: string;
+  title: string;
+  detail?: string;
+  href?: string;
+  icon: Icon;
+};
 
 export function Timeline({ entries }: { entries: TimelineEntry[] }) {
   return (
@@ -15,9 +22,15 @@ export function Timeline({ entries }: { entries: TimelineEntry[] }) {
             </span>
             <span className="min-w-0 flex-1 pt-1">
               <span className="block truncate text-sm font-medium">{e.title}</span>
-              {e.detail ? <span className="block truncate text-xs text-muted-foreground">{e.detail}</span> : null}
+              {e.detail ? (
+                <span className="block truncate text-xs text-muted-foreground">{e.detail}</span>
+              ) : null}
             </span>
-            <time dateTime={e.at} title={formatDateTime(e.at)} className="shrink-0 pt-1.5 text-xs text-muted-foreground">
+            <time
+              dateTime={e.at}
+              title={formatDateTime(e.at)}
+              className="shrink-0 pt-1.5 text-xs text-muted-foreground"
+            >
               {formatSince(e.at)}
             </time>
           </>
@@ -25,7 +38,10 @@ export function Timeline({ entries }: { entries: TimelineEntry[] }) {
         return (
           <li key={e.id}>
             {e.href ? (
-              <Link href={e.href} className="-mx-2 flex gap-3 rounded-lg px-2 py-1.5 hover:bg-accent/60">
+              <Link
+                href={e.href}
+                className="-mx-2 flex gap-3 rounded-lg px-2 py-1.5 hover:bg-accent/60"
+              >
                 {body}
               </Link>
             ) : (

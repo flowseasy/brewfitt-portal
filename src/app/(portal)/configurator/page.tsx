@@ -2,18 +2,31 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { CopyIcon, FadersHorizontalIcon, FileTextIcon, PencilSimpleIcon, PlusIcon } from "@phosphor-icons/react";
+import {
+  CopyIcon,
+  FadersHorizontalIcon,
+  FileTextIcon,
+  PencilSimpleIcon,
+  PlusIcon,
+} from "@phosphor-icons/react";
 import { PageHeader } from "@/components/shared/page-header";
 import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { Button } from "@/components/ui/button";
-import { describePoints, useConfiguratorData, VENUE_LABEL } from "@/features/configurator/use-configurator";
+import {
+  describePoints,
+  useConfiguratorData,
+  VENUE_LABEL,
+} from "@/features/configurator/use-configurator";
 import { formatMoney, formatSince } from "@/lib/format";
 import { hrefFor } from "@/lib/links";
 
 export default function ConfiguratorPage() {
   const data = useConfiguratorData();
-  const addressById = useMemo(() => new Map((data.addresses.data ?? []).map((a) => [a.id, a])), [data.addresses.data]);
+  const addressById = useMemo(
+    () => new Map((data.addresses.data ?? []).map((a) => [a.id, a])),
+    [data.addresses.data],
+  );
   const list = data.configurations.data ?? [];
 
   return (
@@ -34,7 +47,10 @@ export default function ConfiguratorPage() {
       {data.configurations.isPending ? (
         <LoadingState rows={4} label="Loading configurations" />
       ) : data.configurations.isError ? (
-        <ErrorState error={data.configurations.error} onRetry={() => data.configurations.refetch()} />
+        <ErrorState
+          error={data.configurations.error}
+          onRetry={() => data.configurations.refetch()}
+        />
       ) : list.length === 0 ? (
         <EmptyState
           icon={FadersHorizontalIcon}
@@ -61,10 +77,16 @@ export default function ConfiguratorPage() {
                     </h2>
                     <p className="text-sm text-muted-foreground">
                       {VENUE_LABEL[c.venueType]}
-                      {site ? ` · ${site.label}, ${site.town}` : c.selections.venue.newSite ? " · New site" : ""}
+                      {site
+                        ? ` · ${site.label}, ${site.town}`
+                        : c.selections.venue.newSite
+                          ? " · New site"
+                          : ""}
                     </p>
                   </div>
-                  <StatusPill tone={c.status === "quoted" ? "success" : "neutral"}>{c.status === "quoted" ? "Quoted" : "Draft"}</StatusPill>
+                  <StatusPill tone={c.status === "quoted" ? "success" : "neutral"}>
+                    {c.status === "quoted" ? "Quoted" : "Draft"}
+                  </StatusPill>
                 </div>
                 <p className="mt-3 text-sm">{describePoints(c.selections.dispense.points)}</p>
                 <p className="text-sm text-muted-foreground">
@@ -73,7 +95,9 @@ export default function ConfiguratorPage() {
                 <div className="mt-4 flex items-end justify-between gap-2">
                   <p>
                     <span className="block text-xs text-muted-foreground">Before VAT</span>
-                    <span className="text-xl font-semibold tabular-nums">{formatMoney(c.total, { whole: true })}</span>
+                    <span className="text-xl font-semibold tabular-nums">
+                      {formatMoney(c.total, { whole: true })}
+                    </span>
                   </p>
                   <div className="flex gap-1.5">
                     {c.status === "quoted" && c.quoteId ? (
@@ -92,7 +116,10 @@ export default function ConfiguratorPage() {
                       </Button>
                     )}
                     <Button asChild size="sm" variant="ghost">
-                      <Link href={`/configurator/build?duplicate=${c.id}`} aria-label={`Duplicate ${c.name}`}>
+                      <Link
+                        href={`/configurator/build?duplicate=${c.id}`}
+                        aria-label={`Duplicate ${c.name}`}
+                      >
                         <CopyIcon aria-hidden />
                       </Link>
                     </Button>

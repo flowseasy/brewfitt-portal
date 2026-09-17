@@ -1,6 +1,24 @@
 import type { PortalApi } from "@/lib/api/contract";
-import { accountApi, configurator, priceList, products, session, shop, stock } from "./api/commerce";
-import { ai, cases, demo, documents, jobs, knowledge, messages, notifications, supplierProducts } from "./api/service";
+import {
+  accountApi,
+  configurator,
+  priceList,
+  products,
+  session,
+  shop,
+  stock,
+} from "./api/commerce";
+import {
+  ai,
+  cases,
+  demo,
+  documents,
+  jobs,
+  knowledge,
+  messages,
+  notifications,
+  supplierProducts,
+} from "./api/service";
 import { deliveries, invoices, orders, quotes } from "./api/trade";
 
 /**

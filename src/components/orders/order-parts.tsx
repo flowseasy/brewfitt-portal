@@ -14,25 +14,62 @@ type Stage = { key: string; label: string; at: string | null };
 
 /** Sales order stages from its own dates and deliveries. */
 export function salesOrderStages(order: SalesOrder, deliveries: Delivery[]): Stage[] {
-  const dispatched = deliveries.map((d) => d.dispatchedAt).filter((x): x is string => !!x).sort()[0] ?? null;
-  const delivered = order.status === "delivered" ? (deliveries.map((d) => d.deliveredAt).filter((x): x is string => !!x).sort().at(-1) ?? null) : null;
-  const reached = { confirmed: 0, picking: 1, dispatched: 2, "part-delivered": 2, delivered: 3, cancelled: -1 }[order.status];
+  const dispatched =
+    deliveries
+      .map((d) => d.dispatchedAt)
+      .filter((x): x is string => !!x)
+      .sort()[0] ?? null;
+  const delivered =
+    order.status === "delivered"
+      ? (deliveries
+          .map((d) => d.deliveredAt)
+          .filter((x): x is string => !!x)
+          .sort()
+          .at(-1) ?? null)
+      : null;
+  const reached = {
+    confirmed: 0,
+    picking: 1,
+    dispatched: 2,
+    "part-delivered": 2,
+    delivered: 3,
+    cancelled: -1,
+  }[order.status];
   return [
     { key: "confirmed", label: "Confirmed", at: order.createdAt },
     { key: "picking", label: "Picking", at: null },
-    { key: "dispatched", label: order.status === "part-delivered" ? "Part-delivered" : "Dispatched", at: dispatched },
+    {
+      key: "dispatched",
+      label: order.status === "part-delivered" ? "Part-delivered" : "Dispatched",
+      at: dispatched,
+    },
     { key: "delivered", label: "Delivered", at: delivered },
   ].map((s, i) => ({ ...s, at: i <= reached ? (s.at ?? "reached") : null }));
 }
 
 export function purchaseOrderStages(po: PurchaseOrder, deliveries: Delivery[]): Stage[] {
-  const reached = { issued: 0, acknowledged: 1, "in-transit": 2, "part-received": 2, received: 3 }[po.status];
-  const dispatched = deliveries.map((d) => d.dispatchedAt).filter((x): x is string => !!x).sort()[0] ?? null;
-  const received = deliveries.map((d) => d.deliveredAt).filter((x): x is string => !!x).sort().at(-1) ?? null;
+  const reached = { issued: 0, acknowledged: 1, "in-transit": 2, "part-received": 2, received: 3 }[
+    po.status
+  ];
+  const dispatched =
+    deliveries
+      .map((d) => d.dispatchedAt)
+      .filter((x): x is string => !!x)
+      .sort()[0] ?? null;
+  const received =
+    deliveries
+      .map((d) => d.deliveredAt)
+      .filter((x): x is string => !!x)
+      .sort()
+      .at(-1) ?? null;
   return [
     { key: "issued", label: "Issued", at: po.createdAt },
     { key: "acknowledged", label: "Acknowledged", at: null },
-    { key: "in-transit", label: po.status === "part-received" ? "Part-received" : "In transit", at: dispatched },
+    {
+      key: "in-transit",
+      label: po.status === "part-received" ? "Part-received" : "In transit",
+      at: dispatched,
+    },
     { key: "received", label: "Received", at: received },
   ].map((s, i) => ({ ...s, at: i <= reached ? (s.at ?? "reached") : null }));
 }
@@ -42,17 +79,52 @@ export function OrderStageTracker({ stages, cancelled }: { stages: Stage[]; canc
   const current = stages.map((s) => !!s.at).lastIndexOf(true);
   if (cancelled) return <StatusPill tone="neutral">Cancelled</StatusPill>;
   return (
-    <ol className="flex items-start" aria-label={`Order progress: ${stages[current]?.label ?? "Not started"}`}>
+    <ol
+      className="flex items-start"
+      aria-label={`Order progress: ${stages[current]?.label ?? "Not started"}`}
+    >
       {stages.map((s, i) => {
         const done = i <= current;
         return (
-          <li key={s.key} className="relative flex flex-1 flex-col items-center text-center" aria-current={i === current ? "step" : undefined}>
-            {i > 0 ? <span aria-hidden className={cn("absolute top-3.5 right-1/2 h-0.5 w-full", i <= current ? "bg-primary" : "bg-border")} /> : null}
-            <span className={cn("relative z-10 flex size-7 items-center justify-center rounded-full border-2 bg-card", done ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground")}>
-              {done ? <CheckIcon weight="bold" className="size-3.5" aria-hidden /> : <span className="size-1.5 rounded-full bg-current" />}
+          <li
+            key={s.key}
+            className="relative flex flex-1 flex-col items-center text-center"
+            aria-current={i === current ? "step" : undefined}
+          >
+            {i > 0 ? (
+              <span
+                aria-hidden
+                className={cn(
+                  "absolute top-3.5 right-1/2 h-0.5 w-full",
+                  i <= current ? "bg-primary" : "bg-border",
+                )}
+              />
+            ) : null}
+            <span
+              className={cn(
+                "relative z-10 flex size-7 items-center justify-center rounded-full border-2 bg-card",
+                done
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border text-muted-foreground",
+              )}
+            >
+              {done ? (
+                <CheckIcon weight="bold" className="size-3.5" aria-hidden />
+              ) : (
+                <span className="size-1.5 rounded-full bg-current" />
+              )}
             </span>
-            <span className={cn("mt-1.5 text-xs", i === current ? "font-semibold" : done ? "font-medium" : "text-muted-foreground")}>{s.label}</span>
-            {s.at && s.at !== "reached" ? <span className="text-[11px] text-muted-foreground">{formatDate(s.at)}</span> : null}
+            <span
+              className={cn(
+                "mt-1.5 text-xs",
+                i === current ? "font-semibold" : done ? "font-medium" : "text-muted-foreground",
+              )}
+            >
+              {s.label}
+            </span>
+            {s.at && s.at !== "reached" ? (
+              <span className="text-[11px] text-muted-foreground">{formatDate(s.at)}</span>
+            ) : null}
           </li>
         );
       })}
@@ -60,9 +132,22 @@ export function OrderStageTracker({ stages, cancelled }: { stages: Stage[]; canc
   );
 }
 
-const DELIVERY_STATUS = { scheduled: { label: "Scheduled", tone: "info" }, dispatched: { label: "Dispatched", tone: "brand" }, "in-transit": { label: "In transit", tone: "brand" }, delivered: { label: "Delivered", tone: "success" } } as const;
+const DELIVERY_STATUS = {
+  scheduled: { label: "Scheduled", tone: "info" },
+  dispatched: { label: "Dispatched", tone: "brand" },
+  "in-transit": { label: "In transit", tone: "brand" },
+  delivered: { label: "Delivered", tone: "success" },
+} as const;
 
-export function DeliveryTimeline({ deliveries, products, inbound }: { deliveries: Delivery[]; products: Map<string, Product>; inbound?: boolean }) {
+export function DeliveryTimeline({
+  deliveries,
+  products,
+  inbound,
+}: {
+  deliveries: Delivery[];
+  products: Map<string, Product>;
+  inbound?: boolean;
+}) {
   return (
     <ol className="space-y-3">
       {deliveries.map((d) => {
@@ -72,8 +157,12 @@ export function DeliveryTimeline({ deliveries, products, inbound }: { deliveries
             <div className="flex flex-wrap items-center gap-2">
               <TruckIcon className="size-5 text-primary" aria-hidden />
               <span className="font-medium">{d.number}</span>
-              <StatusPill tone={s.tone}>{inbound && d.status === "delivered" ? "Received" : s.label}</StatusPill>
-              <span className="ml-auto text-sm text-muted-foreground">{d.carrier ?? "Carrier to be confirmed"}</span>
+              <StatusPill tone={s.tone}>
+                {inbound && d.status === "delivered" ? "Received" : s.label}
+              </StatusPill>
+              <span className="ml-auto text-sm text-muted-foreground">
+                {d.carrier ?? "Carrier to be confirmed"}
+              </span>
             </div>
             <dl className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-3">
               <div>
@@ -81,12 +170,17 @@ export function DeliveryTimeline({ deliveries, products, inbound }: { deliveries
                 <dd>{d.dispatchedAt ? formatDateTime(d.dispatchedAt) : "Not yet"}</dd>
               </div>
               <div>
-                <dt className="text-xs text-muted-foreground">{inbound ? "Received" : "Delivered"}</dt>
+                <dt className="text-xs text-muted-foreground">
+                  {inbound ? "Received" : "Delivered"}
+                </dt>
                 <dd>{d.deliveredAt ? formatDateTime(d.deliveredAt) : "On its way"}</dd>
               </div>
               <div>
                 <dt className="text-xs text-muted-foreground">Tracking</dt>
-                <dd className="font-mono text-xs">{d.trackingRef ?? (d.carrier === "Brewfitt delivery" ? "Brewfitt's own vehicle" : "Not provided")}</dd>
+                <dd className="font-mono text-xs">
+                  {d.trackingRef ??
+                    (d.carrier === "Brewfitt delivery" ? "Brewfitt's own vehicle" : "Not provided")}
+                </dd>
               </div>
             </dl>
             <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
@@ -99,13 +193,19 @@ export function DeliveryTimeline({ deliveries, products, inbound }: { deliveries
             {d.noteDocumentId || d.proofDocumentId ? (
               <div className="mt-3 flex flex-wrap gap-2">
                 {d.noteDocumentId ? (
-                  <Link href={hrefFor("document", d.noteDocumentId)} className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs hover:border-primary/40">
+                  <Link
+                    href={hrefFor("document", d.noteDocumentId)}
+                    className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs hover:border-primary/40"
+                  >
                     <FileTextIcon aria-hidden />
                     Delivery note
                   </Link>
                 ) : null}
                 {d.proofDocumentId ? (
-                  <Link href={hrefFor("document", d.proofDocumentId)} className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs hover:border-primary/40">
+                  <Link
+                    href={hrefFor("document", d.proofDocumentId)}
+                    className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs hover:border-primary/40"
+                  >
                     <ImageIcon aria-hidden />
                     Proof of delivery
                   </Link>
@@ -147,10 +247,20 @@ export function OrderDocument({
   const net = lines.reduce((s, l) => s + l.qty * l.unit, 0);
   return (
     <>
-      <DocumentHeader kind={kind} number={number} date={date} meta={reference ? [{ label: "Your reference", value: reference }] : undefined} />
+      <DocumentHeader
+        kind={kind}
+        number={number}
+        date={date}
+        meta={reference ? [{ label: "Your reference", value: reference }] : undefined}
+      />
       <div className="my-6 grid grid-cols-2 gap-6">
         <DocumentParty label={partyLabel} lines={partyLines} />
-        {deliverTo ? <DocumentParty label="Deliver to" lines={[deliverTo.label, ...formatAddress(deliverTo)]} /> : null}
+        {deliverTo ? (
+          <DocumentParty
+            label="Deliver to"
+            lines={[deliverTo.label, ...formatAddress(deliverTo)]}
+          />
+        ) : null}
       </div>
       <table className="w-full text-[12px]">
         <thead>
@@ -168,8 +278,12 @@ export function OrderDocument({
               <td className="py-1.5 pr-2 font-mono whitespace-nowrap">{l.sku}</td>
               <td className="py-1.5 pr-2">{l.name}</td>
               <td className="py-1.5 text-right">{l.qty}</td>
-              <td className="py-1.5 text-right whitespace-nowrap">{formatMoney({ amount: l.unit, currency: "GBP" })}</td>
-              <td className="py-1.5 text-right whitespace-nowrap">{formatMoney({ amount: l.qty * l.unit, currency: "GBP" })}</td>
+              <td className="py-1.5 text-right whitespace-nowrap">
+                {formatMoney({ amount: l.unit, currency: "GBP" })}
+              </td>
+              <td className="py-1.5 text-right whitespace-nowrap">
+                {formatMoney({ amount: l.qty * l.unit, currency: "GBP" })}
+              </td>
             </tr>
           ))}
         </tbody>

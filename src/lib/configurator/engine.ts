@@ -24,7 +24,8 @@ export type ConfigState = {
   selections: ConfigurationSelections;
 };
 
-export const draughtTaps = (point: DispensePoint) => point.taps.filter((t) => DRAUGHT_BEVERAGES.includes(t)).length;
+export const draughtTaps = (point: DispensePoint) =>
+  point.taps.filter((t) => DRAUGHT_BEVERAGES.includes(t)).length;
 
 export function selectedOptionIds(selections: ConfigurationSelections): string[] {
   return [
@@ -39,7 +40,11 @@ export function selectedOptionIds(selections: ConfigurationSelections): string[]
 export type Compatibility = { compatible: true } | { compatible: false; reason: string };
 
 /** Whether an option can be chosen given everything else in the configuration. */
-export function checkCompatibility(option: ConfiguratorOption, state: ConfigState, rules: ConfiguratorRules): Compatibility {
+export function checkCompatibility(
+  option: ConfiguratorOption,
+  state: ConfigState,
+  rules: ConfiguratorRules,
+): Compatibility {
   const c = option.compatibility;
   const points = state.selections.dispense.points;
   const allTaps = points.flatMap((p) => p.taps);
@@ -50,23 +55,36 @@ export function checkCompatibility(option: ConfiguratorOption, state: ConfigStat
   const metres = state.selections.cooling.pythonMetres;
   const chosen = new Set(selectedOptionIds(state.selections));
   const label = (id: string) => rules.options.find((o) => o.id === id)?.label ?? id;
-  const fail = (reason: string): Compatibility => ({ compatible: false, reason: option.incompatibleReason ?? reason });
+  const fail = (reason: string): Compatibility => ({
+    compatible: false,
+    reason: option.incompatibleReason ?? reason,
+  });
 
-  if (c.venueTypes && !c.venueTypes.includes(state.venueType)) return fail("Not available for this venue type");
-  if (c.beverages && !allTaps.some((t) => c.beverages!.includes(t))) return fail(`Needs a ${c.beverages.join(" or ")} tap`);
+  if (c.venueTypes && !c.venueTypes.includes(state.venueType))
+    return fail("Not available for this venue type");
+  if (c.beverages && !allTaps.some((t) => c.beverages!.includes(t)))
+    return fail(`Needs a ${c.beverages.join(" or ")} tap`);
   if (c.excludesBeverages && allTaps.some((t) => c.excludesBeverages!.includes(t))) {
     return fail(`Not suitable with ${c.excludesBeverages.join(" or ")} taps`);
   }
   if (c.maxDraughtTapsPerPoint !== undefined && maxPerPoint > c.maxDraughtTapsPerPoint) {
     return fail(`Up to ${c.maxDraughtTapsPerPoint} draught taps per point`);
   }
-  if (c.minDraughtTapsPerPoint !== undefined && minPerPoint !== Number.POSITIVE_INFINITY && minPerPoint < c.minDraughtTapsPerPoint) {
+  if (
+    c.minDraughtTapsPerPoint !== undefined &&
+    minPerPoint !== Number.POSITIVE_INFINITY &&
+    minPerPoint < c.minDraughtTapsPerPoint
+  ) {
     return fail(`Needs ${c.minDraughtTapsPerPoint} or more draught taps per point`);
   }
-  if (c.maxTotalDraughtTaps !== undefined && totalDraught > c.maxTotalDraughtTaps) return fail(`Up to ${c.maxTotalDraughtTaps} draught taps in total`);
-  if (c.minTotalDraughtTaps !== undefined && totalDraught < c.minTotalDraughtTaps) return fail(`Needs ${c.minTotalDraughtTaps} or more draught taps`);
-  if (c.maxPythonMetres !== undefined && metres > c.maxPythonMetres) return fail(`Python runs up to ${c.maxPythonMetres} m`);
-  if (c.minPythonMetres !== undefined && metres < c.minPythonMetres) return fail(`Python runs of ${c.minPythonMetres} m or more`);
+  if (c.maxTotalDraughtTaps !== undefined && totalDraught > c.maxTotalDraughtTaps)
+    return fail(`Up to ${c.maxTotalDraughtTaps} draught taps in total`);
+  if (c.minTotalDraughtTaps !== undefined && totalDraught < c.minTotalDraughtTaps)
+    return fail(`Needs ${c.minTotalDraughtTaps} or more draught taps`);
+  if (c.maxPythonMetres !== undefined && metres > c.maxPythonMetres)
+    return fail(`Python runs up to ${c.maxPythonMetres} m`);
+  if (c.minPythonMetres !== undefined && metres < c.minPythonMetres)
+    return fail(`Python runs of ${c.minPythonMetres} m or more`);
   const missing = c.requiresOptionIds?.find((id) => !chosen.has(id));
   if (missing) return fail(`Requires ${label(missing)}`);
   if (c.requiresAnyOptionIds && !c.requiresAnyOptionIds.some((id) => chosen.has(id))) {
@@ -77,7 +95,10 @@ export function checkCompatibility(option: ConfiguratorOption, state: ConfigStat
   return { compatible: true };
 }
 
-export function stepOptionIds(stepId: ConfiguratorStepId, selections: ConfigurationSelections): string[] {
+export function stepOptionIds(
+  stepId: ConfiguratorStepId,
+  selections: ConfigurationSelections,
+): string[] {
   switch (stepId) {
     case "dispense":
       return selections.dispense.optionIds;
@@ -95,22 +116,30 @@ export function stepOptionIds(stepId: ConfiguratorStepId, selections: Configurat
 }
 
 /** Validation messages for one step; empty when the step is complete. */
-export function validateStep(stepId: ConfiguratorStepId, state: ConfigState, rules: ConfiguratorRules): string[] {
+export function validateStep(
+  stepId: ConfiguratorStepId,
+  state: ConfigState,
+  rules: ConfiguratorRules,
+): string[] {
   const errors: string[] = [];
   const { selections } = state;
 
   if (stepId === "venue") {
-    if (!state.siteAddressId && !selections.venue.newSite) errors.push("Choose a delivery site or add a new one.");
+    if (!state.siteAddressId && !selections.venue.newSite)
+      errors.push("Choose a delivery site or add a new one.");
     return errors;
   }
 
   if (stepId === "dispense") {
     const { points } = selections.dispense;
-    if (points.length < rules.limits.minPoints) errors.push(`Add at least ${rules.limits.minPoints} dispense point.`);
-    if (points.length > rules.limits.maxPoints) errors.push(`A configuration can have up to ${rules.limits.maxPoints} dispense points.`);
+    if (points.length < rules.limits.minPoints)
+      errors.push(`Add at least ${rules.limits.minPoints} dispense point.`);
+    if (points.length > rules.limits.maxPoints)
+      errors.push(`A configuration can have up to ${rules.limits.maxPoints} dispense points.`);
     for (const p of points) {
       if (p.taps.length === 0) errors.push(`${p.name} needs at least one product.`);
-      if (draughtTaps(p) > rules.limits.maxTapsPerPoint) errors.push(`${p.name} has more than ${rules.limits.maxTapsPerPoint} draught taps.`);
+      if (draughtTaps(p) > rules.limits.maxTapsPerPoint)
+        errors.push(`${p.name} has more than ${rules.limits.maxTapsPerPoint} draught taps.`);
     }
   }
 
@@ -118,10 +147,14 @@ export function validateStep(stepId: ConfiguratorStepId, state: ConfigState, rul
     const m = selections.cooling.pythonMetres;
     // Length only matters when a per-metre option (a python) applies to this configuration.
     const needsPython = rules.options.some(
-      (o) => o.lines.some((l) => l.basis === "per-metre") && checkCompatibility(o, state, rules).compatible,
+      (o) =>
+        o.lines.some((l) => l.basis === "per-metre") &&
+        checkCompatibility(o, state, rules).compatible,
     );
     if (needsPython && (m < rules.limits.minPythonMetres || m > rules.limits.maxPythonMetres)) {
-      errors.push(`Python length must be between ${rules.limits.minPythonMetres} and ${rules.limits.maxPythonMetres} metres.`);
+      errors.push(
+        `Python length must be between ${rules.limits.minPythonMetres} and ${rules.limits.maxPythonMetres} metres.`,
+      );
     }
   }
 
@@ -131,8 +164,10 @@ export function validateStep(stepId: ConfiguratorStepId, state: ConfigState, rul
     const compatible = options.filter((o) => checkCompatibility(o, state, rules).compatible);
     const picked = options.filter((o) => chosen.has(o.id));
     // A required group with nothing compatible does not apply to this configuration.
-    if (group.required && compatible.length > 0 && picked.length === 0) errors.push(`Choose a ${group.label.toLowerCase()}.`);
-    if (group.selection === "single" && picked.length > 1) errors.push(`Choose only one ${group.label.toLowerCase()}.`);
+    if (group.required && compatible.length > 0 && picked.length === 0)
+      errors.push(`Choose a ${group.label.toLowerCase()}.`);
+    if (group.selection === "single" && picked.length > 1)
+      errors.push(`Choose only one ${group.label.toLowerCase()}.`);
     for (const o of picked) {
       const result = checkCompatibility(o, state, rules);
       if (!result.compatible) errors.push(`${o.label}: ${result.reason}.`);
@@ -141,7 +176,10 @@ export function validateStep(stepId: ConfiguratorStepId, state: ConfigState, rul
   return errors;
 }
 
-export function validateConfiguration(state: ConfigState, rules: ConfiguratorRules): Partial<Record<ConfiguratorStepId, string[]>> {
+export function validateConfiguration(
+  state: ConfigState,
+  rules: ConfiguratorRules,
+): Partial<Record<ConfiguratorStepId, string[]>> {
   const out: Partial<Record<ConfiguratorStepId, string[]>> = {};
   for (const step of rules.steps) {
     const errors = validateStep(step.id, state, rules);
@@ -171,7 +209,9 @@ export function buildBillOfMaterials(
         for (const p of points) {
           const n = draughtTaps(p);
           if (n === 0) continue;
-          const sizes = Object.keys(line.productIdByDraughtTaps).map(Number).sort((a, b) => a - b);
+          const sizes = Object.keys(line.productIdByDraughtTaps)
+            .map(Number)
+            .sort((a, b) => a - b);
           const size = sizes.find((s) => s >= n) ?? sizes[sizes.length - 1]!;
           add(line.productIdByDraughtTaps[String(size)]!, line.quantity);
         }

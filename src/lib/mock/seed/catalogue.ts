@@ -8,7 +8,12 @@ import raw from "../data/brewfitt-catalogue.json";
  * mock prices, not Brewfitt's.
  */
 
-type RawCategory = { name: string; section: Category["section"]; parent: string | null; description: string };
+type RawCategory = {
+  name: string;
+  section: Category["section"];
+  parent: string | null;
+  description: string;
+};
 type RawProduct = {
   slug: string;
   name: string;
@@ -153,7 +158,7 @@ function leadTime(category: string, subcategory: string | null): number {
 function fallbackSku(slug: string): string {
   let h = 2166136261;
   for (const c of slug) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
-  return `BF-${String((h >>> 0) % 90000 + 10000)}`;
+  return `BF-${String(((h >>> 0) % 90000) + 10000)}`;
 }
 
 export function seedCatalogue() {
@@ -179,7 +184,9 @@ export function seedCatalogue() {
   const slugs = new Set<string>();
   for (const source of [...catalogue.products, ...PYTHON_LOOMS]) {
     // The website reuses one slug for two Gamko variants; disambiguate with the SKU.
-    const p = slugs.has(source.slug) ? { ...source, slug: `${source.slug}-${slugify(source.siteSku ?? String(slugs.size))}` } : source;
+    const p = slugs.has(source.slug)
+      ? { ...source, slug: `${source.slug}-${slugify(source.siteSku ?? String(slugs.size))}` }
+      : source;
     slugs.add(p.slug);
     const re = RECATEGORISE[p.category];
     const category = re?.category ?? p.category;
@@ -221,7 +228,8 @@ export function seedCatalogue() {
 
   // Categories with children show a representative image from their products.
   for (const c of categories) {
-    c.image = products.find((p) => p.category === c.id || p.subcategory === c.id)?.images[0] ?? null;
+    c.image =
+      products.find((p) => p.category === c.id || p.subcategory === c.id)?.images[0] ?? null;
   }
 
   return { categories, products };
@@ -231,11 +239,22 @@ export function seedCatalogue() {
 export type ProductRole = "consumable" | "spare" | "project";
 
 export function productRole(product: Product, categories: Category[]): ProductRole {
-  const names = categories.filter((c) => c.id === product.category || c.id === product.subcategory).map((c) => c.name).join(" ");
-  if (/Coolants|Cleaning Powder/.test(names) || /Nitrogen Bottle Pack|Spring for Glass Freshener|Sticky Pads|O Ring Repair/.test(product.name)) {
+  const names = categories
+    .filter((c) => c.id === product.category || c.id === product.subcategory)
+    .map((c) => c.name)
+    .join(" ");
+  if (
+    /Coolants|Cleaning Powder/.test(names) ||
+    /Nitrogen Bottle Pack|Spring for Glass Freshener|Sticky Pads|O Ring Repair/.test(product.name)
+  ) {
     return "consumable";
   }
-  if (/Taps|Tap Handles|Tap Spares|Tap Spouts|Keg Couplers|Cleaning Sockets|Cleaning Bottles|Badge Holders|Drip Tray Accessories|Regulators|Foam Stop|Gas Chain|Clamp Assemblies|Lindr Accessories|LED Board|Bar Lighting Transformer/.test(names) || product.unit === "metre") {
+  if (
+    /Taps|Tap Handles|Tap Spares|Tap Spouts|Keg Couplers|Cleaning Sockets|Cleaning Bottles|Badge Holders|Drip Tray Accessories|Regulators|Foam Stop|Gas Chain|Clamp Assemblies|Lindr Accessories|LED Board|Bar Lighting Transformer/.test(
+      names,
+    ) ||
+    product.unit === "metre"
+  ) {
     return "spare";
   }
   return "project";

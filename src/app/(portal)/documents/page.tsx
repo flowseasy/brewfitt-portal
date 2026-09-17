@@ -6,8 +6,20 @@ import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { FileArrowUpIcon, FolderOpenIcon, WarningIcon } from "@phosphor-icons/react";
 import { UploadDialog } from "@/components/account/account-panels";
-import { DOCUMENT_CATEGORY, DOCUMENT_GROUP, documentGroup, hasPendingRenewal, isExpiring, type DocumentGroup } from "@/components/documents/document-parts";
-import { ApprovalPill, DocumentCard, ExpiryPill, fileSize } from "@/components/shared/document-card";
+import {
+  DOCUMENT_CATEGORY,
+  DOCUMENT_GROUP,
+  documentGroup,
+  hasPendingRenewal,
+  isExpiring,
+  type DocumentGroup,
+} from "@/components/documents/document-parts";
+import {
+  ApprovalPill,
+  DocumentCard,
+  ExpiryPill,
+  fileSize,
+} from "@/components/shared/document-card";
 import { FilterBar, FilterSelect, SearchInput } from "@/components/shared/filter-bar";
 import { PageHeader } from "@/components/shared/page-header";
 import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
@@ -36,9 +48,14 @@ function Documents() {
   const params = useSearchParams();
   const me = useMe();
   const isSupplier = useIsSupplier();
-  const documents = useQuery({ queryKey: queryKeys.documents(key), queryFn: () => api.documents.list() });
+  const documents = useQuery({
+    queryKey: queryKeys.documents(key),
+    queryFn: () => api.documents.list(),
+  });
   const initialTab = params.get("category");
-  const [tab, setTab] = useState<Tab>(initialTab && initialTab in DOCUMENT_GROUP ? (initialTab as DocumentGroup) : "all");
+  const [tab, setTab] = useState<Tab>(
+    initialTab && initialTab in DOCUMENT_GROUP ? (initialTab as DocumentGroup) : "all",
+  );
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<"all" | Document["category"]>("all");
   const [period, setPeriod] = useState<Period>("all");
@@ -49,9 +66,11 @@ function Documents() {
     const names = new Map<string, string>();
     if (me.data) {
       names.set(me.data.account.id, me.data.account.name);
-      if (me.data.group) for (const a of [me.data.group.account, ...me.data.group.sites]) names.set(a.id, a.name);
+      if (me.data.group)
+        for (const a of [me.data.group.account, ...me.data.group.sites]) names.set(a.id, a.name);
     }
-    return (d: Document) => (d.ownerAccountId ? (names.get(d.ownerAccountId) ?? "Your account") : "Brewfitt");
+    return (d: Document) =>
+      d.ownerAccountId ? (names.get(d.ownerAccountId) ?? "Your account") : "Brewfitt";
   }, [me.data]);
 
   const all = documents.data ?? [];
@@ -62,10 +81,17 @@ function Documents() {
     (d) =>
       (category === "all" || d.category === category) &&
       (period === "all" || -daysFromToday(d.modifiedAt) <= Number(period)) &&
-      (!q || `${d.name} ${DOCUMENT_CATEGORY[d.category]} ${ownerName(d)}`.toLowerCase().includes(q)),
+      (!q ||
+        `${d.name} ${DOCUMENT_CATEGORY[d.category]} ${ownerName(d)}`.toLowerCase().includes(q)),
   );
   // Only the account's own certificates and agreements need action; Brewfitt renews its own.
-  const expiring = all.filter((d) => d.ownerAccountId && (d.category === "insurance" || d.category === "compliance" || d.category === "agreement") && isExpiring(d, daysFromToday) && !hasPendingRenewal(d, all));
+  const expiring = all.filter(
+    (d) =>
+      d.ownerAccountId &&
+      (d.category === "insurance" || d.category === "compliance" || d.category === "agreement") &&
+      isExpiring(d, daysFromToday) &&
+      !hasPendingRenewal(d, all),
+  );
   const activeCount = (category !== "all" ? 1 : 0) + (period !== "all" ? 1 : 0);
   const clear = () => {
     setCategory("all");
@@ -79,7 +105,15 @@ function Documents() {
 
   const filters = (
     <>
-      <FilterSelect<"all" | Document["category"]> label="Category" value={category} onChange={setCategory} options={[{ value: "all", label: "All categories" }, ...categories.map((c) => ({ value: c, label: DOCUMENT_CATEGORY[c] }))]} />
+      <FilterSelect<"all" | Document["category"]>
+        label="Category"
+        value={category}
+        onChange={setCategory}
+        options={[
+          { value: "all", label: "All categories" },
+          ...categories.map((c) => ({ value: c, label: DOCUMENT_CATEGORY[c] })),
+        ]}
+      />
       <FilterSelect<Period>
         label="Date"
         value={period}
@@ -98,7 +132,11 @@ function Documents() {
     <div>
       <PageHeader
         title="Documents"
-        description={isSupplier ? "Purchase orders, remittances, your insurance and compliance certificates, agreements and spec sheets." : "Quotes, orders, delivery notes, invoices, agreements, Brewfitt's certificates and product documents in one place."}
+        description={
+          isSupplier
+            ? "Purchase orders, remittances, your insurance and compliance certificates, agreements and spec sheets."
+            : "Quotes, orders, delivery notes, invoices, agreements, Brewfitt's certificates and product documents in one place."
+        }
         actions={
           isSupplier ? (
             <Button onClick={() => setUploadOpen(true)}>
@@ -110,10 +148,14 @@ function Documents() {
       />
 
       {expiring.length ? (
-        <div role="status" className="mb-5 rounded-2xl border border-warning/40 bg-warning-subtle p-4">
+        <div
+          role="status"
+          className="mb-5 rounded-2xl border border-warning/40 bg-warning-subtle p-4"
+        >
           <p className="flex items-center gap-2 font-medium">
             <WarningIcon className="size-5 text-warning" aria-hidden />
-            {plural(expiring.length, "document")} {expiring.length === 1 ? "needs" : "need"} renewing
+            {plural(expiring.length, "document")} {expiring.length === 1 ? "needs" : "need"}{" "}
+            renewing
           </p>
           <ul className="mt-2 space-y-1 text-sm">
             {expiring.map((d) => (
@@ -125,16 +167,43 @@ function Documents() {
               </li>
             ))}
           </ul>
-          {isSupplier ? <p className="mt-2 text-sm text-muted-foreground">Upload the renewed certificate so your supplier record stays current.</p> : <p className="mt-2 text-sm text-muted-foreground">Your account manager will send the renewal for signature.</p>}
+          {isSupplier ? (
+            <p className="mt-2 text-sm text-muted-foreground">
+              Upload the renewed certificate so your supplier record stays current.
+            </p>
+          ) : (
+            <p className="mt-2 text-sm text-muted-foreground">
+              Your account manager will send the renewal for signature.
+            </p>
+          )}
         </div>
       ) : null}
 
       <StatusTabs
-        tabs={[{ value: "all" as Tab, label: "All", count: all.length }, ...(Object.keys(DOCUMENT_GROUP) as DocumentGroup[]).map((g) => ({ value: g as Tab, label: DOCUMENT_GROUP[g], count: all.filter((d) => documentGroup(d) === g).length }))].filter((t) => t.value === "all" || t.count > 0)}
+        tabs={[
+          { value: "all" as Tab, label: "All", count: all.length },
+          ...(Object.keys(DOCUMENT_GROUP) as DocumentGroup[]).map((g) => ({
+            value: g as Tab,
+            label: DOCUMENT_GROUP[g],
+            count: all.filter((d) => documentGroup(d) === g).length,
+          })),
+        ].filter((t) => t.value === "all" || t.count > 0)}
         value={tab}
         onChange={changeTab}
       />
-      <FilterBar search={<SearchInput value={search} onChange={setSearch} placeholder="Search by name, number or type" label="Search documents" />} filters={filters} activeCount={activeCount} onClear={clear} />
+      <FilterBar
+        search={
+          <SearchInput
+            value={search}
+            onChange={setSearch}
+            placeholder="Search by name, number or type"
+            label="Search documents"
+          />
+        }
+        filters={filters}
+        activeCount={activeCount}
+        onClear={clear}
+      />
 
       {documents.isPending ? (
         <LoadingState rows={6} label="Loading documents" />
@@ -144,7 +213,11 @@ function Documents() {
         <EmptyState
           icon={FolderOpenIcon}
           title={inTab.length === 0 ? "No documents here yet" : "No documents match"}
-          description={inTab.length === 0 ? "Documents appear here as quotes, orders and invoices are produced." : "Try another search term or clear the filters."}
+          description={
+            inTab.length === 0
+              ? "Documents appear here as quotes, orders and invoices are produced."
+              : "Try another search term or clear the filters."
+          }
           action={
             inTab.length > 0 && (q || activeCount) ? (
               <Button
@@ -168,7 +241,10 @@ function Documents() {
           <ul className="grid grid-cols-1 gap-2 md:hidden">
             {filtered.slice(0, shown).map((d) => (
               <li key={d.id}>
-                <DocumentCard doc={d} showApproval={!!d.ownerAccountId && d.approvalStatus !== "approved"} />
+                <DocumentCard
+                  doc={d}
+                  showApproval={!!d.ownerAccountId && d.approvalStatus !== "approved"}
+                />
               </li>
             ))}
           </ul>
@@ -187,20 +263,33 @@ function Documents() {
                 {filtered.slice(0, shown).map((d) => (
                   <tr key={d.id} className="hover:bg-accent/40">
                     <td className="max-w-80 px-4 py-2.5">
-                      <Link href={hrefFor("document", d.id)} className="block truncate font-medium hover:text-primary hover:underline">
+                      <Link
+                        href={hrefFor("document", d.id)}
+                        className="block truncate font-medium hover:text-primary hover:underline"
+                      >
                         {d.name}
                       </Link>
                       <span className="text-xs text-muted-foreground uppercase">
                         {d.fileType} · {fileSize(d.fileSize)}
                       </span>
                     </td>
-                    <td className="px-4 py-2.5 text-muted-foreground">{DOCUMENT_CATEGORY[d.category]}</td>
-                    <td className="max-w-48 truncate px-4 py-2.5 text-muted-foreground">{ownerName(d)}</td>
-                    <td className="px-4 py-2.5 whitespace-nowrap text-muted-foreground">{formatShortDate(d.modifiedAt)}</td>
+                    <td className="px-4 py-2.5 text-muted-foreground">
+                      {DOCUMENT_CATEGORY[d.category]}
+                    </td>
+                    <td className="max-w-48 truncate px-4 py-2.5 text-muted-foreground">
+                      {ownerName(d)}
+                    </td>
+                    <td className="px-4 py-2.5 whitespace-nowrap text-muted-foreground">
+                      {formatShortDate(d.modifiedAt)}
+                    </td>
                     <td className="px-4 py-2.5">
                       <span className="flex flex-wrap items-center gap-1.5">
                         <ExpiryPill expiresAt={d.expiresAt} />
-                        {d.ownerAccountId ? <ApprovalPill status={d.approvalStatus === "approved" ? null : d.approvalStatus} /> : null}
+                        {d.ownerAccountId ? (
+                          <ApprovalPill
+                            status={d.approvalStatus === "approved" ? null : d.approvalStatus}
+                          />
+                        ) : null}
                       </span>
                     </td>
                   </tr>

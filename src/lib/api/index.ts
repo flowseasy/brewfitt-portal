@@ -76,16 +76,28 @@ const responses = {
     performance: s.SupplierPerformance,
   },
   documents: { list: z.array(s.Document), get: s.Document },
-  messages: { threads: z.array(s.ThreadSummary), thread: s.ThreadDetail, send: s.Message, createThread: s.ThreadDetail },
+  messages: {
+    threads: z.array(s.ThreadSummary),
+    thread: s.ThreadDetail,
+    send: s.Message,
+    createThread: s.ThreadDetail,
+  },
   notifications: { list: z.array(s.Notification), update: s.Notification },
-  ai: { insights: z.array(s.AIInsight), productInsight: s.AIInsight.nullable(), ask: s.AskResponse },
+  ai: {
+    insights: z.array(s.AIInsight),
+    productInsight: s.AIInsight.nullable(),
+    ask: s.AskResponse,
+  },
   demo: { personas: z.array(s.PersonaOption), reset: z.void() },
 } satisfies { [G in keyof PortalApi]: { [M in keyof PortalApi[G]]: z.ZodType } };
 
 function withValidation(impl: PortalApi): PortalApi {
   const out: Record<string, Record<string, unknown>> = {};
   for (const group of Object.keys(responses) as (keyof PortalApi)[]) {
-    const methods = impl[group] as unknown as Record<string, (...args: unknown[]) => Promise<unknown>>;
+    const methods = impl[group] as unknown as Record<
+      string,
+      (...args: unknown[]) => Promise<unknown>
+    >;
     const schemas = responses[group] as Record<string, z.ZodType>;
     out[group] = Object.fromEntries(
       Object.keys(schemas).map((name) => [
@@ -94,7 +106,10 @@ function withValidation(impl: PortalApi): PortalApi {
           const result = await methods[name]!(...args);
           const parsed = schemas[name]!.safeParse(result);
           if (!parsed.success) {
-            console.error(`api.${group}.${name} returned an invalid response`, z.treeifyError(parsed.error));
+            console.error(
+              `api.${group}.${name} returned an invalid response`,
+              z.treeifyError(parsed.error),
+            );
             throw new Error(`api.${group}.${name} returned data that does not match the contract.`);
           }
           return parsed.data;

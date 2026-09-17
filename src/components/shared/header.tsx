@@ -15,7 +15,10 @@ import { UserMenu } from "./user-menu";
 
 export function Header() {
   const key = usePersonaKey();
-  const notifications = useQuery({ queryKey: queryKeys.notifications(key), queryFn: () => api.notifications.list() });
+  const notifications = useQuery({
+    queryKey: queryKeys.notifications(key),
+    queryFn: () => api.notifications.list(),
+  });
   const unread = notifications.data?.filter((n) => !n.read).length ?? 0;
 
   return (
@@ -33,7 +36,10 @@ export function Header() {
           </div>
           <AssistantButton />
           <Button asChild variant="ghost" size="icon" className="relative rounded-full">
-            <Link href="/notifications" aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}>
+            <Link
+              href="/notifications"
+              aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}
+            >
               <BellIcon className="size-5" aria-hidden />
               {unread ? (
                 <span className="absolute top-1 right-1 flex min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] leading-4 font-semibold text-white">

@@ -54,7 +54,9 @@ export const CaseInput = z
     kind: CaseKind,
     urgency: CaseUrgency,
     subject: z.string().min(3, "Give the case a short subject"),
-    description: z.string().min(20, "Describe the fault in a sentence or two so an engineer can triage it"),
+    description: z
+      .string()
+      .min(20, "Describe the fault in a sentence or two so an engineer can triage it"),
     productId: Id.nullable(),
     orderId: Id.nullable(),
     jobId: Id.nullable(),

@@ -5,3 +5,5 @@ package-lock.json
 src/components/ui
 BLUEPRINT.md
 CLAUDE.md
+.next-build
+public

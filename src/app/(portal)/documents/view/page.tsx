@@ -4,11 +4,27 @@ import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeftIcon, ArrowRightIcon, EyeIcon, FilePdfIcon, WarningIcon } from "@phosphor-icons/react";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  EyeIcon,
+  FilePdfIcon,
+  WarningIcon,
+} from "@phosphor-icons/react";
 import { UploadDialog } from "@/components/account/account-panels";
-import { DOCUMENT_CATEGORY, RECORD_PREVIEW, hasPendingRenewal, isExpiring } from "@/components/documents/document-parts";
+import {
+  DOCUMENT_CATEGORY,
+  RECORD_PREVIEW,
+  hasPendingRenewal,
+  isExpiring,
+} from "@/components/documents/document-parts";
 import { ApprovalPill, ExpiryPill, fileSize } from "@/components/shared/document-card";
-import { DocumentFooter, DocumentHeader, DocumentParty, PdfPreview } from "@/components/shared/pdf-preview";
+import {
+  DocumentFooter,
+  DocumentHeader,
+  DocumentParty,
+  PdfPreview,
+} from "@/components/shared/pdf-preview";
 import { PageHeader } from "@/components/shared/page-header";
 import { ErrorState, LoadingState } from "@/components/shared/states";
 import { Button } from "@/components/ui/button";
@@ -44,24 +60,43 @@ function DocumentView() {
   const key = usePersonaKey();
   const me = useMe();
   const isSupplier = useIsSupplier();
-  const document = useQuery({ queryKey: queryKeys.document(key, id), queryFn: () => api.documents.get(id), enabled: !!id });
-  const all = useQuery({ queryKey: queryKeys.documents(key), queryFn: () => api.documents.list(), enabled: isSupplier });
+  const document = useQuery({
+    queryKey: queryKeys.document(key, id),
+    queryFn: () => api.documents.get(id),
+    enabled: !!id,
+  });
+  const all = useQuery({
+    queryKey: queryKeys.documents(key),
+    queryFn: () => api.documents.list(),
+    enabled: isSupplier,
+  });
   const [previewOpen, setPreviewOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
 
   if (document.isPending) return <LoadingState rows={4} label="Loading document" />;
-  if (document.isError) return <ErrorState error={document.error} onRetry={() => document.refetch()} />;
+  if (document.isError)
+    return <ErrorState error={document.error} onRetry={() => document.refetch()} />;
 
   const d = document.data;
   const names = new Map<string, string>();
   if (me.data) {
     names.set(me.data.account.id, me.data.account.name);
-    if (me.data.group) for (const a of [me.data.group.account, ...me.data.group.sites]) names.set(a.id, a.name);
+    if (me.data.group)
+      for (const a of [me.data.group.account, ...me.data.group.sites]) names.set(a.id, a.name);
   }
-  const owner = d.ownerAccountId ? (names.get(d.ownerAccountId) ?? "Your account") : "Brewfitt Limited";
-  const relatedHref = d.relatedType && d.relatedId && !(isSupplier && d.relatedType === "product") ? hrefFor(d.relatedType, d.relatedId) : null;
+  const owner = d.ownerAccountId
+    ? (names.get(d.ownerAccountId) ?? "Your account")
+    : "Brewfitt Limited";
+  const relatedHref =
+    d.relatedType && d.relatedId && !(isSupplier && d.relatedType === "product")
+      ? hrefFor(d.relatedType, d.relatedId)
+      : null;
   const onRecord = RECORD_PREVIEW.has(d.category) && relatedHref;
-  const renewable = isSupplier && d.ownerAccountId && (d.category === "insurance" || d.category === "compliance") && isExpiring(d, daysFromToday);
+  const renewable =
+    isSupplier &&
+    d.ownerAccountId &&
+    (d.category === "insurance" || d.category === "compliance") &&
+    isExpiring(d, daysFromToday);
   const renewalPending = renewable && hasPendingRenewal(d, all.data ?? []);
 
   const facts: [string, React.ReactNode][] = [
@@ -71,11 +106,15 @@ function DocumentView() {
     ["Updated", formatDateTime(d.modifiedAt)],
   ];
   if (d.expiresAt) facts.push(["Expiry", <ExpiryPill key="e" expiresAt={d.expiresAt} />]);
-  if (d.approvalStatus && d.ownerAccountId && d.category !== "agreement") facts.push(["Brewfitt approval", <ApprovalPill key="a" status={d.approvalStatus} />]);
+  if (d.approvalStatus && d.ownerAccountId && d.category !== "agreement")
+    facts.push(["Brewfitt approval", <ApprovalPill key="a" status={d.approvalStatus} />]);
 
   return (
     <div>
-      <Link href="/documents" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        href="/documents"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeftIcon className="size-4" aria-hidden />
         Documents
       </Link>
@@ -114,9 +153,16 @@ function DocumentView() {
           A renewed certificate has been uploaded and is awaiting Brewfitt approval.
         </div>
       ) : renewable ? (
-        <div role="status" className="mb-6 flex flex-col gap-3 rounded-2xl border border-warning/40 bg-warning-subtle p-4 sm:flex-row sm:items-center">
+        <div
+          role="status"
+          className="mb-6 flex flex-col gap-3 rounded-2xl border border-warning/40 bg-warning-subtle p-4 sm:flex-row sm:items-center"
+        >
           <WarningIcon className="size-5 shrink-0 text-warning" aria-hidden />
-          <p className="flex-1 text-sm">{daysFromToday(d.expiresAt!) < 0 ? "This certificate has expired. Brewfitt needs a current certificate on file for your supplier record." : "This certificate expires soon. Upload the renewal before it lapses."}</p>
+          <p className="flex-1 text-sm">
+            {daysFromToday(d.expiresAt!) < 0
+              ? "This certificate has expired. Brewfitt needs a current certificate on file for your supplier record."
+              : "This certificate expires soon. Upload the renewal before it lapses."}
+          </p>
           <Button size="sm" onClick={() => setUploadOpen(true)}>
             Upload renewal
           </Button>
@@ -124,13 +170,23 @@ function DocumentView() {
       ) : null}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <button type="button" onClick={() => (onRecord ? undefined : setPreviewOpen(true))} disabled={!!onRecord} className="group relative hidden min-h-80 overflow-hidden rounded-2xl border bg-muted/50 p-6 text-left enabled:cursor-zoom-in sm:block" aria-label={onRecord ? "Document thumbnail" : "Open preview"}>
+        <button
+          type="button"
+          onClick={() => (onRecord ? undefined : setPreviewOpen(true))}
+          disabled={!!onRecord}
+          className="group relative hidden min-h-80 overflow-hidden rounded-2xl border bg-muted/50 p-6 text-left enabled:cursor-zoom-in sm:block"
+          aria-label={onRecord ? "Document thumbnail" : "Open preview"}
+        >
           <div className="mx-auto aspect-[210/297] max-w-sm rounded bg-white p-6 shadow-sm ring-1 ring-black/5 transition group-enabled:group-hover:-translate-y-0.5 group-enabled:group-hover:shadow-md">
             <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
               <FilePdfIcon className="size-6 text-[#1A75BC]" aria-hidden />
-              <span className="text-[10px] font-semibold tracking-wide text-neutral-500 uppercase">{DOCUMENT_CATEGORY[d.category]}</span>
+              <span className="text-[10px] font-semibold tracking-wide text-neutral-500 uppercase">
+                {DOCUMENT_CATEGORY[d.category]}
+              </span>
             </div>
-            <p className="mt-4 line-clamp-3 text-sm font-semibold text-neutral-900">{d.name.replace(/\.(pdf|jpg|png|docx|xlsx|mp4)$/, "")}</p>
+            <p className="mt-4 line-clamp-3 text-sm font-semibold text-neutral-900">
+              {d.name.replace(/\.(pdf|jpg|png|docx|xlsx|mp4)$/, "")}
+            </p>
             <div className="mt-4 space-y-2" aria-hidden>
               {[92, 78, 85, 60, 88, 70, 40].map((w, i) => (
                 <div key={i} className="h-1.5 rounded bg-neutral-100" style={{ width: `${w}%` }} />
@@ -141,13 +197,21 @@ function DocumentView() {
         <aside>
           <dl className="divide-y rounded-2xl border bg-card">
             {facts.map(([label, value]) => (
-              <div key={label} className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
+              <div
+                key={label}
+                className="flex items-center justify-between gap-3 px-4 py-3 text-sm"
+              >
                 <dt className="text-muted-foreground">{label}</dt>
                 <dd className="text-right font-medium">{value}</dd>
               </div>
             ))}
           </dl>
-          {onRecord ? <p className="mt-3 text-sm text-muted-foreground">The PDF is produced from the live record, so the preview always matches its current status.</p> : null}
+          {onRecord ? (
+            <p className="mt-3 text-sm text-muted-foreground">
+              The PDF is produced from the live record, so the preview always matches its current
+              status.
+            </p>
+          ) : null}
         </aside>
       </div>
 
@@ -168,29 +232,64 @@ function PreviewBody({ doc: d, owner }: { doc: Document; owner: string }) {
     case "compliance":
       return (
         <>
-          <DocumentHeader kind={d.category === "insurance" ? "Certificate of insurance" : "Compliance certificate"} date={d.modifiedAt} meta={d.expiresAt ? [{ label: "Valid until", value: formatDate(d.expiresAt) }] : []} />
+          <DocumentHeader
+            kind={
+              d.category === "insurance" ? "Certificate of insurance" : "Compliance certificate"
+            }
+            date={d.modifiedAt}
+            meta={d.expiresAt ? [{ label: "Valid until", value: formatDate(d.expiresAt) }] : []}
+          />
           <div className="my-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <DocumentParty label={d.category === "insurance" ? "Insured" : "Certified organisation"} lines={[owner]} />
+            <DocumentParty
+              label={d.category === "insurance" ? "Insured" : "Certified organisation"}
+              lines={[owner]}
+            />
             <DocumentParty label="Certificate" lines={[title.replace(`${owner} `, "")]} />
           </div>
           <p>
-            {d.category === "insurance" ? "This certificate confirms that the insured holds the cover named above" : "This certificate confirms that the organisation holds the certification named above"}
+            {d.category === "insurance"
+              ? "This certificate confirms that the insured holds the cover named above"
+              : "This certificate confirms that the organisation holds the certification named above"}
             {d.expiresAt ? `, valid until ${formatDate(d.expiresAt)}` : ""}.
           </p>
-          {d.ownerAccountId ? <p className="mt-3">Status with Brewfitt: {d.approvalStatus === "approved" ? "checked and approved" : d.approvalStatus === "rejected" ? "rejected, please upload a replacement" : "awaiting review"}.</p> : null}
+          {d.ownerAccountId ? (
+            <p className="mt-3">
+              Status with Brewfitt:{" "}
+              {d.approvalStatus === "approved"
+                ? "checked and approved"
+                : d.approvalStatus === "rejected"
+                  ? "rejected, please upload a replacement"
+                  : "awaiting review"}
+              .
+            </p>
+          ) : null}
           <DocumentFooter note="Summary of the certificate held on file in TOTA360v5." />
         </>
       );
     case "agreement":
       return (
         <>
-          <DocumentHeader kind="Agreement" date={d.modifiedAt} meta={[{ label: "Term", value: d.expiresAt ? `Until ${formatDate(d.expiresAt)}` : "Rolling" }]} />
+          <DocumentHeader
+            kind="Agreement"
+            date={d.modifiedAt}
+            meta={[
+              {
+                label: "Term",
+                value: d.expiresAt ? `Until ${formatDate(d.expiresAt)}` : "Rolling",
+              },
+            ]}
+          />
           <h2 className="mt-6 text-base font-semibold">{title}</h2>
           <div className="my-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
             <DocumentParty label="Between" lines={["Brewfitt Limited"]} />
             <DocumentParty label="And" lines={[owner]} />
           </div>
-          <p>Signed on {formatDate(d.modifiedAt)} by both parties. {d.expiresAt ? `The agreement runs until ${formatDate(d.expiresAt)} and is reviewed with your account manager before renewal.` : "The agreement continues until either party gives notice."}</p>
+          <p>
+            Signed on {formatDate(d.modifiedAt)} by both parties.{" "}
+            {d.expiresAt
+              ? `The agreement runs until ${formatDate(d.expiresAt)} and is reviewed with your account manager before renewal.`
+              : "The agreement continues until either party gives notice."}
+          </p>
           <DocumentFooter note="Signed copy held in TOTA360v5." />
         </>
       );
@@ -207,7 +306,10 @@ function PreviewBody({ doc: d, owner }: { doc: Document; owner: string }) {
         <>
           <DocumentHeader kind={DOCUMENT_CATEGORY[d.category]} date={d.modifiedAt} />
           <h2 className="mt-6 text-base font-semibold">{title}</h2>
-          <p className="mt-3">Published by Brewfitt Limited. This version is dated {formatDate(d.modifiedAt)}{d.expiresAt ? ` and is valid until ${formatDate(d.expiresAt)}` : ""}.</p>
+          <p className="mt-3">
+            Published by Brewfitt Limited. This version is dated {formatDate(d.modifiedAt)}
+            {d.expiresAt ? ` and is valid until ${formatDate(d.expiresAt)}` : ""}.
+          </p>
           <DocumentFooter />
         </>
       );
@@ -216,15 +318,25 @@ function PreviewBody({ doc: d, owner }: { doc: Document; owner: string }) {
 
 function RemittancePreview({ doc: d, owner }: { doc: Document; owner: string }) {
   const key = usePersonaKey();
-  const payments = useQuery({ queryKey: queryKeys.payments(key), queryFn: () => api.invoices.payments() });
-  const invoices = useQuery({ queryKey: queryKeys.invoices(key), queryFn: () => api.invoices.list() });
+  const payments = useQuery({
+    queryKey: queryKeys.payments(key),
+    queryFn: () => api.invoices.payments(),
+  });
+  const invoices = useQuery({
+    queryKey: queryKeys.invoices(key),
+    queryFn: () => api.invoices.list(),
+  });
   const p = payments.data?.find((x) => x.id === d.relatedId);
   if (payments.isPending || invoices.isPending) return <LoadingState rows={3} />;
   if (!p) return <p>The payment for this remittance is no longer available.</p>;
   const number = new Map((invoices.data ?? []).map((i) => [i.id, i.number]));
   return (
     <>
-      <DocumentHeader kind="Remittance advice" date={p.paidAt} meta={[{ label: "Reference", value: p.reference }]} />
+      <DocumentHeader
+        kind="Remittance advice"
+        date={p.paidAt}
+        meta={[{ label: "Reference", value: p.reference }]}
+      />
       <div className="my-6">
         <DocumentParty label="Paid to" lines={[owner]} />
       </div>
@@ -255,8 +367,15 @@ function RemittancePreview({ doc: d, owner }: { doc: Document; owner: string }) 
 
 function DeliveryPreview({ doc: d }: { doc: Document }) {
   const key = usePersonaKey();
-  const delivery = useQuery({ queryKey: [...queryKeys.deliveries(key), d.relatedId], queryFn: () => api.deliveries.get(d.relatedId ?? ""), enabled: !!d.relatedId });
-  const products = useQuery({ queryKey: queryKeys.products(key), queryFn: () => api.products.list() });
+  const delivery = useQuery({
+    queryKey: [...queryKeys.deliveries(key), d.relatedId],
+    queryFn: () => api.deliveries.get(d.relatedId ?? ""),
+    enabled: !!d.relatedId,
+  });
+  const products = useQuery({
+    queryKey: queryKeys.products(key),
+    queryFn: () => api.products.list(),
+  });
   if (delivery.isPending) return <LoadingState rows={3} />;
   if (delivery.isError) return <p>The delivery for this document is no longer available.</p>;
   const del = delivery.data;
@@ -264,7 +383,15 @@ function DeliveryPreview({ doc: d }: { doc: Document }) {
   const pod = d.category === "proof-of-delivery";
   return (
     <>
-      <DocumentHeader kind={pod ? "Proof of delivery" : "Delivery note"} number={del.number} date={pod ? (del.deliveredAt ?? d.modifiedAt) : (del.dispatchedAt ?? d.modifiedAt)} meta={[...(del.carrier ? [{ label: "Carrier", value: del.carrier }] : []), ...(del.trackingRef ? [{ label: "Tracking", value: del.trackingRef }] : [])]} />
+      <DocumentHeader
+        kind={pod ? "Proof of delivery" : "Delivery note"}
+        number={del.number}
+        date={pod ? (del.deliveredAt ?? d.modifiedAt) : (del.dispatchedAt ?? d.modifiedAt)}
+        meta={[
+          ...(del.carrier ? [{ label: "Carrier", value: del.carrier }] : []),
+          ...(del.trackingRef ? [{ label: "Tracking", value: del.trackingRef }] : []),
+        ]}
+      />
       <table className="mt-6 w-full text-[12px]">
         <thead>
           <tr className="border-b border-neutral-300 text-left text-neutral-500">
@@ -283,8 +410,18 @@ function DeliveryPreview({ doc: d }: { doc: Document }) {
           ))}
         </tbody>
       </table>
-      {pod && del.deliveredAt ? <p className="mt-6">Received in good condition and signed for on {formatDateTime(del.deliveredAt)}.</p> : null}
-      <DocumentFooter note={pod ? "Signature captured on the driver's handset." : "Please check goods on arrival and report any shortage within 48 hours."} />
+      {pod && del.deliveredAt ? (
+        <p className="mt-6">
+          Received in good condition and signed for on {formatDateTime(del.deliveredAt)}.
+        </p>
+      ) : null}
+      <DocumentFooter
+        note={
+          pod
+            ? "Signature captured on the driver's handset."
+            : "Please check goods on arrival and report any shortage within 48 hours."
+        }
+      />
     </>
   );
 }
@@ -292,9 +429,21 @@ function DeliveryPreview({ doc: d }: { doc: Document }) {
 function ProductDocPreview({ doc: d, title }: { doc: Document; title: string }) {
   const key = usePersonaKey();
   const relatedId = d.relatedId ?? "";
-  const product = useQuery({ queryKey: queryKeys.product(key, relatedId), queryFn: () => api.products.get(relatedId), enabled: d.relatedType === "product" });
-  const article = useQuery({ queryKey: queryKeys.knowledgeItem(key, relatedId), queryFn: () => api.knowledge.get(relatedId), enabled: d.relatedType === "knowledge-item" });
-  const submissions = useQuery({ queryKey: queryKeys.supplierProducts(key), queryFn: () => api.supplierProducts.list(), enabled: d.relatedType === "supplier-product" });
+  const product = useQuery({
+    queryKey: queryKeys.product(key, relatedId),
+    queryFn: () => api.products.get(relatedId),
+    enabled: d.relatedType === "product",
+  });
+  const article = useQuery({
+    queryKey: queryKeys.knowledgeItem(key, relatedId),
+    queryFn: () => api.knowledge.get(relatedId),
+    enabled: d.relatedType === "knowledge-item",
+  });
+  const submissions = useQuery({
+    queryKey: queryKeys.supplierProducts(key),
+    queryFn: () => api.supplierProducts.list(),
+    enabled: d.relatedType === "supplier-product",
+  });
   const submission = submissions.data?.find((s) => s.id === relatedId);
   const kind = d.category === "spec" ? "Specification sheet" : "Manual";
 
@@ -355,7 +504,8 @@ function ProductDocPreview({ doc: d, title }: { doc: Document; title: string }) 
   }
   if (product.isPending && d.relatedType === "product") return <LoadingState rows={3} />;
   if (article.isPending && d.relatedType === "knowledge-item") return <LoadingState rows={3} />;
-  if (submissions.isPending && d.relatedType === "supplier-product") return <LoadingState rows={3} />;
+  if (submissions.isPending && d.relatedType === "supplier-product")
+    return <LoadingState rows={3} />;
   return (
     <>
       <DocumentHeader kind={kind} date={d.modifiedAt} />

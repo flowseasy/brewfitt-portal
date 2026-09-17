@@ -4,11 +4,26 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowCounterClockwiseIcon, DesktopIcon, MoonIcon, SignOutIcon, SignpostIcon, SunIcon, UserCircleIcon, UserSwitchIcon } from "@phosphor-icons/react";
+import {
+  ArrowCounterClockwiseIcon,
+  DesktopIcon,
+  MoonIcon,
+  SignOutIcon,
+  SignpostIcon,
+  SunIcon,
+  UserCircleIcon,
+  UserSwitchIcon,
+} from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,7 +64,9 @@ export function UserMenu() {
     onSuccess: async () => {
       await queryClient.resetQueries();
       setResetOpen(false);
-      toast.success("Demo data reset", { description: "Every change made in this browser has been cleared." });
+      toast.success("Demo data reset", {
+        description: "Every change made in this browser has been cleared.",
+      });
     },
   });
 
@@ -59,9 +76,15 @@ export function UserMenu() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-9 gap-2 rounded-full px-1.5 sm:pr-3" aria-label="User menu">
+          <Button
+            variant="ghost"
+            className="h-9 gap-2 rounded-full px-1.5 sm:pr-3"
+            aria-label="User menu"
+          >
             <Avatar className="size-7">
-              <AvatarFallback className="bg-brand-subtle text-xs font-medium text-brand-subtle-foreground">{name ? initials(name) : ""}</AvatarFallback>
+              <AvatarFallback className="bg-brand-subtle text-xs font-medium text-brand-subtle-foreground">
+                {name ? initials(name) : ""}
+              </AvatarFallback>
             </Avatar>
             <span className="hidden max-w-40 truncate text-sm font-medium sm:inline">{name}</span>
           </Button>
@@ -70,7 +93,9 @@ export function UserMenu() {
           <DropdownMenuLabel className="font-normal">
             <div className="truncate font-medium">{name}</div>
             <div className="truncate text-xs text-muted-foreground">{me.data?.contact.title}</div>
-            <div className="truncate text-xs text-muted-foreground">{me.data?.group?.account.name ?? me.data?.account.name}</div>
+            <div className="truncate text-xs text-muted-foreground">
+              {me.data?.group?.account.name ?? me.data?.account.name}
+            </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
@@ -86,11 +111,20 @@ export function UserMenu() {
             </DropdownMenuItem>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                {theme === "dark" ? <MoonIcon aria-hidden /> : theme === "light" ? <SunIcon aria-hidden /> : <DesktopIcon aria-hidden />}
+                {theme === "dark" ? (
+                  <MoonIcon aria-hidden />
+                ) : theme === "light" ? (
+                  <SunIcon aria-hidden />
+                ) : (
+                  <DesktopIcon aria-hidden />
+                )}
                 Theme
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
-                <DropdownMenuRadioGroup value={theme} onValueChange={(v) => setTheme(v as ThemePreference)}>
+                <DropdownMenuRadioGroup
+                  value={theme}
+                  onValueChange={(v) => setTheme(v as ThemePreference)}
+                >
                   <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="system">Match device</DropdownMenuRadioItem>
@@ -125,7 +159,9 @@ export function UserMenu() {
         <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>Switch persona</DialogTitle>
-            <DialogDescription>In Phase 1 a persona stands in for signing in. Each one sees only their own account.</DialogDescription>
+            <DialogDescription>
+              In Phase 1 a persona stands in for signing in. Each one sees only their own account.
+            </DialogDescription>
           </DialogHeader>
           <PersonaList
             current={persona}

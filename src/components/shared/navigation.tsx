@@ -18,7 +18,13 @@ import {
 } from "@phosphor-icons/react";
 import type { PersonaKind } from "@/types";
 
-export type NavItem = { href: string; label: string; icon: Icon; mobile?: boolean; mobileLabel?: string };
+export type NavItem = {
+  href: string;
+  label: string;
+  icon: Icon;
+  mobile?: boolean;
+  mobileLabel?: string;
+};
 
 /** BLUEPRINT.md "Navigation": customer desktop sidebar. */
 const CUSTOMER_NAV: NavItem[] = [
@@ -40,8 +46,20 @@ const CUSTOMER_NAV: NavItem[] = [
 /** BLUEPRINT.md "Navigation": supplier desktop sidebar. */
 const SUPPLIER_NAV: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: HouseIcon, mobile: true, mobileLabel: "Home" },
-  { href: "/quotes", label: "RFQs and quotes", icon: FileTextIcon, mobile: true, mobileLabel: "RFQs" },
-  { href: "/orders", label: "Purchase orders", icon: PackageIcon, mobile: true, mobileLabel: "Orders" },
+  {
+    href: "/quotes",
+    label: "RFQs and quotes",
+    icon: FileTextIcon,
+    mobile: true,
+    mobileLabel: "RFQs",
+  },
+  {
+    href: "/orders",
+    label: "Purchase orders",
+    icon: PackageIcon,
+    mobile: true,
+    mobileLabel: "Orders",
+  },
   { href: "/invoices", label: "Payments", icon: CreditCardIcon },
   { href: "/stock", label: "Stock and forecast", icon: TrendUpIcon },
   { href: "/products", label: "Products and offers", icon: TagIcon },

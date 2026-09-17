@@ -32,7 +32,10 @@ export const AIInsight = z.object({
 });
 
 export const AskRequest = z.object({
-  question: z.string().trim().min(3, "Ask a question about your quotes, orders, deliveries or messages"),
+  question: z
+    .string()
+    .trim()
+    .min(3, "Ask a question about your quotes, orders, deliveries or messages"),
 });
 
 export const AskSource = z.object({
