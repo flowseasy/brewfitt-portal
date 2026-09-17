@@ -136,6 +136,11 @@ function check(db: MockDb, today: Date): { failures: Failure[]; stats: Record<st
   db.configurations.forEach((c) => belongs("configuration", c.id, c.accountId));
   db.jobs.forEach((j) => belongs("job", j.id, j.accountId));
   db.purchaseOrders.forEach((p) => belongs("purchase order", p.id, p.supplierId, "supplier"));
+  db.purchaseOrders.forEach((p) => {
+    if ((p.status === "issued") !== !p.acknowledgedAt) fail("po-acknowledged", p.id);
+    if (p.acknowledgedAt && p.acknowledgedAt < p.createdAt) fail("po-acknowledged-order", p.id);
+    if (p.acknowledgedAt && Date.parse(p.acknowledgedAt) > nowMs) fail("dates-not-future", `po ack ${p.id}`);
+  });
   db.rfqs.forEach((r) => belongs("rfq", r.id, r.supplierId, "supplier"));
   db.contacts.forEach((c) => belongs("contact", c.id, c.accountId, "any"));
   db.accounts

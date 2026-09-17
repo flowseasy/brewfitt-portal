@@ -191,6 +191,8 @@ export const PurchaseOrder = z.object({
   total: Money,
   threadId: Id,
   createdAt: IsoDateTime,
+  /** When the supplier acknowledged it; null while issued. */
+  acknowledgedAt: IsoDateTime.nullable().default(null),
 });
 
 export const OrderType = z.enum(["sales", "purchase"]);

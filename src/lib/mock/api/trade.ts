@@ -308,7 +308,7 @@ export const orders: PortalApi["orders"] = {
         at,
       );
       commit("orders.acknowledge", [
-        patch("purchaseOrders", id, { status: "acknowledged" }),
+        patch("purchaseOrders", id, { status: "acknowledged", acknowledgedAt: at }),
         ...message.changes,
       ]);
       return db.purchaseOrders.find((p) => p.id === id)!;

@@ -84,6 +84,7 @@ export function seedPurchasing(
       expectedDate: isoDate(workingDay(addDays(created, lead + rng.int(0, 3)))),
       total: money(net * (ctx.vatRate(supplierId) ? 1.2 : 1)),
       threadId: "",
+      acknowledgedAt: null,
       createdAt: isoDateTime(
         previousWorkingDay(created),
         rng.int(9, 15),
@@ -244,6 +245,16 @@ export function seedPurchasing(
         expected,
       );
     }
+  }
+
+  // ---- Acknowledgement times -----------------------------------------------
+  // Suppliers acknowledge within a few working hours to a couple of days.
+  for (const po of purchaseOrders) {
+    if (po.status === "issued") continue;
+    const hash = [...po.id].reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+    const hours = [3, 5, 20, 26, 48, 4, 70][hash % 7]!;
+    const at = Math.min(Date.parse(po.createdAt) + hours * 3_600_000, today.getTime() - 3_600_000);
+    po.acknowledgedAt = new Date(Math.max(at, Date.parse(po.createdAt) + 1_800_000)).toISOString();
   }
 
   // ---- Supplier delivery performance ---------------------------------------

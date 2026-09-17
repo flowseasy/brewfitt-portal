@@ -288,9 +288,92 @@ export const accountApi: PortalApi["account"] = {
           accepted,
           decided: decided.length,
         },
+        ...serviceStats(db, scope, orders, now),
       };
     }),
 };
+
+/** Spend trend, fulfilment and service levels for the customer statistics. */
+function serviceStats(
+  db: MockDb,
+  scope: Scope,
+  orders: SalesOrder[],
+  now: number,
+) {
+  const HALF = YEAR_MS / 2;
+  const spend = (from: number, to: number) =>
+    orders
+      .filter((o) => {
+        const age = now - Date.parse(o.createdAt);
+        return age > from && age <= to;
+      })
+      .reduce((sum, o) => sum + netValue(o.lines), 0);
+  const recent = spend(-1, HALF);
+  const previous = spend(HALF, YEAR_MS);
+
+  const yearOrders = orders.filter((o) => now - Date.parse(o.createdAt) <= YEAR_MS);
+  const deliveriesOf = (orderId: string) =>
+    db.deliveries
+      .filter((d) => d.orderType === "sales" && d.orderId === orderId && d.deliveredAt)
+      .sort((a, b) => a.deliveredAt!.localeCompare(b.deliveredAt!));
+  const fulfilled = yearOrders.filter((o) => deliveriesOf(o.id).length);
+  const inFull = fulfilled.filter((o) => {
+    const first = deliveriesOf(o.id)[0]!;
+    return o.lines.every(
+      (l) => first.lines.find((x) => x.productId === l.productId)?.qty === l.qty,
+    );
+  }).length;
+  const completed = yearOrders.filter((o) => o.status === "delivered");
+  const leadDays = completed.map(
+    (o) => (Date.parse(deliveriesOf(o.id).at(-1)!.deliveredAt!) - Date.parse(o.createdAt)) / 86_400_000,
+  );
+  const openBack = orders
+    .filter((o) => ["confirmed", "picking", "dispatched", "part-delivered"].includes(o.status))
+    .flatMap((o) => o.lines.filter((l) => l.backordered > 0));
+
+  const resolved = db.cases.filter(
+    (c) => inScope(scope, c.accountId) && (c.status === "resolved" || c.status === "closed"),
+  );
+  const resolveDays = resolved.map(
+    (c) => (Date.parse(c.updatedAt) - Date.parse(c.createdAt)) / 86_400_000,
+  );
+
+  const gaps: number[] = [];
+  for (const t of db.threads.filter((x) => inScope(scope, x.accountId))) {
+    const messages = db.messages
+      .filter((m) => m.threadId === t.id)
+      .sort((a, b) => a.sentAt.localeCompare(b.sentAt));
+    messages.forEach((m, i) => {
+      if (m.senderSide !== "account" || now - Date.parse(m.sentAt) > YEAR_MS) return;
+      // Count a reply once: only the first customer message before Brewfitt answers.
+      if (i > 0 && messages[i - 1]!.senderSide === "account") return;
+      const reply = messages.slice(i + 1).find((x) => x.senderSide === "brewfitt");
+      if (reply) gaps.push((Date.parse(reply.sentAt) - Date.parse(m.sentAt)) / 3_600_000);
+    });
+  }
+  const average = (xs: number[], dp = 1) =>
+    xs.length ? Math.round((xs.reduce((a, b) => a + b, 0) / xs.length) * 10 ** dp) / 10 ** dp : null;
+
+  return {
+    spendTrend: {
+      recent: { amount: recent, currency: "GBP" as const },
+      previous: { amount: previous, currency: "GBP" as const },
+      changePercent: previous ? Math.round(((recent - previous) / previous) * 100) : null,
+    },
+    fillRate: {
+      percent: fulfilled.length ? Math.round((inFull / fulfilled.length) * 100) : null,
+      inFull,
+      total: fulfilled.length,
+    },
+    averageLeadDays: average(leadDays),
+    backOrders: {
+      lines: openBack.length,
+      units: openBack.reduce((sum, l) => sum + l.backordered, 0),
+    },
+    caseResolution: { averageDays: average(resolveDays), resolved: resolved.length },
+    responseTime: { averageHours: average(gaps), replies: gaps.length },
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Products, price list, stock

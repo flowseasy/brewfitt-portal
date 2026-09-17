@@ -155,6 +155,11 @@ async function main() {
         );
         expect(perf.onTimeDelivery.onTime <= perf.onTimeDelivery.total, "on-time over total");
         expect(perf.afterSalesIssues.open <= perf.afterSalesIssues.total, "open issues over total");
+        expect(
+          perf.rfqs.responded <= perf.rfqs.total && perf.rfqs.awarded <= perf.rfqs.decided,
+          "RFQ rates over 100%",
+        );
+        expect(perf.spendShare >= 0 && perf.spendShare <= 100, "spend share out of range");
       });
       await step(`${who} offers`, async () =>
         expect((await api.supplierProducts.offers()).length > 0, "no offers"),
@@ -183,6 +188,11 @@ async function main() {
         expect(
           stats.quoteConversion.accepted <= stats.quoteConversion.decided,
           "conversion over 100%",
+        );
+        expect(stats.fillRate.inFull <= stats.fillRate.total, "fill rate over 100%");
+        expect(
+          stats.averageLeadDays === null || stats.averageLeadDays > 0,
+          "non-positive lead time",
         );
       });
       await step(`${who} configurations`, () => api.configurator.list());

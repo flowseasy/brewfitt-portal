@@ -103,6 +103,31 @@ export const CustomerStats = z.object({
     accepted: z.int().nonnegative(),
     decided: z.int().nonnegative(),
   }),
+  /** Spend in the last 6 months against the 6 months before (the demo holds 12 months of history). */
+  spendTrend: z.object({
+    recent: Money,
+    previous: Money,
+    changePercent: z.number().nullable(),
+  }),
+  /** Orders delivered in full by their first delivery. */
+  fillRate: z.object({
+    percent: z.number().min(0).max(100).nullable(),
+    inFull: z.int().nonnegative(),
+    total: z.int().nonnegative(),
+  }),
+  /** Average days from placing an order to its final delivery. */
+  averageLeadDays: z.number().nonnegative().nullable(),
+  backOrders: z.object({ lines: z.int().nonnegative(), units: z.int().nonnegative() }),
+  /** Average days to resolve support cases. */
+  caseResolution: z.object({
+    averageDays: z.number().nonnegative().nullable(),
+    resolved: z.int().nonnegative(),
+  }),
+  /** Average hours for Brewfitt to reply to the account's messages. */
+  responseTime: z.object({
+    averageHours: z.number().nonnegative().nullable(),
+    replies: z.int().nonnegative(),
+  }),
 });
 
 export const SupplierPerformance = z.object({
@@ -122,6 +147,30 @@ export const SupplierPerformance = z.object({
     total: z.int().nonnegative(),
     open: z.int().nonnegative(),
     last12Months: z.int().nonnegative(),
+  }),
+  /** Average hours from Brewfitt issuing a purchase order to the supplier acknowledging it. */
+  acknowledgement: z.object({
+    averageHours: z.number().nonnegative().nullable(),
+    acknowledged: z.int().nonnegative(),
+  }),
+  rfqs: z.object({
+    /** RFQs answered out of those closed to responses. */
+    responseRate: z.number().min(0).max(100).nullable(),
+    responded: z.int().nonnegative(),
+    total: z.int().nonnegative(),
+    /** RFQs won out of those decided. */
+    winRate: z.number().min(0).max(100).nullable(),
+    awarded: z.int().nonnegative(),
+    decided: z.int().nonnegative(),
+  }),
+  /** Average days from invoice to payment. */
+  paymentDays: z.number().nonnegative().nullable(),
+  /** This supplier's share of Brewfitt's 12-month spend among its sector. */
+  spendShare: z.number().min(0).max(100),
+  awaitingApproval: z.object({ products: z.int().nonnegative(), offers: z.int().nonnegative() }),
+  certificates: z.object({
+    expiringSoon: z.int().nonnegative(),
+    expired: z.int().nonnegative(),
   }),
   topProducts: z.array(z.object({ productId: Id, quantity: z.int().nonnegative(), total: Money })),
   last12Months: Money,

@@ -448,6 +448,7 @@ export const supplierProducts: PortalApi["supplierProducts"] = {
               currency: "GBP" as const,
             }
           : null,
+        ...supplierServiceStats(db, scope, ranked),
         afterSalesIssues: (() => {
           // Counts only: customers' cases stay private to them.
           const supplied = new Set(
@@ -472,6 +473,99 @@ export const supplierProducts: PortalApi["supplierProducts"] = {
       };
     }),
 };
+
+/** Acknowledgement, RFQ, payment, share of spend, approvals and certificates for suppliers. */
+function supplierServiceStats(db: MockDb, scope: Scope, ranked: [string, number][]) {
+  const now = Date.now();
+  const supplierId = scope.account.id;
+  const average = (xs: number[]) =>
+    xs.length ? Math.round((xs.reduce((a, b) => a + b, 0) / xs.length) * 10) / 10 : null;
+
+  const acknowledged = db.purchaseOrders.filter(
+    (po) =>
+      po.supplierId === supplierId &&
+      po.acknowledgedAt &&
+      now - Date.parse(po.createdAt) <= YEAR_MS,
+  );
+  const ackHours = acknowledged.map(
+    (po) => (Date.parse(po.acknowledgedAt!) - Date.parse(po.createdAt)) / 3_600_000,
+  );
+
+  const today = new Date().toISOString().slice(0, 10);
+  const rfqs = db.rfqs.filter((r) => r.supplierId === supplierId);
+  const answered = (r: (typeof rfqs)[number]) =>
+    ["responded", "awarded", "not-awarded"].includes(r.status);
+  const closedToResponses = rfqs.filter(
+    (r) => answered(r) || r.status === "closed" || r.deadline < today,
+  );
+  const responded = closedToResponses.filter(answered).length;
+  const decided = rfqs.filter((r) => r.status === "awarded" || r.status === "not-awarded");
+  const awarded = decided.filter((r) => r.status === "awarded").length;
+
+  const paidDays = db.payments
+    .filter((p) => p.accountId === supplierId && now - Date.parse(p.paidAt) <= YEAR_MS)
+    .flatMap((p) =>
+      p.allocatedTo.map((a) => {
+        const invoice = db.invoices.find((i) => i.id === a.invoiceId);
+        return invoice ? (Date.parse(p.paidAt) - Date.parse(invoice.issuedAt)) / 86_400_000 : null;
+      }),
+    )
+    .filter((d): d is number => d !== null);
+
+  const sectorTotal = ranked.reduce((sum, [, v]) => sum + v, 0);
+  const own = ranked.find(([id]) => id === supplierId)?.[1] ?? 0;
+
+  const in60Days = new Date(now + 60 * 86_400_000).toISOString().slice(0, 10);
+  const certificates = db.documents.filter(
+    (d) =>
+      d.ownerAccountId === supplierId &&
+      (d.category === "insurance" || d.category === "compliance") &&
+      d.approvalStatus !== "rejected" &&
+      d.expiresAt,
+  );
+  // A renewal uploaded since (same kind, later expiry, awaiting approval) covers an expiring certificate.
+  const current = certificates.filter(
+    (d) =>
+      !certificates.some(
+        (x) =>
+          x.id !== d.id &&
+          x.category === d.category &&
+          x.approvalStatus === "pending" &&
+          x.expiresAt! > d.expiresAt! &&
+          x.modifiedAt > d.modifiedAt,
+      ),
+  );
+
+  return {
+    acknowledgement: { averageHours: average(ackHours), acknowledged: acknowledged.length },
+    rfqs: {
+      responseRate: closedToResponses.length
+        ? Math.round((responded / closedToResponses.length) * 100)
+        : null,
+      responded,
+      total: closedToResponses.length,
+      winRate: decided.length ? Math.round((awarded / decided.length) * 100) : null,
+      awarded,
+      decided: decided.length,
+    },
+    paymentDays: average(paidDays),
+    spendShare: sectorTotal ? Math.round((own / sectorTotal) * 1000) / 10 : 0,
+    awaitingApproval: {
+      products: db.supplierProducts.filter(
+        (p) =>
+          p.supplierId === supplierId && (p.status === "submitted" || p.status === "under-review"),
+      ).length,
+      offers: db.offers.filter(
+        (o) =>
+          o.supplierId === supplierId && (o.status === "submitted" || o.status === "under-review"),
+      ).length,
+    },
+    certificates: {
+      expiringSoon: current.filter((d) => d.expiresAt! >= today && d.expiresAt! <= in60Days).length,
+      expired: current.filter((d) => d.expiresAt! < today).length,
+    },
+  };
+}
 
 /** Brewfitt's own documents and published spec sheets and manuals are visible to everyone. */
 const PUBLIC_CATEGORIES = new Set<Document["category"]>(["company", "insurance", "spec", "manual"]);

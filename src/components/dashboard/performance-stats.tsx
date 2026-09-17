@@ -12,9 +12,17 @@ import { formatMoney, plural } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { Money } from "@/types";
 
+type Tone = "success" | "warning" | "danger";
+
 const whole = (m: Money | null) => (m ? formatMoney(m, { whole: true }) : "None");
 const percent = (p: number | null) =>
   p === null ? "No data" : `${Number.isInteger(p) ? p : p.toFixed(1)}%`;
+const one = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(1));
+/** Hours under two days read as hours, longer as days. */
+const duration = (hours: number | null) =>
+  hours === null ? "No data" : hours < 48 ? `${one(hours)} hours` : `${one(hours / 24)} days`;
+const days = (d: number | null) =>
+  d === null ? "No data" : `${one(d)} ${d === 1 ? "day" : "days"}`;
 
 /** A stat in a definition list; linked stats put the link in the term and stretch it over the tile. */
 function Stat({
@@ -28,7 +36,7 @@ function Stat({
   value: string;
   detail: string;
   href?: string;
-  tone?: "success" | "warning" | "danger";
+  tone?: Tone;
 }) {
   return (
     <div
@@ -62,6 +70,23 @@ function Stat({
   );
 }
 
+function Group({ title, children }: { title: string; children: ReactNode }) {
+  const count = Array.isArray(children) ? children.length : 1;
+  return (
+    <div className="mt-5 first:mt-0">
+      <h3 className="mb-2.5 text-sm font-medium">{title}</h3>
+      <dl
+        className={cn(
+          "grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-3",
+          count >= 6 ? "xl:grid-cols-6" : "xl:grid-cols-5",
+        )}
+      >
+        {children}
+      </dl>
+    </div>
+  );
+}
+
 function Panel({
   title,
   subtitle,
@@ -87,7 +112,7 @@ function Panel({
   );
 }
 
-const onTimeTone = (p: number | null) =>
+const onTimeTone = (p: number | null): Tone | undefined =>
   p === null ? undefined : p >= 95 ? "success" : p >= 85 ? undefined : "warning";
 
 /** Customer dashboard: Brewfitt's service to this account over the last 12 months. */
@@ -101,49 +126,113 @@ export function CustomerStatsPanel() {
   return (
     <Panel title="Your year with Brewfitt" subtitle="Last 12 months, values ex VAT">
       {stats.isPending ? (
-        <LoadingState rows={1} label="Loading your statistics" />
+        <LoadingState rows={2} label="Loading your statistics" />
       ) : stats.isError ? (
         <ErrorState error={stats.error} onRetry={() => stats.refetch()} />
       ) : (
-        <dl className="grid grid-cols-2 gap-2.5 sm:gap-3 xl:grid-cols-4">
-          <Stat
-            label="On-time delivery"
-            value={percent(stats.data.onTimeDelivery.percent)}
-            detail={
-              stats.data.onTimeDelivery.total
-                ? `${stats.data.onTimeDelivery.onTime} of ${plural(stats.data.onTimeDelivery.total, "delivery", "deliveries")} by the confirmed date`
-                : "No deliveries in the last 12 months"
-            }
-            tone={onTimeTone(stats.data.onTimeDelivery.percent)}
-            href="/orders?status=delivered"
-          />
-          <Stat
-            label="Orders placed"
-            value={whole(stats.data.orderValue)}
-            detail={plural(stats.data.orderCount, "order")}
-            href="/orders"
-          />
-          <Stat
-            label="Average order value"
-            value={whole(stats.data.averageOrderValue)}
-            detail={
-              stats.data.orderCount
-                ? `Across ${plural(stats.data.orderCount, "order")}`
-                : "No orders yet"
-            }
-            href="/orders"
-          />
-          <Stat
-            label="Quote conversion"
-            value={percent(stats.data.quoteConversion.percent)}
-            detail={
-              stats.data.quoteConversion.decided
-                ? `${stats.data.quoteConversion.accepted} of ${plural(stats.data.quoteConversion.decided, "quote")} accepted`
-                : "No quotes decided yet"
-            }
-            href="/quotes"
-          />
-        </dl>
+        (() => {
+          const s = stats.data;
+          const change = s.spendTrend.changePercent;
+          return (
+            <>
+              <Group title="Orders and quotes">
+                <Stat
+                  label="Orders placed"
+                  value={whole(s.orderValue)}
+                  detail={plural(s.orderCount, "order")}
+                  href="/orders"
+                />
+                <Stat
+                  label="Average order value"
+                  value={whole(s.averageOrderValue)}
+                  detail={
+                    s.orderCount ? `Across ${plural(s.orderCount, "order")}` : "No orders yet"
+                  }
+                  href="/orders"
+                />
+                <Stat
+                  label="Spend, last 6 months"
+                  value={whole(s.spendTrend.recent)}
+                  detail={
+                    change === null
+                      ? "No spend in the 6 months before"
+                      : `${change >= 0 ? "Up" : "Down"} ${Math.abs(change)}% on the 6 months before (${whole(s.spendTrend.previous)})`
+                  }
+                  tone={change !== null && change >= 0 ? "success" : undefined}
+                />
+                <Stat
+                  label="Quote conversion"
+                  value={percent(s.quoteConversion.percent)}
+                  detail={
+                    s.quoteConversion.decided
+                      ? `${s.quoteConversion.accepted} of ${plural(s.quoteConversion.decided, "quote")} accepted`
+                      : "No quotes decided yet"
+                  }
+                  href="/quotes"
+                />
+                <Stat
+                  label="Open back orders"
+                  value={String(s.backOrders.units)}
+                  detail={
+                    s.backOrders.lines
+                      ? `${plural(s.backOrders.units, "unit")} on ${plural(s.backOrders.lines, "order line")}`
+                      : "Nothing on back order"
+                  }
+                  tone={s.backOrders.units ? "warning" : undefined}
+                  href="/orders?status=part-delivered"
+                />
+              </Group>
+              <Group title="Brewfitt's service to you">
+                <Stat
+                  label="On-time delivery"
+                  value={percent(s.onTimeDelivery.percent)}
+                  detail={
+                    s.onTimeDelivery.total
+                      ? `${s.onTimeDelivery.onTime} of ${plural(s.onTimeDelivery.total, "delivery", "deliveries")} by the confirmed date`
+                      : "No deliveries in the last 12 months"
+                  }
+                  tone={onTimeTone(s.onTimeDelivery.percent)}
+                  href="/orders?status=delivered"
+                />
+                <Stat
+                  label="Delivered in full"
+                  value={percent(s.fillRate.percent)}
+                  detail={
+                    s.fillRate.total
+                      ? `${s.fillRate.inFull} of ${plural(s.fillRate.total, "order")} complete on the first delivery`
+                      : "No deliveries yet"
+                  }
+                  tone={onTimeTone(s.fillRate.percent)}
+                />
+                <Stat
+                  label="Order to delivery"
+                  value={days(s.averageLeadDays)}
+                  detail="Average from placing an order to its final delivery"
+                />
+                <Stat
+                  label="Support cases resolved"
+                  value={days(s.caseResolution.averageDays)}
+                  detail={
+                    s.caseResolution.resolved
+                      ? `Average across ${plural(s.caseResolution.resolved, "resolved case")}`
+                      : "No cases resolved yet"
+                  }
+                  href="/cases"
+                />
+                <Stat
+                  label="Account team reply time"
+                  value={duration(s.responseTime.averageHours)}
+                  detail={
+                    s.responseTime.replies
+                      ? `Average across ${plural(s.responseTime.replies, "reply", "replies")}`
+                      : "No messages answered yet"
+                  }
+                  href="/messages"
+                />
+              </Group>
+            </>
+          );
+        })()
       )}
     </Panel>
   );
@@ -172,20 +261,10 @@ export function SupplierStatsPanel() {
           const highestAverage = [...withOrders].sort(
             (a, b) => (b.average?.amount ?? 0) - (a.average?.amount ?? 0),
           )[0];
+          const certificates = p.certificates.expired + p.certificates.expiringSoon;
           return (
             <>
-              <dl className="grid grid-cols-2 gap-2.5 sm:gap-3 xl:grid-cols-4">
-                <Stat
-                  label="On-time delivery"
-                  value={percent(p.onTimeDelivery.percent)}
-                  detail={
-                    p.onTimeDelivery.total
-                      ? `${p.onTimeDelivery.onTime} of ${plural(p.onTimeDelivery.total, "delivery", "deliveries")} by the expected date`
-                      : "No deliveries in the last 12 months"
-                  }
-                  tone={onTimeTone(p.onTimeDelivery.percent)}
-                  href="/orders"
-                />
+              <Group title="Business with Brewfitt">
                 <Stat
                   label="Orders from Brewfitt"
                   value={whole(p.last12Months)}
@@ -198,12 +277,87 @@ export function SupplierStatsPanel() {
                   detail={orders ? `Across ${plural(orders, "purchase order")}` : "No orders yet"}
                 />
                 <Stat
+                  label={`Share of ${p.sector} spend`}
+                  value={`${one(p.spendShare)}%`}
+                  detail={`Of Brewfitt's spend with ${plural(p.supplierCount, p.sector)}`}
+                />
+                <Stat
+                  label="RFQ win rate"
+                  value={percent(p.rfqs.winRate)}
+                  detail={
+                    p.rfqs.decided
+                      ? `${p.rfqs.awarded} of ${plural(p.rfqs.decided, "decided RFQ")} won`
+                      : "No RFQs decided yet"
+                  }
+                  href="/quotes"
+                />
+                <Stat
+                  label="Invoice to payment"
+                  value={days(p.paymentDays)}
+                  detail="Average from invoice to Brewfitt's payment"
+                  href="/invoices"
+                />
+              </Group>
+              <Group title="Your service to Brewfitt">
+                <Stat
+                  label="On-time delivery"
+                  value={percent(p.onTimeDelivery.percent)}
+                  detail={
+                    p.onTimeDelivery.total
+                      ? `${p.onTimeDelivery.onTime} of ${plural(p.onTimeDelivery.total, "delivery", "deliveries")} by the expected date`
+                      : "No deliveries in the last 12 months"
+                  }
+                  tone={onTimeTone(p.onTimeDelivery.percent)}
+                  href="/orders"
+                />
+                <Stat
+                  label="Time to acknowledge"
+                  value={duration(p.acknowledgement.averageHours)}
+                  detail={
+                    p.acknowledgement.acknowledged
+                      ? `Average across ${plural(p.acknowledgement.acknowledged, "purchase order")}`
+                      : "No purchase orders acknowledged yet"
+                  }
+                  tone={
+                    p.acknowledgement.averageHours !== null && p.acknowledgement.averageHours > 48
+                      ? "warning"
+                      : undefined
+                  }
+                />
+                <Stat
+                  label="RFQ response rate"
+                  value={percent(p.rfqs.responseRate)}
+                  detail={
+                    p.rfqs.total
+                      ? `${p.rfqs.responded} of ${plural(p.rfqs.total, "RFQ")} answered`
+                      : "No RFQs closed yet"
+                  }
+                  href="/quotes"
+                />
+                <Stat
                   label="After-sales issues"
                   value={String(p.afterSalesIssues.total)}
                   detail={`${p.afterSalesIssues.open} open · ${p.afterSalesIssues.last12Months} in the last 12 months, on your products`}
                   tone={p.afterSalesIssues.open ? "warning" : undefined}
                 />
-              </dl>
+                <Stat
+                  label="Awaiting approval"
+                  value={String(p.awaitingApproval.products)}
+                  detail={`${plural(p.awaitingApproval.products, "product")} and ${plural(p.awaitingApproval.offers, "offer")} with Brewfitt`}
+                  href="/products"
+                />
+                <Stat
+                  label="Certificates due"
+                  value={String(certificates)}
+                  detail={
+                    certificates
+                      ? `${p.certificates.expired} expired · ${p.certificates.expiringSoon} expiring within 60 days`
+                      : "All certificates current for 60 days"
+                  }
+                  tone={p.certificates.expired ? "danger" : certificates ? "warning" : "success"}
+                  href="/documents?category=compliance"
+                />
+              </Group>
               <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <div>
                   <h3 className="mb-3 text-sm font-medium">Order value by month</h3>
