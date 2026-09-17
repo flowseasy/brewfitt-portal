@@ -43,7 +43,7 @@ export function AIInsightCard({ insight, compact, supplier }: { insight: AIInsig
       </div>
       <h3 className="font-medium text-balance">{insight.title}</h3>
       <p className="mt-1 text-sm text-muted-foreground">{insight.whatIsHappening}</p>
-      {!compact ? <p className="mt-1 text-sm text-muted-foreground">{insight.whyItMatters}</p> : null}
+      <p className={cn("mt-1 text-sm text-muted-foreground", compact && "line-clamp-2")}>{insight.whyItMatters}</p>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
         {insight.valueAtStake ? (
           <p className="text-sm">
@@ -54,7 +54,7 @@ export function AIInsightCard({ insight, compact, supplier }: { insight: AIInsig
           <span />
         )}
         <Link href={href} className="text-sm font-medium text-primary underline-offset-4 hover:underline">
-          {ACTION_LABEL[insight.category]}
+          {supplier && insight.relatedType === "product" ? "View stock" : ACTION_LABEL[insight.category]}
         </Link>
       </div>
       <p className="mt-2 border-t pt-2 text-sm">

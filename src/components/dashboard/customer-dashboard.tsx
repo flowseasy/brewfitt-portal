@@ -16,6 +16,7 @@ import {
   WarehouseIcon,
 } from "@phosphor-icons/react";
 import { AIInsightCard, SimulatedBadge } from "@/components/ai/ai-insight-card";
+import { AllInsightsButton } from "@/components/ai/assistant-panel";
 import { AssistantPrompt } from "@/components/ai/assistant-prompt";
 import { AgeingBar } from "@/components/finance/ageing-bar";
 import { AnimatedNumber } from "@/components/shared/animated-number";
@@ -241,6 +242,7 @@ export function CustomerDashboard() {
               ))}
             </div>
           )}
+          {d.insights.data?.length ? <AllInsightsButton count={d.insights.data.length} className="mt-3" /> : null}
         </DashboardCard>
 
         {/* 6. Conversations */}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { BellIcon } from "@phosphor-icons/react";
+import { AssistantButton, AssistantPanel } from "@/components/ai/assistant-panel";
 import { Button } from "@/components/ui/button";
 import { usePersonaKey } from "@/features/session/use-session";
 import { api, queryKeys } from "@/lib/api";
@@ -30,6 +31,7 @@ export function Header() {
           <div className="w-9 sm:w-auto">
             <GlobalSearch />
           </div>
+          <AssistantButton />
           <Button asChild variant="ghost" size="icon" className="relative rounded-full">
             <Link href="/notifications" aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}>
               <BellIcon className="size-5" aria-hidden />
@@ -46,6 +48,7 @@ export function Header() {
           <UserMenu />
         </div>
       </div>
+      <AssistantPanel />
       <div className="px-4 pb-3 lg:hidden [&:empty]:hidden">
         <SiteSwitcher />
       </div>

@@ -76,8 +76,10 @@ function describeOrder(r: AssistantRecords, order: SalesOrder): { answer: string
   const answer: string[] = [];
   const sources: AskSource[] = [{ relatedType: "sales-order", relatedId: order.id, label: `Order ${order.number}` }];
 
-  const dateText = order.confirmedDate ? `confirmed for ${formatDate(order.confirmedDate)}` : `requested for ${formatDate(order.requestedDate)}`;
-  answer.push(`Order ${order.number}${order.poReference ? ` (your reference ${order.poReference})` : ""} is ${STAGE[order.status]}, ${dateText}, with a value of ${formatMoney(order.total)}.`);
+  const delivered = order.status === "delivered" || order.status === "cancelled";
+  const due = order.confirmedDate ?? order.requestedDate;
+  const dateText = delivered ? null : due < r.today.toISOString().slice(0, 10) ? `was originally due ${formatDate(due)}` : order.confirmedDate ? `due ${formatDate(due)}` : `requested for ${formatDate(due)}`;
+  answer.push(`Order ${order.number}${order.poReference ? ` (your reference ${order.poReference})` : ""} is ${STAGE[order.status]}${dateText ? ` and ${dateText}` : ""}, with a value of ${formatMoney(order.total)}.`);
 
   const back = order.lines.filter((l) => l.backordered > 0);
   if (back.length) {

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { ChartBarIcon, ChatsCircleIcon, FileTextIcon, PackageIcon, SparkleIcon, TagIcon, TrendUpIcon, UsersIcon, WalletIcon } from "@phosphor-icons/react";
 import { AIInsightCard } from "@/components/ai/ai-insight-card";
+import { AllInsightsButton } from "@/components/ai/assistant-panel";
 import { AssistantPrompt } from "@/components/ai/assistant-prompt";
 import { AgeingBar } from "@/components/finance/ageing-bar";
 import { AnimatedNumber } from "@/components/shared/animated-number";
@@ -246,6 +247,7 @@ export function SupplierDashboard() {
               ))}
             </div>
           )}
+          {(insights.data?.length ?? 0) > d.supplierInsights.length ? <AllInsightsButton count={insights.data!.length} className="mt-3" /> : null}
         </DashboardCard>
 
         {/* 6. Conversations */}
