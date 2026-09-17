@@ -11,7 +11,7 @@
     "gen:types": "node scripts/gen-types.mjs",
     "check:data": "tsx scripts/check-data.ts",
     "check:api": "tsx scripts/check-api.ts",
-    "build:check": "NEXT_DIST_DIR=.next-build next build"
+    "build:check": "node scripts/build-check.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
