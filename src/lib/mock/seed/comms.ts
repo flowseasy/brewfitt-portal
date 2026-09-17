@@ -53,13 +53,77 @@ type CaseSpec = {
   status: Case["status"];
   subject: string;
   description: string;
-  productSlug: string;
-  link: "order" | "job" | "product";
+  /** Customer cases name the product; supplier issues use one of the supplier's own. */
+  productSlug?: string;
+  link: "order" | "job" | "product" | "purchase-order" | "invoice";
   ageDays: number;
   script?: string;
   resolution?: string;
   notes?: string[];
 };
+
+/** Supplier Support: issues suppliers raise with Brewfitt's buyers. */
+const SUPPLIER_CASE_SPECS: CaseSpec[] = [
+  {
+    accountId: "sup_vireo",
+    kind: "payment",
+    urgency: "normal",
+    status: "open",
+    subject: "Remittance total does not match our statement",
+    description:
+      "The remittance for the last payment run is lower than the invoices we expected it to cover. Could you confirm which invoices were included and whether any were held back?",
+    link: "invoice",
+    ageDays: 3,
+  },
+  {
+    accountId: "sup_vireo",
+    kind: "purchase-order",
+    urgency: "high",
+    status: "in-progress",
+    subject: "Purchase order quantities differ from our quote",
+    description:
+      "The quantities on the latest purchase order do not match the RFQ response we sent. Please confirm the quantities you need before we pick the order.",
+    link: "purchase-order",
+    ageDays: 2,
+    notes: ["Buyer checking the purchase order lines against the RFQ response."],
+  },
+  {
+    accountId: "sup_vireo",
+    kind: "delivery",
+    urgency: "normal",
+    status: "resolved",
+    subject: "Goods-in booking for our next delivery",
+    description:
+      "Our pallet delivery is ready to leave. Please book a goods-in slot at Huddersfield so the driver is not turned away.",
+    link: "purchase-order",
+    ageDays: 12,
+    resolution: "Goods-in slot booked for 8am; the driver should report to the trade counter.",
+  },
+  {
+    accountId: "sup_polarflex",
+    kind: "product-listing",
+    urgency: "low",
+    status: "resolved",
+    subject: "Updated product images not showing",
+    description:
+      "We sent new images for one of our coolers two weeks ago but the old images are still shown to your customers.",
+    link: "product",
+    ageDays: 20,
+    resolution: "New images approved and published to the catalogue.",
+  },
+  {
+    accountId: "sup_northgas",
+    kind: "general",
+    urgency: "low",
+    status: "closed",
+    subject: "New contact for purchase orders",
+    description:
+      "Our purchase order inbox has moved to our new sales office. Please send future purchase orders to the new contact on our account.",
+    link: "product",
+    ageDays: 40,
+    resolution: "Account contact updated for purchase orders.",
+  },
+];
 
 const CASE_SPECS: CaseSpec[] = [
   {
@@ -400,11 +464,37 @@ export function seedComms(
   // ---- Cases ----------------------------------------------------------------
   const cases: Case[] = [];
   let caseNo = 0;
-  for (const spec of [...CASE_SPECS].sort((a, b) => b.ageDays - a.ageDays)) {
-    const productId = `prd_${spec.productSlug}`;
-    if (!ctx.productById.has(productId))
-      throw new Error(`Case product not found: ${spec.productSlug}`);
+  for (const spec of [...CASE_SPECS, ...SUPPLIER_CASE_SPECS].sort(
+    (a, b) => b.ageDays - a.ageDays,
+  )) {
+    const supplier = ctx.account(spec.accountId).kind === "supplier";
     const created = addDays(today, -spec.ageDays);
+    const suppliedProduct = supplier
+      ? [...ctx.productById.values()].find((p) => p.supplierId === spec.accountId)
+      : undefined;
+    const productId = spec.productSlug ? `prd_${spec.productSlug}` : (suppliedProduct?.id ?? "");
+    if (!ctx.productById.has(productId))
+      throw new Error(`Case product not found: ${spec.productSlug ?? spec.accountId}`);
+    const purchaseOrder = supplier
+      ? r.purchaseOrders
+          .filter((po) => po.supplierId === spec.accountId && new Date(po.createdAt) < created)
+          .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0]
+      : undefined;
+    const invoice = supplier
+      ? r.invoices
+          .filter(
+            (i) =>
+              i.accountId === spec.accountId &&
+              i.orderType === "purchase" &&
+              i.kind !== "credit-note" &&
+              new Date(i.issuedAt) < created,
+          )
+          .sort((a, b) => b.issuedAt.localeCompare(a.issuedAt))[0]
+      : undefined;
+    if (spec.link === "purchase-order" && !purchaseOrder)
+      throw new Error(`No purchase order for supplier case: ${spec.subject}`);
+    if (spec.link === "invoice" && !invoice)
+      throw new Error(`No invoice for supplier case: ${spec.subject}`);
     const order = r.salesOrders
       .filter(
         (o) =>
@@ -424,7 +514,8 @@ export function seedComms(
       id: `case_${caseNo}`,
       accountId: spec.accountId,
       number: ctx.number("case"),
-      productId,
+      // Supplier issues about a purchase order or invoice are not about one product.
+      productId: supplier && spec.link !== "product" ? null : productId,
       orderId:
         spec.link === "order" || spec.link === "job"
           ? spec.link === "job" && job
@@ -432,6 +523,13 @@ export function seedComms(
             : (order?.id ?? null)
           : null,
       jobId: spec.link === "job" ? (job?.id ?? null) : null,
+      purchaseOrderId:
+        spec.link === "purchase-order" || spec.link === "invoice"
+          ? spec.link === "invoice"
+            ? (invoice?.orderId ?? null)
+            : (purchaseOrder?.id ?? null)
+          : null,
+      invoiceId: spec.link === "invoice" ? (invoice?.id ?? null) : null,
       kind: spec.kind,
       urgency: spec.urgency,
       status: spec.status,
@@ -442,7 +540,11 @@ export function seedComms(
           ? [ctx.productById.get(productId)!.images[0]!]
           : [],
       engineerNotes: (spec.notes ?? []).map((note, i) => ({
-        author: i === 0 ? "Mark Sutcliffe" : "Craig Lockwood",
+        author: supplier
+          ? teamFor(spec.accountId, "buyer").name
+          : i === 0
+            ? "Mark Sutcliffe"
+            : "Craig Lockwood",
         note,
         at: isoDateTime(addDays(created, Math.min(i + 1, spec.ageDays)), 11 + i),
       })),
@@ -561,7 +663,10 @@ export function seedComms(
       `Case ${c.number}: ${c.subject}`,
       "case",
       c.id,
-      teamFor(c.accountId, "technical-manager"),
+      teamFor(
+        c.accountId,
+        ctx.account(c.accountId).kind === "supplier" ? "buyer" : "technical-manager",
+      ),
     );
     c.threadId = t.id;
     threadFor.set(c.id, t);

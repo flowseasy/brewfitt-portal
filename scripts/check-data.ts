@@ -131,7 +131,7 @@ function check(db: MockDb, today: Date): { failures: Failure[]; stats: Record<st
   db.invoices.forEach((i) =>
     belongs("invoice", i.id, i.accountId, i.orderType === "sales" ? "customer" : "supplier"),
   );
-  db.cases.forEach((c) => belongs("case", c.id, c.accountId));
+  db.cases.forEach((c) => belongs("case", c.id, c.accountId, "any"));
   db.threads.forEach((t) => belongs("thread", t.id, t.accountId, "any"));
   db.configurations.forEach((c) => belongs("configuration", c.id, c.accountId));
   db.jobs.forEach((j) => belongs("job", j.id, j.accountId));
@@ -365,6 +365,21 @@ function check(db: MockDb, today: Date): { failures: Failure[]; stats: Record<st
       fail("case-order-account", c.id);
     if (c.jobId && db.jobs.find((j) => j.id === c.jobId)?.accountId !== c.accountId)
       fail("case-job-account", c.id);
+    if (c.purchaseOrderId && poById.get(c.purchaseOrderId)?.supplierId !== c.accountId)
+      fail("case-purchase-order-account", c.id);
+    const invoice = c.invoiceId ? db.invoices.find((i) => i.id === c.invoiceId) : undefined;
+    if (c.invoiceId && invoice?.accountId !== c.accountId) fail("case-invoice-account", c.id);
+    // Customer Support and Supplier Support use their own kinds and links.
+    const supplier = accountById.get(c.accountId)?.kind === "supplier";
+    if (supplier !== s.SupplierCaseKind.safeParse(c.kind).success) fail("case-kind-audience", c.id);
+    if (supplier && (c.orderId || c.jobId)) fail("case-supplier-links", c.id);
+    if (!supplier && (c.purchaseOrderId || c.invoiceId)) fail("case-customer-links", c.id);
+    if (
+      c.productId &&
+      supplier &&
+      db.products.find((p) => p.id === c.productId)?.supplierId !== c.accountId
+    )
+      fail("case-supplier-product", c.id);
   });
 
   // Threads, messages, notifications and documents point at real records.

@@ -30,6 +30,8 @@ function ctaFor(kind: string, pathname: string): Cta {
       };
     if (section === "messages")
       return { label: "New message", href: "/messages?new=1", icon: ChatCircleTextIcon };
+    if (section === "cases")
+      return { label: "Raise an issue", href: "/cases?new=1", icon: LifebuoyIcon };
     if (section === "knowledge")
       return { label: "Submit product", href: "/products?new=product", icon: TagIcon };
     return { label: "Respond to RFQ", href: "/quotes?filter=open", icon: PaperPlaneTiltIcon };

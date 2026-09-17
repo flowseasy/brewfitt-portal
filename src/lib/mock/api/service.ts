@@ -55,12 +55,11 @@ export const jobs: PortalApi["jobs"] = {
 
 export const cases: PortalApi["cases"] = {
   list: () =>
-    respond((db, scope) => {
-      requireCustomer(scope);
-      return db.cases
+    respond((db, scope) =>
+      db.cases
         .filter((c) => inScope(scope, c.accountId))
-        .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-    }),
+        .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
+    ),
   get: (id) =>
     respond(
       (db, scope) =>
@@ -68,9 +67,35 @@ export const cases: PortalApi["cases"] = {
     ),
   create: (input) =>
     respond((db, scope) => {
-      requireCustomer(scope);
       const data = s.CaseInput.parse(input);
       const accountId = scope.viewAccount.id;
+      // Customer Support (faults, warranty, returns) and Supplier Support (issues suppliers raise).
+      if (scope.isSupplier !== s.SupplierCaseKind.safeParse(data.kind).success)
+        badRequest(
+          scope.isSupplier
+            ? "Choose a supplier support topic: purchase order, payment, delivery, product listing or general."
+            : "Choose a fault, warranty claim, return or technical question.",
+        );
+      if (scope.isSupplier && (data.orderId || data.jobId))
+        badRequest("Supplier issues link to a purchase order, invoice or product.");
+      if (!scope.isSupplier && (data.purchaseOrderId || data.invoiceId))
+        badRequest("Link the case to an order, product or install job.");
+      if (
+        data.purchaseOrderId &&
+        !db.purchaseOrders.some((p) => p.id === data.purchaseOrderId && p.supplierId === accountId)
+      )
+        notFound("Purchase order");
+      if (
+        data.invoiceId &&
+        !db.invoices.some((i) => i.id === data.invoiceId && inScope(scope, i.accountId))
+      )
+        notFound("Invoice");
+      if (
+        scope.isSupplier &&
+        data.productId &&
+        !db.products.some((p) => p.id === data.productId && p.supplierId === accountId)
+      )
+        notFound("Product");
       if (
         data.orderId &&
         !db.salesOrders.some((o) => o.id === data.orderId && inScope(scope, o.accountId))
@@ -97,7 +122,7 @@ export const cases: PortalApi["cases"] = {
         subject: `Case ${c.number}: ${c.subject}`,
         relatedType: "case",
         relatedId: c.id,
-        brewfittRole: "technical-manager",
+        brewfittRole: scope.isSupplier ? "buyer" : "technical-manager",
         first: { side: "account", channel: "portal", body: c.description, at },
       });
       c.threadId = opened.thread.id;

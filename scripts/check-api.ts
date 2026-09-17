@@ -372,6 +372,8 @@ async function main() {
       productId: order.lines[0]!.productId,
       orderId: order.id,
       jobId: null,
+      purchaseOrderId: null,
+      invoiceId: null,
       photos: [],
     });
     expect((await api.cases.update(c.id, { status: "closed" })).status === "closed", "not closed");
@@ -548,6 +550,41 @@ async function main() {
       (await api.knowledge.list()).some((k) => k.id === item.id),
       "supplier cannot see own submission",
     );
+  });
+  await step("supplier raises a Supplier Support issue", async () => {
+    const po = (await api.orders.purchaseOrders())[0]!;
+    const before = (await api.cases.list()).length;
+    const issue = await api.cases.create({
+      kind: "purchase-order",
+      urgency: "normal",
+      subject: "Delivery address on purchase order",
+      description:
+        "The purchase order shows the old warehouse address; please confirm where to deliver.",
+      productId: null,
+      orderId: null,
+      jobId: null,
+      purchaseOrderId: po.id,
+      invoiceId: null,
+      photos: [],
+    });
+    expect(issue.purchaseOrderId === po.id, "PO not linked");
+    expect((await api.cases.list()).length === before + 1, "issue not listed");
+    let refused = false;
+    await api.cases
+      .create({
+        kind: "fault",
+        urgency: "low",
+        subject: "Wrong kind",
+        description: "Suppliers should not be able to raise customer faults.",
+        productId: null,
+        orderId: null,
+        jobId: null,
+        purchaseOrderId: po.id,
+        invoiceId: null,
+        photos: [],
+      })
+      .catch(() => (refused = true));
+    expect(refused, "supplier raised a customer fault");
   });
   await step("supplier assistant answers about a purchase order", async () => {
     const po = (await api.orders.purchaseOrders())[0]!;

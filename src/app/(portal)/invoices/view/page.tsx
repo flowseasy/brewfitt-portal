@@ -11,6 +11,7 @@ import {
   FilePdfIcon,
   PackageIcon,
   ReceiptIcon,
+  LifebuoyIcon,
 } from "@phosphor-icons/react";
 import { formatAddress } from "@/components/account/addresses";
 import { PayInvoiceDialog } from "@/components/finance/pay-invoice-dialog";
@@ -271,6 +272,15 @@ function InvoiceView({ id }: { id: string }) {
                 </span>
                 <span className="font-medium">{order.number}</span>
               </span>
+            </Link>
+          ) : null}
+          {supplier ? (
+            <Link
+              href={`/cases?new=1&invoiceId=${inv.id}`}
+              className="flex items-center gap-3 rounded-2xl border bg-card p-4 text-sm font-medium text-primary hover:border-primary/40"
+            >
+              <LifebuoyIcon className="size-5" aria-hidden />
+              Raise an issue about this invoice
             </Link>
           ) : null}
         </aside>

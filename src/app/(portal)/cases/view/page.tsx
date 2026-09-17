@@ -9,12 +9,13 @@ import {
   ChatsCircleIcon,
   CheckCircleIcon,
   PackageIcon,
+  ReceiptIcon,
   ShieldCheckIcon,
   TagIcon,
   WrenchIcon,
 } from "@phosphor-icons/react";
 import { toast } from "sonner";
-import { CASE_KIND_LABEL } from "@/components/cases/case-sheet";
+import { CASE_KIND_LABEL, supportName } from "@/components/cases/case-sheet";
 import { ThreadView } from "@/components/messages/thread-view";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { PageHeader } from "@/components/shared/page-header";
@@ -23,7 +24,7 @@ import { StatusPill } from "@/components/shared/status-pill";
 import { Timeline } from "@/components/shared/timeline";
 import { SubmissionImage, isUpload, uploadName } from "@/components/supplier/submission-forms";
 import { Button } from "@/components/ui/button";
-import { usePersonaKey } from "@/features/session/use-session";
+import { useIsSupplier, usePersonaKey } from "@/features/session/use-session";
 import { api, errorMessage, queryKeys } from "@/lib/api";
 import { daysFromToday, formatDate } from "@/lib/format";
 import { hrefFor } from "@/lib/links";
@@ -32,7 +33,7 @@ import { CASE_STATUS, CASE_URGENCY } from "@/lib/status";
 export default function CaseViewPage() {
   return (
     <Suspense fallback={<LoadingState rows={5} />}>
-      <RecordIdGate backHref="/cases" backLabel="Back to cases">
+      <RecordIdGate backHref="/cases" backLabel="Back to support">
         <CaseView />
       </RecordIdGate>
     </Suspense>
@@ -42,6 +43,8 @@ export default function CaseViewPage() {
 function CaseView() {
   const id = useSearchParams().get("id") ?? "";
   const key = usePersonaKey();
+  const supplier = useIsSupplier();
+  const noun = supplier ? "issue" : "case";
   const queryClient = useQueryClient();
   const kase = useQuery({
     queryKey: queryKeys.case(key, id),
@@ -55,8 +58,23 @@ function CaseView() {
   const orders = useQuery({
     queryKey: queryKeys.salesOrders(key),
     queryFn: () => api.orders.salesOrders(),
+    enabled: !supplier,
   });
-  const jobs = useQuery({ queryKey: queryKeys.jobs(key), queryFn: () => api.jobs.list() });
+  const jobs = useQuery({
+    queryKey: queryKeys.jobs(key),
+    queryFn: () => api.jobs.list(),
+    enabled: !supplier,
+  });
+  const purchaseOrders = useQuery({
+    queryKey: queryKeys.purchaseOrders(key),
+    queryFn: () => api.orders.purchaseOrders(),
+    enabled: supplier,
+  });
+  const invoices = useQuery({
+    queryKey: queryKeys.invoices(key),
+    queryFn: () => api.invoices.list(),
+    enabled: supplier,
+  });
   const [closeOpen, setCloseOpen] = useState(false);
 
   const close = useMutation({
@@ -70,10 +88,10 @@ function CaseView() {
       ])
         void queryClient.invalidateQueries({ queryKey: k });
       setCloseOpen(false);
-      toast.success(`Case ${c.number} closed`);
+      toast.success(`${supplier ? "Issue" : "Case"} ${c.number} closed`);
     },
     onError: (error) =>
-      toast.error("The case could not be closed", { description: errorMessage(error) }),
+      toast.error(`The ${noun} could not be closed`, { description: errorMessage(error) }),
   });
 
   if (kase.isPending) return <LoadingState rows={5} label="Loading case" />;
@@ -83,6 +101,8 @@ function CaseView() {
   const product = priceList.data?.lines.find((l) => l.productId === c.productId)?.product;
   const order = orders.data?.find((o) => o.id === c.orderId);
   const job = jobs.data?.find((j) => j.id === c.jobId);
+  const purchaseOrder = purchaseOrders.data?.find((p) => p.id === c.purchaseOrderId);
+  const invoice = invoices.data?.find((i) => i.id === c.invoiceId);
   const warrantyActive = job?.warrantyEnd ? daysFromToday(job.warrantyEnd) >= 0 : null;
   const canClose = c.status !== "closed";
 
@@ -93,7 +113,7 @@ function CaseView() {
         className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeftIcon className="size-4" aria-hidden />
-        Cases
+        {supportName(supplier)}
       </Link>
       <PageHeader
         eyebrow={`${c.number} · ${CASE_KIND_LABEL[c.kind]}`}
@@ -111,7 +131,7 @@ function CaseView() {
           canClose ? (
             <Button variant="outline" onClick={() => setCloseOpen(true)}>
               <CheckCircleIcon aria-hidden />
-              Close case
+              Close {noun}
             </Button>
           ) : null
         }
@@ -147,7 +167,7 @@ function CaseView() {
 
           <section aria-labelledby="notes" className="rounded-2xl border bg-card p-5">
             <h2 id="notes" className="mb-3 font-medium">
-              Engineer notes
+              {supplier ? "Brewfitt notes" : "Engineer notes"}
             </h2>
             {c.engineerNotes.length ? (
               <Timeline
@@ -161,8 +181,9 @@ function CaseView() {
               />
             ) : (
               <p className="text-sm text-muted-foreground">
-                No engineer notes yet. Brewfitt&apos;s technical team replies in the conversation
-                below.
+                {supplier
+                  ? "No notes yet. Brewfitt's buyer replies in the conversation below."
+                  : "No engineer notes yet. Brewfitt's technical team replies in the conversation below."}
               </p>
             )}
           </section>
@@ -179,7 +200,7 @@ function CaseView() {
         <aside className="space-y-3">
           {product ? (
             <Link
-              href={hrefFor("product", product.id)}
+              href={supplier ? "/stock" : hrefFor("product", product.id)}
               className="flex items-center gap-3 rounded-2xl border bg-card p-4 hover:border-primary/40"
             >
               <TagIcon className="size-5 shrink-0 text-primary" aria-hidden />
@@ -199,6 +220,34 @@ function CaseView() {
                 <span className="block text-xs text-muted-foreground">Order</span>
                 <span className="font-medium">
                   {order.number} · {formatDate(order.createdAt)}
+                </span>
+              </span>
+            </Link>
+          ) : null}
+          {purchaseOrder ? (
+            <Link
+              href={hrefFor("purchase-order", purchaseOrder.id)}
+              className="flex items-center gap-3 rounded-2xl border bg-card p-4 hover:border-primary/40"
+            >
+              <PackageIcon className="size-5 shrink-0 text-primary" aria-hidden />
+              <span className="text-sm">
+                <span className="block text-xs text-muted-foreground">Purchase order</span>
+                <span className="font-medium">
+                  {purchaseOrder.number} · {formatDate(purchaseOrder.createdAt)}
+                </span>
+              </span>
+            </Link>
+          ) : null}
+          {invoice ? (
+            <Link
+              href={hrefFor("invoice", invoice.id)}
+              className="flex items-center gap-3 rounded-2xl border bg-card p-4 hover:border-primary/40"
+            >
+              <ReceiptIcon className="size-5 shrink-0 text-primary" aria-hidden />
+              <span className="text-sm">
+                <span className="block text-xs text-muted-foreground">Invoice</span>
+                <span className="font-medium">
+                  {invoice.number} · {formatDate(invoice.issuedAt)}
                 </span>
               </span>
             </Link>
@@ -237,9 +286,9 @@ function CaseView() {
       <ConfirmDialog
         open={closeOpen}
         onOpenChange={setCloseOpen}
-        title={`Close case ${c.number}?`}
-        description="Close it if the problem is fixed. You can raise a new case if it comes back."
-        confirmLabel="Close case"
+        title={`Close ${noun} ${c.number}?`}
+        description={`Close it if it is sorted. You can raise a new ${noun} if it comes back.`}
+        confirmLabel={`Close ${noun}`}
         pending={close.isPending}
         onConfirm={() => close.mutate()}
       />

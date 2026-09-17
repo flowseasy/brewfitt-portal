@@ -402,7 +402,7 @@ function SalesOrderView({ id }: { id: string }) {
               </ul>
             </SideCard>
           ) : null}
-          <SideCard title="After-sales" icon={LifebuoyIcon}>
+          <SideCard title="Customer Support" icon={LifebuoyIcon}>
             {orderCases.length ? (
               <ul className="mb-2 space-y-1.5 text-sm">
                 {orderCases.map((c) => (
@@ -795,6 +795,14 @@ function PurchaseOrderDetailView({ id }: { id: string }) {
             ) : (
               <p className="text-sm text-muted-foreground">Invoiced when goods are received.</p>
             )}
+          </SideCard>
+          <SideCard title="Supplier Support" icon={LifebuoyIcon}>
+            <Link
+              href={`/cases?new=1&purchaseOrderId=${p.id}`}
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              Raise an issue about this purchase order
+            </Link>
           </SideCard>
         </aside>
       </div>

@@ -18,7 +18,16 @@ export const Job = z.object({
   warrantyEnd: IsoDate.nullable(),
 });
 
-export const CaseKind = z.enum(["fault", "warranty", "return", "query"]);
+/** Customer Support kinds, then Supplier Support kinds (issues suppliers raise with Brewfitt). */
+export const CustomerCaseKind = z.enum(["fault", "warranty", "return", "query"]);
+export const SupplierCaseKind = z.enum([
+  "purchase-order",
+  "payment",
+  "delivery",
+  "product-listing",
+  "general",
+]);
+export const CaseKind = z.enum([...CustomerCaseKind.options, ...SupplierCaseKind.options]);
 export const CaseUrgency = z.enum(["low", "normal", "high", "critical"]);
 export const CaseStatus = z.enum(["open", "in-progress", "awaiting-parts", "resolved", "closed"]);
 
@@ -35,6 +44,9 @@ export const Case = z.object({
   productId: Id.nullable(),
   orderId: Id.nullable(),
   jobId: Id.nullable(),
+  /** Supplier Support: the purchase order or invoice the issue is about. */
+  purchaseOrderId: Id.nullable(),
+  invoiceId: Id.nullable(),
   kind: CaseKind,
   urgency: CaseUrgency,
   status: CaseStatus,
@@ -60,12 +72,20 @@ export const CaseInput = z
     productId: Id.nullable(),
     orderId: Id.nullable(),
     jobId: Id.nullable(),
+    purchaseOrderId: Id.nullable(),
+    invoiceId: Id.nullable(),
     photos: z.array(z.string()),
   })
-  .refine((c) => c.productId || c.orderId || c.jobId, {
-    message: "Link the case to a product, order or job",
-    path: ["productId"],
-  });
+  .refine(
+    (c) =>
+      c.kind === "general" ||
+      c.productId ||
+      c.orderId ||
+      c.jobId ||
+      c.purchaseOrderId ||
+      c.invoiceId,
+    { message: "Link the case to the record it is about", path: ["productId"] },
+  );
 
 export const CasePatch = z.object({
   status: z.literal("closed").optional(),

@@ -115,6 +115,8 @@ export type PayInvoiceRequest = z.infer<typeof s.PayInvoiceRequest>;
 // service
 export type JobStatus = z.infer<typeof s.JobStatus>;
 export type Job = z.infer<typeof s.Job>;
+export type CustomerCaseKind = z.infer<typeof s.CustomerCaseKind>;
+export type SupplierCaseKind = z.infer<typeof s.SupplierCaseKind>;
 export type CaseKind = z.infer<typeof s.CaseKind>;
 export type CaseUrgency = z.infer<typeof s.CaseUrgency>;
 export type CaseStatus = z.infer<typeof s.CaseStatus>;

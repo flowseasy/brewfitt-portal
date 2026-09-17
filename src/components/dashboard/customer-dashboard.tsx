@@ -441,7 +441,7 @@ export function CustomerDashboard() {
           className="lg:col-span-2"
           title="After-sales and installs"
           icon={LifebuoyIcon}
-          action={{ label: "Cases", href: "/cases" }}
+          action={{ label: "Customer Support", href: "/cases" }}
         >
           {d.cases.isPending || d.jobs.isPending ? (
             <LoadingState rows={2} />

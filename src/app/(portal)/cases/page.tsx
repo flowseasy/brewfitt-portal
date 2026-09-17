@@ -5,13 +5,13 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { LifebuoyIcon, PlusIcon } from "@phosphor-icons/react";
-import { CASE_KIND_LABEL, RaiseCaseSheet } from "@/components/cases/case-sheet";
+import { CASE_KIND_LABEL, RaiseCaseSheet, supportName } from "@/components/cases/case-sheet";
 import { PageHeader } from "@/components/shared/page-header";
 import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { StatusTabs } from "@/components/shared/status-tabs";
 import { Button } from "@/components/ui/button";
-import { usePersonaKey } from "@/features/session/use-session";
+import { useIsSupplier, usePersonaKey } from "@/features/session/use-session";
 import { api, queryKeys } from "@/lib/api";
 import { formatDate, formatSince } from "@/lib/format";
 import { hrefFor } from "@/lib/links";
@@ -29,6 +29,8 @@ type Tab = "open" | "resolved" | "all";
 
 function Cases() {
   const key = usePersonaKey();
+  const supplier = useIsSupplier();
+  const raiseLabel = supplier ? "Raise an issue" : "Raise a case";
   const params = useSearchParams();
   const cases = useQuery({ queryKey: queryKeys.cases(key), queryFn: () => api.cases.list() });
   const priceList = useQuery({
@@ -57,12 +59,16 @@ function Cases() {
   return (
     <div>
       <PageHeader
-        title="Cases"
-        description="After-sales faults, warranty claims, returns and technical questions, with engineer notes and resolution."
+        title={supportName(supplier)}
+        description={
+          supplier
+            ? "Raise anything you need Brewfitt to sort out: purchase orders, payments and remittances, delivery bookings or product listings."
+            : "After-sales faults, warranty claims, returns and technical questions, with engineer notes and resolution."
+        }
         actions={
           <Button onClick={() => setOpen(true)}>
             <PlusIcon aria-hidden />
-            Raise a case
+            {raiseLabel}
           </Button>
         }
       />
@@ -84,20 +90,30 @@ function Cases() {
         onChange={setTab}
       />
       {cases.isPending ? (
-        <LoadingState rows={4} label="Loading cases" />
+        <LoadingState rows={4} label="Loading support" />
       ) : cases.isError ? (
         <ErrorState error={cases.error} onRetry={() => cases.refetch()} />
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={LifebuoyIcon}
-          title={tab === "open" ? "No cases open" : "No cases here"}
+          title={
+            tab === "open"
+              ? supplier
+                ? "No issues open"
+                : "No cases open"
+              : supplier
+                ? "No issues here"
+                : "No cases here"
+          }
           description={
             tab === "open"
-              ? "If something is not pouring right, raise a case and Brewfitt's technical team will pick it up."
+              ? supplier
+                ? "If a purchase order, payment or delivery needs sorting, raise an issue and Brewfitt's buyer will pick it up."
+                : "If something is not pouring right, raise a case and Brewfitt's technical team will pick it up."
               : undefined
           }
           action={
-            tab === "open" ? <Button onClick={() => setOpen(true)}>Raise a case</Button> : undefined
+            tab === "open" ? <Button onClick={() => setOpen(true)}>{raiseLabel}</Button> : undefined
           }
         />
       ) : (
@@ -143,6 +159,8 @@ function Cases() {
           orderId: params.get("orderId") ?? undefined,
           jobId: params.get("jobId") ?? undefined,
           productId: params.get("productId") ?? undefined,
+          purchaseOrderId: params.get("purchaseOrderId") ?? undefined,
+          invoiceId: params.get("invoiceId") ?? undefined,
         }}
       />
     </div>
