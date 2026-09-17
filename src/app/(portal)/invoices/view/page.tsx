@@ -58,7 +58,7 @@ function InvoiceView({ id }: { id: string }) {
   const payments = useQuery({ queryKey: queryKeys.payments(key), queryFn: () => api.invoices.payments() });
   const priceList = useQuery({ queryKey: queryKeys.priceList(key), queryFn: () => api.priceList.get() });
   const addresses = useQuery({ queryKey: queryKeys.addresses(key), queryFn: () => api.account.addresses() });
-  const [pdfOpen, setPdfOpen] = useState(false);
+  const [pdfOpen, setPdfOpen] = useState(useSearchParams().get("pdf") === "1");
   const [payOpen, setPayOpen] = useState(false);
   const products = useMemo(() => new Map((priceList.data?.lines ?? []).map((l) => [l.productId, l.product])), [priceList.data]);
 

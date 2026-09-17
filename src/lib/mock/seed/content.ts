@@ -110,7 +110,7 @@ export function seedContent(
     const expiresIn = s.id === "sup_vireo" ? 18 : s.id === "sup_polarflex" ? -9 : rng.int(60, 330);
     addDoc({ name: `${s.name} public liability insurance certificate.pdf`, category: "insurance", relatedType: "account", relatedId: s.id, ownerAccountId: s.id, fileType: "pdf", fileSize: pdfSize(120, 500), expiresAt: isoDate(addDays(today, expiresIn)), approvalStatus: "approved", modifiedAt: isoDateTime(addDays(today, -(365 - Math.max(expiresIn, 0)) + rng.int(0, 20)), 11) });
     if (i % 3 === 0) {
-      addDoc({ name: `${s.name} product liability insurance certificate.pdf`, category: "insurance", relatedType: "account", relatedId: s.id, ownerAccountId: s.id, fileType: "pdf", fileSize: pdfSize(120, 500), expiresAt: isoDate(addDays(today, rng.int(90, 360))), approvalStatus: i === 0 ? "pending" : "approved", modifiedAt: isoDateTime(addDays(today, -rng.int(2, 40)), 11) });
+      addDoc({ name: `${s.name} product liability insurance certificate.pdf`, category: "insurance", relatedType: "account", relatedId: s.id, ownerAccountId: s.id, fileType: "pdf", fileSize: pdfSize(120, 500), expiresAt: isoDate(addDays(today, rng.int(90, 360))), approvalStatus: i === 3 ? "pending" : "approved", modifiedAt: isoDateTime(addDays(today, -rng.int(2, 40)), 11) });
     }
     if (i % 4 === 1) {
       addDoc({ name: `${s.name} ISO 9001 certificate.pdf`, category: "compliance", relatedType: "account", relatedId: s.id, ownerAccountId: s.id, fileType: "pdf", fileSize: pdfSize(80, 300), expiresAt: isoDate(addDays(today, rng.int(120, 700))), approvalStatus: i === 1 ? "pending" : "approved", modifiedAt: isoDateTime(addDays(today, -rng.int(3, 200)), 11) });

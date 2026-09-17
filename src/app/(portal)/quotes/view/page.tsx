@@ -67,7 +67,7 @@ function QuoteDetail({ id }: { id: string }) {
   const addresses = useQuery({ queryKey: queryKeys.addresses(key), queryFn: () => api.account.addresses() });
   const configurations = useQuery({ queryKey: queryKeys.configurations(key), queryFn: () => api.configurator.list() });
   const insights = useQuery({ queryKey: queryKeys.insights(key), queryFn: () => api.ai.insights() });
-  const [pdfOpen, setPdfOpen] = useState(false);
+  const [pdfOpen, setPdfOpen] = useState(useSearchParams().get("pdf") === "1");
   const [acceptOpen, setAcceptOpen] = useState(false);
   const [declineOpen, setDeclineOpen] = useState(false);
 

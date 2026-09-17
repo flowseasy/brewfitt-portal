@@ -91,7 +91,7 @@ function SalesOrderView({ id }: { id: string }) {
   const invoices = useQuery({ queryKey: queryKeys.invoices(key), queryFn: () => api.invoices.list() });
   const jobs = useQuery({ queryKey: queryKeys.jobs(key), queryFn: () => api.jobs.list() });
   const cases = useQuery({ queryKey: queryKeys.cases(key), queryFn: () => api.cases.list() });
-  const [pdfOpen, setPdfOpen] = useState(false);
+  const [pdfOpen, setPdfOpen] = useState(useSearchParams().get("pdf") === "1");
   const [changeOpen, setChangeOpen] = useState(false);
 
   const products = useMemo(() => new Map((priceList.data?.lines ?? []).map((l) => [l.productId, l.product])), [priceList.data]);
@@ -428,7 +428,7 @@ function PurchaseOrderDetailView({ id }: { id: string }) {
   const me = useQuery({ queryKey: queryKeys.me(key), queryFn: () => api.session.me() });
   const products = useQuery({ queryKey: queryKeys.products(key), queryFn: () => api.products.list() });
   const invoices = useQuery({ queryKey: queryKeys.invoices(key), queryFn: () => api.invoices.list() });
-  const [pdfOpen, setPdfOpen] = useState(false);
+  const [pdfOpen, setPdfOpen] = useState(useSearchParams().get("pdf") === "1");
   const productById = useMemo(() => new Map((products.data ?? []).map((p) => [p.id, p])), [products.data]);
 
   const acknowledge = useMutation({

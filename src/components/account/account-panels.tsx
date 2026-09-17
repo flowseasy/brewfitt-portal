@@ -176,7 +176,7 @@ export function ComplianceDocuments({ documents, canUpload }: { documents: Docum
   );
 }
 
-function UploadDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+export function UploadDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const { uploadDocument } = useAccountMutations();
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
