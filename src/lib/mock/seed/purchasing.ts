@@ -145,6 +145,42 @@ export function seedPurchasing(
     { productId: slugId("coolflow-dtx-28-pre-mix-25-litres"), qty: 20 },
   ]);
 
+  // Vireo is the demo supplier: Brewfitt buys fonts and taps from them every month,
+  // so the 12-month purchase history and average order value graphs have no gaps.
+  const vireoRange = [
+    "cobra-2-out-chrome-led",
+    "fc4-tap-chrome-lager-1-2-x35x3-16jg",
+    "celtic-tap-chrome-lager-1-2-x14x3-16jg",
+    "classic-cobra-2-out-led",
+    "cobra-4-out-chrome-led",
+  ].map(slugId);
+  for (let monthsAgo = 1; monthsAgo <= 11; monthsAgo++) {
+    const first = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() - monthsAgo, 1));
+    const month = first.toISOString().slice(0, 7);
+    if (
+      purchaseOrders.some((po) => po.supplierId === "sup_vireo" && po.createdAt.startsWith(month))
+    )
+      continue;
+    const a = vireoRange[monthsAgo % vireoRange.length]!;
+    const b = vireoRange[(monthsAgo + 2) % vireoRange.length]!;
+    makePo("sup_vireo", addDays(first, 9 + (monthsAgo % 8)), [
+      {
+        productId: a,
+        qty:
+          ctx.roleOf(ctx.productById.get(a)!) === "project"
+            ? 4 + (monthsAgo % 5)
+            : 20 + monthsAgo * 2,
+      },
+      {
+        productId: b,
+        qty:
+          ctx.roleOf(ctx.productById.get(b)!) === "project"
+            ? 3 + (monthsAgo % 4)
+            : 16 + monthsAgo * 3,
+      },
+    ]);
+  }
+
   // ---- Statuses and inbound deliveries --------------------------------------
   purchaseOrders.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   const inboundDeliveries: Delivery[] = [];
@@ -207,6 +243,18 @@ export function seedPurchasing(
         workingDay(addDays(expected, -2)),
         expected,
       );
+    }
+  }
+
+  // ---- Supplier delivery performance ---------------------------------------
+  // Most suppliers deliver on the expected date; about one received order in six arrives
+  // a couple of working days late.
+  for (const po of purchaseOrders.filter((p) => p.status === "received")) {
+    const late = [...po.id].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % 6 === 0;
+    if (!late) continue;
+    for (const d of inboundDeliveries.filter((x) => x.orderId === po.id && x.deliveredAt)) {
+      const lateDate = workingDay(addDays(new Date(`${po.expectedDate}T00:00:00Z`), 2));
+      if (lateDate.getTime() < today.getTime()) d.deliveredAt = isoDateTime(lateDate, 11);
     }
   }
 

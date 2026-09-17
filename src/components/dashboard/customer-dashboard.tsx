@@ -32,6 +32,7 @@ import { hrefFor } from "@/lib/links";
 import { CASE_STATUS, JOB_STATUS, ORDER_STATUS } from "@/lib/status";
 import { cn } from "@/lib/utils";
 import { CardRow, DashboardCard } from "./dashboard-card";
+import { CustomerStatsPanel } from "./performance-stats";
 
 const money = (n: number) => formatMoney({ amount: n, currency: "GBP" }, { whole: true });
 
@@ -61,6 +62,8 @@ export function CustomerDashboard() {
           <AssistantPrompt />
         </div>
       </section>
+
+      <CustomerStatsPanel />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* 1. Account status */}
@@ -121,7 +124,9 @@ export function CustomerDashboard() {
                 />
               </dl>
               <div className="mt-5">
-                <p className="mb-2 text-xs font-medium text-muted-foreground">Outstanding by age</p>
+                <p className="mb-2 text-xs font-medium text-muted-foreground">
+                  Outstanding by due date
+                </p>
                 <AgeingBar ageing={d.statement.data.ageing} />
                 {d.statement.data.unallocatedCredit.amount > 0 ? (
                   <p className="mt-2 text-xs text-muted-foreground">
@@ -193,77 +198,35 @@ export function CustomerDashboard() {
           )}
         </DashboardCard>
 
-        {/* 3. Orders by stage and next deliveries */}
+        {/* 5. Offers and suggested products: shown third so the simulated AI leads (client review) */}
         <DashboardCard
-          index={2}
+          index={4}
           className="lg:col-span-2"
-          title="Orders and deliveries"
-          icon={PackageIcon}
-          action={{ label: "All orders", href: "/orders" }}
+          title="Suggested for you"
+          icon={SparkleIcon}
+          action={{ label: "Shop", href: "/shop" }}
+          headerExtra={<SimulatedBadge className="hidden sm:inline-flex" />}
         >
-          {d.orders.isPending ? (
+          {d.insights.isPending ? (
             <LoadingState rows={2} />
-          ) : d.orders.isError ? (
-            <ErrorState error={d.orders.error} onRetry={() => d.orders.refetch()} />
+          ) : d.insights.isError ? (
+            <ErrorState error={d.insights.error} onRetry={() => d.insights.refetch()} />
+          ) : d.suggestions.length === 0 ? (
+            <EmptyState
+              icon={SparkleIcon}
+              title="No suggestions right now"
+              description="Suggestions appear when a regular item is due or similar venues buy something you do not."
+            />
           ) : (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
-              <dl className="grid grid-cols-2 gap-2">
-                {(
-                  [
-                    ["Confirmed", d.stageCounts.confirmed, "confirmed"],
-                    ["Picking", d.stageCounts.picking, "picking"],
-                    ["Dispatched", d.stageCounts.dispatched, "dispatched"],
-                    ["Part-delivered", d.stageCounts.partDelivered, "part-delivered"],
-                  ] as const
-                ).map(([label, count, status]) => (
-                  <div
-                    key={label}
-                    className="relative rounded-xl border p-3 transition focus-within:ring-3 focus-within:ring-ring/40 hover:border-primary/40 hover:bg-accent/40"
-                  >
-                    <dt className="text-xs text-muted-foreground">
-                      <Link
-                        href={`/orders?status=${status}`}
-                        className="after:absolute after:inset-0 focus-visible:outline-none"
-                      >
-                        {label}
-                      </Link>
-                    </dt>
-                    <dd className="mt-0.5 text-2xl font-semibold tabular-nums">{count}</dd>
-                  </div>
-                ))}
-              </dl>
-              <div>
-                <p className="mb-1 text-xs font-medium text-muted-foreground">Next deliveries</p>
-                {d.nextDeliveries.length === 0 ? (
-                  <p className="py-6 text-sm text-muted-foreground">
-                    No open orders. Reorder from the shop when you are ready.
-                  </p>
-                ) : (
-                  <ul>
-                    {d.nextDeliveries.map((o) => (
-                      <CardRow key={o.id} href={hrefFor("sales-order", o.id)}>
-                        <div className="min-w-0 flex-1">
-                          <p className="font-medium">{o.number}</p>
-                          <p className="truncate text-sm text-muted-foreground">
-                            {o.poReference ? `${o.poReference} · ` : ""}
-                            {formatMoney(o.total, { whole: true })}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <StatusPill tone={ORDER_STATUS[o.status].tone}>
-                            {ORDER_STATUS[o.status].label}
-                          </StatusPill>
-                          <p className="mt-0.5 text-xs text-muted-foreground">
-                            {formatDate(o.confirmedDate ?? o.requestedDate)}
-                          </p>
-                        </div>
-                      </CardRow>
-                    ))}
-                  </ul>
-                )}
-              </div>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              {d.suggestions.slice(0, d.suggestions.length >= 4 ? 4 : 2).map((i) => (
+                <AIInsightCard key={i.id} insight={i} compact />
+              ))}
             </div>
           )}
+          {d.insights.data?.length ? (
+            <AllInsightsButton count={d.insights.data.length} className="mt-3" />
+          ) : null}
         </DashboardCard>
 
         {/* 4. Stock of frequently bought products */}
@@ -330,7 +293,7 @@ export function CustomerDashboard() {
                     aria-label={`Reorder ${f.lastQty} × ${f.line.product.name}`}
                   >
                     <ArrowsClockwiseIcon aria-hidden />
-                    {f.lastQty}
+                    Reorder ×{f.lastQty}
                   </Button>
                 </li>
               ))}
@@ -345,35 +308,77 @@ export function CustomerDashboard() {
           ) : null}
         </DashboardCard>
 
-        {/* 5. Offers and suggested products */}
+        {/* 3. Orders by stage and next deliveries */}
         <DashboardCard
-          index={4}
+          index={2}
           className="lg:col-span-2"
-          title="Suggested for you"
-          icon={SparkleIcon}
-          action={{ label: "Shop", href: "/shop" }}
-          headerExtra={<SimulatedBadge className="hidden sm:inline-flex" />}
+          title="Orders and deliveries"
+          icon={PackageIcon}
+          action={{ label: "All orders", href: "/orders" }}
         >
-          {d.insights.isPending ? (
+          {d.orders.isPending ? (
             <LoadingState rows={2} />
-          ) : d.insights.isError ? (
-            <ErrorState error={d.insights.error} onRetry={() => d.insights.refetch()} />
-          ) : d.suggestions.length === 0 ? (
-            <EmptyState
-              icon={SparkleIcon}
-              title="No suggestions right now"
-              description="Suggestions appear when a regular item is due or similar venues buy something you do not."
-            />
+          ) : d.orders.isError ? (
+            <ErrorState error={d.orders.error} onRetry={() => d.orders.refetch()} />
           ) : (
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-              {d.suggestions.slice(0, 4).map((i) => (
-                <AIInsightCard key={i.id} insight={i} compact />
-              ))}
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
+              <dl className="grid grid-cols-2 gap-2">
+                {(
+                  [
+                    ["Confirmed", d.stageCounts.confirmed, "confirmed"],
+                    ["Picking", d.stageCounts.picking, "picking"],
+                    ["Dispatched", d.stageCounts.dispatched, "dispatched"],
+                    ["Part-delivered", d.stageCounts.partDelivered, "part-delivered"],
+                  ] as const
+                ).map(([label, count, status]) => (
+                  <div
+                    key={label}
+                    className="relative rounded-xl border p-3 transition focus-within:ring-3 focus-within:ring-ring/40 hover:border-primary/40 hover:bg-accent/40"
+                  >
+                    <dt className="text-xs text-muted-foreground">
+                      <Link
+                        href={`/orders?status=${status}`}
+                        className="after:absolute after:inset-0 focus-visible:outline-none"
+                      >
+                        {label}
+                      </Link>
+                    </dt>
+                    <dd className="mt-0.5 text-2xl font-semibold tabular-nums">{count}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div>
+                <p className="mb-1 text-xs font-medium text-muted-foreground">Next deliveries</p>
+                {d.nextDeliveries.length === 0 ? (
+                  <p className="py-6 text-sm text-muted-foreground">
+                    Nothing due for delivery. Reorder from the shop when you are ready.
+                  </p>
+                ) : (
+                  <ul>
+                    {d.nextDeliveries.map((o) => (
+                      <CardRow key={o.id} href={hrefFor("sales-order", o.id)}>
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium">{o.number}</p>
+                          <p className="truncate text-sm text-muted-foreground">
+                            {o.poReference ? `${o.poReference} · ` : ""}
+                            {formatMoney(o.total, { whole: true })}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <StatusPill tone={ORDER_STATUS[o.status].tone}>
+                            {ORDER_STATUS[o.status].label}
+                          </StatusPill>
+                          <p className="mt-0.5 text-xs text-muted-foreground">
+                            {formatDate(o.confirmedDate ?? o.requestedDate)}
+                          </p>
+                        </div>
+                      </CardRow>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           )}
-          {d.insights.data?.length ? (
-            <AllInsightsButton count={d.insights.data.length} className="mt-3" />
-          ) : null}
         </DashboardCard>
 
         {/* 6. Conversations */}

@@ -225,3 +225,32 @@ export function insightInputs(db: MockDb): InsightInputs {
 export function orderingAccountIds(db: MockDb, scope: Scope): string[] {
   return scope.accountIds.filter((id) => !account(db, id).isGroup);
 }
+
+// ---- Performance statistics ---------------------------------------------------
+
+export const YEAR_MS = 365 * 86_400_000;
+
+/** Net (ex VAT) value of order lines. */
+export function netValue(lines: { qty: number; price: Money }[]): number {
+  return lines.reduce((sum, l) => sum + l.qty * l.price.amount, 0);
+}
+
+/** Deliveries completed in the last 12 months, on time when they arrived by the promised date. */
+export function onTimeDelivery(
+  deliveries: { orderId: string; deliveredAt: string | null }[],
+  promisedDate: (orderId: string) => string | null,
+  nowMs = Date.now(),
+): { percent: number | null; onTime: number; total: number } {
+  const recent = deliveries.filter(
+    (d) => d.deliveredAt && nowMs - Date.parse(d.deliveredAt) <= YEAR_MS,
+  );
+  const onTime = recent.filter((d) => {
+    const promised = promisedDate(d.orderId);
+    return !promised || d.deliveredAt!.slice(0, 10) <= promised;
+  }).length;
+  return {
+    percent: recent.length ? Math.round((onTime / recent.length) * 1000) / 10 : null,
+    onTime,
+    total: recent.length,
+  };
+}

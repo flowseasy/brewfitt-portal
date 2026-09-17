@@ -2,14 +2,15 @@ import type { AgeingBand, Money } from "@/types";
 import { formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
+/** Bands by due date: only money past its due date is amber or red. */
 const BANDS: { band: AgeingBand; label: string; className: string }[] = [
-  { band: "current", label: "Current", className: "bg-chart-1" },
-  { band: "30", label: "30 days", className: "bg-warning/70" },
-  { band: "60", label: "60 days", className: "bg-warning" },
-  { band: "90+", label: "90+ days", className: "bg-danger" },
+  { band: "current", label: "Not yet due", className: "bg-chart-1" },
+  { band: "30", label: "1–30 days overdue", className: "bg-warning/70" },
+  { band: "60", label: "31–60 days overdue", className: "bg-warning" },
+  { band: "90+", label: "Over 60 days overdue", className: "bg-danger" },
 ];
 
-/** Outstanding balance split by ageing band, with the figures as text for screen readers. */
+/** Outstanding balance split by how far past its due date it is, with the figures as text for screen readers. */
 export function AgeingBar({
   ageing,
   className,

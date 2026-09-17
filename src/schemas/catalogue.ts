@@ -85,14 +85,44 @@ export const StockForecast = z.object({
  * Purchases by month and product, and an anonymised rank by Brewfitt spend
  * among suppliers of the same kind (manufacturers or distributors).
  */
+/** Share of deliveries that arrived on or before the promised date. Null when nothing was delivered. */
+export const OnTimeDelivery = z.object({
+  percent: z.number().min(0).max(100).nullable(),
+  onTime: z.int().nonnegative(),
+  total: z.int().nonnegative(),
+});
+
+/** GET /api/account/stats (customers; contract defined by the mock). Values ex VAT, last 12 months. */
+export const CustomerStats = z.object({
+  onTimeDelivery: OnTimeDelivery,
+  orderValue: Money,
+  orderCount: z.int().nonnegative(),
+  averageOrderValue: Money.nullable(),
+  quoteConversion: z.object({
+    percent: z.number().min(0).max(100).nullable(),
+    accepted: z.int().nonnegative(),
+    decided: z.int().nonnegative(),
+  }),
+});
+
 export const SupplierPerformance = z.object({
   monthly: z.array(
     z.object({
       month: z.string().regex(/^\d{4}-\d{2}$/),
       total: Money,
       orders: z.int().nonnegative(),
+      /** Average purchase order value that month; null with no orders. */
+      average: Money.nullable(),
     }),
   ),
+  onTimeDelivery: OnTimeDelivery,
+  averageOrderValue: Money.nullable(),
+  /** Customer after-sales cases (faults, warranty, returns, questions) on products this supplier supplies. */
+  afterSalesIssues: z.object({
+    total: z.int().nonnegative(),
+    open: z.int().nonnegative(),
+    last12Months: z.int().nonnegative(),
+  }),
   topProducts: z.array(z.object({ productId: Id, quantity: z.int().nonnegative(), total: Money })),
   last12Months: Money,
   sector: z.enum(["manufacturer", "distributor"]),

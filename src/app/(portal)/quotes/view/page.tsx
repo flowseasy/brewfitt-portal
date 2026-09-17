@@ -285,6 +285,9 @@ function QuoteDetail({ id }: { id: string }) {
                 Accept and place order
               </Button>
             ) : null}
+            <p className="mt-3 text-xs text-muted-foreground">
+              Brewfitt confirms installation and final pricing.
+            </p>
           </section>
           {config ? (
             <Link

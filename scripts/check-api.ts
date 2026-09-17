@@ -146,6 +146,16 @@ async function main() {
       await step(`${who} supplier products`, async () =>
         expect((await api.supplierProducts.list()).length > 0, "no submissions"),
       );
+      await step(`${who} performance`, async () => {
+        const perf = await api.supplierProducts.performance();
+        expect(perf.monthly.length === 12, "not 12 months");
+        expect(
+          perf.monthly.every((m) => (m.orders ? m.average : m.average === null)),
+          "monthly average missing",
+        );
+        expect(perf.onTimeDelivery.onTime <= perf.onTimeDelivery.total, "on-time over total");
+        expect(perf.afterSalesIssues.open <= perf.afterSalesIssues.total, "open issues over total");
+      });
       await step(`${who} offers`, async () =>
         expect((await api.supplierProducts.offers()).length > 0, "no offers"),
       );
@@ -160,6 +170,20 @@ async function main() {
         const orders = await api.orders.salesOrders();
         expect(orders.length > 0, "no orders");
         await api.orders.salesOrder(orders[0]!.id);
+      });
+      await step(`${who} stats`, async () => {
+        const stats = await api.account.stats();
+        expect(stats.orderCount === 0 || stats.averageOrderValue, "no average order value");
+        expect(
+          stats.onTimeDelivery.percent === null ||
+            (stats.onTimeDelivery.percent >= 50 &&
+              stats.onTimeDelivery.onTime <= stats.onTimeDelivery.total),
+          `implausible on-time delivery ${stats.onTimeDelivery.percent}`,
+        );
+        expect(
+          stats.quoteConversion.accepted <= stats.quoteConversion.decided,
+          "conversion over 100%",
+        );
       });
       await step(`${who} configurations`, () => api.configurator.list());
       await step(`${who} jobs`, () => api.jobs.list());

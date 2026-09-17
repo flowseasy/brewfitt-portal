@@ -72,6 +72,15 @@ export function AssistantPrompt({
   const allHistory = useAssistantStore((s) => s.history);
   const history = allHistory.filter((h) => h.personaKey === key).map((h) => h.response);
   const endRef = useRef<HTMLDivElement>(null);
+  // Phones show a shorter prompt so it is not cut off beside the microphone and send buttons.
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 639px)");
+    const update = () => setNarrow(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
   const ask = useMutation({
     mutationFn: (q: string) => api.ai.ask({ question: q }),
     onSuccess: (answer) => {
@@ -121,7 +130,13 @@ export function AssistantPrompt({
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
         autoFocus={autoFocus}
-        placeholder={voice.listening ? "Listening…" : "Ask about an order, quote or product…"}
+        placeholder={
+          voice.listening
+            ? "Listening…"
+            : narrow
+              ? "Ask a question…"
+              : "Ask about an order, quote or product…"
+        }
         className={cn(
           "h-12 w-full rounded-full border bg-background pl-11 text-base shadow-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 sm:text-sm",
           voice.supported ? "pr-24" : "pr-14",

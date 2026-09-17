@@ -11,6 +11,7 @@ import type {
   Configuration,
   ConfiguratorRules,
   Contact,
+  CustomerStats,
   Delivery,
   Document,
   Invoice,
@@ -79,6 +80,8 @@ export interface PortalApi {
     documents(): Promise<Document[]>;
     /** POST /api/account/documents */
     uploadDocument(input: In<typeof s.DocumentUploadInput>): Promise<Document>;
+    /** GET /api/account/stats (customers; contract defined by the mock) */
+    stats(): Promise<CustomerStats>;
   };
 
   products: {

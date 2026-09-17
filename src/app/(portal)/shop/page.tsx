@@ -374,7 +374,7 @@ function QuickAdd({
       aria-label={`Reorder ${qty} × ${name}`}
     >
       <ArrowsClockwiseIcon aria-hidden />
-      {qty}
+      Reorder ×{qty}
     </Button>
   );
 }

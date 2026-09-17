@@ -45,10 +45,10 @@ export default function InvoicesPage() {
 type Tab = "outstanding" | "paid" | "credits" | "statement" | "payments" | "runs";
 
 const BAND_LABEL = {
-  current: "Under 30 days",
-  "30": "30 to 59 days",
-  "60": "60 to 89 days",
-  "90+": "90 days or more",
+  current: "Not yet due",
+  "30": "1–30 days overdue",
+  "60": "31–60 days overdue",
+  "90+": "Over 60 days overdue",
 } as const;
 
 function Invoices() {

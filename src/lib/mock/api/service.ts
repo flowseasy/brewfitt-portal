@@ -21,6 +21,8 @@ import {
   inScope,
   insightInputs,
   invoiceNow,
+  onTimeDelivery,
+  YEAR_MS,
   notFound,
   nowIso,
   openThreadChanges,
@@ -384,6 +386,12 @@ export const supplierProducts: PortalApi["supplierProducts"] = {
           month,
           total: { amount: list.reduce((sum, po) => sum + net(po), 0), currency: "GBP" as const },
           orders: list.length,
+          average: list.length
+            ? {
+                amount: Math.round(list.reduce((sum, po) => sum + net(po), 0) / list.length),
+                currency: "GBP" as const,
+              }
+            : null,
         };
       });
       const byProduct = new Map<string, { quantity: number; total: number }>();
@@ -423,6 +431,44 @@ export const supplierProducts: PortalApi["supplierProducts"] = {
         sector,
         rank: ranked.findIndex(([id]) => id === scope.account.id) + 1,
         supplierCount: ranked.length,
+        onTimeDelivery: (() => {
+          const own = new Map(
+            db.purchaseOrders
+              .filter((po) => po.supplierId === scope.account.id)
+              .map((po) => [po.id, po]),
+          );
+          return onTimeDelivery(
+            db.deliveries.filter((d) => d.orderType === "purchase" && own.has(d.orderId)),
+            (orderId) => own.get(orderId)?.expectedDate ?? null,
+          );
+        })(),
+        averageOrderValue: mine.length
+          ? {
+              amount: Math.round(mine.reduce((sum, po) => sum + net(po), 0) / mine.length),
+              currency: "GBP" as const,
+            }
+          : null,
+        afterSalesIssues: (() => {
+          // Counts only: customers' cases stay private to them.
+          const supplied = new Set(
+            db.products.filter((p) => p.supplierId === scope.account.id).map((p) => p.id),
+          );
+          const customerCases = db.cases.filter(
+            (c) =>
+              c.productId &&
+              supplied.has(c.productId) &&
+              ["fault", "warranty", "return", "query"].includes(c.kind),
+          );
+          return {
+            total: customerCases.length,
+            open: customerCases.filter((c) =>
+              ["open", "in-progress", "awaiting-parts"].includes(c.status),
+            ).length,
+            last12Months: customerCases.filter(
+              (c) => Date.now() - Date.parse(c.createdAt) <= YEAR_MS,
+            ).length,
+          };
+        })(),
       };
     }),
 };

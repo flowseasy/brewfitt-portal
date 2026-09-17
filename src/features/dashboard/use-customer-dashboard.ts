@@ -94,6 +94,11 @@ export function useCustomerDashboard() {
         partDelivered: openOrders.filter((o) => o.status === "part-delivered").length,
       },
       nextDeliveries: [...openOrders]
+        .filter(
+          (o) =>
+            o.status === "dispatched" ||
+            (o.confirmedDate ?? o.requestedDate) >= new Date().toISOString().slice(0, 10),
+        )
         .sort((a, b) =>
           (a.confirmedDate ?? a.requestedDate).localeCompare(b.confirmedDate ?? b.requestedDate),
         )

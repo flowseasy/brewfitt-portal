@@ -31,12 +31,9 @@ import { hrefFor } from "@/lib/links";
 import { OPEN_PO_STATUSES, PO_STATUS, SUBMISSION_STATUS } from "@/lib/status";
 import { cn } from "@/lib/utils";
 import { CardRow, DashboardCard } from "./dashboard-card";
+import { SupplierStatsPanel } from "./performance-stats";
 
 const money = (n: number) => formatMoney({ amount: n, currency: "GBP" }, { whole: true });
-const monthLabel = (m: string) =>
-  new Intl.DateTimeFormat("en-GB", { month: "short", timeZone: "UTC" }).format(
-    new Date(`${m}-01T00:00:00Z`),
-  );
 
 export function SupplierDashboard() {
   const key = usePersonaKey();
@@ -124,7 +121,6 @@ export function SupplierDashboard() {
   ]);
 
   const firstName = me.data?.contact.name.split(" ")[0];
-  const maxMonth = Math.max(1, ...(performance.data?.monthly.map((m) => m.total.amount) ?? [1]));
 
   return (
     <div className="space-y-6">
@@ -143,6 +139,8 @@ export function SupplierDashboard() {
           <AssistantPrompt />
         </div>
       </section>
+
+      <SupplierStatsPanel />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* 1. Account status */}
@@ -198,7 +196,7 @@ export function SupplierDashboard() {
                 </div>
               </dl>
               <div className="mt-5">
-                <p className="mb-2 text-xs font-medium text-muted-foreground">Owed to you by age</p>
+                <p className="mb-2 text-xs font-medium text-muted-foreground">Owed to you by due date</p>
                 <AgeingBar ageing={statement.data.ageing} />
               </div>
             </div>
@@ -449,7 +447,7 @@ export function SupplierDashboard() {
         <DashboardCard
           index={7}
           className="lg:col-span-2"
-          title="Purchase history"
+          title="Ranking and top products"
           icon={ChartBarIcon}
           action={{ label: "Purchase orders", href: "/orders" }}
         >
@@ -458,60 +456,24 @@ export function SupplierDashboard() {
           ) : performance.isError ? (
             <ErrorState error={performance.error} onRetry={() => performance.refetch()} />
           ) : (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-              <figure>
-                <div className="flex h-36 items-end gap-1.5" aria-hidden>
-                  {performance.data.monthly.map((m) => (
-                    <div
-                      key={m.month}
-                      className="flex h-full flex-1 flex-col items-center justify-end gap-1"
-                    >
-                      <div
-                        className="w-full rounded-t-md bg-chart-1/85"
-                        style={{ height: `${Math.max(2, (m.total.amount / maxMonth) * 100)}%` }}
-                        title={`${monthLabel(m.month)}: ${formatMoney(m.total, { whole: true })}`}
-                      />
-                      <span className="text-[10px] text-muted-foreground">
-                        {monthLabel(m.month).slice(0, 1)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <figcaption className="mt-3 text-sm text-muted-foreground">
-                  Brewfitt bought {formatMoney(performance.data.last12Months, { whole: true })} from
-                  you in the last 12 months across{" "}
-                  {plural(
-                    performance.data.monthly.reduce((s, m) => s + m.orders, 0),
-                    "purchase order",
-                  )}
-                  .
-                  {(() => {
-                    const peak = [...performance.data.monthly].sort(
-                      (a, b) => b.total.amount - a.total.amount,
-                    )[0];
-                    return peak && peak.total.amount > 0
-                      ? ` The busiest month was ${new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${peak.month}-01T00:00:00Z`))}.`
-                      : "";
-                  })()}
-                </figcaption>
-              </figure>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+              <div className="rounded-xl bg-brand-subtle/60 p-4">
+                <p className="text-xs text-brand-subtle-foreground">
+                  Ranking among Brewfitt&apos;s {performance.data.sector}s
+                </p>
+                <p className="mt-1 text-3xl font-semibold tracking-tight">
+                  {performance.data.rank}
+                  <span className="text-base font-normal text-muted-foreground">
+                    {" "}
+                    of {performance.data.supplierCount}
+                  </span>
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  By spend over 12 months. Other suppliers are not named.
+                </p>
+              </div>
               <div>
-                <div className="rounded-xl bg-brand-subtle/60 p-4">
-                  <p className="text-xs text-brand-subtle-foreground">
-                    Ranking among Brewfitt&apos;s {performance.data.sector}s
-                  </p>
-                  <p className="mt-1 text-3xl font-semibold tracking-tight">
-                    {performance.data.rank}
-                    <span className="text-base font-normal text-muted-foreground">
-                      {" "}
-                      of {performance.data.supplierCount}
-                    </span>
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    By spend over 12 months. Other suppliers are not named.
-                  </p>
-                </div>
-                <p className="mt-4 mb-1 text-xs font-medium text-muted-foreground">Top products</p>
+                <p className="mb-1 text-xs font-medium text-muted-foreground">Top products</p>
                 <ol className="space-y-1.5 text-sm">
                   {performance.data.topProducts.slice(0, 3).map((p) => (
                     <li key={p.productId} className="flex justify-between gap-3">

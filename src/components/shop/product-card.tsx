@@ -94,12 +94,12 @@ export function ProductCard({ line, index = 0 }: { line: CatalogueLine; index?: 
         />
       </Link>
       <div className="flex flex-1 flex-col p-4">
-        <p className="font-mono text-[11px] text-muted-foreground">{p.sku}</p>
-        <h3 className="mt-0.5 line-clamp-2 text-sm leading-snug font-medium">
+        <h3 className="line-clamp-2 min-h-[2.5rem] text-sm leading-snug font-medium">
           <Link href={hrefFor("product", p.id)} className="hover:underline">
             {p.name}
           </Link>
         </h3>
+        <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">SKU {p.sku}</p>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <StockPill stock={line.stock} />
           {p.packSize > 1 ? (

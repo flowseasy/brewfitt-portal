@@ -8,6 +8,7 @@ export const queryKeys = {
   all: (persona: PersonaKey) => [persona] as const,
   me: (persona: PersonaKey) => [persona, "me"] as const,
   account: (persona: PersonaKey) => [persona, "account"] as const,
+  accountStats: (persona: PersonaKey) => [persona, "account", "stats"] as const,
   addresses: (persona: PersonaKey) => [persona, "account", "addresses"] as const,
   contacts: (persona: PersonaKey) => [persona, "account", "contacts"] as const,
   accountDocuments: (persona: PersonaKey) => [persona, "account", "documents"] as const,

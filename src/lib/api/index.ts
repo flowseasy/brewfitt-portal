@@ -25,6 +25,7 @@ const responses = {
     updateContact: s.Contact,
     documents: z.array(s.Document),
     uploadDocument: s.Document,
+    stats: s.CustomerStats,
   },
   products: { list: z.array(s.Product), get: s.Product, categories: z.array(s.Category) },
   priceList: { get: s.PriceListResponse, export: s.PriceListExport },

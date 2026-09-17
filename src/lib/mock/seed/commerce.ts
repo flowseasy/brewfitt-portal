@@ -1128,6 +1128,21 @@ export function seedCommerce(ctx: SeedContext, people: { addresses: Address[] })
     order.status = "delivered";
   }
 
+  // ---- Delivery performance -------------------------------------------------
+  // Brewfitt confirms the date the carrier can meet, so most deliveries arrive on the
+  // confirmed date; about one in seven still lands late (weekends, carrier delays).
+  for (const order of salesOrders) {
+    if (order.status !== "delivered" && order.status !== "part-delivered") continue;
+    const lastDelivered = deliveries
+      .filter((d) => d.orderId === order.id && d.deliveredAt)
+      .map((d) => d.deliveredAt!.slice(0, 10))
+      .sort()
+      .at(-1);
+    if (!lastDelivered || !order.confirmedDate || lastDelivered <= order.confirmedDate) continue;
+    const late = [...order.id].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % 7 === 0;
+    if (!late) order.confirmedDate = lastDelivered;
+  }
+
   // ---- Change requests ------------------------------------------------------
   const changeRequests: ChangeRequest[] = [];
   const open = salesOrders.filter((o) => o.status === "confirmed" || o.status === "picking");

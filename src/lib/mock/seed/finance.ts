@@ -12,11 +12,15 @@ import { dueDate, money, type SeedContext } from "./context";
 import { SELF_BILLING_SUPPLIERS } from "./purchasing";
 
 /** Aged by invoice date: current < 30 days, then 30, 60, 90+. */
-export function ageingBandFor(issuedAt: string, today: Date): AgeingBand {
-  const age = daysBetween(issuedAt, today);
-  if (age < 30) return "current";
-  if (age < 60) return "30";
-  if (age < 90) return "60";
+/**
+ * Ageing by due date, so the bands agree with "Overdue": `current` is not yet due,
+ * `30` is 1–30 days overdue, `60` is 31–60 days and `90+` is more than 60 days overdue.
+ */
+export function ageingBandFor(dueAt: string, today: Date): AgeingBand {
+  const overdueDays = (today.getTime() - toDate(dueAt).getTime()) / 86_400_000;
+  if (overdueDays <= 0) return "current";
+  if (overdueDays <= 30) return "30";
+  if (overdueDays <= 60) return "60";
   return "90+";
 }
 
@@ -33,7 +37,7 @@ export function deriveInvoice(invoice: Invoice, today: Date): Invoice {
   return {
     ...invoice,
     status: open && past ? "overdue" : base,
-    ageingBand: ageingBandFor(invoice.issuedAt, today),
+    ageingBand: ageingBandFor(invoice.dueAt, today),
   };
 }
 
@@ -63,7 +67,7 @@ export function seedFinance(
       ...inv,
       id: `inv_${invoices.length + 1}`,
       number: "",
-      ageingBand: ageingBandFor(inv.issuedAt, today),
+      ageingBand: ageingBandFor(inv.dueAt, today),
     };
     invoices.push(full);
     return full;

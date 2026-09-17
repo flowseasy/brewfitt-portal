@@ -28,6 +28,10 @@ import {
   forbidden,
   inScope,
   insightInputs,
+  netValue,
+  onTimeDelivery,
+  quoteNow,
+  YEAR_MS,
   notFound,
   nowIso,
   openThreadChanges,
@@ -246,6 +250,45 @@ export const accountApi: PortalApi["account"] = {
       };
       commit("account.uploadDocument", [insert("documents", doc)]);
       return doc;
+    }),
+
+  stats: () =>
+    respond((db, scope) => {
+      requireCustomer(scope);
+      const now = Date.now();
+      const orders = db.salesOrders.filter(
+        (o) => inScope(scope, o.accountId) && o.status !== "cancelled",
+      );
+      const byId = new Map(orders.map((o) => [o.id, o]));
+      const yearOrders = orders.filter((o) => now - Date.parse(o.createdAt) <= YEAR_MS);
+      const value = yearOrders.reduce((sum, o) => sum + netValue(o.lines), 0);
+      const decided = db.quotes
+        .filter((q) => inScope(scope, q.accountId) && now - Date.parse(q.createdAt) <= YEAR_MS)
+        .map(quoteNow)
+        .filter(
+          (q) => q.status === "accepted" || q.status === "declined" || q.status === "expired",
+        );
+      const accepted = decided.filter((q) => q.status === "accepted").length;
+      return {
+        onTimeDelivery: onTimeDelivery(
+          db.deliveries.filter((d) => d.orderType === "sales" && byId.has(d.orderId)),
+          (orderId) => {
+            const o = byId.get(orderId);
+            return o ? (o.confirmedDate ?? o.requestedDate) : null;
+          },
+          now,
+        ),
+        orderValue: { amount: value, currency: "GBP" as const },
+        orderCount: yearOrders.length,
+        averageOrderValue: yearOrders.length
+          ? { amount: Math.round(value / yearOrders.length), currency: "GBP" as const }
+          : null,
+        quoteConversion: {
+          percent: decided.length ? Math.round((accepted / decided.length) * 100) : null,
+          accepted,
+          decided: decided.length,
+        },
+      };
     }),
 };
 

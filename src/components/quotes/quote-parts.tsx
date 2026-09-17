@@ -201,7 +201,7 @@ export function QuoteDocument({
         </div>
       </div>
       <DocumentFooter
-        note={`This quotation is valid until ${formatDate(quote.validUntil)}. Installation, where included, is scheduled on acceptance.`}
+        note={`This quotation is valid until ${formatDate(quote.validUntil)}. Brewfitt confirms installation and final pricing; installation, where included, is scheduled on acceptance.`}
       />
     </>
   );
