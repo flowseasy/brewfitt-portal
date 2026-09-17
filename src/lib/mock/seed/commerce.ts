@@ -321,10 +321,14 @@ export function seedCommerce(ctx: SeedContext, people: { addresses: Address[] })
   for (const [accountId, ageDays, slugs] of [
     ["acc_harbourside", 1, ["extended-chrome-round-badge-holder", "standard-drip-tray-support-brackets"]],
     ["acc_saltember", 2, ["celtic-tap-chrome-lager-1-2-x14x3-16jg", "black-plastic-handle-for-celtic-tap"]],
+    // A pub without credit terms, awaiting card payment before dispatch (items outside its regular reorders).
+    ["acc_crown", 2, ["standard-chrome-badge-holder", "st-st-drip-tray-30x18x3"]],
   ] as const) {
-    const order = makeOrder(accountId, addDays(today, -ageDays), slugs.map((slug) => ({ productId: slugId(slug), qty: rng.int(2, 6) })), { leadDays: 8, po: `PO${rng.int(20000, 89999)}` });
+    const account = ctx.account(accountId);
+    const order = makeOrder(accountId, addDays(today, -ageDays), slugs.map((slug) => ({ productId: slugId(slug), qty: rng.int(2, 6) })), { leadDays: 8, po: account.onAccount ? `PO${rng.int(20000, 89999)}` : null });
     salesOrders.push(order);
     origins.set(order.id, { kind: "cycle" });
+    if (!account.onAccount) cardPaidOrderIds.add(order.id);
   }
 
   // ---- Configurations ------------------------------------------------------

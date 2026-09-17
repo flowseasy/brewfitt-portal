@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { z } from "zod";
-import { CheckCircleIcon, CreditCardIcon, LockKeyIcon, ShoppingCartSimpleIcon, TrashIcon, WarningIcon } from "@phosphor-icons/react";
+import { CheckCircleIcon, ShoppingCartSimpleIcon, TrashIcon, WarningIcon } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { formatAddress } from "@/components/account/addresses";
 import { TextareaField, TextField } from "@/components/forms/fields";
@@ -17,7 +17,8 @@ import { StockPill } from "@/components/shared/stock-pill";
 import { ProductImage } from "@/components/shop/product-card";
 import { QuantityStepper } from "@/components/shop/quantity-stepper";
 import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
+import { FieldError, FieldGroup, FieldLegend, FieldSet } from "@/components/ui/field";
+import { CardFields, cardFieldsSchema, last4, validateCard } from "@/components/finance/card-fields";
 import { useMe, usePersonaKey } from "@/features/session/use-session";
 import { useBasket, useBasketMutations, useCatalogue } from "@/features/shop/use-catalogue";
 import { api, errorMessage, queryKeys } from "@/lib/api";
@@ -31,22 +32,6 @@ function nextWorkingDay(from: Date, days: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-/** Luhn check, run only in the browser; the card number never leaves this page. */
-function luhn(value: string): boolean {
-  const digits = value.replace(/\D/g, "");
-  if (digits.length < 13 || digits.length > 19) return false;
-  let sum = 0;
-  for (let i = 0; i < digits.length; i++) {
-    let n = Number(digits[digits.length - 1 - i]);
-    if (i % 2 === 1) {
-      n *= 2;
-      if (n > 9) n -= 9;
-    }
-    sum += n;
-  }
-  return sum % 10 === 0;
-}
-
 const earliest = () => nextWorkingDay(new Date(), 1);
 
 const CheckoutForm = z
@@ -56,22 +41,13 @@ const CheckoutForm = z
     poReference: z.string().trim().max(30, "Keep the reference under 30 characters").nullable(),
     notes: z.string().trim().max(500).nullable(),
     payByCard: z.boolean(),
-    nameOnCard: z.string().trim(),
-    cardNumber: z.string(),
-    expiry: z.string(),
-    cvc: z.string(),
   })
+  .extend(cardFieldsSchema.shape)
   .superRefine((v, ctx) => {
     if (v.requestedDate < earliest()) ctx.addIssue({ code: "custom", path: ["requestedDate"], message: `The earliest delivery is ${formatDate(earliest())}` });
     const day = new Date(`${v.requestedDate}T00:00:00Z`).getUTCDay();
     if (day === 0 || day === 6) ctx.addIssue({ code: "custom", path: ["requestedDate"], message: "Brewfitt delivers Monday to Friday" });
-    if (!v.payByCard) return;
-    if (v.nameOnCard.length < 2) ctx.addIssue({ code: "custom", path: ["nameOnCard"], message: "Enter the name on the card" });
-    if (!luhn(v.cardNumber)) ctx.addIssue({ code: "custom", path: ["cardNumber"], message: "Enter a valid card number" });
-    const m = v.expiry.match(/^(\d{2})\s*\/\s*(\d{2})$/);
-    const now = new Date();
-    if (!m || Number(m[1]) < 1 || Number(m[1]) > 12 || new Date(2000 + Number(m[2]), Number(m[1])) <= now) ctx.addIssue({ code: "custom", path: ["expiry"], message: "Enter a future expiry date as MM/YY" });
-    if (!/^\d{3,4}$/.test(v.cvc)) ctx.addIssue({ code: "custom", path: ["cvc"], message: "Enter the 3 or 4 digit security code" });
+    if (v.payByCard) validateCard(v, ctx);
   });
 type CheckoutValues = z.infer<typeof CheckoutForm>;
 
@@ -122,7 +98,7 @@ export default function BasketPage() {
         poReference: v.poReference || null,
         notes: v.notes || null,
         paymentMethod: onAccount ? "account" : "card",
-        card: onAccount ? null : { nameOnCard: v.nameOnCard, last4: v.cardNumber.replace(/\D/g, "").slice(-4) },
+        card: onAccount ? null : { nameOnCard: v.nameOnCard, last4: last4(v.cardNumber) },
       }),
     onSuccess: (order) => {
       setPlaced(order);
@@ -239,42 +215,7 @@ export default function BasketPage() {
                 <TextareaField control={form.control} name="notes" label="Notes for Brewfitt (optional)" nullable rows={2} placeholder="Delivery instructions or anything we should know" />
 
                 {!onAccount ? (
-                  <FieldSet className="rounded-xl border bg-muted/40 p-4">
-                    <FieldLegend className="flex items-center gap-2">
-                      <CreditCardIcon aria-hidden />
-                      Pay by card
-                    </FieldLegend>
-                    <FieldDescription className="flex items-start gap-1.5">
-                      <LockKeyIcon className="mt-0.5 size-4 shrink-0" aria-hidden />
-                      Preview only: card details are checked in your browser and never sent or stored. Phase 2 uses a secure payment provider.
-                    </FieldDescription>
-                    <TextField control={form.control} name="nameOnCard" label="Name on card" autoComplete="off" />
-                    <Controller
-                      control={form.control}
-                      name="cardNumber"
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid || undefined}>
-                          <FieldLabel htmlFor="cardNumber">Card number</FieldLabel>
-                          <input
-                            id="cardNumber"
-                            inputMode="numeric"
-                            autoComplete="off"
-                            value={field.value}
-                            onBlur={field.onBlur}
-                            onChange={(e) => field.onChange(e.target.value.replace(/[^\d ]/g, "").slice(0, 23))}
-                            placeholder="4242 4242 4242 4242"
-                            aria-invalid={fieldState.invalid || undefined}
-                            className="h-9 w-full rounded-md border bg-background px-3 text-base tabular-nums outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 sm:text-sm"
-                          />
-                          <FieldError errors={[fieldState.error]} />
-                        </Field>
-                      )}
-                    />
-                    <div className="grid grid-cols-2 gap-3">
-                      <TextField control={form.control} name="expiry" label="Expiry (MM/YY)" inputMode="numeric" autoComplete="off" placeholder="09/28" />
-                      <TextField control={form.control} name="cvc" label="Security code" inputMode="numeric" autoComplete="off" maxLength={4} />
-                    </div>
-                  </FieldSet>
+                  <CardFields control={form.control} />
                 ) : null}
               </FieldGroup>
 
