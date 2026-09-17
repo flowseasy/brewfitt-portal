@@ -34,6 +34,11 @@ export const Message = z.object({
   sentAt: IsoDateTime,
 });
 
+/** Inbox row: the thread plus its latest message (contract defined by the mock). */
+export const ThreadSummary = Thread.extend({
+  lastMessage: Message.pick({ senderId: true, senderSide: true, channel: true, body: true }).nullable(),
+});
+
 export const ThreadDetail = Thread.extend({
   messages: z.array(Message),
 });

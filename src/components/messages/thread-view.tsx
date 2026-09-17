@@ -3,14 +3,16 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ChatCircleTextIcon, EnvelopeSimpleIcon, PaperPlaneRightIcon, WhatsappLogoIcon } from "@phosphor-icons/react";
+import { ChatCircleTextIcon, EnvelopeSimpleIcon, PaperclipIcon, PaperPlaneRightIcon, WhatsappLogoIcon } from "@phosphor-icons/react";
+import Link from "next/link";
 import { toast } from "sonner";
-import type { Message, Thread } from "@/types";
+import type { Document, Message, Thread } from "@/types";
 import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
 import { Button } from "@/components/ui/button";
 import { usePersonaKey } from "@/features/session/use-session";
 import { api, errorMessage, queryKeys } from "@/lib/api";
 import { formatDateTime, formatSince, initials } from "@/lib/format";
+import { hrefFor } from "@/lib/links";
 import { cn } from "@/lib/utils";
 
 const CHANNEL = {
@@ -30,7 +32,7 @@ export function ChannelIndicator({ channel }: { channel: Message["channel"] }) {
   );
 }
 
-export function MessageBubble({ message, thread, animateIn }: { message: Message; thread: Thread; animateIn?: boolean }) {
+export function MessageBubble({ message, thread, animateIn, documents }: { message: Message; thread: Thread; animateIn?: boolean; documents?: Map<string, Document> }) {
   const sender = thread.participants.find((p) => p.id === message.senderId);
   const mine = message.senderSide === "account";
   return (
@@ -47,6 +49,18 @@ export function MessageBubble({ message, thread, animateIn }: { message: Message
           </time>
         </p>
         <div className={cn("rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line", mine ? "rounded-tr-md bg-primary text-primary-foreground" : "rounded-tl-md border bg-card")}>{message.body}</div>
+        {message.attachments.length ? (
+          <ul className={cn("mt-1.5 flex flex-wrap gap-1.5", mine && "justify-end")} aria-label="Attachments">
+            {message.attachments.map((docId) => (
+              <li key={docId}>
+                <Link href={hrefFor("document", docId)} className="inline-flex max-w-64 items-center gap-1.5 rounded-full border bg-card px-2.5 py-1 text-xs hover:border-primary/40">
+                  <PaperclipIcon className="size-3.5 shrink-0" aria-hidden />
+                  <span className="truncate">{documents?.get(docId)?.name ?? "Attachment"}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : null}
         <span className="mt-1">
           <ChannelIndicator channel={message.channel} />
         </span>
@@ -106,10 +120,13 @@ export function Composer({ threadId, placeholder = "Write a message to Brewfitt"
 }
 
 /** A record's conversation with Brewfitt: messages and a composer. */
-export function ThreadView({ threadId, compact, emptyTitle = "No messages yet" }: { threadId: string; compact?: boolean; emptyTitle?: string }) {
+export function ThreadView({ threadId, compact, fill, emptyTitle = "No messages yet" }: { threadId: string; compact?: boolean; fill?: boolean; emptyTitle?: string }) {
   const key = usePersonaKey();
   const queryClient = useQueryClient();
   const thread = useQuery({ queryKey: queryKeys.thread(key, threadId), queryFn: () => api.messages.thread(threadId), enabled: !!threadId });
+  const hasAttachments = !!thread.data?.messages.some((m) => m.attachments.length);
+  const documents = useQuery({ queryKey: queryKeys.documents(key), queryFn: () => api.documents.list(), enabled: hasAttachments });
+  const documentById = new Map((documents.data ?? []).map((d) => [d.id, d]));
   const endRef = useRef<HTMLLIElement>(null);
   const count = thread.data?.messages.length ?? 0;
 
@@ -126,13 +143,13 @@ export function ThreadView({ threadId, compact, emptyTitle = "No messages yet" }
   if (thread.isError) return <ErrorState error={thread.error} onRetry={() => thread.refetch()} />;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className={cn("flex flex-col gap-4", fill && "min-h-0 flex-1")}>
       {thread.data.messages.length === 0 ? (
         <EmptyState icon={ChatCircleTextIcon} title={emptyTitle} />
       ) : (
-        <ol className={cn("space-y-4 overflow-y-auto pr-1", compact ? "max-h-[420px]" : "")} aria-label={`Messages in ${thread.data.subject}`}>
+        <ol className={cn("space-y-4 overflow-y-auto pr-1", compact ? "max-h-[420px]" : "", fill && "min-h-0 flex-1")} aria-label={`Messages in ${thread.data.subject}`}>
           {thread.data.messages.map((m, i) => (
-            <MessageBubble key={m.id} message={m} thread={thread.data} animateIn={i >= count - 1} />
+            <MessageBubble key={m.id} message={m} thread={thread.data} animateIn={i >= count - 1} documents={documentById} />
           ))}
           <li ref={endRef} aria-hidden />
         </ol>

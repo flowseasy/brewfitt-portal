@@ -1,4 +1,6 @@
 import type {
+  Document,
+  Payment,
   AIInsight,
   Address,
   BrewfittTeamMember,
@@ -20,6 +22,9 @@ import type {
 } from "@/types";
 import { formatDate, formatMoney } from "@/lib/format";
 import conversations from "../data/conversations.json";
+
+/** Message text that says a document comes with it ("please find attached", "quote X attached"), not "attached to the order". */
+export const MENTIONS_ATTACHMENT = /\battached(?! to )/i;
 import { addDays, daysBetween, isoDateTime, toDate } from "../clock";
 import { workingDay, type SeedContext } from "./context";
 
@@ -96,6 +101,8 @@ export function seedComms(
     changeRequests: ChangeRequest[];
     jobs: Job[];
     purchaseOrders: PurchaseOrder[];
+    documents: Document[];
+    payments: Payment[];
     rfqs: Rfq[];
     supplierProducts: SupplierProduct[];
     invoices: Invoice[];
@@ -141,10 +148,10 @@ export function seedComms(
     return thread;
   };
 
-  const post = (thread: Thread, side: Message["senderSide"], channel: Message["channel"], at: Date, body: string) => {
+  const post = (thread: Thread, side: Message["senderSide"], channel: Message["channel"], at: Date, body: string, attachments: string[] = []) => {
     const at_ = Math.min(at.getTime(), nowMs - 60_000);
     const sender = thread.participants.find((p) => p.side === side)!;
-    messages.push({ id: nextMessageId(), threadId: thread.id, senderId: sender.id, senderSide: side, channel, body, attachments: [], sentAt: new Date(at_).toISOString() });
+    messages.push({ id: nextMessageId(), threadId: thread.id, senderId: sender.id, senderSide: side, channel, body, attachments, sentAt: new Date(at_).toISOString() });
   };
 
   const at = (d: Date, hour: number, minute = rng.pick([2, 14, 27, 38, 51])) => new Date(isoDateTime(d, hour, minute));
@@ -198,7 +205,7 @@ export function seedComms(
       post(t, "account", "portal", created, AUTO_TEXT.quoteRequested(q, configNameByQuote.get(q.id) ?? null));
       continue;
     }
-    post(t, "brewfitt", "email", created, AUTO_TEXT.quoteSent(q));
+    post(t, "brewfitt", "email", created, AUTO_TEXT.quoteSent(q), q.pdfDocumentId ? [q.pdfDocumentId] : []);
     if (q.status === "accepted") post(t, "account", "portal", new Date(q.updatedAt), AUTO_TEXT.quoteAccepted(q));
     if (q.status === "declined") post(t, "account", "portal", new Date(q.updatedAt), AUTO_TEXT.quoteDeclined(q));
   }
@@ -212,7 +219,7 @@ export function seedComms(
     const t = openThread(po.supplierId, `Purchase order ${po.number}`, "purchase-order", po.id, teamFor(po.supplierId, "buyer"));
     po.threadId = t.id;
     threadFor.set(po.id, t);
-    post(t, "brewfitt", "email", new Date(po.createdAt), AUTO_TEXT.po(po));
+    post(t, "brewfitt", "email", new Date(po.createdAt), AUTO_TEXT.po(po), r.documents.filter((d) => d.relatedType === "purchase-order" && d.relatedId === po.id).map((d) => d.id));
   }
   for (const rfq of r.rfqs) {
     const t = openThread(rfq.supplierId, `Request for quotation ${rfq.number}`, "rfq", rfq.id, teamFor(rfq.supplierId, "buyer"));
@@ -243,6 +250,22 @@ export function seedComms(
   };
   const fill = (text: string, v: Record<string, string>) => text.replace(/\{\{(\w+)\}\}/g, (_, key: string) => v[key] ?? key);
 
+  // Scripted messages that say a document is attached carry the thread record's PDF.
+  const attachmentsFor = (thread: Thread): string[] => {
+    const docs = (type: string, id: string) => r.documents.filter((d) => d.relatedType === type && d.relatedId === id).map((d) => d.id);
+    switch (thread.relatedType) {
+      case "purchase-order":
+      case "quote":
+        return docs(thread.relatedType, thread.relatedId!);
+      case "invoice": {
+        const payment = r.payments.find((p) => p.remittanceDocumentId && p.allocatedTo.some((a) => a.invoiceId === thread.relatedId));
+        return payment ? [payment.remittanceDocumentId!] : [];
+      }
+      default:
+        return [];
+    }
+  };
+
   const applyScript = (key: string, thread: Thread, recordDate: Date, v: Record<string, string>) => {
     const script = SCRIPTS.get(key);
     if (!script) throw new Error(`Unknown conversation script ${key}`);
@@ -259,7 +282,8 @@ export function seedComms(
       const when = at(addDays(start, m.dayOffset), m.hour);
       if (m.side === "brewfitt") {
         const sender = thread.participants[brewfittParticipantIndex]!;
-        messages.push({ id: nextMessageId(), threadId: thread.id, senderId: sender.id, senderSide: "brewfitt", channel: m.channel, body: fill(m.body, values), attachments: [], sentAt: new Date(Math.min(when.getTime(), nowMs - 60_000)).toISOString() });
+        const body = fill(m.body, values);
+        messages.push({ id: nextMessageId(), threadId: thread.id, senderId: sender.id, senderSide: "brewfitt", channel: m.channel, body, attachments: MENTIONS_ATTACHMENT.test(body) ? attachmentsFor(thread) : [], sentAt: new Date(Math.min(when.getTime(), nowMs - 60_000)).toISOString() });
       } else {
         post(thread, "account", m.channel, when, fill(m.body, values));
       }

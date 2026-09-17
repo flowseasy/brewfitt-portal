@@ -38,8 +38,8 @@ import type {
   SupplierPerformance,
   SupplierProduct,
   SupplierQuote,
-  Thread,
   ThreadDetail,
+  ThreadSummary,
   ChangeRequest,
 } from "@/types";
 
@@ -235,7 +235,7 @@ export interface PortalApi {
 
   messages: {
     /** GET /api/threads */
-    threads(): Promise<Thread[]>;
+    threads(): Promise<ThreadSummary[]>;
     /** GET /api/threads/:id (marks the thread read) */
     thread(id: string): Promise<ThreadDetail>;
     /** POST /api/threads/:id/messages */

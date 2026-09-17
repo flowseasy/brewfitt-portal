@@ -1,6 +1,6 @@
 import * as s from "@/schemas";
 import type { PortalApi } from "@/lib/api/contract";
-import type { AIInsight, Case, Document, KnowledgeItem, Offer, PersonaOption, SupplierProduct } from "@/types";
+import type { AIInsight, Case, Document, KnowledgeItem, Message, Offer, PersonaOption, SupplierProduct } from "@/types";
 import { answerQuestion } from "@/lib/ai/assistant";
 import { customerInsights, sortInsights, supplierInsights } from "@/lib/ai/rules";
 import { commit, getDb, latency, newId, nextNumber, resetDb, type MockDb } from "../db";
@@ -248,7 +248,21 @@ export const documents: PortalApi["documents"] = {
 // ---------------------------------------------------------------------------
 
 export const messages: PortalApi["messages"] = {
-  threads: () => respond((db, scope) => db.threads.filter((t) => inScope(scope, t.accountId)).sort((a, b) => b.lastMessageAt.localeCompare(a.lastMessageAt))),
+  threads: () =>
+    respond((db, scope) => {
+      const latest = new Map<string, Message>();
+      for (const m of db.messages) {
+        const current = latest.get(m.threadId);
+        if (!current || m.sentAt > current.sentAt) latest.set(m.threadId, m);
+      }
+      return db.threads
+        .filter((t) => inScope(scope, t.accountId))
+        .sort((a, b) => b.lastMessageAt.localeCompare(a.lastMessageAt))
+        .map((t) => {
+          const m = latest.get(t.id);
+          return { ...t, lastMessage: m ? { senderId: m.senderId, senderSide: m.senderSide, channel: m.channel, body: m.body } : null };
+        });
+    }),
   thread: (id) =>
     respond((db, scope) => {
       const thread = db.threads.find((t) => t.id === id && inScope(scope, t.accountId)) ?? notFound("Conversation");

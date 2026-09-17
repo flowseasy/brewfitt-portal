@@ -14,6 +14,7 @@ import { generateDb } from "@/lib/mock/seed";
 import { addDays, daysBetween, today as clockToday } from "@/lib/mock/clock";
 import { deriveInvoice } from "@/lib/mock/seed/finance";
 import { effectivePriceListId } from "@/lib/mock/seed/context";
+import { MENTIONS_ATTACHMENT } from "@/lib/mock/seed/comms";
 import { customerInsights, RULES, supplierInsights, supplierForecast, type InsightInputs } from "@/lib/ai/rules";
 import { buildBillOfMaterials, validateConfiguration } from "@/lib/configurator/engine";
 import { DEFAULT_PERSONA } from "@/stores/persona-store";
@@ -263,6 +264,11 @@ function check(db: MockDb, today: Date): { failures: Failure[]; stats: Record<st
     else if (!t.participants.some((p) => p.id === m.senderId && p.side === m.senderSide)) fail("message-sender", m.id);
     if (new Date(m.sentAt).getTime() > nowMs) fail("dates-not-future", `message ${m.id}`);
     if (/\{\{|\}\}/.test(m.body)) fail("message-placeholders", m.id);
+    for (const docId of m.attachments) {
+      const doc = db.documents.find((d) => d.id === docId);
+      if (!doc || (t && doc.ownerAccountId !== null && doc.ownerAccountId !== t.accountId)) fail("message-attachment-document", `${m.id} → ${docId}`);
+    }
+    if (MENTIONS_ATTACHMENT.test(m.body) && m.attachments.length === 0 && m.senderSide === "brewfitt") fail("message-attachment-mentioned", m.id);
   }
   for (const [kind, list] of [["quote", db.quotes], ["sales-order", db.salesOrders], ["purchase-order", db.purchaseOrders], ["case", db.cases], ["rfq", db.rfqs], ["supplier-product", db.supplierProducts]] as const) {
     for (const r of list as { id: string; threadId: string }[]) if (threadById.get(r.threadId)?.relatedId !== r.id) fail("record-has-thread", `${kind} ${r.id}`);

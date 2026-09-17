@@ -144,6 +144,7 @@ export type Channel = z.infer<typeof s.Channel>;
 export type Participant = z.infer<typeof s.Participant>;
 export type Thread = z.infer<typeof s.Thread>;
 export type Message = z.infer<typeof s.Message>;
+export type ThreadSummary = z.infer<typeof s.ThreadSummary>;
 export type ThreadDetail = z.infer<typeof s.ThreadDetail>;
 export type NewMessageInput = z.infer<typeof s.NewMessageInput>;
 export type NewThreadInput = z.infer<typeof s.NewThreadInput>;

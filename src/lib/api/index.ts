@@ -76,7 +76,7 @@ const responses = {
     performance: s.SupplierPerformance,
   },
   documents: { list: z.array(s.Document), get: s.Document },
-  messages: { threads: z.array(s.Thread), thread: s.ThreadDetail, send: s.Message, createThread: s.ThreadDetail },
+  messages: { threads: z.array(s.ThreadSummary), thread: s.ThreadDetail, send: s.Message, createThread: s.ThreadDetail },
   notifications: { list: z.array(s.Notification), update: s.Notification },
   ai: { insights: z.array(s.AIInsight), productInsight: s.AIInsight.nullable(), ask: s.AskResponse },
   demo: { personas: z.array(s.PersonaOption), reset: z.void() },

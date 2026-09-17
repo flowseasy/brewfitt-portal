@@ -113,6 +113,8 @@ export function generateDb(today: Date): MockDb {
     changeRequests: commerce.changeRequests,
     jobs: commerce.jobs,
     purchaseOrders: purchasing.purchaseOrders,
+    documents: content.documents,
+    payments: finance.payments,
     rfqs: purchasing.rfqs,
     supplierProducts: purchasing.supplierProducts,
     invoices: finance.invoices,
