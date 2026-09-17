@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { BrandLogo } from "@/components/shared/brand-logo";
 import { PersonaList } from "@/components/shared/persona-list";
 import { useHydrated } from "@/hooks/use-hydrated";
+import { landingFor } from "@/stores/onboarding-store";
 import { usePersonaStore } from "@/stores/persona-store";
 
 /** Phase 1 start screen: choosing a persona stands in for signing in. */
@@ -13,10 +14,12 @@ export default function StartPage() {
   const hydrated = useHydrated();
   const signedIn = usePersonaStore((s) => s.signedIn);
   const signIn = usePersonaStore((s) => s.signIn);
+  const contactId = usePersonaStore((s) => s.persona.contactId);
 
+  // Signed in (on arrival or just now): first-run tour for this contact, otherwise the dashboard.
   useEffect(() => {
-    if (hydrated && signedIn) router.replace("/dashboard");
-  }, [hydrated, signedIn, router]);
+    if (hydrated && signedIn) router.replace(landingFor(contactId));
+  }, [hydrated, signedIn, contactId, router]);
 
   return (
     <main className="relative min-h-dvh overflow-hidden">
@@ -38,7 +41,6 @@ export default function StartPage() {
             <PersonaList
               onChoose={(option) => {
                 signIn(option.persona);
-                router.push("/dashboard");
               }}
             />
           ) : null}

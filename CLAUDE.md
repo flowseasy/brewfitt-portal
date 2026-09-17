@@ -96,7 +96,8 @@ Where BLUEPRINT.md names a field without specifying it, these are the choices ma
 - Shared states: `LoadingState`, `EmptyState`, `ErrorState` (`states.tsx`), `StatusPill` tones, `PageHeader`, `ConfirmDialog`.
 - `.claude/launch.json`: `brewfitt-portal` runs `next dev`; `brewfitt-portal-static` serves the static export in `.next-build/` on port 4173 via `scripts/serve-out.mjs`. For browser verification prefer the static preview after `npm run build:check`: the dev server's hot reload on Windows can leave pages stuck on the loading skeleton (chunk 404s) while files change. With a custom `distDir` Next writes the export into that directory, so `build:check` output is `.next-build/`; `npm run build` exports to `out/`.
 - Detail pages that read `?id=` use `useSearchParams` inside a `<Suspense>` boundary (required for static export).
-- Avoid `AnimatePresence mode="wait"` for navigation-critical content; it blocks the next view until exit animations finish, which stalls in throttled tabs.
+- Onboarding (`/onboarding`, outside the app shell): shown the first time each contact signs in or is switched to, tracked per contact in localStorage (`brewfitt-onboarding`, not cleared by Reset demo data); "Take the tour" in the user menu reopens it.
+- Avoid `AnimatePresence mode="wait"` for navigation-critical content; it blocks the next view until exit animations finish, which stalls in throttled tabs. Exit animations in general can stall there, so step-by-step views use enter-only transitions.
 
 ## Mock layer (M2)
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowCounterClockwiseIcon, DesktopIcon, MoonIcon, SignOutIcon, SunIcon, UserCircleIcon, UserSwitchIcon } from "@phosphor-icons/react";
+import { ArrowCounterClockwiseIcon, DesktopIcon, MoonIcon, SignOutIcon, SignpostIcon, SunIcon, UserCircleIcon, UserSwitchIcon } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,7 @@ import {
 import { useMe, usePersona } from "@/features/session/use-session";
 import { api } from "@/lib/api";
 import { initials } from "@/lib/format";
+import { landingFor } from "@/stores/onboarding-store";
 import { usePersonaStore } from "@/stores/persona-store";
 import { useThemeStore, type ThemePreference } from "@/stores/theme-store";
 import { ConfirmDialog } from "./confirm-dialog";
@@ -98,6 +99,12 @@ export function UserMenu() {
             </DropdownMenuSub>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href="/onboarding">
+              <SignpostIcon aria-hidden />
+              Take the tour
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => setResetOpen(true)}>
             <ArrowCounterClockwiseIcon aria-hidden />
             Reset demo data
@@ -125,7 +132,7 @@ export function UserMenu() {
             onChoose={(option) => {
               setPersona(option.persona);
               setSwitchOpen(false);
-              router.push("/dashboard");
+              router.push(landingFor(option.persona.contactId));
               toast.success(`Now viewing as ${option.label}`);
             }}
           />
