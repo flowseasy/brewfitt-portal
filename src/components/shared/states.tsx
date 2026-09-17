@@ -1,7 +1,14 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { ArrowClockwiseIcon, WarningCircleIcon, type Icon } from "@phosphor-icons/react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import {
+  ArrowClockwiseIcon,
+  MagnifyingGlassIcon,
+  WarningCircleIcon,
+  type Icon,
+} from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { errorMessage } from "@/lib/api";
@@ -85,5 +92,34 @@ export function ErrorState({
         </Button>
       ) : null}
     </div>
+  );
+}
+
+/**
+ * Detail pages read `?id=`; without one the record query never runs, so show
+ * a way back instead of an endless loading state.
+ */
+export function RecordIdGate({
+  backHref,
+  backLabel,
+  children,
+}: {
+  backHref: string;
+  backLabel: string;
+  children: ReactNode;
+}) {
+  const id = useSearchParams().get("id");
+  if (id) return <>{children}</>;
+  return (
+    <EmptyState
+      icon={MagnifyingGlassIcon}
+      title="Nothing selected"
+      description="This link is missing the record to show."
+      action={
+        <Button asChild variant="outline">
+          <Link href={backHref}>{backLabel}</Link>
+        </Button>
+      }
+    />
   );
 }

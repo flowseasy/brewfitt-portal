@@ -26,7 +26,7 @@ import {
   PdfPreview,
 } from "@/components/shared/pdf-preview";
 import { PageHeader } from "@/components/shared/page-header";
-import { ErrorState, LoadingState } from "@/components/shared/states";
+import { ErrorState, LoadingState, RecordIdGate } from "@/components/shared/states";
 import { Button } from "@/components/ui/button";
 import { useIsSupplier, useMe, usePersonaKey } from "@/features/session/use-session";
 import { api, queryKeys } from "@/lib/api";
@@ -37,7 +37,9 @@ import type { Document } from "@/types";
 export default function DocumentViewPage() {
   return (
     <Suspense fallback={<LoadingState rows={5} />}>
-      <DocumentView />
+      <RecordIdGate backHref="/documents" backLabel="Back to documents">
+        <DocumentView />
+      </RecordIdGate>
     </Suspense>
   );
 }
@@ -121,6 +123,7 @@ function DocumentView() {
       <PageHeader
         eyebrow={DOCUMENT_CATEGORY[d.category]}
         title={<span className="break-words">{d.name}</span>}
+        documentTitle={d.name}
         actions={
           <>
             {onRecord ? (

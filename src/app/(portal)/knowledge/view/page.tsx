@@ -8,7 +8,7 @@ import { ArrowLeftIcon, ArrowSquareOutIcon, PlayIcon, TagIcon } from "@phosphor-
 import { KNOWLEDGE_TYPE, KnowledgeCard } from "@/components/knowledge/knowledge-parts";
 import { DocumentCard } from "@/components/shared/document-card";
 import { PageHeader } from "@/components/shared/page-header";
-import { ErrorState, LoadingState } from "@/components/shared/states";
+import { ErrorState, LoadingState, RecordIdGate } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { useIsSupplier, usePersonaKey } from "@/features/session/use-session";
 import { api, queryKeys } from "@/lib/api";
@@ -19,7 +19,9 @@ import { SUBMISSION_STATUS } from "@/lib/status";
 export default function KnowledgeViewPage() {
   return (
     <Suspense fallback={<LoadingState rows={5} />}>
-      <KnowledgeView />
+      <RecordIdGate backHref="/knowledge" backLabel="Back to the knowledge centre">
+        <KnowledgeView />
+      </RecordIdGate>
     </Suspense>
   );
 }

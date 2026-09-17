@@ -18,7 +18,7 @@ import { CASE_KIND_LABEL } from "@/components/cases/case-sheet";
 import { ThreadView } from "@/components/messages/thread-view";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { PageHeader } from "@/components/shared/page-header";
-import { ErrorState, LoadingState } from "@/components/shared/states";
+import { ErrorState, LoadingState, RecordIdGate } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { Timeline } from "@/components/shared/timeline";
 import { SubmissionImage, isUpload, uploadName } from "@/components/supplier/submission-forms";
@@ -32,7 +32,9 @@ import { CASE_STATUS, CASE_URGENCY } from "@/lib/status";
 export default function CaseViewPage() {
   return (
     <Suspense fallback={<LoadingState rows={5} />}>
-      <CaseView />
+      <RecordIdGate backHref="/cases" backLabel="Back to cases">
+        <CaseView />
+      </RecordIdGate>
     </Suspense>
   );
 }

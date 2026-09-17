@@ -22,7 +22,7 @@ import {
   DocumentParty,
   PdfPreview,
 } from "@/components/shared/pdf-preview";
-import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
+import { EmptyState, ErrorState, LoadingState, RecordIdGate } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { Button } from "@/components/ui/button";
 import { invoiceLines, splitVat } from "@/features/finance/invoice-lines";
@@ -35,7 +35,9 @@ import { INVOICE_STATUS } from "@/lib/status";
 export default function InvoiceViewPage() {
   return (
     <Suspense fallback={<LoadingState rows={5} />}>
-      <InvoiceRouter />
+      <RecordIdGate backHref="/invoices" backLabel="Back to invoices">
+        <InvoiceRouter />
+      </RecordIdGate>
     </Suspense>
   );
 }
@@ -147,6 +149,7 @@ function InvoiceView({ id }: { id: string }) {
       <Back supplier={supplier} />
       <PageHeader
         eyebrow={KIND_LABEL[inv.kind]}
+        documentTitle={`${KIND_LABEL[inv.kind]} ${inv.number}`}
         title={
           <span className="flex flex-wrap items-center gap-3">
             {inv.number}
@@ -427,6 +430,7 @@ function PaymentRunView({ id }: { id: string }) {
       <Back supplier />
       <PageHeader
         eyebrow="Payment run"
+        documentTitle={`Payment run ${formatDate(run.scheduledFor)}`}
         title={
           <span className="flex flex-wrap items-center gap-3">
             {formatDate(run.scheduledFor)}

@@ -94,6 +94,7 @@ function ProductView() {
         <Back />
         <PageHeader
           eyebrow="Offer"
+          documentTitle="Offer"
           title={
             <span className="flex flex-wrap items-center gap-3">
               {formatMoney(offer.price)} per unit
@@ -148,6 +149,7 @@ function ProductView() {
       <Back />
       <PageHeader
         eyebrow="Product submission"
+        documentTitle={sp.name}
         title={
           <span className="flex flex-wrap items-center gap-3">
             {sp.name}

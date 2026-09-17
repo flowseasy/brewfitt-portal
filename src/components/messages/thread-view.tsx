@@ -234,6 +234,7 @@ export function ThreadView({
             fill && "min-h-0 flex-1",
           )}
           aria-label={`Messages in ${thread.data.subject}`}
+          tabIndex={compact || fill ? 0 : undefined}
         >
           {thread.data.messages.map((m, i) => (
             <MessageBubble

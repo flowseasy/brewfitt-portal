@@ -3,7 +3,7 @@
 import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { ErrorState, LoadingState } from "@/components/shared/states";
+import { ErrorState, LoadingState, RecordIdGate } from "@/components/shared/states";
 import { usePersonaKey } from "@/features/session/use-session";
 import { api } from "@/lib/api";
 import { hrefFor } from "@/lib/links";
@@ -12,7 +12,9 @@ import { hrefFor } from "@/lib/links";
 export default function DeliveryRedirectPage() {
   return (
     <Suspense fallback={<LoadingState rows={3} />}>
-      <DeliveryRedirect />
+      <RecordIdGate backHref="/orders" backLabel="Back to orders">
+        <DeliveryRedirect />
+      </RecordIdGate>
     </Suspense>
   );
 }

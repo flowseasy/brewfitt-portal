@@ -102,7 +102,12 @@ function storage(): Storage | null {
 
 function readLog(): MutationEntry[] {
   try {
-    const raw = storage()?.getItem(LOG_KEY);
+    const store = storage();
+    // Logs from earlier seed versions can never replay; drop them.
+    for (const key of Object.keys(store ?? {})) {
+      if (key.startsWith("brewfitt-demo-log-v") && key !== LOG_KEY) store?.removeItem(key);
+    }
+    const raw = store?.getItem(LOG_KEY);
     return raw ? (JSON.parse(raw) as MutationEntry[]) : [];
   } catch {
     return [];

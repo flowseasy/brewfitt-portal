@@ -35,7 +35,7 @@ import {
 import { LinesTable, TotalsList } from "@/components/quotes/quote-parts";
 import { PageHeader } from "@/components/shared/page-header";
 import { PdfPreview } from "@/components/shared/pdf-preview";
-import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
+import { EmptyState, ErrorState, LoadingState, RecordIdGate } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { Button } from "@/components/ui/button";
 import {
@@ -58,7 +58,9 @@ import type { Address, ChangeRequest, SalesOrderDetail } from "@/types";
 export default function OrderViewPage() {
   return (
     <Suspense fallback={<LoadingState rows={5} />}>
-      <OrderView />
+      <RecordIdGate backHref="/orders" backLabel="Back to orders">
+        <OrderView />
+      </RecordIdGate>
     </Suspense>
   );
 }
@@ -183,6 +185,7 @@ function SalesOrderView({ id }: { id: string }) {
       <Back label="Orders" />
       <PageHeader
         eyebrow={o.poReference ? `Your reference ${o.poReference}` : "Order"}
+        documentTitle={`Order ${o.number}`}
         title={
           <span className="flex flex-wrap items-center gap-3">
             {o.number}
@@ -689,6 +692,7 @@ function PurchaseOrderDetailView({ id }: { id: string }) {
       <Back label="Purchase orders" />
       <PageHeader
         eyebrow="Purchase order from Brewfitt"
+        documentTitle={`Purchase order ${p.number}`}
         title={
           <span className="flex flex-wrap items-center gap-3">
             {p.number}

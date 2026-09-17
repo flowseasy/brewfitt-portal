@@ -17,7 +17,7 @@ import {
 } from "@phosphor-icons/react";
 import { formatAddress } from "@/components/account/addresses";
 import { PageHeader } from "@/components/shared/page-header";
-import { ErrorState, LoadingState } from "@/components/shared/states";
+import { ErrorState, LoadingState, RecordIdGate } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { Button } from "@/components/ui/button";
 import { usePersonaKey } from "@/features/session/use-session";
@@ -30,7 +30,9 @@ import { cn } from "@/lib/utils";
 export default function JobViewPage() {
   return (
     <Suspense fallback={<LoadingState rows={5} />}>
-      <JobView />
+      <RecordIdGate backHref="/jobs" backLabel="Back to jobs">
+        <JobView />
+      </RecordIdGate>
     </Suspense>
   );
 }
@@ -87,6 +89,7 @@ function JobView() {
       </Link>
       <PageHeader
         eyebrow="Supply and install"
+        documentTitle={j.name}
         title={
           <span className="flex flex-wrap items-center gap-3">
             {j.name}

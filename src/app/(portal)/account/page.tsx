@@ -302,19 +302,17 @@ export default function AccountPage() {
                 <ErrorState error={activity.error} />
               ) : (
                 <Timeline
-                  entries={activity.items
-                    .slice(0, 6)
-                    .map((i) => ({
-                      id: i.id,
-                      at: i.at,
-                      title: i.title,
-                      detail: i.detail,
-                      href:
-                        supplier && i.relatedType === "product"
-                          ? "/stock"
-                          : hrefFor(i.relatedType, i.relatedId),
-                      icon: ACTIVITY_ICON[i.kind],
-                    }))}
+                  entries={activity.items.slice(0, 6).map((i) => ({
+                    id: i.id,
+                    at: i.at,
+                    title: i.title,
+                    detail: i.detail,
+                    href:
+                      supplier && i.relatedType === "product"
+                        ? "/stock"
+                        : hrefFor(i.relatedType, i.relatedId),
+                    icon: ACTIVITY_ICON[i.kind],
+                  }))}
                 />
               )}
             </section>

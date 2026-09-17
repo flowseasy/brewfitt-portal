@@ -8,16 +8,19 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@phosphor-icons/react";
 import { RELATED_LABEL } from "@/components/messages/new-thread-sheet";
 import { ThreadList } from "@/components/messages/thread-list";
 import { ThreadView } from "@/components/messages/thread-view";
-import { ErrorState, LoadingState } from "@/components/shared/states";
+import { ErrorState, LoadingState, RecordIdGate } from "@/components/shared/states";
 import { usePersonaKey } from "@/features/session/use-session";
 import { api, queryKeys } from "@/lib/api";
 import { initials } from "@/lib/format";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { hrefFor } from "@/lib/links";
 
 export default function ThreadPage() {
   return (
     <Suspense fallback={<LoadingState rows={6} />}>
-      <ThreadPageInner />
+      <RecordIdGate backHref="/messages" backLabel="Back to messages">
+        <ThreadPageInner />
+      </RecordIdGate>
     </Suspense>
   );
 }
@@ -34,6 +37,7 @@ function ThreadPageInner() {
     queryFn: () => api.messages.thread(id),
     enabled: !!id,
   });
+  useDocumentTitle(thread.data?.subject ?? "Messages");
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[340px_minmax(0,1fr)]">

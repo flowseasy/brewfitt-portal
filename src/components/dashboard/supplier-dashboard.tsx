@@ -177,11 +177,15 @@ export function SupplierDashboard() {
                     <AnimatedNumber value={statement.data.overdue.amount} format={money} />
                   </dd>
                 </div>
-                <Link
-                  href="/invoices?tab=runs"
-                  className="col-span-2 -m-2 rounded-lg p-2 hover:bg-accent/50 sm:col-span-1"
-                >
-                  <dt className="text-xs text-muted-foreground">Next payment run</dt>
+                <div className="relative col-span-2 -m-2 rounded-lg p-2 hover:bg-accent/50 sm:col-span-1">
+                  <dt className="text-xs text-muted-foreground">
+                    <Link
+                      href="/invoices?tab=runs"
+                      className="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-3 focus-visible:after:ring-ring/40"
+                    >
+                      Next payment run
+                    </Link>
+                  </dt>
                   <dd className="mt-0.5 text-2xl font-semibold tracking-tight">
                     {d.nextRun ? formatMoney(d.nextRun.total, { whole: true }) : "None scheduled"}
                   </dd>
@@ -191,7 +195,7 @@ export function SupplierDashboard() {
                       {plural(d.nextRun.invoiceIds.length, "invoice")}
                     </dd>
                   ) : null}
-                </Link>
+                </div>
               </dl>
               <div className="mt-5">
                 <p className="mb-2 text-xs font-medium text-muted-foreground">Owed to you by age</p>
@@ -260,14 +264,20 @@ export function SupplierDashboard() {
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
               <dl className="grid grid-cols-2 gap-2">
                 {d.stageCounts.map(([status, count]) => (
-                  <Link
+                  <div
                     key={status}
-                    href={`/orders?status=${status}`}
-                    className="rounded-xl border p-3 transition hover:border-primary/40 hover:bg-accent/40"
+                    className="relative rounded-xl border p-3 transition focus-within:ring-3 focus-within:ring-ring/40 hover:border-primary/40 hover:bg-accent/40"
                   >
-                    <dt className="text-xs text-muted-foreground">{PO_STATUS[status].label}</dt>
+                    <dt className="text-xs text-muted-foreground">
+                      <Link
+                        href={`/orders?status=${status}`}
+                        className="after:absolute after:inset-0 focus-visible:outline-none"
+                      >
+                        {PO_STATUS[status].label}
+                      </Link>
+                    </dt>
                     <dd className="mt-0.5 text-2xl font-semibold tabular-nums">{count}</dd>
-                  </Link>
+                  </div>
                 ))}
               </dl>
               <div>

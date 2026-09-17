@@ -30,6 +30,7 @@ import { BrandLogo } from "@/components/shared/brand-logo";
 import { LoadingState } from "@/components/shared/states";
 import { TeamMemberCard } from "@/components/shared/team-member-card";
 import { Button } from "@/components/ui/button";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { useIsSupplier, useMe, usePersona, usePersonaKey } from "@/features/session/use-session";
 import { api, queryKeys } from "@/lib/api";
@@ -69,6 +70,7 @@ function Tour() {
   const me = useMe();
   const markSeen = useOnboardingStore((s) => s.markSeen);
   const reduce = useReducedMotion();
+  useDocumentTitle("Welcome tour");
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const headingRef = useRef<HTMLHeadingElement>(null);

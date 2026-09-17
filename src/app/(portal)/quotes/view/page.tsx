@@ -27,7 +27,7 @@ import { LinesTable, QuoteDocument, TotalsList } from "@/components/quotes/quote
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { PageHeader } from "@/components/shared/page-header";
 import { PdfPreview } from "@/components/shared/pdf-preview";
-import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
+import { EmptyState, ErrorState, LoadingState, RecordIdGate } from "@/components/shared/states";
 import { StatusPill } from "@/components/shared/status-pill";
 import { TeamMemberCard } from "@/components/shared/team-member-card";
 import { Button } from "@/components/ui/button";
@@ -50,7 +50,9 @@ import type { Quote, RfqWithResponse } from "@/types";
 export default function QuoteViewPage() {
   return (
     <Suspense fallback={<LoadingState rows={5} />}>
-      <QuoteView />
+      <RecordIdGate backHref="/quotes" backLabel="Back to quotes">
+        <QuoteView />
+      </RecordIdGate>
     </Suspense>
   );
 }

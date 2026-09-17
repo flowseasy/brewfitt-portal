@@ -216,14 +216,20 @@ export function CustomerDashboard() {
                     ["Part-delivered", d.stageCounts.partDelivered, "part-delivered"],
                   ] as const
                 ).map(([label, count, status]) => (
-                  <Link
+                  <div
                     key={label}
-                    href={`/orders?status=${status}`}
-                    className="rounded-xl border p-3 transition hover:border-primary/40 hover:bg-accent/40"
+                    className="relative rounded-xl border p-3 transition focus-within:ring-3 focus-within:ring-ring/40 hover:border-primary/40 hover:bg-accent/40"
                   >
-                    <dt className="text-xs text-muted-foreground">{label}</dt>
+                    <dt className="text-xs text-muted-foreground">
+                      <Link
+                        href={`/orders?status=${status}`}
+                        className="after:absolute after:inset-0 focus-visible:outline-none"
+                      >
+                        {label}
+                      </Link>
+                    </dt>
                     <dd className="mt-0.5 text-2xl font-semibold tabular-nums">{count}</dd>
-                  </Link>
+                  </div>
                 ))}
               </dl>
               <div>
@@ -283,6 +289,8 @@ export function CustomerDashboard() {
                 <li key={f.line.productId} className="flex items-center gap-3 py-1.5">
                   <Link
                     href={hrefFor("product", f.line.productId)}
+                    tabIndex={-1}
+                    aria-hidden
                     className="relative size-11 shrink-0 overflow-hidden rounded-lg border bg-white"
                   >
                     <Image
@@ -570,9 +578,21 @@ function Kpi({
   tone?: "danger" | "warning";
   href?: string;
 }) {
+  // A <dl> may only group <dt>/<dd> in <div>s, so a linked KPI puts the link in its term and stretches it over the tile.
   const body = (
     <>
-      <dt className="text-xs text-muted-foreground">{label}</dt>
+      <dt className="text-xs text-muted-foreground">
+        {href ? (
+          <Link
+            href={href}
+            className="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-3 focus-visible:after:ring-ring/40"
+          >
+            {label}
+          </Link>
+        ) : (
+          label
+        )}
+      </dt>
       <dd
         className={cn(
           "mt-0.5 text-xl font-semibold tracking-tight sm:text-2xl",
@@ -586,9 +606,7 @@ function Kpi({
     </>
   );
   return href ? (
-    <Link href={href} className="-m-2 rounded-lg p-2 hover:bg-accent/50">
-      {body}
-    </Link>
+    <div className="relative -m-2 rounded-lg p-2 hover:bg-accent/50">{body}</div>
   ) : (
     <div>{body}</div>
   );

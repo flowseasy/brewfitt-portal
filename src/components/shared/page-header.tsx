@@ -1,4 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { cn } from "@/lib/utils";
 
 export function PageHeader({
@@ -7,13 +10,17 @@ export function PageHeader({
   actions,
   eyebrow,
   className,
+  documentTitle,
 }: {
   title: ReactNode;
   description?: ReactNode;
   actions?: ReactNode;
   eyebrow?: ReactNode;
   className?: string;
+  /** Browser tab title when `title` is not plain text. */
+  documentTitle?: string;
 }) {
+  useDocumentTitle(documentTitle ?? (typeof title === "string" ? title : undefined));
   return (
     <div
       className={cn(

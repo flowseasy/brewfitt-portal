@@ -14,7 +14,7 @@ import {
   ShoppingCartSimpleIcon,
 } from "@phosphor-icons/react";
 import { AIInsightCard } from "@/components/ai/ai-insight-card";
-import { EmptyState, ErrorState, LoadingState } from "@/components/shared/states";
+import { EmptyState, ErrorState, LoadingState, RecordIdGate } from "@/components/shared/states";
 import { StockPill } from "@/components/shared/stock-pill";
 import { NotifyMeButton, ProductCard, ProductImage } from "@/components/shop/product-card";
 import { QuantityStepper } from "@/components/shop/quantity-stepper";
@@ -31,7 +31,9 @@ import { cn } from "@/lib/utils";
 export default function ProductPage() {
   return (
     <Suspense fallback={<LoadingState rows={4} />}>
-      <Product />
+      <RecordIdGate backHref="/shop" backLabel="Back to the shop">
+        <Product />
+      </RecordIdGate>
     </Suspense>
   );
 }
