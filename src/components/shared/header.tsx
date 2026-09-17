@@ -18,6 +18,7 @@ export function Header() {
   const notifications = useQuery({
     queryKey: queryKeys.notifications(key),
     queryFn: () => api.notifications.list(),
+    refetchInterval: 60_000,
   });
   const unread = notifications.data?.filter((n) => !n.read).length ?? 0;
 

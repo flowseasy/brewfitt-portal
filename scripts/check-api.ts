@@ -26,6 +26,8 @@ async function main() {
   const { usePersonaStore } = await import("@/stores/persona-store");
   const { reloadDb } = await import("@/lib/mock/db");
   const { validateConfiguration } = await import("@/lib/configurator/engine");
+  const { getDb } = await import("@/lib/mock/db");
+  const { advanceJourneys, JOURNEY_MINUTES } = await import("@/lib/mock/api/journey");
 
   let passed = 0;
   const failures: string[] = [];
@@ -216,13 +218,16 @@ async function main() {
     (await step("request quote from configuration", () =>
       api.configurator.requestQuote(createdConfig.id),
     ));
-  await step("quoted configuration is draft quote with BOM lines", async () => {
+  await step("configuration quote is ready to accept with BOM lines and PDF", async () => {
     expect(
       draftQuote &&
-        draftQuote.status === "draft" &&
+        draftQuote.status === "sent" &&
+        draftQuote.pdfDocumentId &&
         draftQuote.lines.length === createdConfig!.lines.length,
       "quote lines do not match BOM",
     );
+    const doc = await api.documents.get(draftQuote!.pdfDocumentId!);
+    expect(doc.relatedId === draftQuote!.id, "quote PDF not linked");
   });
   const sent = (await api.quotes.list()).filter((q) => q.status === "sent");
   const accepted = await step("accept a sent quote", async () => {
@@ -282,6 +287,59 @@ async function main() {
       "checkout did not clear basket",
     );
     return order;
+  });
+  await step("quote the basket instead of checking out", async () => {
+    const product = (await api.priceList.get()).lines.find(
+      (l) => l.stock?.status === "in-stock",
+    )!.product;
+    await api.shop.addToBasket({ productId: product.id, qty: 6 });
+    const quote = await api.shop.requestQuote({ notes: "Pricing for the summer terrace bar." });
+    expect(
+      quote.status === "sent" && quote.lines[0]!.productId === product.id,
+      "basket not quoted",
+    );
+    expect((await api.shop.basket()).lines.length === 0, "basket not cleared");
+    const result = await api.quotes.accept(quote.id);
+    expect(result.salesOrder.status === "confirmed", "accepting basket quote made no order");
+  });
+  await step("Brewfitt packs, ships, invoices and delivers a portal order", async () => {
+    const order = onAccountOrder!;
+    const start = Date.parse(order.createdAt);
+    const minute = 60_000;
+    const statusAt = async (minutes: number) => {
+      advanceJourneys(getDb(), start + minutes * minute);
+      return api.orders.salesOrder(order.id);
+    };
+    expect((await statusAt(JOURNEY_MINUTES.pack - 1)).status === "confirmed", "packed too early");
+    expect((await statusAt(JOURNEY_MINUTES.pack)).status === "picking", "not packed");
+    const shipped = await statusAt(JOURNEY_MINUTES.ship);
+    expect(shipped.status === "dispatched", "not dispatched");
+    const deliveries = (await api.deliveries.list()).filter((d) => d.orderId === order.id);
+    expect(deliveries.length === 1 && deliveries[0]!.trackingRef, "no delivery with tracking");
+    const invoices = (await api.invoices.list()).filter((i) => i.orderId === order.id);
+    expect(
+      invoices.length === 1 && invoices[0]!.status === "open",
+      "credit account not invoiced on dispatch",
+    );
+    const delivered = await statusAt(JOURNEY_MINUTES.deliver);
+    expect(
+      delivered.status === "delivered" && delivered.lines.every((l) => l.delivered === l.qty),
+      "not delivered",
+    );
+    await statusAt(JOURNEY_MINUTES.deliver + 60);
+    expect(
+      (await api.invoices.list()).filter((i) => i.orderId === order.id).length === 1 &&
+        (await api.deliveries.list()).filter((d) => d.orderId === order.id).length === 1,
+      "journey stages applied twice",
+    );
+    // Stage times are simulated ahead of the real clock, so read the store (the API hides future notifications).
+    const kinds = getDb()
+      .notifications.filter((n) => n.relatedId === order.id)
+      .map((n) => n.kind);
+    expect(
+      kinds.includes("order-dispatched") && kinds.includes("order-delivered"),
+      "no notifications",
+    );
   });
   await step("raise and close a case", async () => {
     const order = (await api.orders.salesOrders())[0]!;
@@ -495,6 +553,10 @@ async function main() {
     expect(
       createdConfig && (await api.configurator.get(createdConfig.id)).status === "quoted",
       "configuration lost on reload",
+    );
+    expect(
+      onAccountOrder && (await api.orders.salesOrder(onAccountOrder.id)).status === "delivered",
+      "journey progress lost on reload",
     );
   });
   await step("reset demo data clears changes", async () => {

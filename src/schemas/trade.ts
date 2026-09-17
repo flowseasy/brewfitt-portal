@@ -35,6 +35,11 @@ export const MockCardPayment = z.object({
   last4: z.string().regex(/^\d{4}$/),
 });
 
+/** POST /api/basket/quote: a quote for the basket lines instead of checking out. */
+export const BasketQuoteRequest = z.object({
+  notes: z.string().trim().max(1000).nullable(),
+});
+
 export const CheckoutRequest = z.object({
   deliveryAddressId: Id,
   requestedDate: IsoDate,

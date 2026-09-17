@@ -16,6 +16,7 @@ import { daysBetween, today } from "../clock";
 import { getDb, latency, newId, type MockDb } from "../db";
 import { insert, patch, type Change } from "../mutations";
 import { badRequest, forbidden, notFound, resolveScope, type Scope } from "../scope";
+import { advanceJourneys } from "./journey";
 
 export { badRequest, forbidden, notFound };
 
@@ -23,6 +24,8 @@ export { badRequest, forbidden, notFound };
 export async function respond<T>(fn: (db: MockDb, scope: Scope) => T): Promise<T> {
   await latency();
   const db = getDb();
+  // Brewfitt's packing, dispatch and delivery of portal orders (decision 11).
+  advanceJourneys(db);
   const scope = resolveScope(db);
   return structuredClone(fn(db, scope));
 }

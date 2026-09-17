@@ -78,6 +78,11 @@ export type MockDb = {
   notifications: Notification[];
   /** Insights the account has dismissed. */
   dismissedInsightIds: string[];
+  /**
+   * Sales orders placed in the portal that the mock moves through Brewfitt's
+   * packing, dispatch and delivery (decision 11). Mock-internal, not in the contract.
+   */
+  journeys: { orderId: string; startedAt: string }[];
 };
 
 /**

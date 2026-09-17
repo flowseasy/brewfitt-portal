@@ -121,6 +121,8 @@ export interface PortalApi {
     updateBasket(patch: In<typeof s.BasketPatch>): Promise<Basket>;
     /** POST /api/checkout */
     checkout(input: In<typeof s.CheckoutRequest>): Promise<SalesOrder>;
+    /** POST /api/basket/quote (contract defined by the mock): quote the basket, ready to accept. */
+    requestQuote(input: In<typeof s.BasketQuoteRequest>): Promise<Quote>;
   };
 
   quotes: {

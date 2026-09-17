@@ -15,11 +15,12 @@ import type {
 } from "@/types";
 import { supplierForecast } from "@/lib/ai/rules";
 import { buildBillOfMaterials, validateConfiguration } from "@/lib/configurator/engine";
-import { formatDate } from "@/lib/format";
+import { formatDate, formatMoney } from "@/lib/format";
 import { isoDate, today } from "../clock";
 import { commit, newId, nextNumber, type MockDb } from "../db";
 import { insert, patch, type Change } from "../mutations";
 import type { Scope } from "../scope";
+import { startJourney } from "./journey";
 import {
   account,
   badRequest,
@@ -497,63 +498,131 @@ export const configurator: PortalApi["configurator"] = {
         badRequest(
           `Complete every step before requesting a quote: ${Object.values(errors).flat()[0]}`,
         );
-      const at = nowIso();
-      const subtotal = config.lines.reduce((sum, l) => sum + l.qty * l.price.amount, 0);
-      const { vat, gross } = withVat(db, config.accountId, subtotal);
-      const quote: Quote = {
-        id: newId("quo"),
+      const { quote, changes } = createQuoteChanges(db, scope, {
         accountId: config.accountId,
-        number: nextNumber("QU-", db.quotes),
-        status: "draft",
-        lines: config.lines.map((l) => {
-          const product = db.products.find((p) => p.id === l.productId)!;
-          return {
-            productId: l.productId,
-            description: product.name,
-            qty: l.qty,
-            unitPrice: l.price,
-            discountPercent: Math.max(
-              0,
-              Math.round((1 - l.price.amount / product.listPrice.amount) * 100),
-            ),
-            lineTotal: { amount: l.qty * l.price.amount, currency: l.price.currency },
-          };
-        }),
-        subtotal: { amount: subtotal, currency: config.total.currency },
-        vat: { amount: vat, currency: config.total.currency },
-        total: { amount: gross, currency: config.total.currency },
-        validUntil: isoDate(new Date(Date.now() + 30 * 86_400_000)),
+        lines: config.lines,
         configurationId: config.id,
-        pdfDocumentId: null,
-        threadId: "",
-        salesOrderId: null,
-        declineReason: null,
-        lastViewedAt: at,
-        createdAt: at,
-        updatedAt: at,
-      };
-      const opened = openThreadChanges(db, scope, {
-        accountId: config.accountId,
-        subject: `Quote ${quote.number}`,
-        relatedType: "quote",
-        relatedId: quote.id,
-        brewfittRole: "account-manager",
-        first: {
-          side: "account",
-          channel: "portal",
-          body: `Quote requested from the configuration "${config.name}".`,
-          at,
-        },
+        request: `Quote requested from the configuration "${config.name}".`,
       });
-      quote.threadId = opened.thread.id;
       commit("configurator.requestQuote", [
-        insert("quotes", quote),
-        ...opened.changes,
-        patch("configurations", config.id, { status: "quoted", quoteId: quote.id, updatedAt: at }),
+        ...changes,
+        patch("configurations", config.id, {
+          status: "quoted",
+          quoteId: quote.id,
+          updatedAt: quote.createdAt,
+        }),
       ]);
       return quote;
     }),
 };
+
+/**
+ * A quote built in the portal, from a configuration or the basket, at the
+ * account's prices. Decision 11: it is ready to accept straight away, with its
+ * PDF and a conversation, and accepting it creates the sales order.
+ */
+export function createQuoteChanges(
+  db: MockDb,
+  scope: Scope,
+  args: {
+    accountId: string;
+    lines: { productId: string; qty: number; price?: Quote["subtotal"] }[];
+    configurationId: string | null;
+    request: string;
+  },
+): { quote: Quote; changes: Change[] } {
+  const at = nowIso();
+  const lines = args.lines.map((l) => {
+    const product = db.products.find((p) => p.id === l.productId) ?? notFound("Product");
+    const price = l.price ?? priceFor(db, args.accountId, l.productId);
+    if (!price) badRequest(`${product.name} is not on your price list.`);
+    return {
+      productId: l.productId,
+      description: product.name,
+      qty: l.qty,
+      unitPrice: price,
+      discountPercent: Math.max(0, Math.round((1 - price.amount / product.listPrice.amount) * 100)),
+      lineTotal: { amount: l.qty * price.amount, currency: price.currency },
+    };
+  });
+  const subtotal = lines.reduce((sum, l) => sum + l.lineTotal.amount, 0);
+  const { vat, gross } = withVat(db, args.accountId, subtotal);
+  const quote: Quote = {
+    id: newId("quo"),
+    accountId: args.accountId,
+    number: nextNumber("QU-", db.quotes),
+    status: "sent",
+    lines,
+    subtotal: { amount: subtotal, currency: "GBP" },
+    vat: { amount: vat, currency: "GBP" },
+    total: { amount: gross, currency: "GBP" },
+    validUntil: isoDate(new Date(Date.now() + 30 * 86_400_000)),
+    configurationId: args.configurationId,
+    pdfDocumentId: newId("doc"),
+    threadId: "",
+    salesOrderId: null,
+    declineReason: null,
+    lastViewedAt: at,
+    createdAt: at,
+    updatedAt: at,
+  };
+  const pdf: Document = {
+    id: quote.pdfDocumentId!,
+    name: `Quote ${quote.number}.pdf`,
+    category: "quote",
+    relatedType: "quote",
+    relatedId: quote.id,
+    ownerAccountId: args.accountId,
+    fileType: "pdf",
+    fileSize: 96_000,
+    expiresAt: null,
+    approvalStatus: null,
+    modifiedAt: at,
+  };
+  const opened = openThreadChanges(db, scope, {
+    accountId: args.accountId,
+    subject: `Quote ${quote.number}`,
+    relatedType: "quote",
+    relatedId: quote.id,
+    brewfittRole: "account-manager",
+    first: { side: "account", channel: "portal", body: args.request, at },
+  });
+  quote.threadId = opened.thread.id;
+  const brewfitt = opened.thread.participants.find((p) => p.side === "brewfitt")!;
+  const readyAt = new Date(Date.parse(at) + 1000).toISOString();
+  const ready: Message = {
+    id: newId("msg"),
+    threadId: opened.thread.id,
+    senderId: brewfitt.id,
+    senderSide: "brewfitt",
+    channel: "portal",
+    body: `Quote ${quote.number} is attached at your prices: ${formatMoney(quote.total)} including VAT, valid until ${formatDate(quote.validUntil)}. Accept it here and we will confirm the order.`,
+    attachments: [pdf.id],
+    sentAt: readyAt,
+  };
+  return {
+    quote,
+    changes: [
+      insert("quotes", quote),
+      insert("documents", pdf),
+      ...opened.changes,
+      insert("messages", ready),
+      patch("threads", opened.thread.id, { lastMessageAt: readyAt }),
+      insert("notifications", {
+        id: newId("ntf"),
+        accountId: args.accountId,
+        kind: "quote-awaiting-acceptance",
+        title: `Quote ${quote.number} ready to accept`,
+        body: `${formatMoney(quote.total)} including VAT, valid until ${formatDate(quote.validUntil)}.`,
+        relatedType: "quote",
+        relatedId: quote.id,
+        read: false,
+        dismissed: false,
+        createdAt: readyAt,
+      }),
+    ],
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Shop, checkout and order creation
@@ -641,7 +710,7 @@ export function createOrderChanges(
     },
   });
   order.threadId = opened.thread.id;
-  const changes: Change[] = [insert("salesOrders", order), ...opened.changes];
+  const changes: Change[] = [insert("salesOrders", order), ...opened.changes, startJourney(order)];
 
   if (args.notes) {
     const note: Message = {
@@ -832,5 +901,33 @@ export const shop: PortalApi["shop"] = {
         }),
       ]);
       return order;
+    }),
+  requestQuote: (input) =>
+    respond((db, scope) => {
+      requireCustomer(scope);
+      const data = s.BasketQuoteRequest.parse(input);
+      const basket = basketFor(db, scope.viewAccount.id);
+      if (basket.lines.length === 0) badRequest("Your basket is empty.");
+      if (scope.viewAccount.isGroup) badRequest("Switch into a site to request a quote for it.");
+      const items = `${basket.lines.length} basket ${basket.lines.length === 1 ? "item" : "items"}`;
+      const { quote, changes } = createQuoteChanges(db, scope, {
+        accountId: scope.viewAccount.id,
+        lines: basket.lines,
+        configurationId: null,
+        request: data.notes
+          ? `Quote requested for ${items}. ${data.notes}`
+          : `Quote requested for ${items}.`,
+      });
+      commit("shop.requestQuote", [
+        ...changes,
+        saveBasket(db, {
+          ...basket,
+          lines: [],
+          poReference: null,
+          notes: null,
+          requestedDate: null,
+        }),
+      ]);
+      return quote;
     }),
 };

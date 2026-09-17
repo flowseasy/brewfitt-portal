@@ -215,5 +215,6 @@ export function generateDb(today: Date): MockDb {
     messages: comms.messages,
     notifications: comms.notifications,
     dismissedInsightIds: [],
+    journeys: [],
   };
 }

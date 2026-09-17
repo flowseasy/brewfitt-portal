@@ -71,6 +71,7 @@ export type BasketLine = z.infer<typeof s.BasketLine>;
 export type Basket = z.infer<typeof s.Basket>;
 export type BasketPatch = z.infer<typeof s.BasketPatch>;
 export type MockCardPayment = z.infer<typeof s.MockCardPayment>;
+export type BasketQuoteRequest = z.infer<typeof s.BasketQuoteRequest>;
 export type CheckoutRequest = z.infer<typeof s.CheckoutRequest>;
 export type QuoteStatus = z.infer<typeof s.QuoteStatus>;
 export type QuoteLine = z.infer<typeof s.QuoteLine>;

@@ -114,6 +114,11 @@ function SalesOrderView({ id }: { id: string }) {
     queryKey: queryKeys.salesOrder(key, id),
     queryFn: () => api.orders.salesOrder(id),
     enabled: !!id,
+    // Brewfitt packs, ships and delivers portal orders over the next few minutes (decision 11).
+    refetchInterval: (q) =>
+      q.state.data && ["confirmed", "picking", "dispatched"].includes(q.state.data.status)
+        ? 20_000
+        : false,
   });
   const me = useQuery({ queryKey: queryKeys.me(key), queryFn: () => api.session.me() });
   const priceList = useQuery({

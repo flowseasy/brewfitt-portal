@@ -44,7 +44,7 @@ import {
 } from "@/features/configurator/use-configurator";
 import { usePersonaKey } from "@/features/session/use-session";
 import { api, errorMessage, queryKeys } from "@/lib/api";
-import { formatMoney } from "@/lib/format";
+import { formatDate, formatMoney } from "@/lib/format";
 import { hrefFor } from "@/lib/links";
 import { cn } from "@/lib/utils";
 import type {
@@ -247,16 +247,16 @@ function BuilderForm({
       >
         <CheckCircleIcon weight="fill" className="mx-auto size-14 text-success" aria-hidden />
         <h1 className="mt-4 text-2xl font-semibold tracking-tight">
-          Quote {quoted.number} requested
+          Quote {quoted.number} is ready
         </h1>
         <p className="mt-2 text-muted-foreground">
-          {state.name} has been sent to your Brewfitt account manager with {quoted.lines.length}{" "}
-          lines totalling {formatMoney(quoted.subtotal)} before VAT. They will confirm installation
-          and send the quote for you to accept.
+          {state.name}: {quoted.lines.length} lines, {formatMoney(quoted.total)} including VAT,
+          valid until {formatDate(quoted.validUntil)}. Accept it to place the order; your account
+          manager can answer questions in the quote conversation.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <Button asChild>
-            <Link href={hrefFor("quote", quoted.id)}>View quote</Link>
+            <Link href={hrefFor("quote", quoted.id)}>Review and accept</Link>
           </Button>
           <Button asChild variant="outline">
             <Link href="/configurator">Saved configurations</Link>

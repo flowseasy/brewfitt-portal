@@ -36,7 +36,13 @@ const responses = {
     update: s.Configuration,
     requestQuote: s.Quote,
   },
-  shop: { basket: s.Basket, addToBasket: s.Basket, updateBasket: s.Basket, checkout: s.SalesOrder },
+  shop: {
+    basket: s.Basket,
+    addToBasket: s.Basket,
+    updateBasket: s.Basket,
+    checkout: s.SalesOrder,
+    requestQuote: s.Quote,
+  },
   quotes: {
     list: z.array(s.Quote),
     get: s.Quote,

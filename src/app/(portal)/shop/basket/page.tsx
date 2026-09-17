@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,6 +10,7 @@ import { motion } from "framer-motion";
 import { z } from "zod";
 import {
   CheckCircleIcon,
+  FileTextIcon,
   ShoppingCartSimpleIcon,
   TrashIcon,
   WarningIcon,
@@ -72,6 +74,7 @@ const CheckoutForm = z
 type CheckoutValues = z.infer<typeof CheckoutForm>;
 
 export default function BasketPage() {
+  const router = useRouter();
   const key = usePersonaKey();
   const queryClient = useQueryClient();
   const me = useMe();
@@ -146,6 +149,25 @@ export default function BasketPage() {
     },
     onError: (error) =>
       toast.error("Your order could not be placed", { description: errorMessage(error) }),
+  });
+
+  const requestQuote = useMutation({
+    mutationFn: () => api.shop.requestQuote({ notes: form.getValues("notes") || null }),
+    onSuccess: (quote) => {
+      for (const k of [
+        queryKeys.basket(key),
+        queryKeys.quotes(key),
+        queryKeys.threads(key),
+        queryKeys.notifications(key),
+        queryKeys.documents(key),
+      ]) {
+        void queryClient.invalidateQueries({ queryKey: k });
+      }
+      toast.success(`Quote ${quote.number} is ready to accept`);
+      router.push(hrefFor("quote", quote.id));
+    },
+    onError: (error) =>
+      toast.error("The quote could not be created", { description: errorMessage(error) }),
   });
 
   if (placed) {
@@ -393,8 +415,19 @@ export default function BasketPage() {
                     ? "Place order on account"
                     : `Pay ${formatMoney({ amount: total, currency: "GBP" })} and place order`}
               </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="mt-2 h-11 w-full rounded-full"
+                disabled={requestQuote.isPending || checkout.isPending || groupRollUp}
+                onClick={() => requestQuote.mutate()}
+              >
+                <FileTextIcon aria-hidden />
+                {requestQuote.isPending ? "Preparing quote…" : "Get a quote instead"}
+              </Button>
               <p className="mt-2 text-center text-xs text-muted-foreground">
-                Orders are subject to Brewfitt&apos;s conditions of sale.
+                A quote holds these prices for 30 days; accept it to place the order. Orders are
+                subject to Brewfitt&apos;s conditions of sale.
               </p>
             </form>
           </section>
