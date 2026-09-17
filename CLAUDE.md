@@ -88,6 +88,14 @@ Where BLUEPRINT.md names a field without specifying it, these are the choices ma
 - Payment runs are Brewfitt-wide; the API returns each run filtered to the supplier's own invoices and total.
 - `ConfigurationSelections.dispense.optionIds` holds tap style, coupler and non-draught equipment. Configurator `OptionLine` can pick a product per dispense point by draught tap count (fonts, drip trays).
 
+## App shell (M3)
+
+- `src/app/page.tsx` is the Phase 1 start screen (choose a persona = sign in). Portal routes live in the `src/app/(portal)/` route group, whose layout renders `AppShell` (sidebar, header with site switcher, search, notifications, primary CTA, user menu; mobile bottom nav with More sheet and floating CTA). `AppShell` waits for persisted state (`useHydrated`) and redirects to `/` when signed out or to `/dashboard` when a route is not in the persona's navigation.
+- Navigation per persona: `src/components/shared/navigation.tsx`. Record links: always use `hrefFor(relatedType, id)` from `src/lib/links.ts`.
+- Session hooks: `usePersona`, `usePersonaKey` (prefix every query key), `useMe`, `useIsSupplier` in `src/features/session/use-session.ts`.
+- Shared states: `LoadingState`, `EmptyState`, `ErrorState` (`states.tsx`), `StatusPill` tones, `PageHeader`, `ConfirmDialog`.
+- A `.claude/launch.json` config named `brewfitt-portal` runs the dev server for previews.
+
 ## Mock layer (M2)
 
 - `src/lib/api/`: `contract.ts` (the `PortalApi` interface, one method per blueprint endpoint), `index.ts` (`api`, every response Zod-parsed), `query-keys.ts` (keys prefixed by `personaKey(persona)`), `errors.ts` (`ApiError`, `errorMessage`).
