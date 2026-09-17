@@ -17,7 +17,8 @@ export function Providers({ children }: { children: ReactNode }) {
             staleTime: 30_000,
             refetchOnWindowFocus: false,
             // A missing or forbidden record will not appear on retry; other failures get one more try.
-            retry: (count, error) => !(error instanceof ApiError && error.status < 500) && count < 1,
+            retry: (count, error) =>
+              !(error instanceof ApiError && error.status < 500) && count < 1,
           },
         },
       }),
