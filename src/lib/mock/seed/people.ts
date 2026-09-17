@@ -381,7 +381,9 @@ export function seedPeople(rng: Rng, today: Date) {
   };
 
   for (const seed of ACCOUNT_SEEDS) {
-    const main = makeAddress(seed.id, seed.kind === "supplier" ? "Head office" : seed.parent ? "Site" : "Main address", seed.street, seed.place, true, seed.kind === "customer" ? "Deliveries to the cellar hatch; call the site on arrival." : null);
+    const venue = seed.kind === "customer" && ["pub", "restaurant", "hotel", "brewery"].includes(seed.sector);
+    const notes = venue ? (seed.sector === "brewery" ? "Goods in via the brewery yard; forklift available weekdays." : "Deliveries to the cellar hatch; call the site on arrival.") : null;
+    const main = makeAddress(seed.id, seed.kind === "supplier" ? "Head office" : seed.parent ? "Site" : seed.isGroup || seed.sector === "brand-owner" ? "Head office" : "Main address", seed.street, seed.place, true, notes);
     addresses.push(main);
     for (const site of seed.deliverySites ?? []) {
       addresses.push(makeAddress(seed.id, site.label, site.street, site.place, false, site.notes));

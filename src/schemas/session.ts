@@ -27,6 +27,8 @@ export const CreditPosition = z.object({
 /** GET /api/me */
 export const Me = z.object({
   credit: CreditPosition.nullable(),
+  /** Mock VAT rate for the account's orders: 0.2 UK, 0 export (decision 8). */
+  vatRate: z.number().min(0).max(1),
   contact: Contact,
   account: Account,
   persona: Persona,

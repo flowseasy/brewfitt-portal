@@ -24,6 +24,7 @@ import {
   requireSupplier,
   respond,
   stockStatus,
+  vatRate,
   withVat,
 } from "./helpers";
 
@@ -57,6 +58,7 @@ export const session: PortalApi["session"] = {
       }
       return {
         credit,
+        vatRate: vatRate(db, scope.viewAccount.id),
         contact,
         account: scope.viewAccount,
         persona: scope.persona,

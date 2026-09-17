@@ -199,6 +199,28 @@
   }
 }
 
+/* Document previews print on their own (PdfPreview). */
+@media print {
+  html.printing body * {
+    visibility: hidden;
+  }
+  html.printing [data-print-root],
+  html.printing [data-print-root] * {
+    visibility: visible;
+  }
+  html.printing [data-print-root] {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    max-width: none;
+    box-shadow: none;
+    padding: 0;
+  }
+  @page {
+    margin: 14mm;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
