@@ -15,15 +15,13 @@ export function Sidebar() {
 
   return (
     <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r bg-sidebar lg:flex">
-      <div className="flex h-16 items-center gap-2.5 px-5">
+      <div className="px-4 pt-4 pb-3">
         <Link
           href="/dashboard"
-          className="flex items-center gap-2.5 rounded-md focus-visible:outline-offset-4"
+          aria-label="Brewfitt, go to dashboard"
+          className="block rounded-lg focus-visible:outline-offset-4"
         >
-          <BrandLogo priority />
-          <span className="text-sm font-medium text-muted-foreground">
-            {persona.kind === "supplier" ? "Supplier portal" : "Trade portal"}
-          </span>
+          <BrandLogo priority className="h-auto w-full rounded-lg shadow-sm" />
         </Link>
       </div>
       <nav aria-label="Main" className="flex-1 overflow-y-auto px-3 pb-6">

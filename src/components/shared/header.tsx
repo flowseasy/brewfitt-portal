@@ -9,6 +9,7 @@ import { usePersonaKey } from "@/features/session/use-session";
 import { api, queryKeys } from "@/lib/api";
 import { BrandLogo } from "./brand-logo";
 import { GlobalSearch } from "./global-search";
+import { PortalBadge } from "./portal-badge";
 import { PrimaryCta } from "./primary-cta";
 import { SiteSwitcher } from "./site-switcher";
 import { ThemeToggle } from "./theme-toggle";
@@ -29,6 +30,7 @@ export function Header() {
         <Link href="/dashboard" className="shrink-0 lg:hidden" aria-label="Brewfitt Portal home">
           <BrandLogo className="h-6" />
         </Link>
+        <PortalBadge className="hidden md:inline-flex" />
         <div className="hidden lg:block">
           <SiteSwitcher />
         </div>
