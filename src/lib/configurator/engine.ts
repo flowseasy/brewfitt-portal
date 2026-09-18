@@ -135,7 +135,7 @@ export function validateStep(
     if (points.length < rules.limits.minPoints)
       errors.push(`Add at least ${rules.limits.minPoints} dispense point.`);
     if (points.length > rules.limits.maxPoints)
-      errors.push(`A configuration can have up to ${rules.limits.maxPoints} dispense points.`);
+      errors.push(`A design can have up to ${rules.limits.maxPoints} dispense points.`);
     for (const p of points) {
       if (p.taps.length === 0) errors.push(`${p.name} needs at least one product.`);
       if (draughtTaps(p) > rules.limits.maxTapsPerPoint)

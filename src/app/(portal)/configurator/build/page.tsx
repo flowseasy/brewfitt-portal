@@ -47,6 +47,7 @@ import {
   type BuilderState,
 } from "@/features/configurator/use-configurator";
 import { usePersonaKey } from "@/features/session/use-session";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { api, errorMessage, queryKeys } from "@/lib/api";
 import { formatDate, formatMoney } from "@/lib/format";
 import { hrefFor } from "@/lib/links";
@@ -62,6 +63,7 @@ import type {
 } from "@/types";
 
 export default function BuildPage() {
+  useDocumentTitle("Dispense Designer");
   return (
     <Suspense fallback={<LoadingState rows={5} />}>
       <Builder />
@@ -82,7 +84,7 @@ function Builder() {
     data.priceList.isPending ||
     data.me.isPending
   ) {
-    return <LoadingState rows={5} label="Loading the configurator" />;
+    return <LoadingState rows={5} label="Loading the Dispense Designer" />;
   }
   const failed = [data.rules, data.configurations, data.addresses, data.priceList, data.me].find(
     (q) => q.isError,
@@ -95,11 +97,11 @@ function Builder() {
     return (
       <EmptyState
         icon={ListChecksIcon}
-        title="This configuration could not be found"
+        title="This design could not be found"
         description="It may belong to another site or have been removed."
         action={
           <Button asChild variant="outline">
-            <Link href="/configurator">Saved configurations</Link>
+            <Link href="/configurator">Your Dispense Designs</Link>
           </Button>
         }
       />
@@ -191,7 +193,7 @@ function BuilderForm({
   const newSite = state?.selections.venue.newSite;
   const nameError =
     state && state.name.trim().length < 3
-      ? "Give the configuration a name of at least 3 characters"
+      ? "Give the design a name of at least 3 characters"
       : state &&
           !state.siteAddressId &&
           newSite &&
@@ -218,7 +220,7 @@ function BuilderForm({
       if (!existing) router.replace(`/configurator/build?id=${config.id}`);
     },
     onError: (error) =>
-      toast.error("The configuration could not be saved", { description: errorMessage(error) }),
+      toast.error("The design could not be saved", { description: errorMessage(error) }),
   });
 
   const requestQuote = useMutation({
@@ -263,7 +265,7 @@ function BuilderForm({
             <Link href={hrefFor("quote", quoted.id)}>Review and accept</Link>
           </Button>
           <Button asChild variant="outline">
-            <Link href="/configurator">Saved configurations</Link>
+            <Link href="/configurator">Your Dispense Designs</Link>
           </Button>
         </div>
       </motion.div>
@@ -285,7 +287,7 @@ function BuilderForm({
           className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeftIcon className="size-4" aria-hidden />
-          Configurations
+          Your Dispense Designs
         </Link>
         {existing ? (
           <StatusPill tone={existing.status === "quoted" ? "success" : "neutral"}>
@@ -317,7 +319,7 @@ function BuilderForm({
 
       {readOnly ? (
         <div className="mb-5 rounded-2xl border border-info/30 bg-info-subtle p-4 text-sm">
-          This configuration has been quoted
+          This design has been quoted
           {existing?.quoteId ? (
             <>
               {" "}
@@ -336,8 +338,7 @@ function BuilderForm({
       ) : null}
       {groupRollUp ? (
         <div className="mb-5 rounded-2xl border border-info/30 bg-info-subtle p-4 text-sm">
-          You are viewing all sites. Choose a site with the site switcher to save a configuration
-          for it.
+          You are viewing all sites. Choose a site with the site switcher to save a design for it.
         </div>
       ) : null}
 
@@ -509,7 +510,7 @@ function BuilderForm({
         >
           <SheetHeader className="px-0">
             <SheetTitle>Parts and price</SheetTitle>
-            <SheetDescription>{state.name || "This configuration"}</SheetDescription>
+            <SheetDescription>{state.name || "This design"}</SheetDescription>
           </SheetHeader>
           <BillOfMaterials
             lines={bom.lines}
@@ -558,7 +559,7 @@ function VenueStep({
     <>
       <div className="rounded-2xl border bg-card p-4 sm:p-5">
         <label htmlFor="config-name" className="font-medium">
-          Configuration name
+          Design name
         </label>
         <p className="text-sm text-muted-foreground">
           So you and Brewfitt can find it, for example “Main bar refit”.
@@ -865,7 +866,7 @@ function Artwork({ files, dispatch }: { files: string[]; dispatch: (a: BuilderAc
       ) : null}
       <p className="mt-2 text-xs text-muted-foreground" aria-live="polite">
         {files.length
-          ? `${files.length} ${files.length === 1 ? "file" : "files"} added. Saved with the configuration and sent with the quote request.`
+          ? `${files.length} ${files.length === 1 ? "file" : "files"} added. Saved with the design and sent with the quote request.`
           : "In this preview only file names are saved."}
       </p>
     </div>
@@ -911,7 +912,7 @@ function Review({
       step: "venue",
       title: "Venue and site",
       lines: [
-        state.name || "Unnamed configuration",
+        state.name || "Unnamed design",
         VENUE_LABEL[state.venueType],
         site
           ? `${site.label}, ${site.town}`

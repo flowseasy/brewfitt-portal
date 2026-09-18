@@ -258,9 +258,9 @@ function useSteps(supplier: boolean): Step[] {
       : {
           id: "configurator",
           icon: StackIcon,
-          eyebrow: "Configurator and shop",
+          eyebrow: "Dispense Designer and shop",
           title: "Build a system or reorder in minutes",
-          body: "The configurator checks every choice is compatible and prices the bill of materials. The shop shows your prices and live stock for quick reorders.",
+          body: "The Dispense Designer checks every choice is compatible and prices the bill of materials. The shop shows your prices and live stock for quick reorders.",
           visual: <ShopVisual />,
         },
     {

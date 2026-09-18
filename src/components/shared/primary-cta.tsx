@@ -39,7 +39,7 @@ function ctaFor(kind: string, pathname: string): Cta {
   switch (section) {
     case "configurator":
       return {
-        label: "New configuration",
+        label: "New design",
         href: "/configurator/build",
         icon: FadersHorizontalIcon,
       };

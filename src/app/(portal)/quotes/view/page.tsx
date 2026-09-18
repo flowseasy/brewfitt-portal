@@ -296,7 +296,7 @@ function QuoteDetail({ id }: { id: string }) {
             >
               <FadersHorizontalIcon className="size-5 text-primary" aria-hidden />
               <span className="min-w-0">
-                <span className="block text-xs text-muted-foreground">From configuration</span>
+                <span className="block text-xs text-muted-foreground">From Dispense Designer</span>
                 <span className="block truncate font-medium">{config.name}</span>
               </span>
             </Link>

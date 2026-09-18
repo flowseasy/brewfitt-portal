@@ -616,7 +616,7 @@ export const configurator: PortalApi["configurator"] = {
     respond(
       (db, scope) =>
         db.configurations.find((c) => c.id === id && inScope(scope, c.accountId)) ??
-        notFound("Configuration"),
+        notFound("Dispense design"),
     ),
   create: (input) =>
     respond((db, scope) => {
@@ -642,9 +642,9 @@ export const configurator: PortalApi["configurator"] = {
     respond((db, scope) => {
       const current =
         db.configurations.find((c) => c.id === id && inScope(scope, c.accountId)) ??
-        notFound("Configuration");
+        notFound("Dispense design");
       if (current.status === "quoted")
-        badRequest("This configuration has been quoted. Duplicate it to make changes.");
+        badRequest("This design has been quoted. Duplicate it to make changes.");
       const data = s.ConfigurationPatch.parse(input);
       const next = { ...current, ...data };
       const bom = priceConfiguration(db, current.accountId, next);
@@ -662,9 +662,9 @@ export const configurator: PortalApi["configurator"] = {
     respond((db, scope) => {
       const config =
         db.configurations.find((c) => c.id === id && inScope(scope, c.accountId)) ??
-        notFound("Configuration");
+        notFound("Dispense design");
       if (config.status === "quoted")
-        badRequest("A quote has already been requested for this configuration.");
+        badRequest("A quote has already been requested for this design.");
       const errors = validateConfiguration(config, db.configuratorRules);
       if (Object.keys(errors).length)
         badRequest(
@@ -674,7 +674,7 @@ export const configurator: PortalApi["configurator"] = {
         accountId: config.accountId,
         lines: config.lines,
         configurationId: config.id,
-        request: `Quote requested from the configuration "${config.name}".${config.selections.font.artwork.length ? ` Artwork provided: ${config.selections.font.artwork.join(", ")}.` : ""}`,
+        request: `Quote requested for the design "${config.name}" from the Dispense Designer.${config.selections.font.artwork.length ? ` Artwork provided: ${config.selections.font.artwork.join(", ")}.` : ""}`,
       });
       commit("configurator.requestQuote", [
         ...changes,

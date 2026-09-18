@@ -25,7 +25,7 @@ export function ConfiguratorStepper({
   ];
   return (
     <nav
-      aria-label="Configurator steps"
+      aria-label="Dispense Designer steps"
       className="-mx-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0"
     >
       <ol className="flex min-w-max gap-1.5 lg:min-w-0 lg:flex-col">

@@ -346,7 +346,7 @@ const AUTO_TEXT = {
     `Please find quote ${q.number} attached, totalling ${formatMoney(q.total)} including VAT. It is valid until ${formatDate(q.validUntil)}.`,
   quoteRequested: (q: Quote, configName: string | null) =>
     configName
-      ? `Quote requested from the configuration "${configName}".`
+      ? `Quote requested for the design "${configName}" from the Dispense Designer.`
       : `Please can you quote for the ${q.lines.length} items listed on ${q.number}?`,
   quoteAccepted: (q: Quote) => `Quote ${q.number} accepted. Please go ahead.`,
   quoteDeclined: (q: Quote) => `We are declining ${q.number}. ${q.declineReason ?? ""}`.trim(),

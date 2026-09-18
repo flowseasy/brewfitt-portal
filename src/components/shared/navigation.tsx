@@ -29,8 +29,8 @@ export type NavItem = {
 /** BLUEPRINT.md "Navigation": customer desktop sidebar. */
 const CUSTOMER_NAV: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: HouseIcon, mobile: true, mobileLabel: "Home" },
-  { href: "/configurator", label: "Configurator", icon: FadersHorizontalIcon },
   { href: "/shop", label: "Shop", icon: StorefrontIcon, mobile: true },
+  { href: "/configurator", label: "Dispense Designer", icon: FadersHorizontalIcon },
   { href: "/price-list", label: "Price list", icon: TagIcon },
   { href: "/quotes", label: "Quotes", icon: FileTextIcon },
   { href: "/orders", label: "Orders", icon: PackageIcon, mobile: true },

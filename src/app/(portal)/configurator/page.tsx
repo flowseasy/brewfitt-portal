@@ -32,20 +32,20 @@ export default function ConfiguratorPage() {
   return (
     <div>
       <PageHeader
-        title="Configurator"
+        title="Your Dispense Designs"
         description="Build a dispense system step by step at your prices, then request a quote. Brewfitt confirms installation and final pricing."
         actions={
           <Button asChild>
             <Link href="/configurator/build">
               <PlusIcon aria-hidden />
-              New configuration
+              New design
             </Link>
           </Button>
         }
       />
 
       {data.configurations.isPending ? (
-        <LoadingState rows={4} label="Loading configurations" />
+        <LoadingState rows={4} label="Loading your designs" />
       ) : data.configurations.isError ? (
         <ErrorState
           error={data.configurations.error}
@@ -54,11 +54,11 @@ export default function ConfiguratorPage() {
       ) : list.length === 0 ? (
         <EmptyState
           icon={FadersHorizontalIcon}
-          title="No saved configurations yet"
+          title="No saved designs yet"
           description="Choose your venue, dispense points, font, cooling, gas and ancillaries. The bill of materials and price update as you go."
           action={
             <Button asChild>
-              <Link href="/configurator/build">Start a configuration</Link>
+              <Link href="/configurator/build">Start a design</Link>
             </Button>
           }
         />

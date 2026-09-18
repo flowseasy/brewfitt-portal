@@ -48,7 +48,7 @@ export function ConfiguratorOptionGroup({
 
   if (compatible.length === 0 && auto) return null;
 
-  /** What this option adds to the total with the current configuration. */
+  /** What this option adds to the total with the current design. */
   const optionCost = (optionId: string) => {
     const probe = structuredClone(state);
     probe.selections.dispense.optionIds = [];
@@ -81,7 +81,7 @@ export function ConfiguratorOptionGroup({
 
       {compatible.length === 0 ? (
         <p className="rounded-xl bg-muted/60 p-3 text-sm text-muted-foreground">
-          Not needed for this configuration.
+          Not needed for this design.
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -173,7 +173,7 @@ export function ConfiguratorOptionGroup({
               aria-hidden
             />
             {unavailable.length} {unavailable.length === 1 ? "option does" : "options do"} not suit
-            this configuration
+            this design
           </button>
           {showUnavailable ? (
             <ul className="mt-2 space-y-1 text-xs text-muted-foreground">

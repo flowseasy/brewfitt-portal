@@ -98,7 +98,7 @@ function CustomerQuotes() {
         <SearchInput
           value={search}
           onChange={setSearch}
-          placeholder="Search by quote number, product or configuration"
+          placeholder="Search by quote number, product or design"
           label="Search quotes"
           className="max-w-md"
         />

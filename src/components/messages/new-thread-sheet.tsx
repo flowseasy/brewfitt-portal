@@ -27,7 +27,7 @@ import type { Thread } from "@/types";
 export const RELATED_LABEL: Record<NonNullable<Thread["relatedType"]>, string> = {
   account: "Account",
   product: "Product",
-  configuration: "Configuration",
+  configuration: "Dispense design",
   quote: "Quote",
   rfq: "RFQ",
   "sales-order": "Order",
