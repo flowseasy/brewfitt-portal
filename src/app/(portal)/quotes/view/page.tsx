@@ -133,9 +133,15 @@ function QuoteDetail({ id }: { id: string }) {
     onSuccess: ({ salesOrder }) => {
       setAcceptOpen(false);
       refresh();
-      toast.success(`Quote accepted. Order ${salesOrder.number} is confirmed.`, {
-        description: "Brewfitt will confirm the delivery date.",
-      });
+      if (salesOrder)
+        toast.success(`Quote accepted. Order ${salesOrder.number} is confirmed.`, {
+          description: "Brewfitt will confirm the delivery date.",
+        });
+      else
+        toast.success("Quote accepted", {
+          description:
+            "Brewfitt is setting up your made-to-order items and will confirm the order.",
+        });
     },
     onError: (error) =>
       toast.error("The quote could not be accepted", { description: errorMessage(error) }),

@@ -3,7 +3,7 @@ import { Account, BrewfittTeamMember, Contact } from "./account";
 import { Id, Money } from "./common";
 
 /** Stands in for authentication in Phase 1. */
-export const PersonaKind = z.enum(["customer", "site", "group", "supplier"]);
+export const PersonaKind = z.enum(["customer", "site", "group", "supplier", "staff"]);
 
 export const Persona = z.object({
   kind: PersonaKind,

@@ -47,7 +47,7 @@ const responses = {
   quotes: {
     list: z.array(s.Quote),
     get: s.Quote,
-    accept: z.object({ quote: s.Quote, salesOrder: s.SalesOrder }),
+    accept: z.object({ quote: s.Quote, salesOrder: s.SalesOrder.nullable() }),
     decline: s.Quote,
     rfqs: z.array(s.RfqWithResponse),
     respondToRfq: s.SupplierQuote,
@@ -94,6 +94,19 @@ const responses = {
     insights: z.array(s.AIInsight),
     productInsight: s.AIInsight.nullable(),
     ask: s.AskResponse,
+  },
+  internal: {
+    compositeSettings: s.CompositeSettings,
+    customers: z.array(s.InternalCustomer),
+    costItems: z.array(s.CostItem),
+    compositeBuilds: z.array(s.CompositeBuildSummary),
+    compositeBuild: s.CompositeBuild,
+    createCompositeBuild: s.CompositeBuild,
+    updateCompositeBuild: s.CompositeBuild,
+    duplicateCompositeBuild: s.CompositeBuild,
+    addCompositeToQuote: s.AddCompositeToQuoteResponse,
+    quotes: z.array(s.InternalQuote),
+    quote: s.InternalQuote,
   },
   demo: { personas: z.array(s.PersonaOption), reset: z.void() },
 } satisfies { [G in keyof PortalApi]: { [M in keyof PortalApi[G]]: z.ZodType } };

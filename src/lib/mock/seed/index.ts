@@ -7,6 +7,7 @@ import { DB_VERSION } from "../version";
 import { createRng } from "../random";
 import { productRole, seedCatalogue } from "./catalogue";
 import { seedComms } from "./comms";
+import { productCostItem, seedComponents, seedCompositeBuilds } from "./composite";
 import { seedCommerce, seedPriceLists } from "./commerce";
 import { seedContent } from "./content";
 import { createContext, SEASONALITY } from "./context";
@@ -169,6 +170,22 @@ export function generateDb(today: Date): MockDb {
     }
   }
 
+  const components = seedComponents();
+  const categoryName = new Map(categories.map((c) => [c.id, c.name]));
+  const compositeBuilds = seedCompositeBuilds({
+    today,
+    accounts: people.accounts,
+    products,
+    components,
+    catalogueItem: (p) =>
+      productCostItem(
+        p,
+        people.accounts,
+        priceListLines,
+        categoryName.get(p.category) ?? "Catalogue",
+      ),
+  });
+
   // Last contact reflects the latest message on the account.
   for (const account of people.accounts) {
     const latest = comms.threads
@@ -216,5 +233,7 @@ export function generateDb(today: Date): MockDb {
     notifications: comms.notifications,
     dismissedInsightIds: [],
     journeys: [],
+    compositeBuilds,
+    components,
   };
 }

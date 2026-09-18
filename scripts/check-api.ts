@@ -28,6 +28,7 @@ async function main() {
   const { validateConfiguration } = await import("@/lib/configurator/engine");
   const { getDb } = await import("@/lib/mock/db");
   const { advanceJourneys, JOURNEY_MINUTES } = await import("@/lib/mock/api/journey");
+  const { bandFigures } = await import("@/lib/composite/pricing");
 
   let passed = 0;
   const failures: string[] = [];
@@ -53,8 +54,8 @@ async function main() {
     return option;
   };
 
-  // ---- Reads for every persona ------------------------------------------------
-  for (const option of personas) {
+  // ---- Reads for every customer and supplier persona (staff are checked below) ---------
+  for (const option of personas.filter((p) => p.persona.kind !== "staff")) {
     usePersonaStore.getState().setPersona(option.persona);
     const who = option.label;
     const supplier = option.persona.kind === "supplier";
@@ -298,7 +299,7 @@ async function main() {
   const accepted = await step("accept a sent quote", async () => {
     const result = await api.quotes.accept(sent[0]!.id);
     expect(
-      result.quote.status === "accepted" && result.salesOrder.quoteId === sent[0]!.id,
+      result.quote.status === "accepted" && result.salesOrder?.quoteId === sent[0]!.id,
       "not converted",
     );
     return result;
@@ -311,7 +312,7 @@ async function main() {
     ),
   );
   await step("change request before dispatch", async () => {
-    const order = accepted!.salesOrder;
+    const order = accepted!.salesOrder!;
     const change = await api.orders.requestChange(order.id, {
       kind: "date",
       requested: new Date(Date.now() + 20 * 86_400_000).toISOString().slice(0, 10),
@@ -365,7 +366,7 @@ async function main() {
     );
     expect((await api.shop.basket()).lines.length === 0, "basket not cleared");
     const result = await api.quotes.accept(quote.id);
-    expect(result.salesOrder.status === "confirmed", "accepting basket quote made no order");
+    expect(result.salesOrder?.status === "confirmed", "accepting basket quote made no order");
   });
   await step("Brewfitt packs, ships, invoices and delivers a portal order", async () => {
     const order = onAccountOrder!;
@@ -639,6 +640,238 @@ async function main() {
     );
   });
 
+  // ---- Brewfitt staff: Composite Configurator (decision 14) ----------------------------
+  let staffBuildId: string | undefined;
+  let compositeQuoteId: string | undefined;
+  as("James Pollard");
+  await step("staff: me is Brewfitt", async () => {
+    const me = await api.session.me();
+    expect(me.account.kind === "internal" && me.persona.kind === "staff", "not internal");
+  });
+  await step("staff: customer endpoints are refused", async () => {
+    for (const call of [() => api.quotes.list(), () => api.orders.salesOrders()]) {
+      const refused = await call().then(
+        () => false,
+        () => true,
+      );
+      expect(refused, "staff reached a customer endpoint");
+    }
+  });
+  await step("staff: settings, customers and cost items", async () => {
+    const settings = await api.internal.compositeSettings();
+    expect(settings.systemFxRates.USD > 0 && settings.labourRate === 1200, "settings");
+    const customers = await api.internal.customers();
+    expect(customers.length > 20, "too few customers");
+    const items = await api.internal.costItems({ q: "coupler" });
+    expect(
+      items.some((i) => i.kind === "component") && items.some((i) => i.kind === "catalogue"),
+      "type-ahead misses a source",
+    );
+    expect(
+      items.every((i) => !i.code.startsWith("MC-") || /^MC-[A-Z]{3}-\d{4}$/.test(i.code)),
+      "component code shape",
+    );
+  });
+  await step("staff: six seeded builds, Krusovice exact", async () => {
+    const builds = await api.internal.compositeBuilds();
+    expect(builds.length >= 6, "fewer than six builds");
+    expect(
+      builds.filter((b) => b.bands.some((band) => band.lines.some((l) => l.currency !== "GBP")))
+        .length >= 2,
+      "fewer than two foreign-currency builds",
+    );
+    expect(builds.filter((b) => b.bands.length > 1).length >= 2, "fewer than two banded builds");
+    const k = builds.find((b) => b.name === "Krusovice tap handle");
+    expect(
+      k && k.brand === "Krusovice" && k.creatorInitials === "JP" && k.fxRates.USD === 1.25,
+      "Krusovice header",
+    );
+    const f = k!.bands.map((b) => bandFigures(b, k!));
+    expect(f.map((x) => x.sellPrice).join() === "4500,3400,2900", "Krusovice sell prices");
+    expect(f.map((x) => x.marginPercent).join() === "29.04,30.56,27.85", "Krusovice margins");
+    expect(
+      f.map((x) => Math.round(x.costTotal * 10)).join() === "31932,23608,20924",
+      "Krusovice cost totals",
+    );
+  });
+  await step("staff: create, update, duplicate a build", async () => {
+    const created = await api.internal.createCompositeBuild({
+      name: "Check tap tower",
+      accountId: "acc_harbourside",
+      brand: "Check",
+    });
+    const coupler = (await api.internal.costItems({ q: "MC-CPL" }))[0]!;
+    const updated = await api.internal.updateCompositeBuild(created.id, {
+      description: "Test composite for the API check.",
+      fxRates: { EUR: 1.12, USD: 1.25 },
+      bands: [
+        {
+          ...created.bands[0]!,
+          lines: [
+            {
+              id: "cbl_check_1",
+              kind: coupler.kind,
+              itemId: coupler.id,
+              code: coupler.code,
+              description: coupler.name,
+              currency: coupler.currency,
+              unitCost: coupler.unitCost,
+              qty: 2,
+              misc: null,
+            },
+            {
+              id: "cbl_check_2",
+              kind: "misc",
+              itemId: null,
+              code: "MISC",
+              description: "Check badge",
+              currency: "USD",
+              unitCost: 1000,
+              qty: 1,
+              misc: {
+                sellingName: "Check badge",
+                sellingDescription: "",
+                buyingName: "Badge",
+                buyingDescription: "SECRET-BOM-TEXT",
+                supplierQuoteRef: "Q-1",
+              },
+            },
+          ],
+          shipping: { mode: "percent", value: 5 },
+          sellPrice: 12_000,
+        },
+        {
+          ...created.bands[0]!,
+          key: "50",
+          lines: [
+            {
+              id: "cbl_check_3",
+              kind: "misc",
+              itemId: null,
+              code: "MISC",
+              description: "Check badge",
+              currency: "GBP",
+              unitCost: 500,
+              qty: 1,
+              misc: {
+                sellingName: "Check badge",
+                sellingDescription: "",
+                buyingName: "Badge",
+                buyingDescription: "SECRET-BOM-TEXT",
+                supplierQuoteRef: "",
+              },
+            },
+          ],
+          sellPrice: 900,
+        },
+      ],
+    });
+    expect(updated.bands.length === 2 && updated.fxRates.USD === 1.25, "update not applied");
+    staffBuildId = created.id;
+    const dupe = await api.internal.duplicateCompositeBuild(created.id);
+    expect(
+      dupe.id !== created.id &&
+        dupe.bands[0]!.lines[0]!.id !== "cbl_check_1" &&
+        dupe.quotes.length === 0,
+      "duplicate not independent",
+    );
+    const bad = await api.internal
+      .updateCompositeBuild(created.id, { bands: [updated.bands[0]!, updated.bands[0]!] })
+      .then(
+        () => false,
+        () => true,
+      );
+    expect(bad, "duplicate band keys accepted");
+  });
+  await step("staff: add to a new quote, then to the same quote", async () => {
+    const tooFew = await api.internal
+      .addCompositeToQuote(staffBuildId!, { bandKey: "50", qty: 10, quoteId: null })
+      .then(
+        () => false,
+        () => true,
+      );
+    expect(tooFew, "50+ band quoted for 10");
+    const first = await api.internal.addCompositeToQuote(staffBuildId!, {
+      bandKey: "base",
+      qty: 3,
+      quoteId: null,
+    });
+    expect(
+      first.quote.status === "sent" && first.quote.lines[0]!.productId === null,
+      "not a composite line",
+    );
+    expect(
+      first.quote.lines[0]!.unitPrice.amount === 12_000 &&
+        first.quote.lines[0]!.internal?.bom.length === 2,
+      "line price or BOM wrong",
+    );
+    const second = await api.internal.addCompositeToQuote(staffBuildId!, {
+      bandKey: "50",
+      qty: 60,
+      quoteId: first.quote.id,
+    });
+    expect(
+      second.quote.lines.length === 2 &&
+        second.build.status === "quoted" &&
+        second.build.quotes.length === 2,
+      "second add",
+    );
+    const staffQuote = await api.internal.quote(first.quote.id);
+    expect(
+      staffQuote.accountName === "Harbourside Drinks Ltd" &&
+        staffQuote.lines.every((l) => l.internal),
+      "staff quote view",
+    );
+    compositeQuoteId = first.quote.id;
+  });
+  await step("customers never receive the composite BOM", async () => {
+    for (const label of ["Olivia Bennett", "Sarah Crowther"]) {
+      as(label);
+      for (const q of await api.quotes.list())
+        expect(
+          q.lines.every((l) => !("internal" in l)),
+          `BOM on ${q.number} for ${label}`,
+        );
+    }
+    as("Olivia Bennett");
+    const q = await api.quotes.get(compositeQuoteId!);
+    expect(
+      q.lines.every((l) => !("internal" in l)) && q.lines[0]!.detail,
+      "BOM on the quote, or no detail",
+    );
+    const threads = await api.messages.threads();
+    const thread = threads.find((t) => t.relatedId === compositeQuoteId);
+    expect(thread, "no conversation for the composite quote");
+    const detail = await api.messages.thread(thread!.id);
+    expect(
+      !JSON.stringify(detail).includes("SECRET-BOM-TEXT") && !JSON.stringify(q).includes("MC-CPL"),
+      "BOM text reached the customer",
+    );
+  });
+  await step("customers and suppliers are refused staff endpoints", async () => {
+    for (const label of ["Olivia Bennett", "Neil Chapman", "Andrew Hirst"]) {
+      as(label);
+      const refused = await api.internal.compositeBuilds().then(
+        () => false,
+        () => true,
+      );
+      expect(refused, `${label} reached the Configurator`);
+    }
+  });
+  await step("accepting a composite quote asks Brewfitt to set it up", async () => {
+    as("Olivia Bennett");
+    const result = await api.quotes.accept(compositeQuoteId!);
+    expect(
+      result.quote.status === "accepted" && result.salesOrder === null,
+      "composite quote made an order",
+    );
+    const thread = await api.messages.thread(result.quote.threadId);
+    expect(
+      thread.messages.some((m) => m.senderSide === "brewfitt" && m.body.includes("setting up")),
+      "no set-up message",
+    );
+  });
+
   // ---- Persistence: reload replays the change log ------------------------------------
   await step("changes survive a reload", async () => {
     reloadDb();
@@ -660,6 +893,11 @@ async function main() {
       onAccountOrder && (await api.orders.salesOrder(onAccountOrder.id)).status === "delivered",
       "journey progress lost on reload",
     );
+  });
+  await step("composite builds survive a reload", async () => {
+    as("James Pollard");
+    const b = await api.internal.compositeBuild(staffBuildId!);
+    expect(b.status === "quoted" && b.bands.length === 2, "build lost on reload");
   });
   await step("reset demo data clears changes", async () => {
     await api.demo.reset();

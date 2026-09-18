@@ -15,12 +15,12 @@ export default function StartPage() {
   const hydrated = useHydrated();
   const signedIn = usePersonaStore((s) => s.signedIn);
   const signIn = usePersonaStore((s) => s.signIn);
-  const contactId = usePersonaStore((s) => s.persona.contactId);
+  const persona = usePersonaStore((s) => s.persona);
 
   // Signed in (on arrival or just now): first-run tour for this contact, otherwise the dashboard.
   useEffect(() => {
-    if (hydrated && signedIn) router.replace(landingFor(contactId));
-  }, [hydrated, signedIn, contactId, router]);
+    if (hydrated && signedIn) router.replace(landingFor(persona));
+  }, [hydrated, signedIn, persona, router]);
 
   return (
     <main className="relative min-h-dvh overflow-hidden">

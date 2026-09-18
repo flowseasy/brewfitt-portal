@@ -7,7 +7,7 @@ import { usePersonaStore } from "@/stores/persona-store";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Header } from "./header";
 import { MobileBottomNav } from "./mobile-bottom-nav";
-import { isRouteAllowed } from "./navigation";
+import { homeFor, isRouteAllowed } from "./navigation";
 import { PrimaryCta } from "./primary-cta";
 import { Sidebar } from "./sidebar";
 
@@ -21,7 +21,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!hydrated) return;
     if (!signedIn) router.replace("/");
-    else if (!isRouteAllowed(kind, pathname)) router.replace("/dashboard");
+    else if (!isRouteAllowed(kind, pathname)) router.replace(homeFor(kind));
   }, [hydrated, signedIn, kind, pathname, router]);
 
   if (!hydrated || !signedIn) {

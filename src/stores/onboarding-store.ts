@@ -19,7 +19,13 @@ export const useOnboardingStore = create<OnboardingState>()(
   ),
 );
 
-/** Where to land after choosing a persona: the tour the first time, the dashboard after. */
-export function landingFor(contactId: string): string {
-  return useOnboardingStore.getState().seen.includes(contactId) ? "/dashboard" : "/onboarding";
+/**
+ * Where to land after choosing a persona: the tour the first time, the dashboard after.
+ * Brewfitt staff go straight to their tools (decision 14).
+ */
+export function landingFor(persona: { kind: string; contactId: string }): string {
+  if (persona.kind === "staff") return "/internal/configurator";
+  return useOnboardingStore.getState().seen.includes(persona.contactId)
+    ? "/dashboard"
+    : "/onboarding";
 }

@@ -24,6 +24,7 @@ import {
 } from "@/lib/ai/rules";
 import { buildBillOfMaterials, validateConfiguration } from "@/lib/configurator/engine";
 import { DEFAULT_PERSONA } from "@/stores/persona-store";
+import { bandFigures } from "@/lib/composite/pricing";
 
 type Failure = { rule: string; detail: string };
 
@@ -35,6 +36,8 @@ function check(db: MockDb, today: Date): { failures: Failure[]; stats: Record<st
   // ---- 1. Schemas ------------------------------------------------------------
   const collections: [string, unknown[], z.ZodType][] = [
     ["team", db.team, s.BrewfittTeamMember],
+    ["compositeBuilds", db.compositeBuilds, s.CompositeBuild],
+    ["components", db.components, s.CostItem],
     ["accounts", db.accounts, s.Account],
     ["contacts", db.contacts, s.Contact],
     ["addresses", db.addresses, s.Address],
@@ -139,7 +142,8 @@ function check(db: MockDb, today: Date): { failures: Failure[]; stats: Record<st
   db.purchaseOrders.forEach((p) => {
     if ((p.status === "issued") !== !p.acknowledgedAt) fail("po-acknowledged", p.id);
     if (p.acknowledgedAt && p.acknowledgedAt < p.createdAt) fail("po-acknowledged-order", p.id);
-    if (p.acknowledgedAt && Date.parse(p.acknowledgedAt) > nowMs) fail("dates-not-future", `po ack ${p.id}`);
+    if (p.acknowledgedAt && Date.parse(p.acknowledgedAt) > nowMs)
+      fail("dates-not-future", `po ack ${p.id}`);
   });
   db.rfqs.forEach((r) => belongs("rfq", r.id, r.supplierId, "supplier"));
   db.contacts.forEach((c) => belongs("contact", c.id, c.accountId, "any"));
@@ -175,7 +179,7 @@ function check(db: MockDb, today: Date): { failures: Failure[]; stats: Record<st
       "quote",
       q.id,
       q.accountId,
-      q.lines.map((l) => l.productId),
+      q.lines.flatMap((l) => (l.productId ? [l.productId] : [])),
     ),
   );
   db.configurations.forEach((c) =>
@@ -695,6 +699,53 @@ function check(db: MockDb, today: Date): { failures: Failure[]; stats: Record<st
     fail("demo-coverage", "no back-orders");
   if (!db.changeRequests.some((c) => c.status === "pending"))
     fail("demo-coverage", "no pending change requests");
+
+  // ---- Composite Configurator (decision 14) ---------------------------------------
+  const codes = new Set(db.components.map((c) => c.code));
+  if (db.components.length < 290) fail("composite", `components: ${db.components.length} < 290`);
+  if (codes.size !== db.components.length) fail("composite", "duplicate component codes");
+  if (db.components.some((c) => !/^MC-[A-Z]{3}-\d{4}$/.test(c.code)))
+    fail("composite", "component codes must use the mock MC- prefix");
+  if (db.compositeBuilds.length !== 6)
+    fail("composite", `seeded builds: ${db.compositeBuilds.length} ≠ 6`);
+  if (
+    db.compositeBuilds.filter((b) =>
+      b.bands.some((band) => band.lines.some((l) => l.currency !== "GBP")),
+    ).length < 2
+  )
+    fail("composite", "fewer than two builds with EUR or USD lines");
+  if (db.compositeBuilds.filter((b) => b.bands.length > 1).length < 2)
+    fail("composite", "fewer than two builds with price bands");
+  for (const b of db.compositeBuilds) {
+    const acc = db.accounts.find((a) => a.id === b.accountId);
+    if (acc?.kind !== "customer") fail("composite", `${b.number}: not for a customer`);
+    if (new Set(b.bands.map((x) => x.key)).size !== b.bands.length)
+      fail("composite", `${b.number}: repeated band`);
+    for (const band of b.bands) {
+      const f = bandFigures(band, b);
+      if (!band.lines.length || band.sellPrice <= 0)
+        fail("composite", `${b.number}: unpriced band`);
+      if (f.marginPercent < 15 || f.marginPercent > 45)
+        fail("composite", `${b.number} ${band.key}: margin ${f.marginPercent}%`);
+      for (const l of band.lines) {
+        if (l.kind === "misc" ? !l.misc : !l.itemId)
+          fail("composite", `${b.number}: line ${l.id} is incomplete`);
+        if (l.kind === "component" && !codes.has(l.code))
+          fail("composite", `${b.number}: unknown component ${l.code}`);
+        if (l.kind === "catalogue" && !db.products.some((p) => p.id === l.itemId))
+          fail("composite", `${b.number}: unknown product ${l.itemId}`);
+      }
+    }
+  }
+  const krusovice = db.compositeBuilds.find((b) => b.name === "Krusovice tap handle");
+  const kf = krusovice?.bands.map((band) => bandFigures(band, krusovice));
+  if (
+    !kf ||
+    kf.map((f) => f.sellPrice).join() !== "4500,3400,2900" ||
+    kf.map((f) => f.marginPercent).join() !== "29.04,30.56,27.85" ||
+    kf.map((f) => Math.round(f.grossProfit * 10)).join() !== "13068,10392,8076"
+  )
+    fail("composite", "Krusovice build does not match the costing sheet");
 
   const stats = {
     insights: insights.length,

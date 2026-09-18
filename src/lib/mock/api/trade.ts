@@ -18,6 +18,7 @@ import { createOrderChanges } from "./commerce";
 import {
   account,
   badRequest,
+  customerQuote,
   forbidden,
   inScope,
   invoiceNow,
@@ -42,23 +43,25 @@ export const quotes: PortalApi["quotes"] = {
       requireCustomer(scope);
       return db.quotes
         .filter((q) => inScope(scope, q.accountId))
-        .map(quoteNow)
+        .map(customerQuote)
         .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     }),
 
   get: (id) =>
     respond((db, scope) => {
+      requireCustomer(scope);
       const quote =
         db.quotes.find((q) => q.id === id && inScope(scope, q.accountId)) ?? notFound("Quote");
       // Opening a sent quote records the view (used by the quote follow-up insight).
       const last = quote.lastViewedAt ? Date.parse(quote.lastViewedAt) : 0;
       if (quote.status === "sent" && Date.now() - last > 3_600_000)
         commit("quotes.view", [patch("quotes", id, { lastViewedAt: nowIso() })]);
-      return quoteNow(db.quotes.find((q) => q.id === id)!);
+      return customerQuote(db.quotes.find((q) => q.id === id)!);
     }),
 
   accept: (id) =>
     respond((db, scope) => {
+      requireCustomer(scope);
       const quote = quoteNow(
         db.quotes.find((q) => q.id === id && inScope(scope, q.accountId)) ?? notFound("Quote"),
       );
@@ -73,45 +76,76 @@ export const quotes: PortalApi["quotes"] = {
       const deliveryAddressId =
         config?.siteAddressId ??
         db.addresses.find((a) => a.accountId === quote.accountId && a.isDefault)!.id;
+      // Composite lines (decision 14) have no product yet: Brewfitt sets each one up in
+      // TOTA360v5 before it can be ordered, so only stocked lines become an order now.
+      const stocked = quote.lines.flatMap((l) =>
+        l.productId ? [{ productId: l.productId, qty: l.qty }] : [],
+      );
+      const composites = quote.lines.filter((l) => !l.productId).map((l) => l.description);
       const leadDays = Math.max(
         3,
-        ...quote.lines.map((l) => db.products.find((p) => p.id === l.productId)?.leadTimeDays ?? 3),
+        ...stocked.map((l) => db.products.find((p) => p.id === l.productId)?.leadTimeDays ?? 3),
       );
-      const order = createOrderChanges(db, scope, {
-        accountId: quote.accountId,
-        lines: quote.lines.map((l) => ({ productId: l.productId, qty: l.qty })),
-        deliveryAddressId,
-        requestedDate: isoDate(addDays(today(), leadDays + 2)),
-        poReference: null,
-        quoteId: quote.id,
-        card: null,
-        notes: null,
-      });
+      const order = stocked.length
+        ? createOrderChanges(db, scope, {
+            accountId: quote.accountId,
+            lines: stocked,
+            deliveryAddressId,
+            requestedDate: isoDate(addDays(today(), leadDays + 2)),
+            poReference: null,
+            quoteId: quote.id,
+            card: null,
+            notes: null,
+          })
+        : null;
       const message = postChanges(
         db,
         scope,
         quote.threadId,
-        `Quote ${quote.number} accepted. Order ${order.order.number} has been created.`,
+        order
+          ? `Quote ${quote.number} accepted. Order ${order.order.number} has been created.`
+          : `Quote ${quote.number} accepted.`,
         at,
       );
+      const thread = db.threads.find((t) => t.id === quote.threadId);
+      const brewfitt = thread?.participants.find((p) => p.side === "brewfitt");
+      const repliedAt = new Date(Date.parse(at) + 1000).toISOString();
+      const setup =
+        composites.length && brewfitt
+          ? [
+              insert("messages", {
+                id: newId("msg"),
+                threadId: quote.threadId,
+                senderId: brewfitt.id,
+                senderSide: "brewfitt",
+                channel: "portal",
+                body: `Thank you. We are setting up ${composites.join(" and ")} as ${composites.length === 1 ? "a product" : "products"} and will confirm ${order ? "the rest of " : ""}your order and the delivery date within two working days.`,
+                attachments: [],
+                sentAt: repliedAt,
+              }),
+              patch("threads", quote.threadId, { lastMessageAt: repliedAt }),
+            ]
+          : [];
       commit("quotes.accept", [
-        ...order.changes,
+        ...(order?.changes ?? []),
         ...message.changes,
+        ...setup,
         patch("quotes", id, {
           status: "accepted",
-          salesOrderId: order.order.id,
+          salesOrderId: order?.order.id ?? null,
           updatedAt: at,
           lastViewedAt: at,
         }),
       ]);
       return {
-        quote: db.quotes.find((q) => q.id === id)!,
-        salesOrder: db.salesOrders.find((o) => o.id === order.order.id)!,
+        quote: customerQuote(db.quotes.find((q) => q.id === id)!),
+        salesOrder: order ? db.salesOrders.find((o) => o.id === order.order.id)! : null,
       };
     }),
 
   decline: (id, input) =>
     respond((db, scope) => {
+      requireCustomer(scope);
       const { reason } = s.DeclineQuoteRequest.parse(input);
       const quote = quoteNow(
         db.quotes.find((q) => q.id === id && inScope(scope, q.accountId)) ?? notFound("Quote"),
@@ -130,7 +164,7 @@ export const quotes: PortalApi["quotes"] = {
         ...message.changes,
         patch("quotes", id, { status: "declined", declineReason: reason, updatedAt: at }),
       ]);
-      return db.quotes.find((q) => q.id === id)!;
+      return customerQuote(db.quotes.find((q) => q.id === id)!);
     }),
 
   rfqs: () =>

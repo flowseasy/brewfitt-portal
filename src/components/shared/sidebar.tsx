@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { usePersona } from "@/features/session/use-session";
 import { cn } from "@/lib/utils";
 import { BrandLogo } from "./brand-logo";
-import { isActive, navFor } from "./navigation";
+import { homeFor, isActive, navFor } from "./navigation";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -17,8 +17,12 @@ export function Sidebar() {
     <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r bg-sidebar lg:flex">
       <div className="px-4 pt-4 pb-3">
         <Link
-          href="/dashboard"
-          aria-label="Brewfitt, go to dashboard"
+          href={homeFor(persona.kind)}
+          aria-label={
+            persona.kind === "staff"
+              ? "Brewfitt, go to the Configurator"
+              : "Brewfitt, go to dashboard"
+          }
           className="block rounded-lg focus-visible:outline-offset-4"
         >
           <BrandLogo priority className="h-auto w-full rounded-lg shadow-sm" />
@@ -60,7 +64,9 @@ export function Sidebar() {
         </ul>
       </nav>
       <div className="border-t px-5 py-4 text-xs text-muted-foreground">
-        Phase 1 preview on demonstration data. Powered by TOTA360v5.
+        {persona.kind === "staff"
+          ? "Brewfitt internal tools. Customers and suppliers never see these pages."
+          : "Phase 1 preview on demonstration data. Powered by TOTA360v5."}
       </div>
     </aside>
   );

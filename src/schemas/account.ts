@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { ApprovalStatus, Id, IsoDateTime, Money } from "./common";
 
-export const AccountKind = z.enum(["customer", "supplier"]);
+/** "internal" is Brewfitt itself, for the staff persona (decision 14). */
+export const AccountKind = z.enum(["customer", "supplier", "internal"]);
 
 export const Sector = z.enum([
   "brewery",

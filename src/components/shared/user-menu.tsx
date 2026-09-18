@@ -101,12 +101,14 @@ export function UserMenu() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem asChild>
-              <Link href="/account">
-                <UserCircleIcon aria-hidden />
-                Account
-              </Link>
-            </DropdownMenuItem>
+            {persona.kind === "staff" ? null : (
+              <DropdownMenuItem asChild>
+                <Link href="/account">
+                  <UserCircleIcon aria-hidden />
+                  Account
+                </Link>
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem onSelect={() => setSwitchOpen(true)}>
               <UserSwitchIcon aria-hidden />
               Switch persona
@@ -135,12 +137,14 @@ export function UserMenu() {
             </DropdownMenuSub>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link href="/onboarding">
-              <SignpostIcon aria-hidden />
-              Take the tour
-            </Link>
-          </DropdownMenuItem>
+          {persona.kind === "staff" ? null : (
+            <DropdownMenuItem asChild>
+              <Link href="/onboarding">
+                <SignpostIcon aria-hidden />
+                Take the tour
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem onSelect={() => setResetOpen(true)}>
             <ArrowCounterClockwiseIcon aria-hidden />
             Reset demo data
@@ -170,7 +174,7 @@ export function UserMenu() {
             onChoose={(option) => {
               setPersona(option.persona);
               setSwitchOpen(false);
-              router.push(landingFor(option.persona.contactId));
+              router.push(landingFor(option.persona));
               toast.success(`Now viewing as ${option.label}`);
             }}
           />

@@ -17,6 +17,7 @@ import { getDb, latency, newId, type MockDb } from "../db";
 import { insert, patch, type Change } from "../mutations";
 import { badRequest, forbidden, notFound, resolveScope, type Scope } from "../scope";
 import { advanceJourneys } from "./journey";
+import { STAFF_CONTACT } from "../seed/composite";
 
 export { badRequest, forbidden, notFound };
 
@@ -31,7 +32,11 @@ export async function respond<T>(fn: (db: MockDb, scope: Scope) => T): Promise<T
 }
 
 export function requireCustomer(scope: Scope) {
-  if (scope.isSupplier) forbidden("This is only available to customer accounts.");
+  if (scope.isSupplier || scope.isStaff) forbidden("This is only available to customer accounts.");
+}
+
+export function requireStaff(scope: Scope) {
+  if (!scope.isStaff) forbidden("This is only available to Brewfitt staff.");
 }
 
 export function requireSupplier(scope: Scope) {
@@ -48,6 +53,18 @@ export function nowIso(): string {
 
 export function invoiceNow(invoice: Invoice): Invoice {
   return deriveInvoice(invoice, today());
+}
+
+/** A quote as customers receive it: never the Brewfitt-only composite BOM (decision 14). */
+export function customerQuote(quote: Quote): Quote {
+  return {
+    ...quoteNow(quote),
+    lines: quote.lines.map((l) => {
+      const line = { ...l };
+      delete line.internal;
+      return line;
+    }),
+  };
 }
 
 /** Sent quotes past their validity date read as expired. */
@@ -106,6 +123,7 @@ export function withVat(
 }
 
 export function contactOf(db: MockDb, scope: Scope): Contact {
+  if (scope.isStaff) return STAFF_CONTACT;
   return db.contacts.find((c) => c.id === scope.persona.contactId) ?? notFound("Contact");
 }
 

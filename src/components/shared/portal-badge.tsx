@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMe } from "@/features/session/use-session";
+import { homeFor } from "./navigation";
 import { cn } from "@/lib/utils";
 
 /** Who is signed in: the contact's name in bold, their company beneath. */
@@ -11,7 +12,7 @@ export function PortalBadge({ className }: { className?: string }) {
   const { contact, account } = me.data;
   return (
     <Link
-      href="/account"
+      href={me.data.persona.kind === "staff" ? homeFor("staff") : "/account"}
       className={cn(
         "min-w-0 rounded-md leading-tight focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
         className,

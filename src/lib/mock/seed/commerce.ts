@@ -985,7 +985,7 @@ export function seedCommerce(ctx: SeedContext, people: { addresses: Address[] })
       const order = makeOrder(
         q.accountId,
         decidedAt,
-        q.lines.map((l) => ({ productId: l.productId, qty: l.qty })),
+        q.lines.flatMap((l) => (l.productId ? [{ productId: l.productId, qty: l.qty }] : [])),
         {
           quoteId: q.id,
           addressId:

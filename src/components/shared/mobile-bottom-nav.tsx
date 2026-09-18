@@ -24,6 +24,8 @@ export function MobileBottomNav() {
   const primary = items.filter((i) => i.mobile);
   const rest = items.filter((i) => !i.mobile);
   const moreActive = !primary.some((i) => isActive(pathname, i.href));
+  // Brewfitt staff have two destinations and nothing behind More.
+  const staff = persona.kind === "staff";
 
   return (
     <>
@@ -31,7 +33,7 @@ export function MobileBottomNav() {
         aria-label="Main"
         className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-lg lg:hidden"
       >
-        <ul className="grid grid-cols-5">
+        <ul className={cn("grid", staff ? "grid-cols-2" : "grid-cols-5")}>
           {primary.map((item) => {
             const active = isActive(pathname, item.href);
             return (
@@ -50,7 +52,7 @@ export function MobileBottomNav() {
               </li>
             );
           })}
-          <li>
+          <li className={staff ? "hidden" : undefined}>
             <button
               type="button"
               onClick={() => setMoreOpen(true)}

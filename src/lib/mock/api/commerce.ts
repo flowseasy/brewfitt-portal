@@ -53,6 +53,17 @@ export const session: PortalApi["session"] = {
   me: () =>
     respond((db, scope) => {
       const contact = contactOf(db, scope);
+      // Brewfitt staff (decision 14): no customer or supplier account behind them.
+      if (scope.isStaff)
+        return {
+          credit: null,
+          vatRate: 0.2,
+          contact,
+          account: scope.account,
+          persona: scope.persona,
+          brewfittTeam: [],
+          group: null,
+        };
       const c = scope.commercialAccount;
       const teamIds = [c.accountManagerId, c.technicalContactId, c.buyerId].filter(
         (x): x is string => !!x,

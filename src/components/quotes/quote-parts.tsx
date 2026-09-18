@@ -8,8 +8,10 @@ import { formatDate, formatMoney } from "@/lib/format";
 import { hrefFor } from "@/lib/links";
 
 export type LineRow = {
-  productId: string;
+  /** Null for a made-to-order composite line (decision 14). */
+  productId: string | null;
   description: string;
+  detail?: string | null;
   qty: number;
   unitPrice: Money;
   discountPercent?: number;
@@ -49,11 +51,11 @@ export function LinesTable({
           </thead>
           <tbody className="divide-y">
             {lines.map((l, i) => {
-              const sku = products?.get(l.productId)?.sku;
+              const sku = l.productId ? products?.get(l.productId)?.sku : null;
               return (
                 <tr key={`${l.productId}-${i}`}>
                   <td className="px-4 py-3">
-                    {linkProducts ? (
+                    {linkProducts && l.productId ? (
                       <Link
                         href={hrefFor("product", l.productId)}
                         className="font-medium hover:underline"
@@ -63,8 +65,12 @@ export function LinesTable({
                     ) : (
                       <span className="font-medium">{l.description}</span>
                     )}
+                    {l.detail ? (
+                      <span className="mt-0.5 block text-sm text-muted-foreground">{l.detail}</span>
+                    ) : null}
                     <span className="block text-xs text-muted-foreground">
                       {sku ? <span className="font-mono">{sku}</span> : null}
+                      {l.productId ? null : "Made to order"}
                       {l.discountPercent ? ` · ${l.discountPercent}% off list` : ""}
                       {l.extra ? ` · ${l.extra}` : ""}
                     </span>
@@ -86,6 +92,9 @@ export function LinesTable({
             <span className="w-8 shrink-0 font-medium tabular-nums">{l.qty}×</span>
             <span className="min-w-0 flex-1">
               <span className="line-clamp-2 font-medium">{l.description}</span>
+              {l.detail ? (
+                <span className="block text-xs text-muted-foreground">{l.detail}</span>
+              ) : null}
               <span className="block text-xs text-muted-foreground tabular-nums">
                 {formatMoney(l.unitPrice)} each{l.extra ? ` · ${l.extra}` : ""}
               </span>
@@ -176,9 +185,12 @@ export function QuoteDocument({
           {quote.lines.map((l, i) => (
             <tr key={i} className="border-b border-neutral-100 align-top">
               <td className="py-1.5 pr-2 font-mono whitespace-nowrap">
-                {products.get(l.productId)?.sku}
+                {l.productId ? products.get(l.productId)?.sku : "Made to order"}
               </td>
-              <td className="py-1.5 pr-2">{l.description}</td>
+              <td className="py-1.5 pr-2">
+                {l.description}
+                {l.detail ? <span className="block text-neutral-500">{l.detail}</span> : null}
+              </td>
               <td className="py-1.5 text-right">{l.qty}</td>
               <td className="py-1.5 text-right whitespace-nowrap">{formatMoney(l.unitPrice)}</td>
               <td className="py-1.5 text-right whitespace-nowrap">{formatMoney(l.lineTotal)}</td>

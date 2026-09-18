@@ -3,8 +3,15 @@ import type * as s from "@/schemas";
 import type {
   Account,
   Address,
+  AddCompositeToQuoteResponse,
   AIInsight,
   AskResponse,
+  CompositeBuild,
+  CompositeBuildSummary,
+  CompositeSettings,
+  CostItem,
+  InternalCustomer,
+  InternalQuote,
   Basket,
   Case,
   Category,
@@ -133,8 +140,11 @@ export interface PortalApi {
     list(): Promise<Quote[]>;
     /** GET /api/quotes/:id */
     get(id: string): Promise<Quote>;
-    /** POST /api/quotes/:id/accept — converts to a sales order. */
-    accept(id: string): Promise<{ quote: Quote; salesOrder: SalesOrder }>;
+    /**
+     * POST /api/quotes/:id/accept — converts to a sales order. Null when every line is a
+     * composite Brewfitt still has to set up as a product (decision 14).
+     */
+    accept(id: string): Promise<{ quote: Quote; salesOrder: SalesOrder | null }>;
     /** POST /api/quotes/:id/decline */
     decline(id: string, input: In<typeof s.DeclineQuoteRequest>): Promise<Quote>;
     /** GET /api/rfqs */
@@ -266,6 +276,38 @@ export interface PortalApi {
     productInsight(productId: string): Promise<AIInsight | null>;
     /** POST /api/ai/ask */
     ask(input: In<typeof s.AskRequest>): Promise<AskResponse>;
+  };
+
+  /** Brewfitt staff tools (decision 14). Customers and suppliers are refused. */
+  internal: {
+    /** GET /api/internal/composite-settings — system FX rates and labour rate. */
+    compositeSettings(): Promise<CompositeSettings>;
+    /** GET /api/internal/customers */
+    customers(): Promise<InternalCustomer[]>;
+    /** GET /api/internal/cost-items?q= — catalogue products and components at cost. */
+    costItems(query: In<typeof s.CostItemQuery>): Promise<CostItem[]>;
+    /** GET /api/internal/composite-builds */
+    compositeBuilds(): Promise<CompositeBuildSummary[]>;
+    /** GET /api/internal/composite-builds/:id */
+    compositeBuild(id: string): Promise<CompositeBuild>;
+    /** POST /api/internal/composite-builds */
+    createCompositeBuild(input: In<typeof s.CompositeBuildInput>): Promise<CompositeBuild>;
+    /** PATCH /api/internal/composite-builds/:id */
+    updateCompositeBuild(
+      id: string,
+      patch: In<typeof s.CompositeBuildPatch>,
+    ): Promise<CompositeBuild>;
+    /** POST /api/internal/composite-builds/:id/duplicate */
+    duplicateCompositeBuild(id: string): Promise<CompositeBuild>;
+    /** POST /api/internal/composite-builds/:id/add-to-quote */
+    addCompositeToQuote(
+      id: string,
+      input: In<typeof s.AddCompositeToQuoteRequest>,
+    ): Promise<AddCompositeToQuoteResponse>;
+    /** GET /api/internal/quotes — read-only, every account. */
+    quotes(): Promise<InternalQuote[]>;
+    /** GET /api/internal/quotes/:id */
+    quote(id: string): Promise<InternalQuote>;
   };
 
   /** Phase 1 only: the persona switcher and demo reset. Removed in Phase 2. */

@@ -26,6 +26,9 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-brand-subtle: var(--brand-subtle);
   --color-brand-subtle-foreground: var(--brand-subtle-foreground);
+  /* Brewfitt internal (staff) band: deliberately unlike the customer brand. */
+  --color-internal: var(--internal);
+  --color-internal-foreground: var(--internal-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -91,6 +94,8 @@
   --primary-foreground: oklch(0.99 0 0);
   --brand-subtle: oklch(0.95 0.025 248);
   --brand-subtle-foreground: oklch(0.42 0.11 250);
+  --internal: oklch(0.32 0.06 55);
+  --internal-foreground: oklch(0.97 0.035 85);
 
   --secondary: oklch(0.955 0.008 248);
   --secondary-foreground: oklch(0.25 0.02 252);
@@ -144,6 +149,8 @@
   --primary-foreground: oklch(0.15 0.02 255);
   --brand-subtle: oklch(0.3 0.06 250);
   --brand-subtle-foreground: oklch(0.85 0.06 248);
+  --internal: oklch(0.8 0.12 75);
+  --internal-foreground: oklch(0.2 0.04 55);
 
   --secondary: oklch(0.26 0.015 255);
   --secondary-foreground: var(--foreground);

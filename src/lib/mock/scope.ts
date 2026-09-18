@@ -2,6 +2,7 @@ import type { Account, Persona } from "@/types";
 import { usePersonaStore } from "@/stores/persona-store";
 import { ApiError } from "@/lib/api/errors";
 import type { MockDb } from "./db";
+import { BREWFITT_ACCOUNT, STAFF_CONTACT } from "./seed/composite";
 
 export { ApiError };
 
@@ -17,6 +18,8 @@ export type Scope = {
   /** Holds price list, account team and credit (decision 10). */
   commercialAccount: Account;
   isSupplier: boolean;
+  /** Brewfitt staff (decision 14): internal tools only, no customer or supplier records. */
+  isStaff: boolean;
 };
 
 export function currentPersona(): Persona {
@@ -24,6 +27,19 @@ export function currentPersona(): Persona {
 }
 
 export function resolveScope(db: MockDb, persona: Persona = currentPersona()): Scope {
+  if (persona.kind === "staff") {
+    if (persona.contactId !== STAFF_CONTACT.id)
+      throw new ApiError(401, "The selected staff persona no longer exists. Switch persona.");
+    return {
+      persona,
+      account: BREWFITT_ACCOUNT,
+      viewAccount: BREWFITT_ACCOUNT,
+      accountIds: [],
+      commercialAccount: BREWFITT_ACCOUNT,
+      isSupplier: false,
+      isStaff: true,
+    };
+  }
   const account = db.accounts.find((a) => a.id === persona.accountId);
   if (!account)
     throw new ApiError(
@@ -57,6 +73,7 @@ export function resolveScope(db: MockDb, persona: Persona = currentPersona()): S
     accountIds,
     commercialAccount,
     isSupplier: account.kind === "supplier",
+    isStaff: false,
   };
 }
 

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { Id, IsoDate, IsoDateTime, Money } from "./common";
+import { CompositeBuild, CompositeQuoteLineInternal } from "./composite";
 
 // ---------- Shop ----------
 
@@ -54,12 +55,17 @@ export const CheckoutRequest = z.object({
 export const QuoteStatus = z.enum(["draft", "sent", "accepted", "declined", "expired"]);
 
 export const QuoteLine = z.object({
-  productId: Id,
+  /** Null for a composite line priced in the Composite Configurator (decision 14). */
+  productId: Id.nullable(),
   description: z.string().min(1),
+  /** Customer-facing detail under the description (composite lines). */
+  detail: z.string().nullable().optional(),
   qty: z.int().positive(),
   unitPrice: Money,
   discountPercent: z.number().min(0).max(100),
   lineTotal: Money,
+  /** Brewfitt only: the composite's BOM. Never returned to customers. */
+  internal: CompositeQuoteLineInternal.nullable().optional(),
 });
 
 export const Quote = z.object({
@@ -82,6 +88,15 @@ export const Quote = z.object({
   lastViewedAt: IsoDateTime.nullable(),
   createdAt: IsoDateTime,
   updatedAt: IsoDateTime,
+});
+
+/** Staff quote list (decision 14): every account's quotes, with the customer's name. */
+export const InternalQuote = Quote.extend({ accountName: z.string().min(1) });
+
+/** POST /api/internal/composite-builds/:id/add-to-quote */
+export const AddCompositeToQuoteResponse = z.object({
+  build: CompositeBuild,
+  quote: Quote,
 });
 
 export const DeclineQuoteRequest = z.object({

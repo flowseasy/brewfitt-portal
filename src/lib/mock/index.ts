@@ -19,6 +19,7 @@ import {
   notifications,
   supplierProducts,
 } from "./api/service";
+import { internal } from "./api/internal";
 import { deliveries, invoices, orders, quotes } from "./api/trade";
 
 /**
@@ -45,5 +46,6 @@ export const mockApi: PortalApi = {
   messages,
   notifications,
   ai,
+  internal,
   demo,
 };

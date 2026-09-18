@@ -1,5 +1,6 @@
 import {
   BookOpenIcon,
+  CalculatorIcon,
   ChatsCircleIcon,
   CreditCardIcon,
   FadersHorizontalIcon,
@@ -69,15 +70,27 @@ const SUPPLIER_NAV: NavItem[] = [
   { href: "/messages", label: "Messages", icon: ChatsCircleIcon, mobile: true },
 ];
 
+/** Brewfitt staff (decision 14): internal tools only; quotes are read-only. */
+const STAFF_NAV: NavItem[] = [
+  { href: "/internal/configurator", label: "Configurator", icon: CalculatorIcon, mobile: true },
+  { href: "/internal/quotes", label: "Quotes", icon: FileTextIcon, mobile: true },
+];
+
 export function navFor(kind: PersonaKind): NavItem[] {
-  return kind === "supplier" ? SUPPLIER_NAV : CUSTOMER_NAV;
+  return kind === "staff" ? STAFF_NAV : kind === "supplier" ? SUPPLIER_NAV : CUSTOMER_NAV;
 }
 
-/** Routes outside the sidebar that every persona can reach. */
+/** Where the logo and redirects lead for each persona. */
+export function homeFor(kind: PersonaKind): string {
+  return kind === "staff" ? "/internal/configurator" : "/dashboard";
+}
+
+/** Routes outside the sidebar that customers and suppliers can reach. */
 const SHARED_ROUTES = ["/account", "/notifications", "/onboarding"];
 
 export function isRouteAllowed(kind: PersonaKind, pathname: string): boolean {
   const base = `/${pathname.split("/").filter(Boolean)[0] ?? ""}`;
+  if (kind === "staff") return navFor(kind).some((item) => isActive(pathname, item.href));
   return SHARED_ROUTES.includes(base) || navFor(kind).some((item) => item.href === base);
 }
 

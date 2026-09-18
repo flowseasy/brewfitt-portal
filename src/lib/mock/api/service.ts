@@ -15,6 +15,7 @@ import { customerInsights, sortInsights, supplierInsights } from "@/lib/ai/rules
 import { commit, getDb, latency, newId, nextNumber, resetDb, type MockDb } from "../db";
 import { insert, patch } from "../mutations";
 import type { Scope } from "../scope";
+import { BREWFITT_ACCOUNT, STAFF_CONTACT } from "../seed/composite";
 import {
   account,
   badRequest,
@@ -853,6 +854,17 @@ export const demo: PortalApi["demo"] = {
         label: `${contact.name}, ${acc.name}`,
         description: choice.description,
       };
+    }).concat({
+      // Brewfitt staff (decision 14): internal tools only.
+      persona: {
+        kind: "staff",
+        contactId: STAFF_CONTACT.id,
+        accountId: BREWFITT_ACCOUNT.id,
+        activeSiteId: null,
+      },
+      label: `${STAFF_CONTACT.name}, ${BREWFITT_ACCOUNT.name}`,
+      description:
+        "Brewfitt sales estimator: costs composite items and adds them to customer quotes",
     });
   },
   reset: async () => {

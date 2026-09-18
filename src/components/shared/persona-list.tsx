@@ -5,6 +5,7 @@ import {
   BuildingsIcon,
   CheckCircleIcon,
   FactoryIcon,
+  IdentificationBadgeIcon,
   StorefrontIcon,
   UsersThreeIcon,
 } from "@phosphor-icons/react";
@@ -18,6 +19,7 @@ const KIND_LABEL: Record<Persona["kind"], string> = {
   site: "Pub group site",
   group: "Pub group",
   supplier: "Supplier",
+  staff: "Brewfitt staff",
 };
 
 const KIND_ICON = {
@@ -25,6 +27,7 @@ const KIND_ICON = {
   site: BuildingsIcon,
   group: UsersThreeIcon,
   supplier: FactoryIcon,
+  staff: IdentificationBadgeIcon,
 };
 
 /** Demo personas in place of login (Phase 1). */

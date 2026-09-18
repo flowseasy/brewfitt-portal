@@ -9,3 +9,4 @@ export * from "./content";
 export * from "./comms";
 export * from "./ai";
 export * from "./session";
+export * from "./composite";

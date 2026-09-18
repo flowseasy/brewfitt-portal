@@ -59,6 +59,7 @@ function ctaFor(kind: string, pathname: string): Cta {
 export function PrimaryCta({ compact }: { compact?: boolean }) {
   const pathname = usePathname();
   const persona = usePersona();
+  if (persona.kind === "staff") return null;
   const cta = ctaFor(persona.kind, pathname);
   return (
     <Button

@@ -5,6 +5,8 @@ import type {
   BrewfittTeamMember,
   Case,
   Category,
+  CompositeBuild,
+  CostItem,
   ChangeRequest,
   Configuration,
   ConfiguratorRules,
@@ -83,6 +85,10 @@ export type MockDb = {
    * packing, dispatch and delivery (decision 11). Mock-internal, not in the contract.
    */
   journeys: { orderId: string; startedAt: string }[];
+  /** Composite Configurator builds (decision 14, Brewfitt staff only). */
+  compositeBuilds: CompositeBuild[];
+  /** Invented component items for the Composite Configurator type-ahead. */
+  components: CostItem[];
 };
 
 /**

@@ -12,7 +12,8 @@
     "check:data": "tsx scripts/check-data.ts",
     "check:api": "tsx scripts/check-api.ts",
     "build:check": "node scripts/build-check.mjs",
-    "deploy": "npm run build && wrangler pages deploy out --project-name brewfitt-portal --branch main"
+    "deploy": "npm run build && wrangler pages deploy out --project-name brewfitt-portal --branch main",
+    "test": "tsx --test src/**/*.test.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

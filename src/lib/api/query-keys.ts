@@ -52,6 +52,14 @@ export const queryKeys = {
   notifications: (persona: PersonaKey) => [persona, "notifications"] as const,
   insights: (persona: PersonaKey) => [persona, "ai", "insights"] as const,
   productInsight: (persona: PersonaKey, id: string) => [persona, "ai", "product", id] as const,
+  compositeSettings: (persona: PersonaKey) => [persona, "internal", "settings"] as const,
+  internalCustomers: (persona: PersonaKey) => [persona, "internal", "customers"] as const,
+  costItems: (persona: PersonaKey, q: string) => [persona, "internal", "cost-items", q] as const,
+  compositeBuilds: (persona: PersonaKey) => [persona, "internal", "composite-builds"] as const,
+  compositeBuild: (persona: PersonaKey, id: string) =>
+    [persona, "internal", "composite-builds", id] as const,
+  internalQuotes: (persona: PersonaKey) => [persona, "internal", "quotes"] as const,
+  internalQuote: (persona: PersonaKey, id: string) => [persona, "internal", "quotes", id] as const,
   personas: () => ["demo", "personas"] as const,
 };
 
