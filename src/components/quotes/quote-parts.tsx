@@ -10,6 +10,7 @@ import { hrefFor } from "@/lib/links";
 export type LineRow = {
   /** Null for a made-to-order composite line (decision 14). */
   productId: string | null;
+  kind?: "product" | "composite" | "delivery";
   description: string;
   detail?: string | null;
   qty: number;
@@ -70,7 +71,7 @@ export function LinesTable({
                     ) : null}
                     <span className="block text-xs text-muted-foreground">
                       {sku ? <span className="font-mono">{sku}</span> : null}
-                      {l.productId ? null : "Made to order"}
+                      {l.kind === "composite" ? "Made to order" : null}
                       {l.discountPercent ? ` · ${l.discountPercent}% off list` : ""}
                       {l.extra ? ` · ${l.extra}` : ""}
                     </span>
@@ -185,7 +186,11 @@ export function QuoteDocument({
           {quote.lines.map((l, i) => (
             <tr key={i} className="border-b border-neutral-100 align-top">
               <td className="py-1.5 pr-2 font-mono whitespace-nowrap">
-                {l.productId ? products.get(l.productId)?.sku : "Made to order"}
+                {l.productId
+                  ? products.get(l.productId)?.sku
+                  : l.kind === "composite"
+                    ? "Made to order"
+                    : null}
               </td>
               <td className="py-1.5 pr-2">
                 {l.description}

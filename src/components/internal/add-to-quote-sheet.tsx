@@ -80,7 +80,7 @@ export function AddToQuoteSheet({
       toast.success(
         quoteId ? `Added to ${quote.number}` : `Quote ${quote.number} sent to the customer`,
         {
-          description: `${qty} × ${build.name} at ${formatMoney(quote.lines.at(-1)!.unitPrice)}`,
+          description: `${qty} × ${build.name} at ${formatCost(chosen!.sellPrice)}${chosen!.carriage ? `, plus delivery ${formatCost(chosen!.carriage * qty)}` : ""}`,
           action: {
             label: "View quote",
             onClick: () => router.push(`/internal/quotes/view?id=${quote.id}`),
@@ -95,7 +95,8 @@ export function AddToQuoteSheet({
   });
 
   const f = chosen ? bandFigures(chosen, build) : null;
-  const unit = chosen ? chosen.sellPrice + chosen.carriage : 0;
+  const unit = chosen ? chosen.sellPrice : 0;
+  const delivery = chosen ? chosen.carriage * qty : 0;
   const tooFew = qty < min;
 
   return (
@@ -104,8 +105,9 @@ export function AddToQuoteSheet({
         <SheetHeader>
           <SheetTitle>Add to quote</SheetTitle>
           <SheetDescription>
-            One line for {build.name}. The customer sees the name, description and price; the bill
-            of materials stays internal.
+            One line for {build.name} at the band price, plus a Delivery line when the band has
+            carriage. The customer sees the name, description and price; the bill of materials stays
+            internal.
           </SheetDescription>
         </SheetHeader>
 
@@ -143,7 +145,7 @@ export function AddToQuoteSheet({
                         <span className="font-medium">{BAND_LABEL[b.key]}</span>
                       </span>
                       <span className="text-right tabular-nums">
-                        {formatCost(b.sellPrice + b.carriage)}
+                        {formatCost(b.sellPrice)}
                         <span className={cn("block text-xs", marginTone(bf.marginPercent))}>
                           {bf.marginPercent.toFixed(2)}% margin
                         </span>
@@ -217,14 +219,21 @@ export function AddToQuoteSheet({
                   <span className="text-muted-foreground">Unit price</span>
                   <span className="tabular-nums">{formatCost(unit)}</span>
                 </div>
-                {chosen.carriage ? (
-                  <p className="text-xs text-muted-foreground">
-                    Includes carriage of {formatCost(chosen.carriage)} each.
-                  </p>
+                <div className="mt-1 flex justify-between">
+                  <span className="text-muted-foreground">Composite line</span>
+                  <span className="tabular-nums">{formatCost(unit * qty)}</span>
+                </div>
+                {delivery ? (
+                  <div className="mt-1 flex justify-between">
+                    <span className="text-muted-foreground">
+                      Delivery line ({formatCost(chosen.carriage)} carriage each)
+                    </span>
+                    <span className="tabular-nums">{formatCost(delivery)}</span>
+                  </div>
                 ) : null}
                 <div className="mt-1 flex justify-between font-semibold">
-                  <span>Line total, before VAT</span>
-                  <span className="tabular-nums">{formatCost(unit * qty)}</span>
+                  <span>Added to the quote, before VAT</span>
+                  <span className="tabular-nums">{formatCost(unit * qty + delivery)}</span>
                 </div>
                 <div className="mt-1 flex justify-between text-xs text-muted-foreground">
                   <span>Gross profit on the line</span>

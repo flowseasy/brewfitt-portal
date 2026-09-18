@@ -54,7 +54,12 @@ export const CheckoutRequest = z.object({
 
 export const QuoteStatus = z.enum(["draft", "sent", "accepted", "declined", "expired"]);
 
+/** Quote line types: a catalogue product, a composite (decision 14) or a delivery charge. */
+export const QuoteLineKind = z.enum(["product", "composite", "delivery"]);
+
 export const QuoteLine = z.object({
+  /** Missing on older records, which are all products. */
+  kind: QuoteLineKind.optional(),
   /** Null for a composite line priced in the Composite Configurator (decision 14). */
   productId: Id.nullable(),
   description: z.string().min(1),

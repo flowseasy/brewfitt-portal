@@ -81,7 +81,9 @@ export const quotes: PortalApi["quotes"] = {
       const stocked = quote.lines.flatMap((l) =>
         l.productId ? [{ productId: l.productId, qty: l.qty }] : [],
       );
-      const composites = quote.lines.filter((l) => !l.productId).map((l) => l.description);
+      const composites = quote.lines
+        .filter((l) => l.kind === "composite" || l.internal)
+        .map((l) => l.description);
       const leadDays = Math.max(
         3,
         ...stocked.map((l) => db.products.find((p) => p.id === l.productId)?.leadTimeDays ?? 3),

@@ -196,7 +196,9 @@ export function SupplierDashboard() {
                 </div>
               </dl>
               <div className="mt-5">
-                <p className="mb-2 text-xs font-medium text-muted-foreground">Owed to you by due date</p>
+                <p className="mb-2 text-xs font-medium text-muted-foreground">
+                  Owed to you by due date
+                </p>
                 <AgeingBar ageing={statement.data.ageing} />
               </div>
             </div>

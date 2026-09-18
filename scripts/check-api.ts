@@ -643,7 +643,7 @@ async function main() {
   // ---- Brewfitt staff: Composite Configurator (decision 14) ----------------------------
   let staffBuildId: string | undefined;
   let compositeQuoteId: string | undefined;
-  as("James Pollard");
+  as("Sam Ridley");
   await step("staff: me is Brewfitt", async () => {
     const me = await api.session.me();
     expect(me.account.kind === "internal" && me.persona.kind === "staff", "not internal");
@@ -739,6 +739,7 @@ async function main() {
           ],
           shipping: { mode: "percent", value: 5 },
           sellPrice: 12_000,
+          carriage: 500,
         },
         {
           ...created.bands[0]!,
@@ -802,8 +803,18 @@ async function main() {
     );
     expect(
       first.quote.lines[0]!.unitPrice.amount === 12_000 &&
+        first.quote.lines[0]!.kind === "composite" &&
         first.quote.lines[0]!.internal?.bom.length === 2,
       "line price or BOM wrong",
+    );
+    const delivery = first.quote.lines[1];
+    expect(
+      first.quote.lines.length === 2 &&
+        delivery?.kind === "delivery" &&
+        delivery.lineTotal.amount === 1500 &&
+        !delivery.internal &&
+        first.quote.subtotal.amount === 3 * 12_000 + 1500,
+      "carriage not on a separate Delivery line",
     );
     const second = await api.internal.addCompositeToQuote(staffBuildId!, {
       bandKey: "50",
@@ -811,7 +822,7 @@ async function main() {
       quoteId: first.quote.id,
     });
     expect(
-      second.quote.lines.length === 2 &&
+      second.quote.lines.length === 3 &&
         second.build.status === "quoted" &&
         second.build.quotes.length === 2,
       "second add",
@@ -819,7 +830,7 @@ async function main() {
     const staffQuote = await api.internal.quote(first.quote.id);
     expect(
       staffQuote.accountName === "Harbourside Drinks Ltd" &&
-        staffQuote.lines.every((l) => l.internal),
+        staffQuote.lines.filter((l) => l.internal).length === 2,
       "staff quote view",
     );
     compositeQuoteId = first.quote.id;
@@ -895,7 +906,7 @@ async function main() {
     );
   });
   await step("composite builds survive a reload", async () => {
-    as("James Pollard");
+    as("Sam Ridley");
     const b = await api.internal.compositeBuild(staffBuildId!);
     expect(b.status === "quoted" && b.bands.length === 2, "build lost on reload");
   });

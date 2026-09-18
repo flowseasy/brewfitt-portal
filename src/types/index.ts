@@ -77,6 +77,7 @@ export type MockCardPayment = z.infer<typeof s.MockCardPayment>;
 export type BasketQuoteRequest = z.infer<typeof s.BasketQuoteRequest>;
 export type CheckoutRequest = z.infer<typeof s.CheckoutRequest>;
 export type QuoteStatus = z.infer<typeof s.QuoteStatus>;
+export type QuoteLineKind = z.infer<typeof s.QuoteLineKind>;
 export type QuoteLine = z.infer<typeof s.QuoteLine>;
 export type Quote = z.infer<typeof s.Quote>;
 export type InternalQuote = z.infer<typeof s.InternalQuote>;

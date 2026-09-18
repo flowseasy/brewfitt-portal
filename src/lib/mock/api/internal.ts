@@ -129,21 +129,29 @@ function quoteNotification(
 }
 
 /** A new quote Brewfitt sends: ready to accept, with PDF, conversation and notification. */
+/** "…, plus delivery of £15.00" when the composite brings a delivery line. */
+function deliveryNote(lines: QuoteLine[]): string {
+  const delivery = lines.find((l) => l.kind === "delivery");
+  return delivery ? `, plus delivery of ${formatMoney(delivery.lineTotal)}` : "";
+}
+
 function newQuoteChanges(
   db: MockDb,
   accountId: string,
-  line: QuoteLine,
+  added: QuoteLine[],
   at: string,
 ): { quote: Quote; changes: Change[] } {
-  const { vat, gross } = withVat(db, accountId, line.lineTotal.amount);
+  const line = added[0]!;
+  const net = added.reduce((sum, l) => sum + l.lineTotal.amount, 0);
+  const { vat, gross } = withVat(db, accountId, net);
   const { contact, manager } = quoteParticipants(db, accountId);
   const quote: Quote = {
     id: newId("quo"),
     accountId,
     number: nextNumber("QU-", db.quotes),
     status: "sent",
-    lines: [line],
-    subtotal: gbp(line.lineTotal.amount),
+    lines: added,
+    subtotal: gbp(net),
     vat: gbp(vat),
     total: gbp(gross),
     validUntil: isoDate(new Date(Date.now() + 30 * 86_400_000)),
@@ -188,7 +196,7 @@ function newQuoteChanges(
     senderId: manager.id,
     senderSide: "brewfitt",
     channel: "portal",
-    body: `Hello ${contact.name.split(" ")[0]}, quote ${quote.number} for ${line.description} is attached: ${line.qty} at ${formatMoney(line.unitPrice)} each, ${formatMoney(quote.total)} including VAT, valid until ${formatDate(quote.validUntil)}. Accept it here when you are ready.`,
+    body: `Hello ${contact.name.split(" ")[0]}, quote ${quote.number} for ${line.description} is attached: ${line.qty} at ${formatMoney(line.unitPrice)} each${deliveryNote(added)}, ${formatMoney(quote.total)} including VAT, valid until ${formatDate(quote.validUntil)}. Accept it here when you are ready.`,
     attachments: [pdf.id],
     sentAt: at,
   };
@@ -211,14 +219,15 @@ function newQuoteChanges(
 function addToQuoteChanges(
   db: MockDb,
   quoteId: string,
-  line: QuoteLine,
+  added: QuoteLine[],
   at: string,
 ): { quote: Quote; changes: Change[] } {
   const existing = db.quotes.find((q) => q.id === quoteId) ?? notFound("Quote");
   const current = quoteNow(existing);
   if (current.status !== "sent")
     badRequest(`Quote ${current.number} is ${current.status}; add the composite to a new quote.`);
-  const lines = [...existing.lines, line];
+  const line = added[0]!;
+  const lines = [...existing.lines, ...added];
   const subtotal = lines.reduce((sum, l) => sum + l.lineTotal.amount, 0);
   const { vat, gross } = withVat(db, existing.accountId, subtotal);
   const quote: Quote = {
@@ -236,7 +245,7 @@ function addToQuoteChanges(
     senderId: manager.id,
     senderSide: "brewfitt",
     channel: "portal",
-    body: `We have added ${line.description} to quote ${quote.number}: ${line.qty} at ${formatMoney(line.unitPrice)} each. The updated quote is attached, now ${formatMoney(quote.total)} including VAT.`,
+    body: `We have added ${line.description} to quote ${quote.number}: ${line.qty} at ${formatMoney(line.unitPrice)} each${deliveryNote(added)}. The updated quote is attached, now ${formatMoney(quote.total)} including VAT.`,
     attachments: existing.pdfDocumentId ? [existing.pdfDocumentId] : [],
     sentAt: at,
   };
@@ -414,15 +423,16 @@ export const internal: PortalApi["internal"] = {
         );
       if (band.sellPrice <= 0) badRequest("Set a sell price for the band before quoting it.");
       const figures = bandFigures(band, record);
-      const unit = band.sellPrice + band.carriage;
+      // The composite line carries the band price only; carriage is its own Delivery line.
+      const unit = band.sellPrice;
       const detail = [
         record.description.trim(),
         band.key === "base" ? "" : `Priced for ${min} or more.`,
-        band.carriage ? `Includes carriage of ${formatMoney(gbp(band.carriage))} each.` : "",
       ]
         .filter(Boolean)
         .join(" ");
       const line: QuoteLine = {
+        kind: "composite",
         productId: null,
         description: record.name,
         detail: detail || null,
@@ -440,10 +450,23 @@ export const internal: PortalApi["internal"] = {
           marginPercent: figures.marginPercent,
         },
       };
+      const added: QuoteLine[] = [line];
+      if (band.carriage)
+        added.push({
+          kind: "delivery",
+          productId: null,
+          description: "Delivery",
+          detail: `Carriage for ${data.qty} × ${record.name} at ${formatMoney(gbp(band.carriage))} each.`,
+          qty: 1,
+          unitPrice: gbp(band.carriage * data.qty),
+          discountPercent: 0,
+          lineTotal: gbp(band.carriage * data.qty),
+          internal: null,
+        });
       const at = nowIso();
       const result = data.quoteId
-        ? addToQuoteChanges(db, data.quoteId, line, at)
-        : newQuoteChanges(db, record.accountId, line, at);
+        ? addToQuoteChanges(db, data.quoteId, added, at)
+        : newQuoteChanges(db, record.accountId, added, at);
       if (result.quote.accountId !== record.accountId)
         badRequest("That quote is for a different customer.");
       commit("internal.addCompositeToQuote", [

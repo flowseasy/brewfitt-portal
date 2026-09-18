@@ -570,7 +570,7 @@ export function seedCompositeBuilds(args: {
           "Angram T-bar with two flow-control taps, illuminated Premium Lager badges and fitting kit.",
         accountId: account("acc_harbourside"),
         brand: "Harbourside Premium Lager",
-        creatorInitials: "JP",
+        creatorInitials: "SR",
       }),
       fxRates: fx,
       labourRate: SYSTEM_LABOUR_RATE,
@@ -673,7 +673,7 @@ export function seedCompositeBuilds(args: {
         description: "Chrome two-tap tower refresh for Mill Race Inns sites, badges fitted.",
         accountId: account("acc_millrace"),
         brand: "Mill Race Inns estate",
-        creatorInitials: "JP",
+        creatorInitials: "SR",
       }),
       fxRates: fx,
       labourRate: SYSTEM_LABOUR_RATE,
@@ -757,11 +757,11 @@ export const BREWFITT_ACCOUNT: Account = {
 };
 
 export const STAFF_CONTACT: Contact = {
-  id: "stf_james",
+  id: "stf_sam",
   accountId: BREWFITT_ACCOUNT.id,
-  name: "James Pollard",
+  name: "Sam Ridley",
   title: "Sales Estimator",
-  email: "james.pollard@brewfitt.example",
+  email: "sam.ridley@brewfitt.example",
   phone: "01484 530 240",
   role: "sales",
   isPrimary: false,
